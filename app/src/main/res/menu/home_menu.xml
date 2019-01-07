@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_test_24dp"
+        android:title="test" />
+    <item
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/ic_test_24dp"
+        android:title="test" />
+    <item
+        android:id="@+id/nav_my_orders"
+        android:icon="@drawable/ic_test_24dp"
+        android:title="test" />
+    <item
+        android:id="@+id/nav_my_products"
+        android:icon="@drawable/ic_test_24dp"
+        android:title="test" />
+    <item
+        android:id="@+id/nav_create_product"
+        android:icon="@drawable/ic_test_24dp"
+        android:title="test" />
+    <item
+        android:id="@+id/nav_notifications"
+        android:icon="@drawable/ic_test_24dp"
+        android:title="test" />
+    <item
+        android:id="@+id/nav_about_us"
+        android:icon="@drawable/ic_test_24dp"
+        android:title="test" />
+    <item
+        android:id="@+id/nav_privacy"
+        android:icon="@drawable/ic_test_24dp"
+        android:title="test" />
+    <item
+        android:id="@+id/nav_verify"
+        android:icon="@drawable/ic_test_24dp"
+        android:title="test" />
+    <item
+        android:id="@+id/nav_log_out"
+        android:icon="@drawable/ic_test_24dp"
+        android:title="test" />
+
+</menu>

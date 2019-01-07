@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/subCategoriesFragment"
+        android:name="com.hmaserv.rz.subCategories.SubCategoriesFragment"
+        android:label="sub_categories_fragment"
+        tools:layout="@layout/sub_categories_fragment" >
+        <action
+            android:id="@+id/action_subCategoriesFragment_to_productsFragment"
+            app:destination="@id/productsFragment" />
+        <action
+            android:id="@+id/action_subCategoriesFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/verificationFragment"
+        android:name="com.hmaserv.rz.auth.verification.VerificationFragment"
+        android:label="verfication_fragment"
+        tools:layout="@layout/verfication_fragment" />
+    <fragment
+        android:id="@+id/writeReviewFragment"
+        android:name="com.hmaserv.rz.reviews.writeReview.WriteReviewFragment"
+        android:label="write_review_fragment"
+        tools:layout="@layout/write_review_fragment" ></fragment>
+    <fragment
+        android:id="@+id/categoriesFragment"
+        android:name="com.hmaserv.rz.categories.CategoriesFragment"
+        android:label="categories_fragment"
+        tools:layout="@layout/categories_fragment" >
+        <action
+            android:id="@+id/action_categoriesFragment_to_subCategoriesFragment"
+            app:destination="@id/subCategoriesFragment" />
+        <action
+            android:id="@+id/action_categoriesFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createProductFragment"
+        android:name="com.hmaserv.rz.createProduct.CreateProductFragment"
+        android:label="create_product_fragment"
+        tools:layout="@layout/create_product_fragment" ></fragment>
+    <fragment
+        android:id="@+id/contactUsFragment"
+        android:name="com.hmaserv.rz.contactUs.ContactUsFragment"
+        android:label="contact_us_fragment"
+        tools:layout="@layout/contact_us_fragment" />
+    <fragment
+        android:id="@+id/aboutUsFragment"
+        android:name="com.hmaserv.rz.aboutUs.AboutUsFragment"
+        android:label="about_us_fragment"
+        tools:layout="@layout/about_us_fragment" />
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="com.hmaserv.rz.cart.CartFragment"
+        android:label="cart_fragment"
+        tools:layout="@layout/cart_fragment" ></fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.hmaserv.rz.search.SearchFragment"
+        android:label="search_fragment"
+        tools:layout="@layout/search_fragment" />
+    <fragment
+        android:id="@+id/reviewsFragment"
+        android:name="com.hmaserv.rz.reviews.ReviewsFragment"
+        android:label="reviews_fragment"
+        tools:layout="@layout/reviews_fragment" >
+        <action
+            android:id="@+id/action_reviewsFragment_to_writeReviewFragment"
+            app:destination="@id/writeReviewFragment" />
+        <action
+            android:id="@+id/action_reviewsFragment_to_verificationFragment"
+            app:destination="@id/verificationFragment" />
+        <action
+            android:id="@+id/action_reviewsFragment_to_authGraph"
+            app:destination="@id/authGraph" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.hmaserv.rz.profile.ProfileFragment"
+        android:label="profile_fragment"
+        tools:layout="@layout/profile_fragment" />
+    <fragment
+        android:id="@+id/productsFragment"
+        android:name="com.hmaserv.rz.products.ProductsFragment"
+        android:label="products_fragment"
+        tools:layout="@layout/products_fragment" >
+        <action
+            android:id="@+id/action_productsFragment_to_productFragment"
+            app:destination="@id/productFragment" />
+        <action
+            android:id="@+id/action_productsFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/productFragment"
+        android:name="com.hmaserv.rz.product.ProductFragment"
+        android:label="product_fragment"
+        tools:layout="@layout/product_fragment" >
+        <action
+            android:id="@+id/action_productFragment_to_reviewsFragment"
+            app:destination="@id/reviewsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/privacyFragment"
+        android:name="com.hmaserv.rz.privacy.PrivacyFragment"
+        android:label="privacy_fragment"
+        tools:layout="@layout/privacy_fragment" />
+    <fragment
+        android:id="@+id/notificationsFragment"
+        android:name="com.hmaserv.rz.notifications.NotificationsFragment"
+        android:label="notifications_fragment"
+        tools:layout="@layout/notifications_fragment" />
+    <fragment
+        android:id="@+id/myProductsFragment"
+        android:name="com.hmaserv.rz.myProducts.MyProductsFragment"
+        android:label="my_products_fragment"
+        tools:layout="@layout/my_products_fragment" />
+    <fragment
+        android:id="@+id/myOrdersFragment"
+        android:name="com.hmaserv.rz.myOrders.MyOrdersFragment"
+        android:label="my_orders_fragment"
+        tools:layout="@layout/my_orders_fragment" />
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.hmaserv.rz.home.HomeFragment"
+        android:label="home_fragment"
+        tools:layout="@layout/home_fragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_productFragment"
+            app:destination="@id/productFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_categoriesFragment"
+            app:destination="@id/categoriesFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_authGraph"
+            app:destination="@id/authGraph" />
+        <action
+            android:id="@+id/action_homeFragment_to_notificationsFragment"
+            app:destination="@id/notificationsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_myProductsFragment"
+            app:destination="@id/myProductsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_myOrdersFragment"
+            app:destination="@id/myOrdersFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_privacyFragment"
+            app:destination="@id/privacyFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_contactUsFragment"
+            app:destination="@id/contactUsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_aboutUsFragment"
+            app:destination="@id/aboutUsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_createProductFragment"
+            app:destination="@id/createProductFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_verificationFragment"
+            app:destination="@id/verificationFragment" />
+    </fragment>
+    <navigation
+        android:id="@+id/authGraph"
+        app:startDestination="@id/loginFragment">
+        <fragment
+            android:id="@+id/loginFragment"
+            android:name="com.hmaserv.rz.auth.login.LoginFragment"
+            android:label="login_fragment"
+            tools:layout="@layout/login_fragment">
+            <action
+                android:id="@+id/action_loginFragment_to_registerFragment"
+                app:destination="@id/registerFragment" />
+            <action
+                android:id="@+id/action_loginFragment_to_forgetPassFragment"
+                app:destination="@id/forgetPassFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/registerFragment"
+            android:name="com.hmaserv.rz.auth.register.RegisterFragment"
+            android:label="register_fragment"
+            tools:layout="@layout/register_fragment" />
+        <fragment
+            android:id="@+id/forgetPassFragment"
+            android:name="com.hmaserv.rz.auth.forgetPass.ForgetPassFragment"
+            android:label="forget_pass_fragment"
+            tools:layout="@layout/forget_pass_fragment" />
+    </navigation>
+</navigation>
