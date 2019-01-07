@@ -3,6 +3,6 @@ Naming
 2 - about_us_activity, about_us_fragment, about_us_item_view
 3 - ids : userNameTv, passwordEt, sliderVp, profileImgv, nextBtn, rootViewCl, productsRv
 4 - icons: ic_name, ic_name_white
-5 - customDrawables: searchRoundedBtn, aboutUsEt
-6 - images: imageUserDefault.jpg, imageMainBg.jpg, imageLoginBg.jpg
+5 - customDrawables: search_rounded_btn, about_us_et
+6 - images: image_user_default.jpg, image_main_bg.jpg, image_login_bg.jpg
 7 - strings: hint_name, label_name, error_name, success_name (default string file is arabic)
