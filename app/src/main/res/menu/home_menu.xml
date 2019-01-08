@@ -3,42 +3,47 @@
     <item
         android:id="@+id/nav_home"
         android:icon="@drawable/ic_test_24dp"
-        android:title="test" />
+        android:title="@string/label_home"
+        android:checked="true"/>
     <item
         android:id="@+id/nav_profile"
         android:icon="@drawable/ic_test_24dp"
-        android:title="test" />
+        android:title="@string/label_profile" />
     <item
         android:id="@+id/nav_my_orders"
         android:icon="@drawable/ic_test_24dp"
-        android:title="test" />
+        android:title="@string/label_my_orders" />
     <item
         android:id="@+id/nav_my_products"
         android:icon="@drawable/ic_test_24dp"
-        android:title="test" />
+        android:title="@string/label_my_products" />
     <item
         android:id="@+id/nav_create_product"
         android:icon="@drawable/ic_test_24dp"
-        android:title="test" />
+        android:title="@string/label_create_product" />
     <item
         android:id="@+id/nav_notifications"
         android:icon="@drawable/ic_test_24dp"
-        android:title="test" />
+        android:title="@string/label_notifications" />
     <item
         android:id="@+id/nav_about_us"
         android:icon="@drawable/ic_test_24dp"
-        android:title="test" />
+        android:title="@string/label_about_us" />
+    <item
+        android:id="@+id/nav_contact_us"
+        android:icon="@drawable/ic_test_24dp"
+        android:title="@string/label_contact_us" />
     <item
         android:id="@+id/nav_privacy"
         android:icon="@drawable/ic_test_24dp"
-        android:title="test" />
+        android:title="@string/label_privacy_policy" />
     <item
-        android:id="@+id/nav_verify"
+        android:id="@+id/nav_terms"
         android:icon="@drawable/ic_test_24dp"
-        android:title="test" />
+        android:title="@string/label_terms_amp_conditions" />
     <item
         android:id="@+id/nav_log_out"
         android:icon="@drawable/ic_test_24dp"
-        android:title="test" />
+        android:title="@string/label_logout" />
 
 </menu>

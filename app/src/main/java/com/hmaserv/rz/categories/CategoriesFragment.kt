@@ -6,8 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 
 import com.hmaserv.rz.R
+import kotlinx.android.synthetic.main.categories_fragment.view.*
 
 class CategoriesFragment : Fragment() {
 
@@ -15,7 +17,14 @@ class CategoriesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.categories_fragment, container, false)
+        val view = inflater.inflate(R.layout.categories_fragment, container, false)
+
+        view.nextBtn.setOnClickListener {
+            val action = CategoriesFragmentDirections.actionCategoriesFragmentToSubCategoriesFragment("1")
+            findNavController().navigate(action)
+        }
+
+        return view
     }
 
 

@@ -16,17 +16,19 @@
         <action
             android:id="@+id/action_subCategoriesFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
+        <argument
+            android:name="categoryId"
+            app:argType="string" />
     </fragment>
-    <fragment
-        android:id="@+id/verificationFragment"
-        android:name="com.hmaserv.rz.auth.verification.VerificationFragment"
-        android:label="verfication_fragment"
-        tools:layout="@layout/verfication_fragment" />
     <fragment
         android:id="@+id/writeReviewFragment"
         android:name="com.hmaserv.rz.reviews.writeReview.WriteReviewFragment"
         android:label="write_review_fragment"
-        tools:layout="@layout/write_review_fragment" ></fragment>
+        tools:layout="@layout/write_review_fragment" >
+        <argument
+            android:name="productId"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/categoriesFragment"
         android:name="com.hmaserv.rz.categories.CategoriesFragment"
@@ -43,7 +45,7 @@
         android:id="@+id/createProductFragment"
         android:name="com.hmaserv.rz.createProduct.CreateProductFragment"
         android:label="create_product_fragment"
-        tools:layout="@layout/create_product_fragment" ></fragment>
+        tools:layout="@layout/create_product_fragment" />
     <fragment
         android:id="@+id/contactUsFragment"
         android:name="com.hmaserv.rz.contactUs.ContactUsFragment"
@@ -58,12 +60,16 @@
         android:id="@+id/cartFragment"
         android:name="com.hmaserv.rz.cart.CartFragment"
         android:label="cart_fragment"
-        tools:layout="@layout/cart_fragment" ></fragment>
+        tools:layout="@layout/cart_fragment" />
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.hmaserv.rz.search.SearchFragment"
         android:label="search_fragment"
-        tools:layout="@layout/search_fragment" />
+        tools:layout="@layout/search_fragment" >
+        <action
+            android:id="@+id/action_searchFragment_to_productsFragment"
+            app:destination="@id/productsFragment" ></action>
+    </fragment>
     <fragment
         android:id="@+id/reviewsFragment"
         android:name="com.hmaserv.rz.reviews.ReviewsFragment"
@@ -73,11 +79,11 @@
             android:id="@+id/action_reviewsFragment_to_writeReviewFragment"
             app:destination="@id/writeReviewFragment" />
         <action
-            android:id="@+id/action_reviewsFragment_to_verificationFragment"
-            app:destination="@id/verificationFragment" />
-        <action
             android:id="@+id/action_reviewsFragment_to_authGraph"
             app:destination="@id/authGraph" />
+        <argument
+            android:name="productId"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -95,6 +101,26 @@
         <action
             android:id="@+id/action_productsFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
+        <argument
+            android:name="subCategoryId"
+            app:nullable="true"
+            app:argType="string" />
+        <argument
+            android:name="searchText"
+            app:nullable="true"
+            app:argType="string" />
+        <argument
+            android:name="searchCategoryId"
+            app:nullable="true"
+            app:argType="string" />
+        <argument
+            android:name="searchPriceFrom"
+            app:nullable="true"
+            app:argType="string" />
+        <argument
+            android:name="searchPriceTo"
+            app:nullable="true"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/productFragment"
@@ -104,6 +130,9 @@
         <action
             android:id="@+id/action_productFragment_to_reviewsFragment"
             app:destination="@id/reviewsFragment" />
+        <argument
+            android:name="productId"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/privacyFragment"
@@ -167,8 +196,8 @@
             android:id="@+id/action_homeFragment_to_createProductFragment"
             app:destination="@id/createProductFragment" />
         <action
-            android:id="@+id/action_homeFragment_to_verificationFragment"
-            app:destination="@id/verificationFragment" />
+            android:id="@+id/action_homeFragment_to_termsConditionsFragment"
+            app:destination="@id/termsConditionsFragment" />
     </fragment>
     <navigation
         android:id="@+id/authGraph"
@@ -184,16 +213,43 @@
             <action
                 android:id="@+id/action_loginFragment_to_forgetPassFragment"
                 app:destination="@id/forgetPassFragment" />
+            <action
+                android:id="@+id/action_loginFragment_to_verificationFragment"
+                app:destination="@id/verificationFragment" />
         </fragment>
         <fragment
             android:id="@+id/registerFragment"
             android:name="com.hmaserv.rz.auth.register.RegisterFragment"
             android:label="register_fragment"
-            tools:layout="@layout/register_fragment" />
+            tools:layout="@layout/register_fragment" >
+            <action
+                android:id="@+id/action_registerFragment_to_verificationFragment"
+                app:destination="@id/verificationFragment" />
+        </fragment>
         <fragment
             android:id="@+id/forgetPassFragment"
             android:name="com.hmaserv.rz.auth.forgetPass.ForgetPassFragment"
             android:label="forget_pass_fragment"
             tools:layout="@layout/forget_pass_fragment" />
+        <fragment
+            android:id="@+id/verificationFragment"
+            android:name="com.hmaserv.rz.auth.verification.VerificationFragment"
+            android:label="verfication_fragment"
+            tools:layout="@layout/verfication_fragment" >
+            <argument
+                android:name="phoneNumber"
+                app:argType="string" />
+            <argument
+                android:name="userName"
+                app:argType="string" />
+            <argument
+                android:name="password"
+                app:argType="string" />
+        </fragment>
     </navigation>
+    <fragment
+        android:id="@+id/termsConditionsFragment"
+        android:name="com.hmaserv.rz.termsConditions.TermsConditionsFragment"
+        android:label="terms_conditions_fragment"
+        tools:layout="@layout/terms_conditions_fragment" />
 </navigation>

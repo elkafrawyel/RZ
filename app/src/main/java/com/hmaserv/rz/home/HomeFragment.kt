@@ -49,8 +49,9 @@ class HomeFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
             R.id.nav_create_product -> findNavController().navigate(R.id.action_homeFragment_to_createProductFragment)
             R.id.nav_notifications -> findNavController().navigate(R.id.action_homeFragment_to_notificationsFragment)
             R.id.nav_about_us -> findNavController().navigate(R.id.action_homeFragment_to_aboutUsFragment)
+            R.id.nav_contact_us -> findNavController().navigate(R.id.action_homeFragment_to_contactUsFragment)
             R.id.nav_privacy -> findNavController().navigate(R.id.action_homeFragment_to_privacyFragment)
-            R.id.nav_verify -> findNavController().navigate(R.id.action_homeFragment_to_verificationFragment)
+            R.id.nav_terms -> findNavController().navigate(R.id.action_homeFragment_to_termsConditionsFragment)
             R.id.nav_log_out -> Toast.makeText(activity, "Logout pressed", Toast.LENGTH_SHORT).show()
         }
 

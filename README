@@ -6,3 +6,30 @@ Naming
 5 - customDrawables: search_rounded_btn, about_us_et
 6 - images: image_user_default.jpg, image_main_bg.jpg, image_login_bg.jpg
 7 - strings: hint_name, label_name, error_name, success_name (default string file is arabic)
+
+
+Screen arguments to be passed in actions (safe args) in navigation component
+1 -  aboutUs : nothing
+2 -  forgetPass : nothing
+3 -  login : nothing
+4 -  register : nothing
+5 -  verification : (phoneNumber, userName, password)
+6 -  cart : nothing
+7 -  categories : nothing
+8 -  contactUs: nothing
+9 -  createProduct : nothing
+10 - home : nothing
+11 - myOrders : nothing
+12 - myProducts : nothing
+13 - notifications : nothing
+14 - privacy : nothing
+15 - product : (productId)
+16 - products : (subCategoryId || searchParameters(to be identified later))
+17 - profile : nothing
+18 - reviews : (productId)
+19 - writeReview : (productId)
+20 - search : nothing
+21 - splash : nothing
+22 - subCategories : (categoryId)
+23 - termsConditions : nothing
+24 - MainActivity : nothing

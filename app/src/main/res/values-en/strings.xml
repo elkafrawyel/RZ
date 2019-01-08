@@ -3,4 +3,15 @@
     <string name="label_welcome">Welcome</string>
     <string name="label_sign_in_sign_up">Sign In / Sign Up</string>
     <string name="label_promotions">Promotions</string>
+    <string name="label_home">Home</string>
+    <string name="label_profile">Profile</string>
+    <string name="label_my_orders">My Orders</string>
+    <string name="label_my_products">My Products</string>
+    <string name="label_create_product">Create Product</string>
+    <string name="label_notifications">Notifications</string>
+    <string name="label_about_us">About Us</string>
+    <string name="label_contact_us">Contact Us</string>
+    <string name="label_privacy_policy">Privacy Policy</string>
+    <string name="label_terms_amp_conditions"><![CDATA[Terms & Conditions]]></string>
+    <string name="label_logout">Logout</string>
 </resources>
