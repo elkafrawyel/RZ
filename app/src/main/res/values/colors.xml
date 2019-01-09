@@ -15,5 +15,6 @@
     <color name="colorOnError">#FFFFFF</color>
     
     <color name="colorRating">#FFDBC400</color>
-    
+    <color name="colorScrim">#64000000</color>
+
 </resources>

@@ -14,4 +14,14 @@
     <string name="label_privacy_policy">Privacy Policy</string>
     <string name="label_terms_amp_conditions"><![CDATA[Terms & Conditions]]></string>
     <string name="label_logout">Logout</string>
+    <string name="hint_user_name">الاسم</string>
+    <string name="hint_email">البريد الالكتروني</string>
+    <string name="hint_phone_number">رقم الجوال</string>
+    <string name="hint_password">كلمة المرور</string>
+    <string name="hint_confirm_password">تأكيد كلمة المرور</string>
+    <string name="label_create_account">تسجيل حساب</string>
+    <string name="label_have_account">أمتلك حساب بالفعل</string>
+    <string name="label_login">تسجيل دخول</string>
+    <string name="label_forget_password">نسيت كلمة المرور؟</string>
+    <string name="label_have_no_account">لا تمتلك حساب</string>
 </resources>
