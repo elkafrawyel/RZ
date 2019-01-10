@@ -25,4 +25,8 @@
     <string name="label_login">تسجيل دخول</string>
     <string name="label_forget_password">نسيت كلمة المرور؟</string>
     <string name="label_have_no_account">لا تمتلك حساب</string>
+    <string name="label_orders_received">Orders Received</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

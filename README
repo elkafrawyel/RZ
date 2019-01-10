@@ -1,35 +1,128 @@
+Layers:
+    - domain
+        conatins:
+            all app entity
+        Dependencies:
+            nothing
+    - data
+        conatins:
+            
+        Dependencies:
+            domain
+    - framework
+        Dependencies:
+            domain
+    - useCases
+        Dependencies:
+            domain, data
+    - ui
+        Dependencies:
+            useCases
+
+RemoteDataSource
+    Role:
+        - constructing the request data
+        - Fetching data from a service
+    Dependencies:
+        - API Service
+    Input:
+        - Request information
+    Output:
+        - Request response
+
+LocalDataSource
+    Role:
+        - Storing data on disk
+    Dependencies:
+        - SharedPrefernces or Database
+    Input:
+        - Data to be saved
+    Output:
+        - Data saved
+
+Repository
+    Role:
+        - Fetching and Storing data
+        - in-memory cache (optional)
+    Dependencies:
+        - RemoteDataSource and/or LocalDataSource
+    Input:
+        - Data retrieval: ids
+        - Data saving: T
+
+UseCase
+    Role:
+        - Proccessing data based on bussiness logic
+    Dependencies:
+        - Repositories and/or UseCases
+    Input:
+        - ids
+
+ViewModel
+    Role:
+        - Expose data to be displayed by the UI
+        - Trigger actions based on user actions
+    Dependencies:
+        - UseCases
+    Input:
+        - id (optional)
+        - User actions
+    Output:
+        - LiveData<T>
+    Uses:
+        - LiveData<T>
+
+UI: Activity & XML
+    Role:
+        - Display the data
+        - Forward user actions to ViewModel
+    Dependencies:
+        - ViewModel
+    Input:
+        - id (optional)
+        - User actions
+
+
+1 - Coroutines used as Async operations
+2 - Repositories and UseCases is suspend functions
+3 - ViewModel launch, cancel Coroutines and make transition from Coroutines to LiveData
+4 - suspend function returns Result<T> { success(T data), Error(Exeption e) }
+
 Naming
-1 - AboutUsFragment, AboutUsActivity, AboutUsViewModel, AboutUsAdapter
-2 - about_us_activity, about_us_fragment, about_us_item_view
-3 - ids : userNameTv, passwordEt, sliderVp, profileImgv, nextBtn, rootViewCl, productsRv
-4 - icons: ic_name, ic_name_white
-5 - customDrawables: search_rounded_btn, about_us_et
-6 - images: image_user_default.jpg, image_main_bg.jpg, image_login_bg.jpg
-7 - strings: hint_name, label_name, error_name, success_name (default string file is arabic)
+    1 - AboutUsFragment, AboutUsActivity, AboutUsViewModel, AboutUsAdapter
+    2 - about_us_activity, about_us_fragment, about_us_item_view
+    3 - ids : userNameTv, passwordEt, sliderVp, profileImgv, nextBtn, rootViewCl, productsRv
+    4 - icons: ic_name, ic_name_white
+    5 - customDrawables: search_rounded_btn, about_us_et
+    6 - images: image_user_default.jpg, image_main_bg.jpg, image_login_bg.jpg
+    7 - strings: hint_name, label_name, error_name, success_name (default string file is arabic)
 
 
 Screen arguments to be passed in actions (safe args) in navigation component
-1 -  aboutUs : nothing
-2 -  forgetPass : nothing
-3 -  login : nothing
-4 -  register : nothing
-5 -  verification : (phoneNumber, userName, password)
-6 -  cart : nothing
-7 -  categories : nothing
-8 -  contactUs: nothing
-9 -  createProduct : nothing
-10 - home : nothing
-11 - myOrders : nothing
-12 - myProducts : nothing
-13 - notifications : nothing
-14 - privacy : nothing
-15 - product : (productId)
-16 - products : (subCategoryId || searchParameters(to be identified later))
-17 - profile : nothing
-18 - reviews : (productId)
-19 - writeReview : (productId)
-20 - search : nothing
-21 - splash : nothing
-22 - subCategories : (categoryId)
-23 - termsConditions : nothing
-24 - MainActivity : nothing
+    - aboutUs : nothing
+    - forgetPass : nothing
+    - login : nothing
+    - register : nothing
+    - verification : (phoneNumber, userName, password)
+    - cart : nothing
+    - categories : nothing
+    - contactUs: nothing
+    - createProduct : nothing
+    - home : nothing
+    - myOrders : nothing
+    - myOrdersDetails:
+    - ordersReceived:
+    - ordersReceivedDetails:
+    - myProducts : nothing
+    - notifications : nothing
+    - privacy : nothing
+    - product : (productId)
+    - products : (subCategoryId || searchParameters(to be identified later))
+    - profile : nothing
+    - reviews : (productId)
+    - writeReview : (productId)
+    - search : nothing
+    - splash : nothing
+    - subCategories : (categoryId)
+    - termsConditions : nothing
+    - MainActivity : nothing

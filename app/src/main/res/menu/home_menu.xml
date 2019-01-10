@@ -14,6 +14,10 @@
         android:icon="@drawable/ic_test_24dp"
         android:title="@string/label_my_orders" />
     <item
+        android:id="@+id/nav_orders_received"
+        android:icon="@drawable/ic_test_24dp"
+        android:title="@string/label_orders_received" />
+    <item
         android:id="@+id/nav_my_products"
         android:icon="@drawable/ic_test_24dp"
         android:title="@string/label_my_products" />

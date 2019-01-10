@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/subCategoriesFragment"
-        android:name="com.hmaserv.rz.subCategories.SubCategoriesFragment"
+        android:name="com.hmaserv.rz.ui.subCategories.SubCategoriesFragment"
         android:label="sub_categories_fragment"
         tools:layout="@layout/sub_categories_fragment" >
         <action
@@ -22,7 +22,7 @@
     </fragment>
     <fragment
         android:id="@+id/writeReviewFragment"
-        android:name="com.hmaserv.rz.reviews.writeReview.WriteReviewFragment"
+        android:name="com.hmaserv.rz.ui.reviews.writeReview.WriteReviewFragment"
         android:label="write_review_fragment"
         tools:layout="@layout/write_review_fragment" >
         <argument
@@ -31,7 +31,7 @@
     </fragment>
     <fragment
         android:id="@+id/categoriesFragment"
-        android:name="com.hmaserv.rz.categories.CategoriesFragment"
+        android:name="com.hmaserv.rz.ui.categories.CategoriesFragment"
         android:label="categories_fragment"
         tools:layout="@layout/categories_fragment" >
         <action
@@ -43,27 +43,27 @@
     </fragment>
     <fragment
         android:id="@+id/createProductFragment"
-        android:name="com.hmaserv.rz.createProduct.CreateProductFragment"
+        android:name="com.hmaserv.rz.ui.createProduct.CreateProductFragment"
         android:label="create_product_fragment"
         tools:layout="@layout/create_product_fragment" />
     <fragment
         android:id="@+id/contactUsFragment"
-        android:name="com.hmaserv.rz.contactUs.ContactUsFragment"
+        android:name="com.hmaserv.rz.ui.contactUs.ContactUsFragment"
         android:label="contact_us_fragment"
         tools:layout="@layout/contact_us_fragment" />
     <fragment
         android:id="@+id/aboutUsFragment"
-        android:name="com.hmaserv.rz.aboutUs.AboutUsFragment"
+        android:name="com.hmaserv.rz.ui.aboutUs.AboutUsFragment"
         android:label="about_us_fragment"
         tools:layout="@layout/about_us_fragment" />
     <fragment
         android:id="@+id/cartFragment"
-        android:name="com.hmaserv.rz.cart.CartFragment"
+        android:name="com.hmaserv.rz.ui.cart.CartFragment"
         android:label="cart_fragment"
         tools:layout="@layout/cart_fragment" />
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.hmaserv.rz.search.SearchFragment"
+        android:name="com.hmaserv.rz.ui.search.SearchFragment"
         android:label="search_fragment"
         tools:layout="@layout/search_fragment" >
         <action
@@ -72,7 +72,7 @@
     </fragment>
     <fragment
         android:id="@+id/reviewsFragment"
-        android:name="com.hmaserv.rz.reviews.ReviewsFragment"
+        android:name="com.hmaserv.rz.ui.reviews.ReviewsFragment"
         android:label="reviews_fragment"
         tools:layout="@layout/reviews_fragment" >
         <action
@@ -87,12 +87,12 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.hmaserv.rz.profile.ProfileFragment"
+        android:name="com.hmaserv.rz.ui.profile.ProfileFragment"
         android:label="profile_fragment"
         tools:layout="@layout/profile_fragment" />
     <fragment
         android:id="@+id/productsFragment"
-        android:name="com.hmaserv.rz.products.ProductsFragment"
+        android:name="com.hmaserv.rz.ui.products.ProductsFragment"
         android:label="products_fragment"
         tools:layout="@layout/products_fragment" >
         <action
@@ -124,7 +124,7 @@
     </fragment>
     <fragment
         android:id="@+id/productFragment"
-        android:name="com.hmaserv.rz.product.ProductFragment"
+        android:name="com.hmaserv.rz.ui.product.ProductFragment"
         android:label="product_fragment"
         tools:layout="@layout/product_fragment" >
         <action
@@ -136,27 +136,27 @@
     </fragment>
     <fragment
         android:id="@+id/privacyFragment"
-        android:name="com.hmaserv.rz.privacy.PrivacyFragment"
+        android:name="com.hmaserv.rz.ui.privacy.PrivacyFragment"
         android:label="privacy_fragment"
         tools:layout="@layout/privacy_fragment" />
     <fragment
         android:id="@+id/notificationsFragment"
-        android:name="com.hmaserv.rz.notifications.NotificationsFragment"
+        android:name="com.hmaserv.rz.ui.notifications.NotificationsFragment"
         android:label="notifications_fragment"
         tools:layout="@layout/notifications_fragment" />
     <fragment
         android:id="@+id/myProductsFragment"
-        android:name="com.hmaserv.rz.myProducts.MyProductsFragment"
+        android:name="com.hmaserv.rz.ui.myProducts.MyProductsFragment"
         android:label="my_products_fragment"
         tools:layout="@layout/my_products_fragment" />
     <fragment
         android:id="@+id/myOrdersFragment"
-        android:name="com.hmaserv.rz.myOrders.MyOrdersFragment"
+        android:name="com.hmaserv.rz.ui.myOrders.MyOrdersFragment"
         android:label="my_orders_fragment"
         tools:layout="@layout/my_orders_fragment" />
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.hmaserv.rz.home.HomeFragment"
+        android:name="com.hmaserv.rz.ui.home.HomeFragment"
         android:label="home_fragment"
         tools:layout="@layout/home_fragment" >
         <action
@@ -204,7 +204,7 @@
         app:startDestination="@id/loginFragment">
         <fragment
             android:id="@+id/loginFragment"
-            android:name="com.hmaserv.rz.auth.login.LoginFragment"
+            android:name="com.hmaserv.rz.ui.auth.login.LoginFragment"
             android:label="login_fragment"
             tools:layout="@layout/login_fragment">
             <action
@@ -219,7 +219,7 @@
         </fragment>
         <fragment
             android:id="@+id/registerFragment"
-            android:name="com.hmaserv.rz.auth.register.RegisterFragment"
+            android:name="com.hmaserv.rz.ui.auth.register.RegisterFragment"
             android:label="register_fragment"
             tools:layout="@layout/register_fragment" >
             <action
@@ -228,12 +228,12 @@
         </fragment>
         <fragment
             android:id="@+id/forgetPassFragment"
-            android:name="com.hmaserv.rz.auth.forgetPass.ForgetPassFragment"
+            android:name="com.hmaserv.rz.ui.auth.forgetPass.ForgetPassFragment"
             android:label="forget_pass_fragment"
             tools:layout="@layout/forget_pass_fragment" />
         <fragment
             android:id="@+id/verificationFragment"
-            android:name="com.hmaserv.rz.auth.verification.VerificationFragment"
+            android:name="com.hmaserv.rz.ui.auth.verification.VerificationFragment"
             android:label="verfication_fragment"
             tools:layout="@layout/verfication_fragment" >
             <argument
@@ -249,7 +249,7 @@
     </navigation>
     <fragment
         android:id="@+id/termsConditionsFragment"
-        android:name="com.hmaserv.rz.termsConditions.TermsConditionsFragment"
+        android:name="com.hmaserv.rz.ui.termsConditions.TermsConditionsFragment"
         android:label="terms_conditions_fragment"
         tools:layout="@layout/terms_conditions_fragment" />
 </navigation>

@@ -8,8 +8,6 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: "androidx.navigation.safeargs"
 
-apply plugin: 'com.apollographql.android'
-
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -48,8 +46,6 @@ dependencies {
 
     implementation "com.google.android.material:material:$material_version"
 
-    implementation "com.apollographql.apollo:apollo-runtime:$apollo_version"
-
     implementation "com.github.CymChad:BaseRecyclerViewAdapterHelper:$base_rv_version"
 
     implementation("com.github.bumptech.glide:glide:$glide_version") {
@@ -61,10 +57,22 @@ dependencies {
 
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$retrofit_coroutines_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
 
     implementation "com.romandanylyk:pageindicatorview:$page_indicator_version"
+
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+
+    debugImplementation "io.objectbox:objectbox-android-objectbrowser:$objectboxVersion"
+    releaseImplementation "io.objectbox:objectbox-android:$objectboxVersion"
+
+    implementation "com.blankj:utilcode:$blanj_version"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
 }
+
+apply plugin: 'io.objectbox'
