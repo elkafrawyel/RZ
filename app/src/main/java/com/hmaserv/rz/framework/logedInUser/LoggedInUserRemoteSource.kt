@@ -2,15 +2,15 @@ package com.hmaserv.rz.framework.logedInUser
 
 import com.hmaserv.rz.data.logedInUser.ILoggedInUserRemoteSource
 import com.hmaserv.rz.domain.*
-import com.hmaserv.rz.framework.apiService.RetrofitApiService
-import com.hmaserv.rz.framework.apiService.RetrofitAuthApiService
+import com.hmaserv.rz.data.apiService.RetrofitApiService
+import com.hmaserv.rz.data.apiService.RetrofitAuthApiService
 import com.hmaserv.rz.utils.safeApiCall
 import java.io.IOException
 
 class LoggedInUserRemoteSource(
     private val apiService: RetrofitApiService,
     private val authApiService: RetrofitAuthApiService
-) : ILoggedInUserRemoteSource(apiService, authApiService) {
+) : ILoggedInUserRemoteSource() {
 
     override suspend fun login(logInUserRequest: LogInUserRequest): DataResource<LoggedInUser> {
         return safeApiCall(
@@ -80,20 +80,5 @@ class LoggedInUserRemoteSource(
 
         return DataResource.Error(IOException("Error reset password"))
 
-    }
-
-
-    companion object {
-        @Volatile
-        private var INSTANCE: LoggedInUserRemoteSource? = null
-
-        fun getInstance(
-            apiService: RetrofitApiService,
-            authApiService: RetrofitAuthApiService
-        ): LoggedInUserRemoteSource {
-            return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: LoggedInUserRemoteSource(apiService, authApiService).also { INSTANCE = it }
-            }
-        }
     }
 }

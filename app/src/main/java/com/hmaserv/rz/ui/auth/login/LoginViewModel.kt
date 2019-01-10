@@ -13,7 +13,7 @@ import kotlinx.coroutines.withContext
 
 class LoginViewModel : ViewModel() {
 
-    private val dispatcherProvider = Injector.getoroutinesDispatcherProvider()
+    private val dispatcherProvider = Injector.getCoroutinesDispatcherProvider()
     private val parentJob = Job()
     private val scope = CoroutineScope(dispatcherProvider.main + parentJob)
     private var loginJob: Job? = null

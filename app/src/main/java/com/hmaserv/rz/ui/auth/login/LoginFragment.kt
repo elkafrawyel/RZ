@@ -60,6 +60,7 @@ class LoginFragment : Fragment() {
     private fun showStateSuccess() {
         loadingFl.visibility = View.GONE
         Toast.makeText(activity, "Logged in successfully", Toast.LENGTH_SHORT).show()
+        findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
     }
 
     private fun showStateError(message: String) {

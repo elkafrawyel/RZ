@@ -18,15 +18,15 @@ data class LoggedInUser(
 )
 
 data class LogInUserRequest(
-    val phone: String,
+    @field:Json(name = "mobile") val phone: String,
     val password: String
 )
 
 data class RegisterUserRequest(
-    @Json(name = "full_name") val fullName: String,
-    @Json(name = "mobile") val phone: String,
-    @Json(name = "email") val email: String,
-    @Json(name = "password") val password: String
+    @field:Json(name = "full_name") val fullName: String,
+    @field:Json(name = "mobile") val phone: String,
+    @field:Json(name = "email") val email: String,
+    @field:Json(name = "password") val password: String
 )
 
 data class ForgetPassword(

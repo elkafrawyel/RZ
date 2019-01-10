@@ -9,7 +9,7 @@
         android:id="@+id/subCategoriesFragment"
         android:name="com.hmaserv.rz.ui.subCategories.SubCategoriesFragment"
         android:label="sub_categories_fragment"
-        tools:layout="@layout/sub_categories_fragment" >
+        tools:layout="@layout/sub_categories_fragment">
         <action
             android:id="@+id/action_subCategoriesFragment_to_productsFragment"
             app:destination="@id/productsFragment" />
@@ -24,7 +24,7 @@
         android:id="@+id/writeReviewFragment"
         android:name="com.hmaserv.rz.ui.reviews.writeReview.WriteReviewFragment"
         android:label="write_review_fragment"
-        tools:layout="@layout/write_review_fragment" >
+        tools:layout="@layout/write_review_fragment">
         <argument
             android:name="productId"
             app:argType="string" />
@@ -33,7 +33,7 @@
         android:id="@+id/categoriesFragment"
         android:name="com.hmaserv.rz.ui.categories.CategoriesFragment"
         android:label="categories_fragment"
-        tools:layout="@layout/categories_fragment" >
+        tools:layout="@layout/categories_fragment">
         <action
             android:id="@+id/action_categoriesFragment_to_subCategoriesFragment"
             app:destination="@id/subCategoriesFragment" />
@@ -65,16 +65,16 @@
         android:id="@+id/searchFragment"
         android:name="com.hmaserv.rz.ui.search.SearchFragment"
         android:label="search_fragment"
-        tools:layout="@layout/search_fragment" >
+        tools:layout="@layout/search_fragment">
         <action
             android:id="@+id/action_searchFragment_to_productsFragment"
-            app:destination="@id/productsFragment" ></action>
+            app:destination="@id/productsFragment"/>
     </fragment>
     <fragment
         android:id="@+id/reviewsFragment"
         android:name="com.hmaserv.rz.ui.reviews.ReviewsFragment"
         android:label="reviews_fragment"
-        tools:layout="@layout/reviews_fragment" >
+        tools:layout="@layout/reviews_fragment">
         <action
             android:id="@+id/action_reviewsFragment_to_writeReviewFragment"
             app:destination="@id/writeReviewFragment" />
@@ -94,7 +94,7 @@
         android:id="@+id/productsFragment"
         android:name="com.hmaserv.rz.ui.products.ProductsFragment"
         android:label="products_fragment"
-        tools:layout="@layout/products_fragment" >
+        tools:layout="@layout/products_fragment">
         <action
             android:id="@+id/action_productsFragment_to_productFragment"
             app:destination="@id/productFragment" />
@@ -103,30 +103,30 @@
             app:destination="@id/searchFragment" />
         <argument
             android:name="subCategoryId"
-            app:nullable="true"
-            app:argType="string" />
+            app:argType="string"
+            app:nullable="true" />
         <argument
             android:name="searchText"
-            app:nullable="true"
-            app:argType="string" />
+            app:argType="string"
+            app:nullable="true" />
         <argument
             android:name="searchCategoryId"
-            app:nullable="true"
-            app:argType="string" />
+            app:argType="string"
+            app:nullable="true" />
         <argument
             android:name="searchPriceFrom"
-            app:nullable="true"
-            app:argType="string" />
+            app:argType="string"
+            app:nullable="true" />
         <argument
             android:name="searchPriceTo"
-            app:nullable="true"
-            app:argType="string" />
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/productFragment"
         android:name="com.hmaserv.rz.ui.product.ProductFragment"
         android:label="product_fragment"
-        tools:layout="@layout/product_fragment" >
+        tools:layout="@layout/product_fragment">
         <action
             android:id="@+id/action_productFragment_to_reviewsFragment"
             app:destination="@id/reviewsFragment" />
@@ -158,7 +158,7 @@
         android:id="@+id/homeFragment"
         android:name="com.hmaserv.rz.ui.home.HomeFragment"
         android:label="home_fragment"
-        tools:layout="@layout/home_fragment" >
+        tools:layout="@layout/home_fragment">
         <action
             android:id="@+id/action_homeFragment_to_productFragment"
             app:destination="@id/productFragment" />
@@ -216,12 +216,17 @@
             <action
                 android:id="@+id/action_loginFragment_to_verificationFragment"
                 app:destination="@id/verificationFragment" />
+            <action
+                android:id="@+id/action_loginFragment_to_homeFragment"
+                app:destination="@id/homeFragment"
+                app:popUpTo="@id/homeFragment"
+                app:popUpToInclusive="true"/>
         </fragment>
         <fragment
             android:id="@+id/registerFragment"
             android:name="com.hmaserv.rz.ui.auth.register.RegisterFragment"
             android:label="register_fragment"
-            tools:layout="@layout/register_fragment" >
+            tools:layout="@layout/register_fragment">
             <action
                 android:id="@+id/action_registerFragment_to_verificationFragment"
                 app:destination="@id/verificationFragment" />
@@ -235,7 +240,12 @@
             android:id="@+id/verificationFragment"
             android:name="com.hmaserv.rz.ui.auth.verification.VerificationFragment"
             android:label="verfication_fragment"
-            tools:layout="@layout/verfication_fragment" >
+            tools:layout="@layout/verfication_fragment">
+            <action
+                android:id="@+id/action_loginFragment_to_homeFragment"
+                app:destination="@id/homeFragment"
+                app:popUpTo="@id/homeFragment"
+                app:popUpToInclusive="true"/>
             <argument
                 android:name="phoneNumber"
                 app:argType="string" />

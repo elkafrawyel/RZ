@@ -25,4 +25,13 @@
     <string name="label_forget_password">نسيت كلمة المرور؟</string>
     <string name="label_have_no_account">لا تمتلك حساب</string>
     <string name="label_orders_received">Orders Received</string>
+    <string name="error_phone_empty">Phone cannot be empty</string>
+    <string name="error_invalid_phone">Invalid phone number</string>
+    <string name="error_password_empty">Password cannot be empty</string>
+    <string name="error_password_min_char">Password cannot be less than 7 characters</string>
+    <string name="error_name_empty">Name cannot be empty</string>
+    <string name="error_email_empty">Email cannot be empty</string>
+    <string name="error_password_confirm_empty">Password confirmation cannot be empty</string>
+    <string name="error_password_confirm_min_char">Password confirmation cannot be less than 7 characters</string>
+    <string name="error_password_not_match">Password confirmation does not math the password</string>
 </resources>

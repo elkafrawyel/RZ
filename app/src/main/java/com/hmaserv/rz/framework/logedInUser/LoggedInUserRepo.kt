@@ -4,12 +4,18 @@ import com.hmaserv.rz.data.logedInUser.ILoggedInUserRepo
 import com.hmaserv.rz.domain.*
 
 class LoggedInUserRepo(
-    private val loggedInUserRemoteSource: LoggedInUserRemoteSource,
+    private var loggedInUserRemoteSource: LoggedInUserRemoteSource,
     private val loggedInUserLocalSource: LoggedInUserLocalSource
-) : ILoggedInUserRepo(loggedInUserRemoteSource, loggedInUserLocalSource) {
+) : ILoggedInUserRepo() {
 
     override suspend fun logInUser(logInUserRequest: LogInUserRequest): DataResource<LoggedInUser> {
-        return loggedInUserRemoteSource.login(logInUserRequest)
+        val response = loggedInUserRemoteSource.login(logInUserRequest)
+        when(response) {
+            is DataResource.Success -> {
+                loggedInUserLocalSource.saveLoggedInUser(response.data)
+            }
+        }
+        return response
     }
 
     override suspend fun registerUser(registerUserRequest: RegisterUserRequest): DataResource<LoggedInUser> {
@@ -43,6 +49,12 @@ class LoggedInUserRepo(
             return INSTANCE ?: synchronized(this) {
                 INSTANCE ?: LoggedInUserRepo(loggedInUserRemoteSource, loggedInUserLocalSource).also { INSTANCE = it }
             }
+        }
+
+        fun resetRemoteSource(
+            loggedInUserRemoteSource: LoggedInUserRemoteSource
+        ) {
+            INSTANCE?.loggedInUserRemoteSource = loggedInUserRemoteSource
         }
     }
 }
