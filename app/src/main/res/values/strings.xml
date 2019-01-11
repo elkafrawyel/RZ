@@ -4,26 +4,26 @@
 
     <string name="app_name" translatable="false">RZ</string>
 
-    <string name="label_welcome">Welcome</string>
-    <string name="label_sign_in_sign_up">Sign In / Sign Up</string>
+    <string name="label_welcome">مرحبا</string>
+    <string name="label_sign_in_sign_up">تسجيل الدخول / انشاء حساب</string>
     <string name="label_promotions">Promotions</string>
-    <string name="label_home">Home</string>
-    <string name="label_profile">Profile</string>
-    <string name="label_my_orders">My Orders</string>
-    <string name="label_my_products">My Products</string>
-    <string name="label_create_product">Create Product</string>
-    <string name="label_notifications">Notifications</string>
-    <string name="label_about_us">About Us</string>
-    <string name="label_contact_us">Contact Us</string>
-    <string name="label_privacy_policy">Privacy Policy</string>
-    <string name="label_terms_amp_conditions"><![CDATA[Terms & Conditions]]></string>
-    <string name="label_logout">Logout</string>
+    <string name="label_home">الرئيسية</string>
+    <string name="label_profile">الصفحة الشخصية</string>
+    <string name="label_my_orders">طلباتي</string>
+    <string name="label_orders_received">الطلبات الواردة</string>
+    <string name="label_create_product">اضافة منتج</string>
+    <string name="label_my_products">منتجاتي</string>
+    <string name="label_notifications">التنبيهات</string>
+    <string name="label_about_us">من نحن</string>
+    <string name="label_contact_us">اتصل بنا</string>
+    <string name="label_privacy_policy">سياسة الخصوصية</string>
+    <string name="label_terms_amp_conditions">شروط الخدمة</string>
+    <string name="label_logout">تسجيل الخروج</string>
     <string name="label_create_account">تسجيل حساب</string>
     <string name="label_have_account">أمتلك حساب بالفعل</string>
     <string name="label_login">تسجيل دخول</string>
     <string name="label_forget_password">نسيت كلمة المرور؟</string>
     <string name="label_have_no_account">لا تمتلك حساب</string>
-    <string name="label_orders_received">Orders Received</string>
 
     <string name="hint_user_name">الاسم</string>
     <string name="hint_email">البريد الالكتروني</string>

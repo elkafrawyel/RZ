@@ -2,52 +2,52 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/nav_home"
-        android:icon="@drawable/ic_test_24dp"
+        android:icon="@drawable/ic_home"
         android:title="@string/label_home"
         android:checked="true"/>
     <item
         android:id="@+id/nav_profile"
-        android:icon="@drawable/ic_test_24dp"
+        android:icon="@drawable/ic_account_white"
         android:title="@string/label_profile" />
     <item
         android:id="@+id/nav_my_orders"
-        android:icon="@drawable/ic_test_24dp"
+        android:icon="@drawable/ic_add_to_cart"
         android:title="@string/label_my_orders" />
     <item
         android:id="@+id/nav_orders_received"
-        android:icon="@drawable/ic_test_24dp"
+        android:icon="@drawable/ic_add_to_cart"
         android:title="@string/label_orders_received" />
     <item
-        android:id="@+id/nav_my_products"
-        android:icon="@drawable/ic_test_24dp"
-        android:title="@string/label_my_products" />
-    <item
         android:id="@+id/nav_create_product"
-        android:icon="@drawable/ic_test_24dp"
+        android:icon="@drawable/ic_add"
         android:title="@string/label_create_product" />
+    <item
+        android:id="@+id/nav_my_products"
+        android:icon="@drawable/ic_my_products"
+        android:title="@string/label_my_products" />
     <item
         android:id="@+id/nav_notifications"
         android:icon="@drawable/ic_test_24dp"
         android:title="@string/label_notifications" />
     <item
         android:id="@+id/nav_about_us"
-        android:icon="@drawable/ic_test_24dp"
+        android:icon="@drawable/ic_about_us"
         android:title="@string/label_about_us" />
     <item
         android:id="@+id/nav_contact_us"
-        android:icon="@drawable/ic_test_24dp"
+        android:icon="@drawable/ic_contact_us"
         android:title="@string/label_contact_us" />
     <item
         android:id="@+id/nav_privacy"
-        android:icon="@drawable/ic_test_24dp"
+        android:icon="@drawable/ic_privacy"
         android:title="@string/label_privacy_policy" />
     <item
         android:id="@+id/nav_terms"
-        android:icon="@drawable/ic_test_24dp"
+        android:icon="@drawable/ic_terms"
         android:title="@string/label_terms_amp_conditions" />
     <item
         android:id="@+id/nav_log_out"
-        android:icon="@drawable/ic_test_24dp"
+        android:icon="@drawable/ic_logout"
         android:title="@string/label_logout" />
 
 </menu>

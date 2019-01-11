@@ -5,17 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.hmaserv.rz.domain.DataResource
 import com.hmaserv.rz.domain.LoggedInUser
+import com.hmaserv.rz.ui.BaseViewModel
 import com.hmaserv.rz.utils.Injector
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel : BaseViewModel() {
 
-    private val dispatcherProvider = Injector.getCoroutinesDispatcherProvider()
-    private val parentJob = Job()
-    private val scope = CoroutineScope(dispatcherProvider.main + parentJob)
     private var loginJob: Job? = null
 
     private val loginUserUseCase = Injector.getLoginUseCase()
@@ -56,11 +54,6 @@ class LoginViewModel : ViewModel() {
     private fun showError(message: String?) {
         if (message != null) _uiState.value = LoginUiState.Error(message)
         else _uiState.value = LoginUiState.Error("General error")
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        parentJob.cancel()
     }
 
     sealed class LoginUiState {

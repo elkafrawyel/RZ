@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:layoutDirection="rtl"
     tools:context=".ui.auth.login.LoginFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,13 +25,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
             android:drawableStart="@drawable/ic_account"
             android:drawablePadding="8dp"
             android:gravity="start"
-            android:hint="@string/hint_user_name"
-            android:inputType="text"
+            android:hint="@string/hint_phone_number"
+            android:inputType="phone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/logoImgv" />
@@ -65,7 +64,7 @@
             android:id="@+id/loginBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="16dp"
             android:text="@string/label_login"
             app:layout_constraintEnd_toEndOf="@id/userNameEt"
             app:layout_constraintStart_toStartOf="@id/userNameEt"
@@ -123,4 +122,3 @@
         </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
-

@@ -1,12 +1,13 @@
 package com.hmaserv.rz.domain
 
+import com.hmaserv.rz.utils.Constants
 import com.squareup.moshi.Json
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id
 
 @Entity
 data class LoggedInUser(
-    @Id var id: Long = 0,
+    @Id(assignable = true) var id: Long = Constants.LOGGED_IN_USER_ID,
     val avatar: String?,
     val email: String?,
     val fullName: String?,

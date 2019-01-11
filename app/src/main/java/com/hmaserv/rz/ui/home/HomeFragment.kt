@@ -58,6 +58,4 @@ class HomeFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
         rootViewDl.closeDrawer(GravityCompat.START)
         return true
     }
-
-
 }

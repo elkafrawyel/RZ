@@ -17,4 +17,7 @@
     <color name="colorRating">#FFDBC400</color>
     <color name="colorScrim">#64000000</color>
 
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#000000</color>
+
 </resources>

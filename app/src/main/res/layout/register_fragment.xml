@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.auth.register.RegisterFragment"
-    android:layoutDirection="rtl"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -48,7 +47,7 @@
             app:layout_constraintEnd_toEndOf="@id/userNameEt"
             android:layout_marginTop="12dp"
             android:hint="@string/hint_email"
-            android:drawableStart="@drawable/ic_contact_us"
+            android:drawableStart="@drawable/ic_email_outline"
             android:gravity="start"
             android:drawablePadding="8dp"
             android:inputType="textEmailAddress"

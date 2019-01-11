@@ -6,9 +6,9 @@ import com.hmaserv.rz.data.apiService.RetrofitAuthApiService
 import com.hmaserv.rz.framework.logedInUser.LoggedInUserLocalSource
 import com.hmaserv.rz.framework.logedInUser.LoggedInUserRemoteSource
 import com.hmaserv.rz.framework.logedInUser.LoggedInUserRepo
-import com.hmaserv.rz.usecases.ForgetPasswordUseCase
-import com.hmaserv.rz.usecases.LoginUserUseCase
-import com.hmaserv.rz.usecases.RegisterUserUseCase
+import com.hmaserv.rz.framework.settings.SettingsLocalSource
+import com.hmaserv.rz.framework.settings.SettingsRepo
+import com.hmaserv.rz.usecases.*
 import com.hmaserv.rz.utils.Constants.BASE_URL
 import com.hmaserv.rz.utils.Constants.Language
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +18,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 
 object Injector {
 
-    var language = Language.ARABIC
+    var language = Language.DEFAULT
         set(value) {
             LoggedInUserRepo.resetRemoteSource(getLoggedInRemoteSource())
         }
@@ -53,7 +53,7 @@ object Injector {
 
     private fun getApiService() = RetrofitApiService.create(BASE_URL, getOkHttpClient())
     private fun getAuthApiService() = RetrofitAuthApiService.create(BASE_URL, getOkHttpClient())
-    private fun getBoxStore() = RzApplication.getBoxStore(getApplicationContext())
+    private fun getBoxStore() = getApplicationContext().getBoxStore()
 
     // LoggedIn repo
     private fun getLoggedInRemoteSource() = LoggedInUserRemoteSource(getApiService(), getAuthApiService())
@@ -68,4 +68,8 @@ object Injector {
     fun getRegisterUseCase() = RegisterUserUseCase(getLoggedInRepo())
     fun getForgetPasswordUseCase() = ForgetPasswordUseCase(getLoggedInRepo())
 
+    private fun getSettingsLocalSource() = SettingsLocalSource(getBoxStore())
+    private fun getSettingsRepo() = SettingsRepo(getSettingsLocalSource())
+    fun getCurrentLanguageUseCase() = CurrentLanguageUseCase(getSettingsRepo())
+    fun setChangeLanguageUseCase() = ChangeLanguageUseCase(getSettingsRepo())
 }
