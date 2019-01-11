@@ -20,7 +20,7 @@ class LoggedInUserLocalSource(
 
     override suspend fun saveLoggedInUser(loggedInUser: LoggedInUser): DataResource<LoggedInUser> {
         loggedInUserBox.removeAll()
-        loggedInUserBox.put(loggedInUser)
+        loggedInUserBox.put(loggedInUser.copy(id = Constants.LOGGED_IN_USER_ID))
         return getLoggedInUser()
     }
 
