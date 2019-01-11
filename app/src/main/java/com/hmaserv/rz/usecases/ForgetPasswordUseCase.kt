@@ -1,13 +1,15 @@
 package com.hmaserv.rz.usecases
 
 import com.hmaserv.rz.R
+import com.hmaserv.rz.data.logedInUser.ILoggedInUserRepo
 import com.hmaserv.rz.domain.DataResource
 import com.hmaserv.rz.domain.ForgetPassword
-import com.hmaserv.rz.framework.logedInUser.LoggedInUserRepo
 import com.hmaserv.rz.utils.Injector
 import com.hmaserv.rz.utils.ValidetionException
 
-class ForgetPasswordUseCase(private val loggedInUserRepo: LoggedInUserRepo) {
+class ForgetPasswordUseCase(
+    private val loggedInUserRepo: ILoggedInUserRepo
+) {
 
     suspend fun resetPassword(phone: String): DataResource<ForgetPassword> {
         if (phone.isEmpty()) return DataResource.Error(

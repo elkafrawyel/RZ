@@ -1,6 +1,7 @@
 package com.hmaserv.rz.usecases
 
 import com.hmaserv.rz.R
+import com.hmaserv.rz.data.logedInUser.ILoggedInUserRepo
 import com.hmaserv.rz.domain.DataResource
 import com.hmaserv.rz.domain.LogInUserRequest
 import com.hmaserv.rz.domain.LoggedInUser
@@ -9,7 +10,9 @@ import com.hmaserv.rz.framework.logedInUser.LoggedInUserRepo
 import com.hmaserv.rz.utils.Injector
 import com.hmaserv.rz.utils.ValidetionException
 
-class RegisterUserUseCase(private val loggedInUserRepo: LoggedInUserRepo) {
+class RegisterUserUseCase(
+    private val loggedInUserRepo: ILoggedInUserRepo
+) {
 
     suspend fun register(
         fullName: String,
