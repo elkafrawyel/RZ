@@ -86,7 +86,7 @@ object Injector {
         getCategoriesRemoteSource()
     )
 
-    private fun getCategoriesUseCase() = GetCategoriesUseCase(getCategoriesRepo())
+    fun getCategoriesUseCase() = GetCategoriesUseCase(getCategoriesRepo())
 
     // SubCategories
     private fun getSubCategoriesRemoteSource() = SubCategoriesRemoteSource(getApiService())
@@ -94,7 +94,7 @@ object Injector {
         getSubCategoriesRemoteSource()
     )
 
-    private fun getSubCategoriesUseCase() = GetSubCategoriesUseCase(getSubCategoriesRepo())
+    fun getSubCategoriesUseCase() = GetSubCategoriesUseCase(getSubCategoriesRepo())
 
     // Products
     private fun getProductsRemoteSource() = ProductsRemoteSource(getApiService())
@@ -102,5 +102,5 @@ object Injector {
         getProductsRemoteSource()
     )
 
-    private fun getProductsUseCase() = GetProductsUseCase(getProductsRepo())
+    fun getProductsUseCase() = GetProductsUseCase(getProductsRepo())
 }

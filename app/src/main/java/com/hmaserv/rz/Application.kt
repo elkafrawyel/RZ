@@ -3,6 +3,7 @@ package com.hmaserv.rz
 import android.app.Application
 import android.content.Context
 import android.util.Log
+import com.blankj.utilcode.util.Utils
 import com.hmaserv.rz.domain.MyObjectBox
 import com.hmaserv.rz.utils.Constants
 import com.hmaserv.rz.utils.Injector
@@ -23,6 +24,7 @@ class RzApplication : Application() {
             val started = AndroidObjectBrowser(boxStore).start(this)
             Log.i("ObjectBrowser", "Started: $started")
         }
+        Utils.init(this)
     }
 
     companion object {

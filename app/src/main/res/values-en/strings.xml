@@ -41,4 +41,5 @@
     <string name="label_category_name">Categories</string>
     <string name="label_sub_category_name">Sub Category Name</string>
     <string name="label_product_name">Product Name</string>
+    <string name="hint_search">What are you looking for?</string>
 </resources>

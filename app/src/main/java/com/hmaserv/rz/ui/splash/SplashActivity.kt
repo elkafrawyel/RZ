@@ -12,8 +12,7 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.splash_activity)
-
+        
         val splashViewModel = ViewModelProviders.of(this).get(SplashViewModel::class.java)
         splashViewModel.getCurrentLanguage()
         splashViewModel.uiState.observe(this, Observer {

@@ -29,6 +29,8 @@ class SubCategoriesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
         view.backBtn.setOnClickListener { activity?.onBackPressed() }
 
+        view.searchMcv.setOnClickListener{openSearchFragment()}
+
         view.subCategoriesRv.layoutManager = LinearLayoutManager(
             context,
             RecyclerView.VERTICAL,
@@ -46,12 +48,6 @@ class SubCategoriesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
             container,
             false)
 
-//        view.categoriesSwipe.setColorSchemeColors(
-//            resources.getColor(R.color.colorPrimary),
-//            resources.getColor(android.R.color.holo_green_dark),
-//                resources.getColor(android.R.color.holo_orange_dark),
-//                    resources.getColor(android.R.color.holo_blue_dark))
-
         showStateSuccess()
 
         return view
@@ -59,12 +55,16 @@ class SubCategoriesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         arguments?.let {
             categoryId = SubCategoriesFragmentArgs.fromBundle(it).categoryId
-            Toast.makeText(activity, categoryId, Toast.LENGTH_SHORT).show()
         }
 
         if (categoryId == null) activity?.onBackPressed()
+    }
+
+    private fun openSearchFragment() {
+        findNavController().navigate(R.id.action_subCategoriesFragment_to_searchFragment)
     }
 
     private fun showStateLoading(view: View) {

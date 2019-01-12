@@ -46,6 +46,7 @@
     <string name="success_login">تم تسجيل الدخول بنجاح</string>
     <string name="label_no_internet_connection">لا يوجد اتصال بالانترنت </string>
     <string name="label_category_name">الاقسام</string>
-    <string name="label_sub_category_name">Sub Category Name</string>
-    <string name="label_product_name">Product Name</string>
+    <string name="label_sub_category_name">القسم الفرعي</string>
+    <string name="label_product_name">اسم المنتج</string>
+    <string name="hint_search">عن ماذا تبحث؟</string>
 </resources>
