@@ -37,4 +37,8 @@
     <string name="success_register">Register successfully</string>
     <string name="success_login">Logged in successfully</string>
     <string name="error_general">General error</string>
+    <string name="label_no_internet_connection">No Internet Connection.</string>
+    <string name="label_category_name">Categories</string>
+    <string name="label_sub_category_name">Sub Category Name</string>
+    <string name="label_product_name">Product Name</string>
 </resources>

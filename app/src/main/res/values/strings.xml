@@ -43,5 +43,9 @@
     <string name="error_general">حدث خطأ ما.</string>
 
     <string name="success_register">تم التسجيل بنجاح</string>
-    <string name="success_login">تم تجيل الدخول بنجاح</string>
+    <string name="success_login">تم تسجيل الدخول بنجاح</string>
+    <string name="label_no_internet_connection">لا يوجد اتصال بالانترنت </string>
+    <string name="label_category_name">الاقسام</string>
+    <string name="label_sub_category_name">Sub Category Name</string>
+    <string name="label_product_name">Product Name</string>
 </resources>

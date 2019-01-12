@@ -21,23 +21,23 @@ class HomeFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
     ): View? {
         val view = inflater.inflate(R.layout.home_fragment, container, false)
         view.navigationView.setNavigationItemSelectedListener(this)
-        view.navigationView.getHeaderView(0).userNameTv.setOnClickListener(this::onUserNameClicked)
+        view.navigationView.getHeaderView(0).userNameTv.setOnClickListener{onUserNameClicked()}
         view.bottomAppBar.setNavigationOnClickListener { rootViewDl.openDrawer(GravityCompat.START) }
-        view.searchImgv.setOnClickListener(this::onSearchClicked)
-        view.categoriesImgv.setOnClickListener(this::onCategoriesClicked)
+        view.searchImgv.setOnClickListener{onSearchClicked()}
+        view.categoriesImgv.setOnClickListener{onCategoriesClicked()}
         return view
     }
 
-    private fun onUserNameClicked(view: View) {
+    private fun onUserNameClicked() {
         findNavController().navigate(R.id.action_homeFragment_to_authGraph)
         rootViewDl.closeDrawer(GravityCompat.START)
     }
 
-    private fun onSearchClicked(view: View) {
+    private fun onSearchClicked() {
         findNavController().navigate(R.id.action_homeFragment_to_searchFragment)
     }
 
-    private fun onCategoriesClicked(view: View) {
+    private fun onCategoriesClicked() {
         findNavController().navigate(R.id.action_homeFragment_to_categoriesFragment)
     }
 
