@@ -3,7 +3,9 @@ package com.hmaserv.rz.ui.auth.login
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.DataResource
+import com.hmaserv.rz.domain.Event
 import com.hmaserv.rz.domain.LoggedInUser
 import com.hmaserv.rz.ui.BaseViewModel
 import com.hmaserv.rz.utils.Injector
@@ -18,8 +20,8 @@ class LoginViewModel : BaseViewModel() {
 
     private val loginUserUseCase = Injector.getLoginUseCase()
 
-    private val _uiState = MutableLiveData<LoginUiState>()
-    val uiState: LiveData<LoginUiState>
+    private val _uiState = MutableLiveData<Event<LoginUiState>>()
+    val uiState: LiveData<Event<LoginUiState>>
         get() = _uiState
 
     fun login(phone: String, password: String) {
@@ -44,16 +46,16 @@ class LoginViewModel : BaseViewModel() {
     }
 
     private fun showLoading() {
-        _uiState.value = LoginUiState.Loading
+        _uiState.value = Event(LoginUiState.Loading)
     }
 
     private fun showSuccess(data: LoggedInUser) {
-        _uiState.value = LoginUiState.Success
+        _uiState.value = Event(LoginUiState.Success)
     }
 
     private fun showError(message: String?) {
-        if (message != null) _uiState.value = LoginUiState.Error(message)
-        else _uiState.value = LoginUiState.Error("General error")
+        if (message != null) _uiState.value = Event(LoginUiState.Error(message))
+        else _uiState.value = Event(LoginUiState.Error(Injector.getApplicationContext().getString(R.string.error_general)))
     }
 
     sealed class LoginUiState {

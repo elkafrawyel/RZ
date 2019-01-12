@@ -14,16 +14,16 @@
     <string name="label_privacy_policy">Privacy Policy</string>
     <string name="label_terms_amp_conditions"><![CDATA[Terms & Conditions]]></string>
     <string name="label_logout">Logout</string>
-    <string name="hint_user_name">الاسم</string>
-    <string name="hint_email">البريد الالكتروني</string>
-    <string name="hint_phone_number">رقم الجوال</string>
-    <string name="hint_password">كلمة المرور</string>
-    <string name="hint_confirm_password">تأكيد كلمة المرور</string>
-    <string name="label_create_account">تسجيل حساب</string>
-    <string name="label_have_account">أمتلك حساب بالفعل</string>
-    <string name="label_login">تسجيل دخول</string>
-    <string name="label_forget_password">نسيت كلمة المرور؟</string>
-    <string name="label_have_no_account">لا تمتلك حساب</string>
+    <string name="hint_user_name">Name</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_phone_number">Phone number</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_confirm_password">Password Confirmation</string>
+    <string name="label_create_account">Register</string>
+    <string name="label_have_account">already have account</string>
+    <string name="label_login">Login</string>
+    <string name="label_forget_password">forget password?</string>
+    <string name="label_have_no_account">do not have account</string>
     <string name="label_orders_received">Orders Received</string>
     <string name="error_phone_empty">Phone cannot be empty</string>
     <string name="error_invalid_phone">Invalid phone number</string>
@@ -34,4 +34,7 @@
     <string name="error_password_confirm_empty">Password confirmation cannot be empty</string>
     <string name="error_password_confirm_min_char">Password confirmation cannot be less than 7 characters</string>
     <string name="error_password_not_match">Password confirmation does not math the password</string>
+    <string name="success_register">Register successfully</string>
+    <string name="success_login">Logged in successfully</string>
+    <string name="error_general">General error</string>
 </resources>

@@ -12,6 +12,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.hmaserv.rz.R
+import com.hmaserv.rz.domain.Event
+import com.hmaserv.rz.domain.observeEvent
 import kotlinx.android.synthetic.main.login_fragment.*
 import kotlinx.android.synthetic.main.login_fragment.view.*
 
@@ -25,23 +27,23 @@ class LoginFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.login_fragment, container, false)
         viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
-        viewModel.uiState.observe(this, Observer { onUiStateChanged(it) })
+        viewModel.uiState.observeEvent(this) { onUiStateChanged(it) }
 
-        view.createAccountTv.setOnClickListener(this::onCreateAccountClicked)
-        view.loginBtn.setOnClickListener(this::onLoginClicked)
+        view.createAccountTv.setOnClickListener { onCreateAccountClicked() }
+        view.loginBtn.setOnClickListener { onLoginClicked() }
         // when loading prevent click on login view
         view.loadingFl.setOnClickListener {showStateSuccess()}
 
         return view
     }
 
-    private fun onLoginClicked(view: View) {
+    private fun onLoginClicked() {
         val phone = userNameEt.text.toString()
         val password =  passwordEt.text.toString()
         viewModel.login(phone, password)
     }
 
-    private fun onCreateAccountClicked(view: View) {
+    private fun onCreateAccountClicked() {
         findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
     }
 
@@ -51,6 +53,7 @@ class LoginFragment : Fragment() {
             is LoginViewModel.LoginUiState.Success -> showStateSuccess()
             is LoginViewModel.LoginUiState.Error -> showStateError(state.message)
         }
+
     }
 
     private fun showStateLoading() {
@@ -59,7 +62,7 @@ class LoginFragment : Fragment() {
 
     private fun showStateSuccess() {
         loadingFl.visibility = View.GONE
-        Toast.makeText(activity, "Logged in successfully", Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity, getString(R.string.success_login), Toast.LENGTH_SHORT).show()
         findNavController().navigate(R.id.action_global_homeFragment)
     }
 

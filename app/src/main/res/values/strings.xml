@@ -40,4 +40,8 @@
     <string name="error_password_confirm_empty">حقل تاكيد كلمة السر فارغ.</string>
     <string name="error_password_confirm_min_char">تاكيد كلمة السر اقل من 7 احرف.</string>
     <string name="error_password_not_match">تاكيد كلمة السر لا تطابق معا كلمة السر.</string>
+    <string name="error_general">حدث خطأ ما.</string>
+
+    <string name="success_register">تم التسجيل بنجاح</string>
+    <string name="success_login">تم تجيل الدخول بنجاح</string>
 </resources>

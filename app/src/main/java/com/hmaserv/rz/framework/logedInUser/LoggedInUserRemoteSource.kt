@@ -10,7 +10,7 @@ import java.io.IOException
 class LoggedInUserRemoteSource(
     private val apiService: RetrofitApiService,
     private val authApiService: RetrofitAuthApiService
-) : ILoggedInUserRemoteSource() {
+) : ILoggedInUserRemoteSource {
 
     override suspend fun login(logInUserRequest: LogInUserRequest): DataResource<LoggedInUser> {
         return safeApiCall(

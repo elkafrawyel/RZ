@@ -6,7 +6,7 @@ import com.hmaserv.rz.domain.*
 class LoggedInUserRepo(
     private var loggedInUserRemoteSource: LoggedInUserRemoteSource,
     private val loggedInUserLocalSource: LoggedInUserLocalSource
-) : ILoggedInUserRepo() {
+) : ILoggedInUserRepo {
 
     override suspend fun logInUser(logInUserRequest: LogInUserRequest): DataResource<LoggedInUser> {
         val response = loggedInUserRemoteSource.login(logInUserRequest)

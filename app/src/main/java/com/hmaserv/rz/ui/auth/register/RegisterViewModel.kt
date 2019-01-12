@@ -2,7 +2,9 @@ package com.hmaserv.rz.ui.auth.register
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.DataResource
+import com.hmaserv.rz.domain.Event
 import com.hmaserv.rz.domain.LoggedInUser
 import com.hmaserv.rz.ui.BaseViewModel
 import com.hmaserv.rz.utils.Injector
@@ -16,8 +18,8 @@ class RegisterViewModel : BaseViewModel() {
 
     private val registerUserUseCase = Injector.getRegisterUseCase()
 
-    private val _uiState = MutableLiveData<RegisterUiState>()
-    val uiState: LiveData<RegisterUiState>
+    private val _uiState = MutableLiveData<Event<RegisterUiState>>()
+    val uiState: LiveData<Event<RegisterUiState>>
         get() = _uiState
 
     fun register(
@@ -66,16 +68,16 @@ class RegisterViewModel : BaseViewModel() {
     }
 
     private fun showLoading() {
-        _uiState.value = RegisterUiState.Loading
+        _uiState.value = Event(RegisterUiState.Loading)
     }
 
     private fun showSuccess(data: LoggedInUser) {
-        _uiState.value = RegisterUiState.Success
+        _uiState.value = Event(RegisterUiState.Success)
     }
 
     private fun showError(message: String?) {
-        if (message != null) _uiState.value = RegisterUiState.Error(message)
-        else _uiState.value = RegisterUiState.Error("General error")
+        if (message != null) _uiState.value = Event(RegisterUiState.Error(message))
+        else _uiState.value = Event(RegisterUiState.Error(Injector.getApplicationContext().getString(R.string.error_general)))
     }
 
     sealed class RegisterUiState {

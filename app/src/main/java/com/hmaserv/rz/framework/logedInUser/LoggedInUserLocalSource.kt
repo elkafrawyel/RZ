@@ -10,7 +10,7 @@ import io.objectbox.kotlin.boxFor
 
 class LoggedInUserLocalSource(
     boxStore: BoxStore
-) : ILoggedInUserLocalSource() {
+) : ILoggedInUserLocalSource {
 
     private val loggedInUserBox: Box<LoggedInUser> = boxStore.boxFor()
 

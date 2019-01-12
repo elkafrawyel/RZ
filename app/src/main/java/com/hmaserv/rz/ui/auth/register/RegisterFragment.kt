@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 
 import com.hmaserv.rz.R
+import com.hmaserv.rz.domain.Event
 import kotlinx.android.synthetic.main.register_fragment.*
 import kotlinx.android.synthetic.main.register_fragment.view.*
 
@@ -38,11 +39,13 @@ class RegisterFragment : Fragment() {
         viewModel.register(fullName, phone, email, password, passwordConfirmation)
     }
 
-    private fun onUiStateChanged(state: RegisterViewModel.RegisterUiState) {
-        when(state) {
-            RegisterViewModel.RegisterUiState.Loading -> showStateLoading()
-            is RegisterViewModel.RegisterUiState.Success -> showStateSuccess()
-            is RegisterViewModel.RegisterUiState.Error -> showStateError(state.message)
+    private fun onUiStateChanged(state: Event<RegisterViewModel.RegisterUiState>) {
+        state.getContentIfNotHandled()?.let {
+            when(it) {
+                RegisterViewModel.RegisterUiState.Loading -> showStateLoading()
+                is RegisterViewModel.RegisterUiState.Success -> showStateSuccess()
+                is RegisterViewModel.RegisterUiState.Error -> showStateError(it.message)
+            }
         }
     }
 
@@ -52,7 +55,7 @@ class RegisterFragment : Fragment() {
 
     private fun showStateSuccess() {
 //        loadingFl.visibility = View.GONE
-        Toast.makeText(activity, "Register successfully", Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity, getString(R.string.success_register), Toast.LENGTH_SHORT).show()
         findNavController().navigate(R.id.action_registerFragment_to_verificationFragment)
     }
 
