@@ -1,11 +1,13 @@
 package com.hmaserv.rz.framework.logedInUser
 
+import com.hmaserv.rz.data.logedInUser.ILoggedInUserLocalSource
+import com.hmaserv.rz.data.logedInUser.ILoggedInUserRemoteSource
 import com.hmaserv.rz.data.logedInUser.ILoggedInUserRepo
 import com.hmaserv.rz.domain.*
 
 class LoggedInUserRepo(
-    private var loggedInUserRemoteSource: LoggedInUserRemoteSource,
-    private val loggedInUserLocalSource: LoggedInUserLocalSource
+    private var loggedInUserRemoteSource: ILoggedInUserRemoteSource,
+    private val loggedInUserLocalSource: ILoggedInUserLocalSource
 ) : ILoggedInUserRepo {
 
     override suspend fun logInUser(logInUserRequest: LogInUserRequest): DataResource<LoggedInUser> {
@@ -22,11 +24,15 @@ class LoggedInUserRepo(
         return loggedInUserRemoteSource.register(registerUserRequest)
     }
 
-    override suspend fun forgetPassword(forgetPassword: ForgetPassword): DataResource<ForgetPassword> {
+    override suspend fun forgetPassword(forgetPassword: ForgetPassword): DataResource<Boolean> {
         return loggedInUserRemoteSource.forgetPassword(forgetPassword)
     }
 
-    override suspend fun getLoggedInUser(): DataResource<LoggedInUser> {
+    override suspend fun verifyPhone(token: String): DataResource<Boolean> {
+        return loggedInUserRemoteSource.verifyPhone(token)
+    }
+
+    override suspend fun getLoggedInUser(): LoggedInUser {
         return loggedInUserLocalSource.getLoggedInUser()
     }
 
@@ -35,7 +41,10 @@ class LoggedInUserRepo(
     }
 
     override suspend fun logoutUser(): DataResource<Boolean> {
-        return loggedInUserLocalSource.deleteLoggedInUser()
+        return when(loggedInUserLocalSource.deleteLoggedInUser()) {
+            true -> DataResource.Success(true)
+            false -> DataResource.Success(false)
+        }
     }
 
     companion object {

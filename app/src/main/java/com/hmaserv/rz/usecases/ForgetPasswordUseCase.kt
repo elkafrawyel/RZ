@@ -11,7 +11,7 @@ class ForgetPasswordUseCase(
     private val loggedInUserRepo: ILoggedInUserRepo
 ) {
 
-    suspend fun resetPassword(phone: String): DataResource<ForgetPassword> {
+    suspend fun resetPassword(phone: String): DataResource<Boolean> {
         if (phone.isEmpty()) return DataResource.Error(
             ValidetionException(Injector.getApplicationContext().getString(R.string.error_phone_empty))
         )

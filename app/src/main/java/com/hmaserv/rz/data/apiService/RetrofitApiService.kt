@@ -7,6 +7,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface RetrofitApiService {
@@ -18,7 +19,16 @@ interface RetrofitApiService {
     fun register(@Body registerUserRequest: RegisterUserRequest): Deferred<ApiResponse<LoggedInUser>>
 
     @POST("auth/resetPassword")
-    fun forgetPassword(@Body forgetPassword: ForgetPassword): Deferred<ApiResponse<ForgetPassword>>
+    fun forgetPassword(@Body forgetPassword: ForgetPassword): Deferred<ApiResponse<Boolean>>
+
+    @GET("categories")
+    fun getCategories(): Deferred<ApiResponse<List<Category>>>
+
+    @GET("subCategories")
+    fun getSubCategories(): Deferred<ApiResponse<List<SubCategory>>>
+
+    @POST("subCategories/ads")
+    fun getProducts(@Body productRequest: ProductRequest): Deferred<ApiResponse<List<Product>>>
 
     companion object {
         fun create(baseUrl: String, client: OkHttpClient): RetrofitApiService {

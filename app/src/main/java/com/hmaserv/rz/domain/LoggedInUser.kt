@@ -8,14 +8,16 @@ import io.objectbox.annotation.Id
 @Entity
 data class LoggedInUser(
     @Id(assignable = true) var id: Long = Constants.LOGGED_IN_USER_ID,
-    val avatar: String?,
-    val email: String?,
-    val fullName: String?,
-    val mobile: String?,
-    val role: String?,
-    val status: String?,
-    val token: String?,
-    val uuid: String?
+    @field:Json(name = "avatar") val avatar: String?,
+    @field:Json(name = "email") val email: String?,
+    @field:Json(name = "full_name") val fullName: String?,
+    @field:Json(name = "mobile") val mobile: String?,
+    @field:Json(name = "role") val role: String?,
+    @field:Json(name = "role_id") val roleId: String?,
+    @field:Json(name = "status") val status: String?,
+    @field:Json(name = "status_id") val statusId: String?,
+    @field:Json(name = "token") val token: String?,
+    @field:Json(name = "uuid") val uuid: String?
 )
 
 data class LogInUserRequest(
@@ -31,5 +33,5 @@ data class RegisterUserRequest(
 )
 
 data class ForgetPassword(
-    val email: String
+    @field:Json(name = "email") val email: String
 )

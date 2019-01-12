@@ -58,14 +58,14 @@ class LoggedInUserRemoteSource(
         return DataResource.Error(IOException("Error registering user"))
     }
 
-    override suspend fun forgetPassword(forgetPassword: ForgetPassword): DataResource<ForgetPassword> {
+    override suspend fun forgetPassword(forgetPassword: ForgetPassword): DataResource<Boolean> {
         return safeApiCall(
             call = { forgetPasswordCall(forgetPassword) },
             errorMessage = "Error reset password"
         )
     }
 
-    private suspend fun forgetPasswordCall(forgetPassword: ForgetPassword): DataResource<ForgetPassword> {
+    private suspend fun forgetPasswordCall(forgetPassword: ForgetPassword): DataResource<Boolean> {
         val response = apiService.forgetPassword(forgetPassword).await()
         if (response.success != null && response.success) {
             val body = response.data
@@ -80,5 +80,28 @@ class LoggedInUserRemoteSource(
 
         return DataResource.Error(IOException("Error reset password"))
 
+    }
+
+    override suspend fun verifyPhone(token: String): DataResource<Boolean> {
+        return safeApiCall(
+            call = { verifyPhoneCall(token) },
+            errorMessage = "Error verify phone"
+        )
+    }
+
+    private suspend fun verifyPhoneCall(token: String) : DataResource<Boolean> {
+        val response = authApiService.verifyPhone(token).await()
+        if (response.success != null && response.success) {
+            val body = response.data
+            if (body != null) {
+                return DataResource.Success(body)
+            }
+        }
+
+        if (response.message != null) {
+            return DataResource.Error(IOException(response.message))
+        }
+
+        return DataResource.Error(IOException("Error verify phone"))
     }
 }

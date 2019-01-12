@@ -14,19 +14,19 @@ class LoggedInUserLocalSource(
 
     private val loggedInUserBox: Box<LoggedInUser> = boxStore.boxFor()
 
-    override suspend fun getLoggedInUser(): DataResource<LoggedInUser> {
-        return DataResource.Success(loggedInUserBox.get(Constants.LOGGED_IN_USER_ID))
+    override suspend fun getLoggedInUser(): LoggedInUser {
+        return loggedInUserBox.get(Constants.LOGGED_IN_USER_ID)
     }
 
-    override suspend fun saveLoggedInUser(loggedInUser: LoggedInUser): DataResource<LoggedInUser> {
+    override suspend fun saveLoggedInUser(loggedInUser: LoggedInUser): LoggedInUser {
         loggedInUserBox.removeAll()
         loggedInUserBox.put(loggedInUser.copy(id = Constants.LOGGED_IN_USER_ID))
         return getLoggedInUser()
     }
 
-    override suspend fun deleteLoggedInUser(): DataResource<Boolean> {
+    override suspend fun deleteLoggedInUser(): Boolean {
         loggedInUserBox.removeAll()
-        return DataResource.Success(true)
+        return true
     }
 
     override suspend fun isLoggedIn(): Boolean {

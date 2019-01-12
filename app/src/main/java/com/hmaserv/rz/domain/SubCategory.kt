@@ -4,10 +4,10 @@ import com.squareup.moshi.Json
 
 
 data class SubCategory(
-    @Json(name = "files")
+    @field:Json(name = "files")
     val image: String?,
-    @Json(name = "title")
+    @field:Json(name = "title")
     val title: String?,
-    @Json(name = "uuid")
+    @field:Json(name = "uuid")
     val uuid: String?
 )
