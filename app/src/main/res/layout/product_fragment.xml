@@ -1,31 +1,275 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.product.ProductFragment">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/backBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="back"
-        app:layout_constraintBottom_toTopOf="@id/nextBtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/nextBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="next"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/backBtn" />
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:contentInsetStart="0dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:id="@+id/backImgv"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:src="@drawable/ic_arrow_back"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_share"
+                    android:padding="16dp"
+                    android:id="@+id/shareImgv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="16dp">
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/productVp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:transitionName="productImage"
+            app:layout_constraintDimensionRatio="16:9"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <com.rd.PageIndicatorView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:piv_viewPager="@id/productVp"
+            app:piv_animationType="worm"
+            app:piv_dynamicCount="true"
+            app:piv_interactiveAnimation="true"
+            app:layout_constraintBottom_toBottomOf="@id/productVp"
+            app:layout_constraintStart_toStartOf="@id/productVp"
+            app:layout_constraintEnd_toEndOf="@id/productVp"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/product_info_group"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorSurface"
+            app:layout_constraintTop_toBottomOf="@id/productVp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/productNameTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:transitionName="productName"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:padding="16dp"
+                android:textSize="18sp"
+                android:text="Camera canon model rzy555"
+                android:textColor="@android:color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <ImageView
+                android:id="@+id/star_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:transitionName="starOne"
+                android:src="@drawable/ic_star_rate"
+                android:layout_marginStart="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/productNameTv"/>
+
+            <ImageView
+                android:id="@+id/star_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:transitionName="starTwo"
+                android:src="@drawable/ic_star_rate"
+                app:layout_constraintStart_toEndOf="@id/star_1"
+                app:layout_constraintTop_toTopOf="@id/star_1"/>
+
+            <ImageView
+                android:id="@+id/star_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:transitionName="starThree"
+                android:src="@drawable/ic_star_rate"
+                app:layout_constraintStart_toEndOf="@id/star_2"
+                app:layout_constraintTop_toTopOf="@id/star_1"/>
+
+            <ImageView
+                android:id="@+id/star_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:transitionName="starFour"
+                android:src="@drawable/ic_star_rate"
+                app:layout_constraintStart_toEndOf="@id/star_3"
+                app:layout_constraintTop_toTopOf="@id/star_1"/>
+
+            <ImageView
+                android:id="@+id/star_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:transitionName="starFive"
+                android:src="@drawable/ic_star_rate"
+                app:layout_constraintStart_toEndOf="@id/star_4"
+                app:layout_constraintTop_toTopOf="@id/star_1"/>
+
+            <TextView
+                android:id="@+id/ratingTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:transitionName="productReviewsNo"
+                android:text="(18)"
+                app:layout_constraintTop_toTopOf="@id/star_1"
+                app:layout_constraintBottom_toBottomOf="@id/star_1"
+                app:layout_constraintStart_toEndOf="@id/star_5"/>
+
+            <TextView
+                android:id="@+id/priceTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:transitionName="productPrice"
+                android:text="5550 EGP"
+                android:padding="8dp"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintEnd_toEndOf="@id/productNameTv"
+                app:layout_constraintStart_toStartOf="@id/productNameTv"
+                app:layout_constraintTop_toBottomOf="@id/star_1"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/addToCartBtn"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                android:layout_width="0dp"
+                android:transitionName="addToCartBtn"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="@string/label_order_product"
+                app:icon="@drawable/ic_add_to_cart"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@id/productNameTv"
+                app:layout_constraintTop_toBottomOf="@id/priceTv"
+                android:textAllCaps="false"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/sellerInfoGr"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/colorSurface"
+                app:layout_constraintTop_toBottomOf="@id/product_info_group"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <ImageView
+                    android:id="@+id/sellerImgv"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/image_user_default"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    android:id="@+id/sellerNameTv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Seller name"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/sellerImgv"
+                    app:layout_constraintTop_toTopOf="@id/sellerImgv"
+                    app:layout_constraintBottom_toTopOf="@id/addedDateTv"/>
+
+                <TextView
+                    android:id="@+id/addedDateTv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="10/11/2022"
+                    app:layout_constraintBottom_toBottomOf="@id/sellerImgv"
+                    app:layout_constraintTop_toBottomOf="@id/sellerNameTv"
+                    app:layout_constraintStart_toStartOf="@id/sellerNameTv"
+                    app:layout_constraintEnd_toEndOf="@id/sellerNameTv"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/description_group"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/colorSurface"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/sellerInfoGr">
+
+                <TextView
+                    android:id="@+id/description_label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_product_description"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="16dp"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorOnSurface"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    android:id="@+id/productDescriptionTv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:text="@string/cat_bottomappbar_lorem_ipsum"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/description_label"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -105,4 +105,7 @@
 
     <include layout="@layout/no_internet_connection_view" />
 
+    <include layout="@layout/empty_view" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

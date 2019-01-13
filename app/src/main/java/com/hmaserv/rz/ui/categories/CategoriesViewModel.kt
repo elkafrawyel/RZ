@@ -40,7 +40,12 @@ class CategoriesViewModel : BaseViewModel() {
                 val result = getCategoriesUseCase.get()
                 withContext(dispatcherProvider.main) {
                     when (result) {
-                        is DataResource.Success -> showSuccess(result.data)
+                        is DataResource.Success ->
+                            if (result.data.isEmpty()) {
+                                showEmptyView()
+                            } else {
+                                showSuccess(result.data)
+                            }
                         is DataResource.Error -> showError(result.exception.message)
                     }
                 }
@@ -73,10 +78,15 @@ class CategoriesViewModel : BaseViewModel() {
         _uiState.value = Event(CategoriesUiState.NoInternetConnection)
     }
 
+    private fun showEmptyView() {
+        _uiState.value = Event(CategoriesUiState.EmptyView)
+    }
+
     sealed class CategoriesUiState {
         object Loading : CategoriesUiState()
         data class Success(val categories: List<Category>) : CategoriesUiState()
         data class Error(val message: String) : CategoriesUiState()
         object NoInternetConnection : CategoriesUiState()
+        object EmptyView : CategoriesUiState()
     }
 }

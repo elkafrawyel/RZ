@@ -27,19 +27,46 @@
                 android:padding="16dp"
                 android:src="@drawable/ic_arrow_back"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <TextView
-                android:id="@+id/productNameTv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/label_product_name"
-                android:textColor="@color/colorOnPrimary"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="@id/backBtn"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:textColor="@color/colorOnPrimary"
                 app:layout_constraintStart_toEndOf="@id/backBtn"
-                app:layout_constraintTop_toTopOf="@id/backBtn" />
+                app:layout_constraintEnd_toStartOf="@id/searchImgv"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <ImageView
+                android:id="@+id/searchImgv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_search"
+                android:padding="16dp"
+                app:layout_constraintEnd_toStartOf="@id/filterImgv"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <ImageView
+                android:id="@+id/filterImgv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_filter_list"
+                android:padding="16dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@id/sortImgv"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <ImageView
+                android:id="@+id/sortImgv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:src="@drawable/ic_sort"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -57,10 +84,14 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/productsRv"
             android:layout_width="0dp"
-            android:layout_height="0dp" />
+            android:layout_height="0dp"
+            android:padding="8dp"
+            android:clipToPadding="false"/>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <include layout="@layout/no_internet_connection_view" />
+
+    <include layout="@layout/empty_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
