@@ -14,28 +14,42 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class SubCategoriesViewModel : BaseViewModel() {
+
     private var getSubCategoriesJob: Job? = null
     private val getSubCategoriesUseCase = Injector.getSubCategoriesUseCase()
     private val _uiState = MutableLiveData<Event<SubCategoriesUiState>>()
     val uiState: LiveData<Event<SubCategoriesUiState>>
         get() = _uiState
 
-    init {
-        getSubCategories()
+    private var categoryUuid: String? = null
+
+    fun setCategoryId(categoryUuid: String) {
+        if (this.categoryUuid == null) {
+            this.categoryUuid = categoryUuid
+            getSubCategories(categoryUuid)
+        }
     }
 
-    fun getSubCategories() {
+    private fun getSubCategories(categoryUuid: String) {
         if (getSubCategoriesJob?.isActive == true) {
             return
         }
-        getSubCategoriesJob = launchGetSubCategoriesJob()
+        getSubCategoriesJob = launchGetSubCategoriesJob(categoryUuid)
     }
 
-    private fun launchGetSubCategoriesJob(): Job {
+    fun refreshSubCategories() {
+        if (getSubCategoriesJob?.isActive == true) {
+            return
+        }
+
+        getSubCategoriesJob = categoryUuid?.let { launchGetSubCategoriesJob(it) }
+    }
+
+    private fun launchGetSubCategoriesJob(categoryUuid: String): Job {
         return scope.launch(dispatcherProvider.computation) {
             withContext(dispatcherProvider.main) { showLoading() }
             if (NetworkUtils.isConnected()) {
-                val result = getSubCategoriesUseCase.get()
+                val result = getSubCategoriesUseCase.get(categoryUuid)
                 withContext(dispatcherProvider.main) {
                     when (result) {
                         is DataResource.Success ->

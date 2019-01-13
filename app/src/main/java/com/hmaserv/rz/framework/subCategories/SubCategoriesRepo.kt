@@ -4,13 +4,14 @@ import com.hmaserv.rz.data.subCategories.ISubCategoriesRemoteSource
 import com.hmaserv.rz.data.subCategories.ISubCategoriesRepo
 import com.hmaserv.rz.domain.DataResource
 import com.hmaserv.rz.domain.SubCategory
+import com.hmaserv.rz.domain.SubCategoryRequest
 
 class SubCategoriesRepo(
     private var subCategoriesRemoteSource: ISubCategoriesRemoteSource
 ) : ISubCategoriesRepo {
 
-    override suspend fun getSubCategories(): DataResource<List<SubCategory>> {
-        return subCategoriesRemoteSource.getSubCategories()
+    override suspend fun getSubCategories(subCategoryRequest: SubCategoryRequest): DataResource<List<SubCategory>> {
+        return subCategoriesRemoteSource.getSubCategories(subCategoryRequest)
     }
 
     companion object {

@@ -24,8 +24,8 @@ interface RetrofitApiService {
     @GET("categories")
     fun getCategories(): Deferred<ApiResponse<List<Category>>>
 
-    @GET("subCategories")
-    fun getSubCategories(): Deferred<ApiResponse<List<SubCategory>>>
+    @POST("category/subs")
+    fun getSubCategories(@Body subCategoryRequest: SubCategoryRequest): Deferred<ApiResponse<List<SubCategory>>>
 
     @POST("subCategories/ads")
     fun getProducts(@Body productRequest: ProductRequest): Deferred<ApiResponse<List<Product>>>

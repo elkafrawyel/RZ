@@ -33,7 +33,7 @@ class CategoriesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
         viewModel = ViewModelProviders.of(this).get(CategoriesViewModel::class.java)
 
-        viewModel.uiState.observeEvent(this, { onCategoryStateResponse(it) })
+        viewModel.uiState.observeEvent(this) { onCategoryStateResponse(it) }
 
         view.backBtn.setOnClickListener { activity?.onBackPressed() }
         view.searchMcv.setOnClickListener{openSearchFragment()}
@@ -46,8 +46,8 @@ class CategoriesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         view.categoriesRv.adapter = adapter
 
         adapter.onItemClickListener =
-                BaseQuickAdapter.OnItemClickListener { _, _, _ ->
-                    openSubCategories()
+                BaseQuickAdapter.OnItemClickListener { _, _, position ->
+                    openSubCategories(adapter.data[position])
                 }
 
         view.categoriesSwipe.setOnRefreshListener(this)
@@ -102,9 +102,14 @@ class CategoriesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         categoriesSwipe.isRefreshing = false
     }
 
-    private fun openSubCategories() {
-        val action = CategoriesFragmentDirections.actionCategoriesFragmentToSubCategoriesFragment("1")
-        findNavController().navigate(action)
+    private fun openSubCategories(category: Category) {
+        category.uuid?.let {
+            val action = CategoriesFragmentDirections.actionCategoriesFragmentToSubCategoriesFragment(
+                it
+            )
+
+            findNavController().navigate(action)
+        }
     }
 
     override fun onRefresh() {

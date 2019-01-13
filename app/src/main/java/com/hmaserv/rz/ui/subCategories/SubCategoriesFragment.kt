@@ -35,7 +35,7 @@ class SubCategoriesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
         viewModel = ViewModelProviders.of(this).get(SubCategoriesViewModel::class.java)
 
-        viewModel.uiState.observeEvent(this, { onSubCategoryStateResponse(it) })
+        viewModel.uiState.observeEvent(this) { onSubCategoryStateResponse(it) }
 
         view.backBtn.setOnClickListener { activity?.onBackPressed() }
 
@@ -64,6 +64,9 @@ class SubCategoriesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
         arguments?.let {
             categoryId = SubCategoriesFragmentArgs.fromBundle(it).categoryId
+            categoryId?.let { categoryUuid ->
+                viewModel.setCategoryId(categoryUuid)
+            }
         }
 
         if (categoryId == null) activity?.onBackPressed()
@@ -127,6 +130,6 @@ class SubCategoriesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     override fun onRefresh() {
-        viewModel.getSubCategories()
+        viewModel.refreshSubCategories()
     }
 }

@@ -11,3 +11,7 @@ data class SubCategory(
     @field:Json(name = "uuid")
     val uuid: String?
 )
+
+data class SubCategoryRequest(
+    @field:Json(name = "cat_uuid") val categoryUuid: String
+)
