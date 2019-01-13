@@ -15,9 +15,9 @@ class ForgetPasswordUseCase(
         if (phone.isEmpty()) return DataResource.Error(
             ValidetionException(Injector.getApplicationContext().getString(R.string.error_phone_empty))
         )
-        if (phone.length < 11) return DataResource.Error(
-            ValidetionException(Injector.getApplicationContext().getString(R.string.error_invalid_phone))
-        )
+//        if (phone.length < 11) return DataResource.Error(
+//            ValidetionException(Injector.getApplicationContext().getString(R.string.error_invalid_phone))
+//        )
 
         return loggedInUserRepo.forgetPassword(ForgetPassword(phone))
     }

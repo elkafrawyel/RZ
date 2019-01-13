@@ -55,4 +55,9 @@
     <string name="label_phone_no_activation">Phone Verification</string>
     <string name="label_confirm">Confirm</string>
     <string name="label_phone_verification_info">Enter the verification code sent to %1$s</string>
+    <string name="label_forget_password_info">Please enter your phone number.</string>
+    <string name="success_forget_password">New password sent successfully.</string>
+    <string name="error_forget_password">Failed to sent new password.</string>
+    <string name="label_send_new_password">Send New Password</string>
+
 </resources>

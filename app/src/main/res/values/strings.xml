@@ -22,7 +22,7 @@
     <string name="label_create_account">تسجيل حساب</string>
     <string name="label_have_account">أمتلك حساب بالفعل</string>
     <string name="label_login">تسجيل دخول</string>
-    <string name="label_forget_password">نسيت كلمة المرور؟</string>
+    <string name="label_forget_password">هل نسيت كلمة المرور؟</string>
     <string name="label_have_no_account">لا تمتلك حساب</string>
 
     <string name="hint_user_name">الاسم</string>
@@ -62,4 +62,9 @@
     <string name="label_phone_no_activation">تفعيل رقم الجوال</string>
     <string name="label_confirm">تاكيد</string>
     <string name="label_phone_verification_info">قم بادخال رمز التفعيل الذي تم ارساله الي الرقم %1$s</string>
+    <string name="label_forget_password_info">من فضلك قم بادخال رقم الجوال الذي قمت بالتسجيل لدينا من خلاله</string>
+    <string name="success_forget_password">تم ارسال كلمة السر الجديدة</string>
+    <string name="error_forget_password">فشل في ارسال كلمة السر الجديدة</string>
+    <string name="label_send_new_password">ارسال كلمة المرور الجديدة</string>
+
 </resources>

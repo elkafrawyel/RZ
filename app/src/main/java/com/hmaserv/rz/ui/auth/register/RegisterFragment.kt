@@ -1,15 +1,14 @@
 package com.hmaserv.rz.ui.auth.register
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.Event
 import com.hmaserv.rz.domain.LoggedInUser
@@ -26,9 +25,14 @@ class RegisterFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.register_fragment, container, false)
         view.createAccountBtn.setOnClickListener { onRegisterClicked() }
+        view.loginTv.setOnClickListener{openLoginFragment()}
         viewModel = ViewModelProviders.of(this).get(RegisterViewModel::class.java)
         viewModel.uiState.observe(this, Observer { onUiStateChanged(it) })
         return view
+    }
+
+    private fun openLoginFragment() {
+        activity?.onBackPressed()
     }
 
     private fun onRegisterClicked() {
@@ -42,7 +46,7 @@ class RegisterFragment : Fragment() {
 
     private fun onUiStateChanged(state: Event<RegisterViewModel.RegisterUiState>) {
         state.getContentIfNotHandled()?.let {
-            when(it) {
+            when (it) {
                 RegisterViewModel.RegisterUiState.Loading -> showStateLoading()
                 is RegisterViewModel.RegisterUiState.Success -> showStateSuccess(it.loggedInUser)
                 is RegisterViewModel.RegisterUiState.Error -> showStateError(it.message)

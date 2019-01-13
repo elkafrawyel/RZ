@@ -37,8 +37,8 @@ class LoginFragment : Fragment() {
         createAccountTv.setOnClickListener { onCreateAccountClicked() }
         loginBtn.setOnClickListener { onLoginClicked() }
         // when loading prevent click on login view
-        loadingFl.setOnClickListener {showStateSuccess()}
-
+        loadingFl.setOnClickListener {}
+        forgetPassTv.setOnClickListener { openForgetPasswordFragment() }
         arguments?.let {
             val phoneNumber = LoginFragmentArgs.fromBundle(it).phone
             val password = LoginFragmentArgs.fromBundle(it).password
@@ -47,6 +47,10 @@ class LoginFragment : Fragment() {
             passwordEt.setText(password)
         }
 
+    }
+
+    private fun openForgetPasswordFragment() {
+        findNavController().navigate(R.id.action_loginFragment_to_forgetPassFragment)
     }
 
     private fun onLoginClicked() {
