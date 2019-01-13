@@ -71,8 +71,8 @@ class RegisterViewModel : BaseViewModel() {
         _uiState.value = Event(RegisterUiState.Loading)
     }
 
-    private fun showSuccess(data: LoggedInUser) {
-        _uiState.value = Event(RegisterUiState.Success)
+    private fun showSuccess(loggedInUser: LoggedInUser) {
+        _uiState.value = Event(RegisterUiState.Success(loggedInUser))
     }
 
     private fun showError(message: String?) {
@@ -82,7 +82,7 @@ class RegisterViewModel : BaseViewModel() {
 
     sealed class RegisterUiState {
         object Loading : RegisterUiState()
-        object Success : RegisterUiState()
+        data class Success(val loggedInUser: LoggedInUser) : RegisterUiState()
         data class Error(val message: String) : RegisterUiState()
     }
 }

@@ -57,4 +57,9 @@
         imperdiet nisl a, ornare ex. Sed rhoncus est ut libero porta lobortis. Fusce in dictum tellus. "</string>
     <string name="label_product_description">الوصف</string>
     <string name="label_order_product">طلب المنتج</string>
+    <string name="success_log_out">تم تسجيل الخروج بنجاح</string>
+    <string name="error_log_out">فشل تسجيل الخروج</string>
+    <string name="label_phone_no_activation">تفعيل رقم الجوال</string>
+    <string name="label_confirm">تاكيد</string>
+    <string name="label_phone_verification_info">قم بادخال رمز التفعيل الذي تم ارساله الي الرقم %1$s</string>
 </resources>

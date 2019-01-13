@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.Event
+import com.hmaserv.rz.domain.LoggedInUser
 import kotlinx.android.synthetic.main.register_fragment.*
 import kotlinx.android.synthetic.main.register_fragment.view.*
 
@@ -43,7 +44,7 @@ class RegisterFragment : Fragment() {
         state.getContentIfNotHandled()?.let {
             when(it) {
                 RegisterViewModel.RegisterUiState.Loading -> showStateLoading()
-                is RegisterViewModel.RegisterUiState.Success -> showStateSuccess()
+                is RegisterViewModel.RegisterUiState.Success -> showStateSuccess(it.loggedInUser)
                 is RegisterViewModel.RegisterUiState.Error -> showStateError(it.message)
             }
         }
@@ -53,10 +54,17 @@ class RegisterFragment : Fragment() {
 //        loadingFl.visibility = View.VISIBLE
     }
 
-    private fun showStateSuccess() {
+    private fun showStateSuccess(loggedInUser: LoggedInUser) {
 //        loadingFl.visibility = View.GONE
         Toast.makeText(activity, getString(R.string.success_register), Toast.LENGTH_SHORT).show()
-        findNavController().navigate(R.id.action_registerFragment_to_verificationFragment)
+        if (loggedInUser.mobile != null && loggedInUser.token != null) {
+            val action = RegisterFragmentDirections.actionRegisterFragmentToVerificationFragment(
+                loggedInUser.mobile,
+                loggedInUser.token,
+                passwordEt.text.toString()
+            )
+            findNavController().navigate(action)
+        }
     }
 
     private fun showStateError(message: String) {

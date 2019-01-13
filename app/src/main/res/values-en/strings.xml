@@ -50,4 +50,9 @@
         imperdiet nisl a, ornare ex. Sed rhoncus est ut libero porta lobortis. Fusce in dictum tellus. "</string>
     <string name="label_product_description">Description</string>
     <string name="label_order_product">Order Product</string>
+    <string name="success_log_out">Log out Success</string>
+    <string name="error_log_out">Log out Failed</string>
+    <string name="label_phone_no_activation">Phone Verification</string>
+    <string name="label_confirm">Confirm</string>
+    <string name="label_phone_verification_info">Enter the verification code sent to %1$s</string>
 </resources>

@@ -13,9 +13,9 @@ data class LoggedInUser(
     @field:Json(name = "full_name") val fullName: String?,
     @field:Json(name = "mobile") val mobile: String?,
     @field:Json(name = "role") val role: String?,
-    @field:Json(name = "role_id") val roleId: String?,
+    @field:Json(name = "role_id") val roleId: Int?,
     @field:Json(name = "status") val status: String?,
-    @field:Json(name = "status_id") val statusId: String?,
+    @field:Json(name = "status_id") val statusId: Int?,
     @field:Json(name = "token") val token: String?,
     @field:Json(name = "uuid") val uuid: String?
 )

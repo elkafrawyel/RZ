@@ -5,26 +5,133 @@
     android:layout_height="match_parent"
     tools:context=".ui.auth.verification.VerificationFragment">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/backBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="back"
-        app:layout_constraintBottom_toTopOf="@id/nextBtn"
+    <ImageView
+        android:id="@+id/logoImgv"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/image_logo"
+        app:layout_constraintBottom_toTopOf="@id/verificationLabelTv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3"
         app:layout_constraintVertical_chainStyle="packed" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/nextBtn"
+    <TextView
+        android:id="@+id/verificationLabelTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="next"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="16dp"
+        android:text="@string/label_phone_no_activation"
+        android:textColor="@color/colorPrimary"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/verificationInfoTv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/backBtn" />
+        app:layout_constraintTop_toBottomOf="@id/logoImgv" />
+
+    <TextView
+        android:id="@+id/verificationInfoTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:gravity="center"
+        android:textColor="@color/colorBlack"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@id/codeOneEt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/verificationLabelTv"
+        tools:text="@string/label_phone_verification_info" />
+
+    <EditText
+        android:id="@+id/codeOneEt"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/code_box"
+        android:gravity="center"
+        android:inputType="number"
+        android:maxLength="1"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@id/verifyMbtn"
+        app:layout_constraintEnd_toStartOf="@id/codeTwoEt"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/verificationInfoTv" />
+
+    <EditText
+        android:id="@+id/codeTwoEt"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/code_box"
+        android:gravity="center"
+        android:inputType="number"
+        android:maxLength="1"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toStartOf="@id/codeThreeEt"
+        app:layout_constraintStart_toEndOf="@id/codeOneEt"
+        app:layout_constraintTop_toTopOf="@id/codeOneEt" />
+
+    <EditText
+        android:id="@+id/codeThreeEt"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/code_box"
+        android:gravity="center"
+        android:inputType="number"
+        android:maxLength="1"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toStartOf="@id/codeFourEt"
+        app:layout_constraintStart_toEndOf="@id/codeTwoEt"
+        app:layout_constraintTop_toTopOf="@id/codeOneEt" />
+
+    <EditText
+        android:id="@+id/codeFourEt"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/code_box"
+        android:gravity="center"
+        android:inputType="number"
+        android:maxLength="1"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toStartOf="@id/codeFiveEt"
+        app:layout_constraintStart_toEndOf="@id/codeThreeEt"
+        app:layout_constraintTop_toTopOf="@id/codeOneEt" />
+
+    <EditText
+        android:id="@+id/codeFiveEt"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/code_box"
+        android:gravity="center"
+        android:inputType="number"
+        android:maxLength="1"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/codeFourEt"
+        app:layout_constraintTop_toTopOf="@id/codeOneEt" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/verifyMbtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:padding="12dp"
+        android:text="@string/label_confirm"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:cornerRadius="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/codeFiveEt"
+        app:layout_constraintStart_toStartOf="@id/codeOneEt"
+        app:layout_constraintTop_toBottomOf="@id/codeOneEt" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

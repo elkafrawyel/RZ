@@ -11,4 +11,15 @@ object Constants {
         ARABIC("ar"),
         ENGLISH("en")
     }
+
+    enum class Role(val value: Int) {
+        DEFAULT(1),
+        BUYER(1),
+        SELLER(2)
+    }
+
+    enum class Status(val value: Int) {
+        INACTIVE(0),
+        ACTIVE(1)
+    }
 }

@@ -78,7 +78,10 @@ object Injector {
     // LoggedIn use cases
     fun getLoginUseCase() = LoginUserUseCase(getLoggedInRepo())
     fun getRegisterUseCase() = RegisterUserUseCase(getLoggedInRepo())
+    fun getVerifyPhoneUseCase() = VerifyPhoneUseCase(getLoggedInRepo())
     fun getForgetPasswordUseCase() = ForgetPasswordUseCase(getLoggedInRepo())
+    fun getLogOutUseCase() = LogOutUseCase(getLoggedInRepo())
+    fun getLoggedInUserListenerUseCase() = LogInListenerUseCase(getLoggedInRepo())
 
     // Categories
     private fun getCategoriesRemoteSource() = CategoriesRemoteSource(getApiService())

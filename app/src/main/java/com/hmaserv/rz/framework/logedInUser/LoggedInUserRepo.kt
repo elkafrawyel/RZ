@@ -4,6 +4,8 @@ import com.hmaserv.rz.data.logedInUser.ILoggedInUserLocalSource
 import com.hmaserv.rz.data.logedInUser.ILoggedInUserRemoteSource
 import com.hmaserv.rz.data.logedInUser.ILoggedInUserRepo
 import com.hmaserv.rz.domain.*
+import com.hmaserv.rz.utils.Constants
+import io.objectbox.android.ObjectBoxLiveData
 
 class LoggedInUserRepo(
     private var loggedInUserRemoteSource: ILoggedInUserRemoteSource,
@@ -14,7 +16,9 @@ class LoggedInUserRepo(
         val response = loggedInUserRemoteSource.login(logInUserRequest)
         when(response) {
             is DataResource.Success -> {
-                loggedInUserLocalSource.saveLoggedInUser(response.data)
+                if (response.data.statusId == Constants.Status.ACTIVE.value) {
+                    loggedInUserLocalSource.saveLoggedInUser(response.data)
+                }
             }
         }
         return response
@@ -38,6 +42,10 @@ class LoggedInUserRepo(
 
     override suspend fun isLoggedIn(): Boolean {
         return loggedInUserLocalSource.isLoggedIn()
+    }
+
+    override fun getLogInListener(): ObjectBoxLiveData<LoggedInUser> {
+        return loggedInUserLocalSource.getLogInListener()
     }
 
     override suspend fun logoutUser(): DataResource<Boolean> {

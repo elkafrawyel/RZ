@@ -8,6 +8,7 @@ import com.hmaserv.rz.domain.DataResource
 import com.hmaserv.rz.domain.Event
 import com.hmaserv.rz.domain.LoggedInUser
 import com.hmaserv.rz.ui.BaseViewModel
+import com.hmaserv.rz.utils.Constants
 import com.hmaserv.rz.utils.Injector
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -49,8 +50,14 @@ class LoginViewModel : BaseViewModel() {
         _uiState.value = Event(LoginUiState.Loading)
     }
 
-    private fun showSuccess(data: LoggedInUser) {
-        _uiState.value = Event(LoginUiState.Success)
+    private fun showSuccess(loggedInUser: LoggedInUser) {
+        loggedInUser.statusId?.let {
+            when(it) {
+                Constants.Status.ACTIVE.value -> _uiState.value = Event(LoginUiState.Success)
+                Constants.Status.INACTIVE.value -> _uiState.value = Event(LoginUiState.Inactive(loggedInUser))
+                else -> showError(null)
+            }
+        }
     }
 
     private fun showError(message: String?) {
@@ -61,6 +68,7 @@ class LoginViewModel : BaseViewModel() {
     sealed class LoginUiState {
         object Loading : LoginUiState()
         object Success : LoginUiState()
+        data class Inactive(val loggedInUser: LoggedInUser) : LoginUiState()
         data class Error(val message: String) : LoginUiState()
     }
 

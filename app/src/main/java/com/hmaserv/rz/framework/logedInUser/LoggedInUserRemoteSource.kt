@@ -92,10 +92,7 @@ class LoggedInUserRemoteSource(
     private suspend fun verifyPhoneCall(token: String) : DataResource<Boolean> {
         val response = authApiService.verifyPhone(token).await()
         if (response.success != null && response.success) {
-            val body = response.data
-            if (body != null) {
-                return DataResource.Success(body)
-            }
+            return DataResource.Success(response.success)
         }
 
         if (response.message != null) {
