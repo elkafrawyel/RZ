@@ -29,35 +29,36 @@ class CategoriesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.categories_fragment, container, false)
+        return inflater.inflate(R.layout.categories_fragment, container, false)
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(CategoriesViewModel::class.java)
 
         viewModel.uiState.observeEvent(this) { onCategoryStateResponse(it) }
 
-        view.backBtn.setOnClickListener { activity?.onBackPressed() }
-        view.searchMcv.setOnClickListener{openSearchFragment()}
-        view.categoriesRv.layoutManager = LinearLayoutManager(
+        backBtn.setOnClickListener { activity?.onBackPressed() }
+        searchMcv.setOnClickListener{openSearchFragment()}
+        categoriesRv.layoutManager = LinearLayoutManager(
             context,
             RecyclerView.VERTICAL,
             false
         )
 
-        view.categoriesRv.adapter = adapter
+        categoriesRv.adapter = adapter
 
         adapter.onItemClickListener =
                 BaseQuickAdapter.OnItemClickListener { _, _, position ->
                     openSubCategories(adapter.data[position])
                 }
 
-        view.categoriesSwipe.setOnRefreshListener(this)
+        categoriesSwipe.setOnRefreshListener(this)
 
-        return view
     }
 
     private fun onCategoryStateResponse(state: CategoriesViewModel.CategoriesUiState) {
         when (state) {
-
             CategoriesViewModel.CategoriesUiState.Loading -> showStateLoading()
             is CategoriesViewModel.CategoriesUiState.Success -> showStateSuccess(state.categories)
             is CategoriesViewModel.CategoriesUiState.Error -> showStateError(state.message)
