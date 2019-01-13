@@ -21,48 +21,52 @@ class ProductsViewModel : BaseViewModel() {
     val uiState: LiveData<Event<ProductsUiState>>
         get() = _uiState
 
-    private var subCategoryId: String? = null
+    private var subCategoryUuid: String? = null
 
-    fun setSubCategoryId(subId: String) {
-        if (this.subCategoryId == null) {
-            this.subCategoryId = subId
-            getProducts()
+    fun setSubCategoryId(uuid: String) {
+        if (this.subCategoryUuid == null) {
+            this.subCategoryUuid = uuid
+            getProducts(uuid)
         }
     }
 
-    fun getProducts() {
+    private fun getProducts(uuid: String) {
         if (getProductsJob?.isActive == true) {
             return
         }
-        getProductsJob = launchGetProductsJob()
+        getProductsJob = launchGetProductsJob(uuid)
     }
 
-    private fun launchGetProductsJob(): Job? {
-        if (subCategoryId!=null) {
-            return scope.launch(dispatcherProvider.computation) {
-                withContext(dispatcherProvider.main) { showLoading() }
-                if (NetworkUtils.isConnected()) {
-                    val result = getProductsUseCase.get(subCategoryId!!)
-                    withContext(dispatcherProvider.main) {
-                        when (result) {
-                            is DataResource.Success ->
-                                if (result.data.isEmpty()) {
-                                    showEmptyView()
-                                } else {
-                                    showSuccess(result.data)
-                                }
-                            is DataResource.Error -> showError(result.exception.message)
-                        }
+    fun refreshProducts() {
+        if (getProductsJob?.isActive == true) {
+            return
+        }
+
+        getProductsJob = subCategoryUuid?.let { launchGetProductsJob(it) }
+    }
+
+    private fun launchGetProductsJob(uuid: String): Job? {
+        return scope.launch(dispatcherProvider.computation) {
+            withContext(dispatcherProvider.main) { showLoading() }
+            if (NetworkUtils.isConnected()) {
+                val result = getProductsUseCase.get(uuid)
+                withContext(dispatcherProvider.main) {
+                    when (result) {
+                        is DataResource.Success ->
+                            if (result.data.isEmpty()) {
+                                showEmptyView()
+                            } else {
+                                showSuccess(result.data)
+                            }
+                        is DataResource.Error -> showError(result.exception.message)
                     }
-                } else {
-                    withContext(dispatcherProvider.main) {
-                        showNoInternetConnection()
-                    }
+                }
+            } else {
+                withContext(dispatcherProvider.main) {
+                    showNoInternetConnection()
                 }
             }
         }
-
-        return null
     }
 
 

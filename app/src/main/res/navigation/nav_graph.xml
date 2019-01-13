@@ -17,7 +17,10 @@
             android:id="@+id/action_subCategoriesFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
         <argument
-            android:name="categoryId"
+            android:name="categoryUuid"
+            app:argType="string" />
+        <argument
+            android:name="categoryName"
             app:argType="string" />
     </fragment>
     <fragment
@@ -36,7 +39,7 @@
         tools:layout="@layout/categories_fragment">
         <action
             android:id="@+id/action_categoriesFragment_to_subCategoriesFragment"
-            app:destination="@id/subCategoriesFragment" />
+            app:destination="@+id/subCategoriesFragment" />
         <action
             android:id="@+id/action_categoriesFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
@@ -102,9 +105,12 @@
             android:id="@+id/action_productsFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
         <argument
-            android:name="subCategoryId"
+            android:name="subCategoryUuid"
             app:argType="string"
             app:nullable="true" />
+        <argument
+            android:name="headerName"
+            app:argType="string" />
         <argument
             android:name="searchText"
             app:argType="string"
@@ -132,6 +138,9 @@
             app:destination="@id/reviewsFragment" />
         <argument
             android:name="productId"
+            app:argType="string" />
+        <argument
+            android:name="productName"
             app:argType="string" />
     </fragment>
     <fragment

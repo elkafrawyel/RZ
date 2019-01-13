@@ -1,6 +1,5 @@
 package com.hmaserv.rz.ui.products
 
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -25,37 +24,44 @@ class ProductsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     val adapter = ProductsAdapter()
     lateinit var viewModel: ProductsViewModel
-    private var subCategoryId: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.products_fragment, container, false)
+        return inflater.inflate(R.layout.products_fragment, container, false)
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(ProductsViewModel::class.java)
+        viewModel.uiState.observeEvent(this) { onProductStateResponse(it) }
 
-        viewModel.uiState.observeEvent(this, { onProductStateResponse(it) })
+        arguments?.let {
+            headerNameTv.text = ProductsFragmentArgs.fromBundle(it).headerName
+            val subCategoryUuid = ProductsFragmentArgs.fromBundle(it).subCategoryUuid
+            subCategoryUuid?.let { uuid ->
+                    viewModel.setSubCategoryId(uuid)
+            }
+        }
 
-        view.backBtn.setOnClickListener { activity?.onBackPressed() }
-        view.searchImgv.setOnClickListener { openSearchFragment() }
-        view.sortImgv.setOnClickListener { openFilterDialog() }
-        view.productsRv.layoutManager = LinearLayoutManager(
+        backBtn.setOnClickListener { activity?.onBackPressed() }
+        searchImgv.setOnClickListener { openSearchFragment() }
+        sortImgv.setOnClickListener { openFilterDialog() }
+        productsRv.layoutManager = LinearLayoutManager(
             context,
             RecyclerView.VERTICAL,
             false
         )
 
-        view.productsRv.adapter = adapter
+        productsRv.adapter = adapter
 
         adapter.onItemClickListener =
                 BaseQuickAdapter.OnItemClickListener { adapter, _, position ->
-                    openProductDetails(this.adapter.getList().get(position).uuid!!)
+                    openProductDetails(this.adapter.data[position])
                 }
 
         view.productsSwipe.setOnRefreshListener(this)
-
-        return view;
     }
 
     private fun openFilterDialog() {
@@ -64,23 +70,6 @@ class ProductsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private fun openSearchFragment() {
         findNavController().navigate(R.id.action_productsFragment_to_searchFragment)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        if (subCategoryId == null) {
-            arguments?.let {
-                subCategoryId = ProductsFragmentArgs.fromBundle(it).subCategoryId
-            }
-
-            if (subCategoryId == null) {
-                activity?.onBackPressed()
-            } else {
-                viewModel.setSubCategoryId(subCategoryId!!)
-                viewModel.getProducts()
-            }
-        }
     }
 
     private fun onProductStateResponse(state: ProductsViewModel.ProductsUiState) {
@@ -133,18 +122,19 @@ class ProductsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         noInternetConnectionCl.visibility = View.GONE
     }
 
-    private fun openProductDetails(productId: String) {
-        val action = ProductsFragmentDirections
-            .actionProductsFragmentToProductFragment(productId)
-        findNavController().navigate(action)
+    private fun openProductDetails(product: Product) {
+        product.uuid?.let {uuid ->
+            val action = ProductsFragmentDirections
+                .actionProductsFragmentToProductFragment(
+                    uuid,
+                    product.title ?: getString(R.string.label_product_name)
+                )
+
+            findNavController().navigate(action)
+        }
     }
 
     override fun onRefresh() {
-        if (subCategoryId == null) {
-            activity?.onBackPressed()
-        } else {
-            viewModel.setSubCategoryId(subCategoryId!!)
-            viewModel.getProducts()
-        }
+        viewModel.refreshProducts()
     }
 }

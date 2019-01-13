@@ -50,8 +50,8 @@ class SubCategoriesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         view.subCategoriesRv.adapter = adapter
 
         adapter.onItemClickListener =
-                BaseQuickAdapter.OnItemClickListener { adapter, _, position ->
-                    openProducts(this.adapter.getList().get(position).uuid!!)
+                BaseQuickAdapter.OnItemClickListener { _, _, position ->
+                    openProducts(this.adapter.data[position])
                 }
 
         view.subCategoriesSwipe.setOnRefreshListener(this)
@@ -63,7 +63,9 @@ class SubCategoriesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         super.onViewCreated(view, savedInstanceState)
 
         arguments?.let {
-            categoryId = SubCategoriesFragmentArgs.fromBundle(it).categoryId
+
+            categoryNameTv.text = SubCategoriesFragmentArgs.fromBundle(it).categoryName
+            categoryId = SubCategoriesFragmentArgs.fromBundle(it).categoryUuid
             categoryId?.let { categoryUuid ->
                 viewModel.setCategoryId(categoryUuid)
             }
@@ -117,10 +119,11 @@ class SubCategoriesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         subCategoriesSwipe.isRefreshing = false
     }
 
-    private fun openProducts(subCategoryId: String) {
+    private fun openProducts(subCategory: SubCategory) {
         val action = SubCategoriesFragmentDirections
             .actionSubCategoriesFragmentToProductsFragment(
-                subCategoryId,
+                subCategory.uuid,
+                subCategory.title ?: getString(R.string.label_sub_category_name),
                 null,
                 null,
                 null,

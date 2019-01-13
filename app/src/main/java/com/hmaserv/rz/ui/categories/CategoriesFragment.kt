@@ -103,9 +103,10 @@ class CategoriesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun openSubCategories(category: Category) {
-        category.uuid?.let {
+        category.uuid?.let { uuid ->
             val action = CategoriesFragmentDirections.actionCategoriesFragmentToSubCategoriesFragment(
-                it
+                uuid,
+                category.title ?: getString(R.string.label_category_name)
             )
 
             findNavController().navigate(action)

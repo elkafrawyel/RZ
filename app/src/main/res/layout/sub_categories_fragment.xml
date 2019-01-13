@@ -29,7 +29,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/subCategoryNameTv"
+                android:id="@+id/categoryNameTv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/label_sub_category_name"

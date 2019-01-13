@@ -26,8 +26,4 @@ class SubCategoriesAdapter :
         mData = categories
         notifyDataSetChanged()
     }
-
-    fun getList(): List<SubCategory> {
-        return mData
-    }
 }
