@@ -59,5 +59,17 @@
     <string name="success_forget_password">New password sent successfully.</string>
     <string name="error_forget_password">Failed to sent new password.</string>
     <string name="label_send_new_password">Send New Password</string>
+    <string name="label_add_pic">Add Picture</string>
+    <string name="hint_address">Address</string>
+    <string name="hint_description">Description</string>
+    <string name="hint_price">Price</string>
+    <string name="hint_currency">ريال سعودي</string>
+    <string name="hint_price_with_discount">Price With Discount</string>
+    <string name="hint_product_quantity">Quantity</string>
+    <string name="label_pick_category">Choose Category</string>
+    <string name="label_pick_sub_category">Choose SubCategory</string>
+    <string name="label_confirm_create_product">Confirm</string>
+    <string name="label_add_attr_product">Add</string>
+    <string name="label_add_product">Add Product</string>
 
 </resources>

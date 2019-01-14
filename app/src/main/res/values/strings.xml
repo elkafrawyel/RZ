@@ -66,5 +66,17 @@
     <string name="success_forget_password">تم ارسال كلمة السر الجديدة</string>
     <string name="error_forget_password">فشل في ارسال كلمة السر الجديدة</string>
     <string name="label_send_new_password">ارسال كلمة المرور الجديدة</string>
+    <string name="label_add_pic">أضافة صورة</string>
+    <string name="hint_address">العنوان</string>
+    <string name="hint_description">وصف المنتج</string>
+    <string name="hint_price">السعر</string>
+    <string name="hint_currency">ريال سعودي</string>
+    <string name="hint_price_with_discount">السعر بعد الخصم</string>
+    <string name="hint_product_quantity">المخزون</string>
+    <string name="label_pick_category">اختر القسم</string>
+    <string name="label_pick_sub_category">اختر القسم الفرعي</string>
+    <string name="label_confirm_create_product">تأكيد</string>
+    <string name="label_add_attr_product">أضافة السمات</string>
+    <string name="label_add_product">أضافة منتج</string>
 
 </resources>
