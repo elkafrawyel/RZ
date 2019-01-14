@@ -6,6 +6,8 @@ import com.hmaserv.rz.data.apiService.RetrofitAuthApiService
 import com.hmaserv.rz.data.home.IHomeRepo
 import com.hmaserv.rz.framework.categories.CategoriesRemoteSource
 import com.hmaserv.rz.framework.categories.CategoriesRepo
+import com.hmaserv.rz.framework.createProduct.CreateProductRemoteSource
+import com.hmaserv.rz.framework.createProduct.CreateProductRepo
 import com.hmaserv.rz.framework.home.HomeRemoteSource
 import com.hmaserv.rz.framework.home.HomeRepo
 import com.hmaserv.rz.framework.logedInUser.LoggedInUserLocalSource
@@ -115,4 +117,9 @@ object Injector {
     private fun getHomeRepo() = HomeRepo.getInstance(getHomeRemoteSource())
     fun getSliderUseCase() = GetSliderUseCase(getHomeRepo())
     fun getPromotionsUseCase() = GetPromotionsUseCase(getHomeRepo())
+
+    // create product
+    private fun getCreateProductRemoteSource() = CreateProductRemoteSource(getAuthApiService())
+    private fun getCreateProductRepo() = CreateProductRepo.getInstance(getCreateProductRemoteSource())
+    fun getCreateProductUseCase() = CreateProductUseCase(getLoggedInRepo(), getCreateProductRepo())
 }
