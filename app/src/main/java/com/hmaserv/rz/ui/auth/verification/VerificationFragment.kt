@@ -41,7 +41,7 @@ class VerificationFragment : Fragment() {
             verifyMbtn.setOnClickListener { viewModel.verify(token) }
         }
 
-        codeTwoEt.setOnKeyListener { v, keyCode, event ->
+        codeTwoEt.setOnKeyListener { _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_DOWN
                 && keyCode == KeyEvent.KEYCODE_DEL
                 && codeTwoEt.text.toString() == ""
@@ -52,7 +52,7 @@ class VerificationFragment : Fragment() {
 
             false
         }
-        codeThreeEt.setOnKeyListener { v, keyCode, event ->
+        codeThreeEt.setOnKeyListener { _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_DOWN
                 && keyCode == KeyEvent.KEYCODE_DEL
                 && codeThreeEt.text.toString() == ""
@@ -63,7 +63,7 @@ class VerificationFragment : Fragment() {
 
             false
         }
-        codeFourEt.setOnKeyListener { v, keyCode, event ->
+        codeFourEt.setOnKeyListener { _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_DOWN
                 && keyCode == KeyEvent.KEYCODE_DEL
                 && codeFourEt.text.toString() == ""
@@ -74,7 +74,7 @@ class VerificationFragment : Fragment() {
 
             false
         }
-        codeFiveEt.setOnKeyListener { v, keyCode, event ->
+        codeFiveEt.setOnKeyListener { _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_DOWN
                 && keyCode == KeyEvent.KEYCODE_DEL
                 && codeFiveEt.text.toString() == ""

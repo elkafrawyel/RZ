@@ -68,8 +68,4 @@ class ProductsAdapter :
         mData = categories
         notifyDataSetChanged()
     }
-
-    fun getList(): List<Product> {
-        return mData
-    }
 }

@@ -3,8 +3,11 @@ package com.hmaserv.rz.utils
 import com.hmaserv.rz.RzApplication
 import com.hmaserv.rz.data.apiService.RetrofitApiService
 import com.hmaserv.rz.data.apiService.RetrofitAuthApiService
+import com.hmaserv.rz.data.home.IHomeRepo
 import com.hmaserv.rz.framework.categories.CategoriesRemoteSource
 import com.hmaserv.rz.framework.categories.CategoriesRepo
+import com.hmaserv.rz.framework.home.HomeRemoteSource
+import com.hmaserv.rz.framework.home.HomeRepo
 import com.hmaserv.rz.framework.logedInUser.LoggedInUserLocalSource
 import com.hmaserv.rz.framework.logedInUser.LoggedInUserRemoteSource
 import com.hmaserv.rz.framework.logedInUser.LoggedInUserRepo
@@ -106,4 +109,10 @@ object Injector {
     )
 
     fun getProductsUseCase() = GetProductsUseCase(getProductsRepo())
+
+    // home
+    private fun getHomeRemoteSource() = HomeRemoteSource(getApiService())
+    private fun getHomeRepo() = HomeRepo.getInstance(getHomeRemoteSource())
+    fun getSliderUseCase() = GetSliderUseCase(getHomeRepo())
+    fun getPromotionsUseCase() = GetPromotionsUseCase(getHomeRepo())
 }

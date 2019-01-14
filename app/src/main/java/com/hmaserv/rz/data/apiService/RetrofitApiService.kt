@@ -21,6 +21,12 @@ interface RetrofitApiService {
     @POST("auth/resetPassword")
     fun forgetPassword(@Body forgetPassword: ForgetPassword): Deferred<ApiResponse<Boolean>>
 
+    @GET("landing/slider")
+    fun getSlider(): Deferred<ApiResponse<List<Slider>>>
+
+    @GET("landing/promotions")
+    fun getPromotions(): Deferred<ApiResponse<List<Product>>>
+
     @GET("categories")
     fun getCategories(): Deferred<ApiResponse<List<Category>>>
 

@@ -26,10 +26,6 @@
         android:icon="@drawable/ic_my_products"
         android:title="@string/label_my_products" />
     <item
-        android:id="@+id/nav_notifications"
-        android:icon="@drawable/ic_test_24dp"
-        android:title="@string/label_notifications" />
-    <item
         android:id="@+id/nav_about_us"
         android:icon="@drawable/ic_about_us"
         android:title="@string/label_about_us" />

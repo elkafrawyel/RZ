@@ -57,7 +57,7 @@ class ProductsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         productsRv.adapter = adapter
 
         adapter.onItemClickListener =
-                BaseQuickAdapter.OnItemClickListener { adapter, _, position ->
+                BaseQuickAdapter.OnItemClickListener { _, _, position ->
                     openProductDetails(this.adapter.data[position])
                 }
 
