@@ -78,5 +78,12 @@
     <string name="label_confirm_create_product">تأكيد</string>
     <string name="label_add_attr_product">أضافة السمات</string>
     <string name="label_add_product">أضافة منتج</string>
+    <string name="label_add_review">تقييم المنتج</string>
+    <string name="label_your_rate">تقييمك للمنتج</string>
+    <string name="hint_leave_review">اكتب تعليقك عن المنتج</string>
+    <string name="label_confirm_review">تأكيد</string>
+    <string name="hint_search_words">Search Words</string>
+    <string name="label_price">Price</string>
+    <string name="label_search">Search</string>
 
 </resources>
