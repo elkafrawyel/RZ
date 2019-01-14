@@ -13,9 +13,9 @@ class CategoriesAdapter :
     override fun convert(helper: BaseViewHolder?, item: Category?) {
 
         (helper?.getView(R.id.section_image) as ImageView).let {
-            if (item?.files?.isNotEmpty() == true) {
+            if (item?.images?.isNotEmpty() == true) {
                 Glide.with(mContext)
-                    .load(item.files[0])
+                    .load(item.images[0])
                     .apply(RequestOptions.placeholderOf(R.drawable.test_image))
                     .into(it)
             }

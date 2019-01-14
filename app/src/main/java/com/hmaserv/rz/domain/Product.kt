@@ -6,8 +6,8 @@ import com.squareup.moshi.Json
 data class Product(
     @field:Json(name = "ads_uuid")
     val uuid: String?,
-    @field:Json(name = "files")
-    val files: List<String?>?,
+    @field:Json(name = "images")
+    val images: List<String?>?,
     @field:Json(name = "price")
     val price: Int?,
     @field:Json(name = "rate")
