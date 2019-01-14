@@ -7,7 +7,7 @@ data class Product(
     @field:Json(name = "ads_uuid")
     val uuid: String?,
     @field:Json(name = "files")
-    val image: String?,
+    val files: List<String?>?,
     @field:Json(name = "price")
     val price: Int?,
     @field:Json(name = "rate")

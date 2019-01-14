@@ -13,10 +13,12 @@ class ProductsAdapter :
     override fun convert(helper: BaseViewHolder?, item: Product?) {
 
         (helper?.getView(R.id.item_image) as ImageView).let {
-            Glide.with(mContext)
-                .load(item?.image)
-                .apply(RequestOptions.placeholderOf(R.drawable.test_image))
-                .into(it)
+            if (item?.files?.isNotEmpty() == true) {
+                Glide.with(mContext)
+                    .load(item.files[0])
+                    .apply(RequestOptions.placeholderOf(R.drawable.test_image))
+                    .into(it)
+            }
         }
 
         helper.setText(R.id.name, item?.title)

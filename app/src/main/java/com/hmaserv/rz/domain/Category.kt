@@ -5,7 +5,7 @@ import com.squareup.moshi.Json
 
 data class Category(
     @field:Json(name = "files")
-    val image: String?,
+    val files: List<String?>?,
     @field:Json(name = "title")
     val title: String?,
     @field:Json(name = "uuid")
