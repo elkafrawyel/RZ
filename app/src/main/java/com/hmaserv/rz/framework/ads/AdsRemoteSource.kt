@@ -1,26 +1,26 @@
-package com.hmaserv.rz.framework.products
+package com.hmaserv.rz.framework.ads
 
 import com.hmaserv.rz.data.apiService.RetrofitApiService
-import com.hmaserv.rz.data.products.IProductsRemoteSource
+import com.hmaserv.rz.data.ads.IAdsRemoteSource
 import com.hmaserv.rz.domain.DataResource
-import com.hmaserv.rz.domain.Product
-import com.hmaserv.rz.domain.ProductRequest
+import com.hmaserv.rz.domain.ApiMiniAd
+import com.hmaserv.rz.domain.MiniAdRequest
 import com.hmaserv.rz.utils.safeApiCall
 import java.io.IOException
 
-class ProductsRemoteSource(
+class AdsRemoteSource(
     private val apiService: RetrofitApiService
-) : IProductsRemoteSource {
+) : IAdsRemoteSource {
 
-    override suspend fun getProducts(productRequest: ProductRequest): DataResource<List<Product>> {
+    override suspend fun getMiniAds(miniAdRequest: MiniAdRequest): DataResource<List<ApiMiniAd>> {
         return safeApiCall(
-            call = { getProductsCall(productRequest) },
+            call = { getMiniAdsCall(miniAdRequest) },
             errorMessage = "Error getting categories"
         )
     }
 
-    private suspend fun getProductsCall(productRequest: ProductRequest): DataResource<List<Product>> {
-        val response = apiService.getProducts(productRequest).await()
+    private suspend fun getMiniAdsCall(miniAdRequest: MiniAdRequest): DataResource<List<ApiMiniAd>> {
+        val response = apiService.getMiniAds(miniAdRequest).await()
         if (response.success != null && response.success) {
             val body = response.data
             if (body != null) {
@@ -32,7 +32,7 @@ class ProductsRemoteSource(
             return DataResource.Error(IOException(response.message))
         }
 
-        return DataResource.Error(IOException("Error getting products"))
+        return DataResource.Error(IOException("Error getting ads"))
     }
 
 }

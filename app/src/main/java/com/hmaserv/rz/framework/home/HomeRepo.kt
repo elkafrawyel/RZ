@@ -2,9 +2,7 @@ package com.hmaserv.rz.framework.home
 
 import com.hmaserv.rz.data.home.IHomeRemoteSource
 import com.hmaserv.rz.data.home.IHomeRepo
-import com.hmaserv.rz.domain.DataResource
-import com.hmaserv.rz.domain.Product
-import com.hmaserv.rz.domain.Slider
+import com.hmaserv.rz.domain.*
 
 class HomeRepo(
     private var homeRemoteSource: IHomeRemoteSource
@@ -14,8 +12,12 @@ class HomeRepo(
         return homeRemoteSource.getSlider()
     }
 
-    override suspend fun getPromotions(): DataResource<List<Product>> {
-        return homeRemoteSource.getPromotions()
+    override suspend fun getPromotions(): DataResource<List<MiniAd>> {
+        val result = homeRemoteSource.getPromotions()
+        return when(result) {
+            is DataResource.Success -> DataResource.Success(result.data.mapNotNull { it.toMiniProduct() })
+            is DataResource.Error -> result
+        }
     }
 
     companion object {

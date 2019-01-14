@@ -6,7 +6,7 @@ import com.blankj.utilcode.util.NetworkUtils
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.DataResource
 import com.hmaserv.rz.domain.Event
-import com.hmaserv.rz.domain.Product
+import com.hmaserv.rz.domain.MiniAd
 import com.hmaserv.rz.ui.BaseViewModel
 import com.hmaserv.rz.utils.Injector
 import kotlinx.coroutines.Job
@@ -74,7 +74,7 @@ class ProductsViewModel : BaseViewModel() {
         _uiState.value = Event(ProductsUiState.Loading)
     }
 
-    private fun showSuccess(data: List<Product>) {
+    private fun showSuccess(data: List<MiniAd>) {
         _uiState.value = Event(ProductsUiState.Success(data))
     }
 
@@ -97,7 +97,7 @@ class ProductsViewModel : BaseViewModel() {
 
     sealed class ProductsUiState {
         object Loading : ProductsUiState()
-        data class Success(val products: List<Product>) : ProductsUiState()
+        data class Success(val ads: List<MiniAd>) : ProductsUiState()
         data class Error(val message: String) : ProductsUiState()
         object NoInternetConnection : ProductsUiState()
         object EmptyView : ProductsUiState()

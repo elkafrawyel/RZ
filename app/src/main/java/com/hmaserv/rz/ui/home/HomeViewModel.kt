@@ -4,10 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.blankj.utilcode.util.NetworkUtils
 import com.hmaserv.rz.R
-import com.hmaserv.rz.domain.DataResource
-import com.hmaserv.rz.domain.Event
-import com.hmaserv.rz.domain.Product
-import com.hmaserv.rz.domain.Slider
+import com.hmaserv.rz.domain.*
 import com.hmaserv.rz.ui.BaseViewModel
 import com.hmaserv.rz.utils.Injector
 import kotlinx.coroutines.Job
@@ -117,7 +114,7 @@ class HomeViewModel : BaseViewModel() {
         _promotionsState.value = Event(PromotionsState.Loading)
     }
 
-    private fun showPromotionsSuccess(data: List<Product>) {
+    private fun showPromotionsSuccess(data: List<MiniAd>) {
         _promotionsState.value = Event(PromotionsState.Success(data))
     }
 
@@ -146,7 +143,7 @@ class HomeViewModel : BaseViewModel() {
     sealed class PromotionsState {
         object Loading : PromotionsState()
         object Empty : PromotionsState()
-        data class Success(val promotions: List<Product>) : PromotionsState()
+        data class Success(val promotions: List<MiniAd>) : PromotionsState()
         data class Error(val message: String) : PromotionsState()
         object NoInternetConnection: PromotionsState()
     }

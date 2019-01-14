@@ -3,7 +3,7 @@ package com.hmaserv.rz.framework.home
 import com.hmaserv.rz.data.apiService.RetrofitApiService
 import com.hmaserv.rz.data.home.IHomeRemoteSource
 import com.hmaserv.rz.domain.DataResource
-import com.hmaserv.rz.domain.Product
+import com.hmaserv.rz.domain.ApiMiniAd
 import com.hmaserv.rz.domain.Slider
 import com.hmaserv.rz.utils.safeApiCall
 import java.io.IOException
@@ -35,14 +35,14 @@ class HomeRemoteSource(
         return DataResource.Error(IOException("Error getting slider"))
     }
 
-    override suspend fun getPromotions(): DataResource<List<Product>> {
+    override suspend fun getPromotions(): DataResource<List<ApiMiniAd>> {
         return safeApiCall(
             call = { getPromotionsCall() },
             errorMessage = "Error getting Promotions"
         )
     }
 
-    private suspend fun getPromotionsCall(): DataResource<List<Product>> {
+    private suspend fun getPromotionsCall(): DataResource<List<ApiMiniAd>> {
         val response = apiService.getPromotions().await()
         if (response.success != null && response.success) {
             val body = response.data
