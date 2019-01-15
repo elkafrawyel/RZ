@@ -7,10 +7,14 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.chad.library.adapter.base.BaseQuickAdapter
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.Ad
+import com.hmaserv.rz.domain.MainAttribute
 import com.hmaserv.rz.domain.Owner
 import com.hmaserv.rz.domain.observeEvent
 import kotlinx.android.synthetic.main.product_fragment.*
@@ -19,6 +23,7 @@ class ProductFragment : Fragment() {
 
     private var productId: String? = null
     lateinit var viewModel: ProductViewModel
+    val adapter = AdapterAttributes()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,6 +56,19 @@ class ProductFragment : Fragment() {
         shareImgv.setOnClickListener { shareProduct() }
 
         addToCartBtn.setOnClickListener { makeOrder() }
+
+        attributesRv.layoutManager = LinearLayoutManager(
+            context,
+            RecyclerView.VERTICAL,
+            false
+        )
+
+        attributesRv.adapter = adapter
+
+        adapter.onItemClickListener =
+                BaseQuickAdapter.OnItemClickListener { _, _, position ->
+
+                }
     }
 
     private fun onProductResponse(states: ProductViewModel.AdUiStates) {
@@ -93,6 +111,12 @@ class ProductFragment : Fragment() {
         addSliderImages(ad.images)
 
         addOwnerInfo(ad.owner)
+
+        setAttributes(ad.mainAttributes)
+    }
+
+    private fun setAttributes(mainAttributes: List<MainAttribute>) {
+        adapter.submitList(mainAttributes)
     }
 
     private fun addOwnerInfo(owner: Owner) {

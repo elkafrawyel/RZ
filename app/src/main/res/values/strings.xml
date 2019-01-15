@@ -87,4 +87,7 @@
     <string name="label_search">بحث</string>
     <string name="label_review_number">(%1$s)</string>
     <string name="label_product_currency">%1$s ريال سعودي</string>
+    <string name="label_attributes">السمات</string>
+    <string name="lable_chip_text">%1$s | %2$s</string>
+
 </resources>
