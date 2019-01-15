@@ -29,6 +29,10 @@ import kotlinx.coroutines.Dispatchers
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.random.Random
 
 object Injector {
 
@@ -73,7 +77,24 @@ object Injector {
     private fun getApiService() = RetrofitApiService.create(BASE_URL, getOkHttpClient())
     private fun getAuthApiService() = RetrofitAuthApiService.create(BASE_URL, getOkHttpClient())
     private fun getBoxStore() = getApplicationContext().getBoxStore()
-    private fun getSpectrum() = mSpectrum
+    fun getSpectrum() = mSpectrum
+    private fun getResizedImagesDir(): File {
+        val outputDir = File(getApplicationContext().filesDir, Constants.RESIZED_IMAGES_OUTPUT_PATH)
+        if (!outputDir.exists()) {
+            outputDir.mkdirs() // should succeed
+        }
+        return outputDir
+    }
+    private fun generateResizedImageName(): String {
+        val calendar = Calendar.getInstance()
+        val dateFormat = SimpleDateFormat("yyyyMMDD_HHmmss_SSS", Locale.ENGLISH)
+        return dateFormat.format(calendar.time) ?: "resizeImage${Random.nextInt()}"
+    }
+    fun getNewResizedImagePath(): String? {
+        val imageName = "${generateResizedImageName()}.png"
+        val imageFile = File(getResizedImagesDir(), imageName)
+        return imageFile.path
+    }
 
     // Settings
     private fun getSettingsLocalSource() = SettingsLocalSource(getBoxStore())

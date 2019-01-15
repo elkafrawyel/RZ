@@ -5,6 +5,7 @@ object Constants {
     const val SETTINGS_ID = 1L
     const val LOGGED_IN_USER_ID = 1L
     const val AUTHORIZATION_START = "Bearer"
+    const val RESIZED_IMAGES_OUTPUT_PATH = ""
 
     enum class Language(val value: String) {
         DEFAULT("ar"),
