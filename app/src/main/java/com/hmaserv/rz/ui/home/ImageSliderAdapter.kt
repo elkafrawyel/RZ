@@ -5,18 +5,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.viewpager.widget.PagerAdapter
+import com.bumptech.glide.Glide
 import com.hmaserv.rz.R
 
 class ImageSliderAdapter : PagerAdapter() {
 
     private val images = ArrayList<String>()
 
-    override fun isViewFromObject(view: View, `object`: Any): Boolean {
-        return view == `object` as ImageView
+    override fun isViewFromObject(view: View, imgv: Any): Boolean {
+        return view == imgv as ImageView
     }
 
     override fun getCount(): Int {
-        return 5
+        return images.size
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
@@ -25,10 +26,9 @@ class ImageSliderAdapter : PagerAdapter() {
 
         container.addView(imageView)
 
-//        Glide.with(imageView)
-//            .load(sliders[position])
-//            .apply(RequestOptions.placeholderOf(R.drawable.meal))
-//            .into(imageView)
+        Glide.with(imageView)
+            .load(images[position])
+            .into(imageView)
 
         return imageView
     }
