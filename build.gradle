@@ -8,7 +8,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath 'com.android.tools.build:gradle:3.3.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "android.arch.navigation:navigation-safe-args-gradle-plugin:1.0.0-alpha09"
         classpath "io.objectbox:objectbox-gradle-plugin:$objectboxVersion"
@@ -46,4 +46,5 @@ ext {
     coroutines_version = '1.1.0'
     blanj_version = '1.22.10'
     okhttp_version = '3.12.1'
+    timber_version = '4.7.1'
 }
