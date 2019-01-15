@@ -72,6 +72,7 @@ dependencies {
     implementation "com.blankj:utilcode:$blanj_version"
 
     implementation "com.jakewharton.timber:timber:$timber_version"
+    implementation "pub.devrel:easypermissions:$easypermissions_version"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'

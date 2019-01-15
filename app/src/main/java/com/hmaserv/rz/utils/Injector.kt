@@ -1,5 +1,10 @@
 package com.hmaserv.rz.utils
 
+import android.util.Log
+import com.facebook.spectrum.DefaultPlugins
+import com.facebook.spectrum.Spectrum
+import com.facebook.spectrum.logging.SpectrumLogcatLogger
+import com.facebook.spectrum.logging.SpectrumLogger
 import com.hmaserv.rz.RzApplication
 import com.hmaserv.rz.data.apiService.RetrofitApiService
 import com.hmaserv.rz.data.apiService.RetrofitAuthApiService
@@ -33,6 +38,11 @@ object Injector {
             LoggedInUserRepo.resetRemoteSource(getLoggedInRemoteSource())
         }
 
+    private val mSpectrum : Spectrum = Spectrum.make(
+        SpectrumLogcatLogger(Log.INFO),
+        DefaultPlugins.get()
+    )
+
     fun getApplicationContext() = RzApplication.instance
     fun getCoroutinesDispatcherProvider() = CoroutinesDispatcherProvider(
         Dispatchers.Main,
@@ -64,6 +74,7 @@ object Injector {
     private fun getApiService() = RetrofitApiService.create(BASE_URL, getOkHttpClient())
     private fun getAuthApiService() = RetrofitAuthApiService.create(BASE_URL, getOkHttpClient())
     private fun getBoxStore() = getApplicationContext().getBoxStore()
+    private fun getSpectrum() = mSpectrum
 
     // Settings
     private fun getSettingsLocalSource() = SettingsLocalSource(getBoxStore())
