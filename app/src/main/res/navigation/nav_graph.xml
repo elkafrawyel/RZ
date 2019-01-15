@@ -271,10 +271,5 @@
                 android:name="password"
                 app:argType="string" />
         </fragment>
-        <action
-            android:id="@+id/action_global_homeFragment"
-            app:destination="@id/homeFragment"
-            app:popUpTo="@id/homeFragment"
-            app:popUpToInclusive="true"/>
     </navigation>
 </navigation>

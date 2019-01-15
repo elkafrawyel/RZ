@@ -80,7 +80,7 @@ class LoginFragment : Fragment() {
     private fun showStateSuccess() {
         loadingFl.visibility = View.GONE
         Toast.makeText(activity, getString(R.string.success_login), Toast.LENGTH_SHORT).show()
-        findNavController().navigate(R.id.action_global_homeFragment)
+        requireActivity().onBackPressed()
     }
 
     private fun showStateInactive(loggedInUser: LoggedInUser) {
