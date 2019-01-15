@@ -13,12 +13,10 @@ class CategoriesAdapter :
     override fun convert(helper: BaseViewHolder?, item: Category?) {
 
         (helper?.getView(R.id.section_image) as ImageView).let {
-            if (item?.images?.isNotEmpty() == true) {
-                Glide.with(mContext)
-                    .load(item.images[0])
-                    .apply(RequestOptions.placeholderOf(R.drawable.test_image))
-                    .into(it)
-            }
+            Glide.with(mContext)
+                .load(item?.image)
+                .apply(RequestOptions.placeholderOf(R.drawable.test_image))
+                .into(it)
         }
 
         helper.setText(R.id.section_name, item?.title)

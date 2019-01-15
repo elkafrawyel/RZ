@@ -18,8 +18,10 @@ import com.hmaserv.rz.framework.logedInUser.LoggedInUserRemoteSource
 import com.hmaserv.rz.framework.logedInUser.LoggedInUserRepo
 import com.hmaserv.rz.framework.ads.AdsRemoteSource
 import com.hmaserv.rz.framework.ads.AdsRepo
+import com.hmaserv.rz.framework.categories.CategoriesLocalSource
 import com.hmaserv.rz.framework.settings.SettingsLocalSource
 import com.hmaserv.rz.framework.settings.SettingsRepo
+import com.hmaserv.rz.framework.subCategories.SubCategoriesLocalSource
 import com.hmaserv.rz.framework.subCategories.SubCategoriesRemoteSource
 import com.hmaserv.rz.framework.subCategories.SubCategoriesRepo
 import com.hmaserv.rz.usecases.*
@@ -119,16 +121,21 @@ object Injector {
     fun getLoggedInUserListenerUseCase() = LogInListenerUseCase(getLoggedInRepo())
 
     // Categories
+    private fun getCategoriesLocalSource() = CategoriesLocalSource(getBoxStore())
     private fun getCategoriesRemoteSource() = CategoriesRemoteSource(getApiService())
     private fun getCategoriesRepo() = CategoriesRepo.getInstance(
-        getCategoriesRemoteSource()
+        getCategoriesRemoteSource(),
+        getCategoriesLocalSource()
     )
 
     fun getCategoriesUseCase() = GetCategoriesUseCase(getCategoriesRepo())
+    fun getSavedCategoriesUseCase() = GetSavedCategoriesUseCase(getCategoriesRepo())
 
     // SubCategories
+    private fun getSubCategoriesLocalSource() = SubCategoriesLocalSource(getBoxStore())
     private fun getSubCategoriesRemoteSource() = SubCategoriesRemoteSource(getApiService())
     private fun getSubCategoriesRepo() = SubCategoriesRepo.getInstance(
+        getSubCategoriesLocalSource(),
         getSubCategoriesRemoteSource()
     )
 

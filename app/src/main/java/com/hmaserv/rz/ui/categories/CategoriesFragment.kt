@@ -16,7 +16,6 @@ import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.Category
 import com.hmaserv.rz.domain.observeEvent
 import kotlinx.android.synthetic.main.categories_fragment.*
-import kotlinx.android.synthetic.main.categories_fragment.view.*
 import kotlinx.android.synthetic.main.empty_view.*
 import kotlinx.android.synthetic.main.no_internet_connection_view.*
 
@@ -104,14 +103,12 @@ class CategoriesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun openSubCategories(category: Category) {
-        category.uuid?.let { uuid ->
-            val action = CategoriesFragmentDirections.actionCategoriesFragmentToSubCategoriesFragment(
-                uuid,
-                category.title ?: getString(R.string.label_category_name)
-            )
+        val action = CategoriesFragmentDirections.actionCategoriesFragmentToSubCategoriesFragment(
+            category.uuid,
+            category.title
+        )
 
-            findNavController().navigate(action)
-        }
+        findNavController().navigate(action)
     }
 
     override fun onRefresh() {

@@ -5,12 +5,12 @@ import com.hmaserv.rz.domain.DataResource
 import com.hmaserv.rz.domain.SubCategory
 import com.hmaserv.rz.domain.SubCategoryRequest
 
-class GetSubCategoriesUseCase(
+class GetSavedSubCategoriesUseCase(
     private val subCategoriesRepo: ISubCategoriesRepo
 ) {
 
-    suspend fun get(categoryUuid: String): DataResource<List<SubCategory>> {
-        return subCategoriesRepo.get(SubCategoryRequest(categoryUuid))
+    suspend fun get(categoryUuid: String): List<SubCategory> {
+        return subCategoriesRepo.getSaved(categoryUuid)
     }
 
 }

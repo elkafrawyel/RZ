@@ -28,10 +28,10 @@ interface RetrofitApiService {
     fun getPromotions(): Deferred<ApiResponse<List<MiniAdResponse>>>
 
     @GET("categories")
-    fun getCategories(): Deferred<ApiResponse<List<Category>>>
+    fun getCategories(): Deferred<ApiResponse<List<CategoryResponse>>>
 
     @POST("category/subs")
-    fun getSubCategories(@Body subCategoryRequest: SubCategoryRequest): Deferred<ApiResponse<List<SubCategory>>>
+    fun getSubCategories(@Body subCategoryRequest: SubCategoryRequest): Deferred<ApiResponse<List<SubCategoryResponse>>>
 
     @POST("subCategories/ads")
     fun getMiniAds(@Body miniAdRequest: MiniAdRequest): Deferred<ApiResponse<List<MiniAdResponse>>>
