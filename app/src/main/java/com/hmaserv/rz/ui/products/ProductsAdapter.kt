@@ -6,14 +6,14 @@ import com.bumptech.glide.request.RequestOptions
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.hmaserv.rz.R
-import com.hmaserv.rz.domain.Product
+import com.hmaserv.rz.domain.MiniAd
 
 class ProductsAdapter :
-    BaseQuickAdapter<Product, BaseViewHolder>(R.layout.ad_item_view, emptyList()) {
-    override fun convert(helper: BaseViewHolder?, item: Product?) {
+    BaseQuickAdapter<MiniAd, BaseViewHolder>(R.layout.ad_item_view, emptyList()) {
+    override fun convert(helper: BaseViewHolder?, item: MiniAd) {
 
         (helper?.getView(R.id.item_image) as ImageView).let {
-            if (item?.images?.isNotEmpty() == true) {
+            if (item.images.isNotEmpty()) {
                 Glide.with(mContext)
                     .load(item.images[0])
                     .apply(RequestOptions.placeholderOf(R.drawable.test_image))
@@ -21,9 +21,9 @@ class ProductsAdapter :
             }
         }
 
-        helper.setText(R.id.name, item?.title)
+        helper.setText(R.id.name, item.title)
 
-        val rate = item?.rate
+        val rate = item.rate
         when (rate) {
             1 -> {
                 helper.setImageResource(R.id.star_1, R.drawable.ic_star_fill_rate)
@@ -62,11 +62,11 @@ class ProductsAdapter :
             }
         }
 
-        val price = item?.price.toString() + " ر.س "
+        val price = item.price.toString() + " ر.س "
         helper.setText(R.id.price, price)
     }
 
-    fun submitList(categories: List<Product>) {
+    fun submitList(categories: List<MiniAd>) {
         mData = categories
         notifyDataSetChanged()
     }

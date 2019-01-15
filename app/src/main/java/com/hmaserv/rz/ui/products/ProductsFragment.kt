@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.hmaserv.rz.R
-import com.hmaserv.rz.domain.Product
+import com.hmaserv.rz.domain.MiniAd
 import com.hmaserv.rz.domain.observeEvent
 import kotlinx.android.synthetic.main.empty_view.*
 import kotlinx.android.synthetic.main.no_internet_connection_view.*
@@ -76,7 +76,7 @@ class ProductsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         when (state) {
 
             ProductsViewModel.ProductsUiState.Loading -> showLoadingState()
-            is ProductsViewModel.ProductsUiState.Success -> showSuccessState(state.products)
+            is ProductsViewModel.ProductsUiState.Success -> showSuccessState(state.ads)
             is ProductsViewModel.ProductsUiState.Error -> showErrorState(state.message)
             ProductsViewModel.ProductsUiState.NoInternetConnection -> showNoInternetConnectionState()
             ProductsViewModel.ProductsUiState.EmptyView -> showEmptyViewState()
@@ -106,13 +106,13 @@ class ProductsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         Toast.makeText(activity, message, Toast.LENGTH_LONG).show()
     }
 
-    private fun showSuccessState(products: List<Product>) {
+    private fun showSuccessState(ads: List<MiniAd>) {
         emptyViewCl.visibility = View.GONE
         productsRv.visibility = View.VISIBLE
         productsSwipe.isRefreshing = false
         noInternetConnectionCl.visibility = View.GONE
 
-        adapter.submitList(products)
+        adapter.submitList(ads)
     }
 
     private fun showLoadingState() {
@@ -122,12 +122,12 @@ class ProductsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         noInternetConnectionCl.visibility = View.GONE
     }
 
-    private fun openProductDetails(product: Product) {
-        product.uuid?.let {uuid ->
+    private fun openProductDetails(ad: MiniAd) {
+        ad.uuid.let { uuid ->
             val action = ProductsFragmentDirections
                 .actionProductsFragmentToProductFragment(
                     uuid,
-                    product.title ?: getString(R.string.label_product_name)
+                    ad.title
                 )
 
             findNavController().navigate(action)

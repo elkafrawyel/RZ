@@ -17,10 +17,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.google.android.material.navigation.NavigationView
 
 import com.hmaserv.rz.R
-import com.hmaserv.rz.domain.LoggedInUser
-import com.hmaserv.rz.domain.Product
-import com.hmaserv.rz.domain.Slider
-import com.hmaserv.rz.domain.observeEvent
+import com.hmaserv.rz.domain.*
 import com.hmaserv.rz.ui.MainViewModel
 import com.hmaserv.rz.ui.products.ProductsAdapter
 import kotlinx.android.synthetic.main.home_fragment.*
@@ -46,7 +43,7 @@ class HomeFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mainViewModel = activity?.let { ViewModelProviders.of(it).get(MainViewModel::class.java) }
+        mainViewModel = requireActivity().let { ViewModelProviders.of(it).get(MainViewModel::class.java) }
         val homeViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
 
         mainViewModel?.logInLiveData?.observe(this, Observer { onLogInState(it) })
@@ -134,12 +131,12 @@ class HomeFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
         findNavController().navigate(R.id.action_homeFragment_to_notificationsFragment)
     }
 
-    private fun onProductClicked(product: Product) {
-        product.uuid?.let {uuid ->
+    private fun onProductClicked(ad: MiniAd) {
+        ad.uuid.let { uuid ->
             val action = HomeFragmentDirections
                 .actionHomeFragmentToProductFragment(
                     uuid,
-                    product.title ?: getString(R.string.label_product_name)
+                    ad.title
                 )
 
             findNavController().navigate(action)
@@ -236,7 +233,7 @@ class HomeFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
         }
     }
 
-    private fun statePromotionsSuccess(promotions: List<Product>) {
+    private fun statePromotionsSuccess(promotions: List<MiniAd>) {
         productsAdapter.submitList(promotions)
     }
 }

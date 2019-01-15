@@ -25,7 +25,7 @@ interface RetrofitApiService {
     fun getSlider(): Deferred<ApiResponse<List<Slider>>>
 
     @GET("landing/promotions")
-    fun getPromotions(): Deferred<ApiResponse<List<Product>>>
+    fun getPromotions(): Deferred<ApiResponse<List<ApiMiniAd>>>
 
     @GET("categories")
     fun getCategories(): Deferred<ApiResponse<List<Category>>>
@@ -34,7 +34,7 @@ interface RetrofitApiService {
     fun getSubCategories(@Body subCategoryRequest: SubCategoryRequest): Deferred<ApiResponse<List<SubCategory>>>
 
     @POST("subCategories/ads")
-    fun getProducts(@Body productRequest: ProductRequest): Deferred<ApiResponse<List<Product>>>
+    fun getMiniAds(@Body miniAdRequest: MiniAdRequest): Deferred<ApiResponse<List<ApiMiniAd>>>
 
     companion object {
         fun create(baseUrl: String, client: OkHttpClient): RetrofitApiService {

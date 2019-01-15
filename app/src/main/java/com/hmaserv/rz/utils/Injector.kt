@@ -3,7 +3,6 @@ package com.hmaserv.rz.utils
 import com.hmaserv.rz.RzApplication
 import com.hmaserv.rz.data.apiService.RetrofitApiService
 import com.hmaserv.rz.data.apiService.RetrofitAuthApiService
-import com.hmaserv.rz.data.home.IHomeRepo
 import com.hmaserv.rz.framework.categories.CategoriesRemoteSource
 import com.hmaserv.rz.framework.categories.CategoriesRepo
 import com.hmaserv.rz.framework.createProduct.CreateProductRemoteSource
@@ -13,8 +12,8 @@ import com.hmaserv.rz.framework.home.HomeRepo
 import com.hmaserv.rz.framework.logedInUser.LoggedInUserLocalSource
 import com.hmaserv.rz.framework.logedInUser.LoggedInUserRemoteSource
 import com.hmaserv.rz.framework.logedInUser.LoggedInUserRepo
-import com.hmaserv.rz.framework.products.ProductsRemoteSource
-import com.hmaserv.rz.framework.products.ProductsRepo
+import com.hmaserv.rz.framework.ads.AdsRemoteSource
+import com.hmaserv.rz.framework.ads.AdsRepo
 import com.hmaserv.rz.framework.settings.SettingsLocalSource
 import com.hmaserv.rz.framework.settings.SettingsRepo
 import com.hmaserv.rz.framework.subCategories.SubCategoriesRemoteSource
@@ -105,12 +104,12 @@ object Injector {
     fun getSubCategoriesUseCase() = GetSubCategoriesUseCase(getSubCategoriesRepo())
 
     // Products
-    private fun getProductsRemoteSource() = ProductsRemoteSource(getApiService())
-    private fun getProductsRepo() = ProductsRepo.getInstance(
+    private fun getProductsRemoteSource() = AdsRemoteSource(getApiService())
+    private fun getProductsRepo() = AdsRepo.getInstance(
         getProductsRemoteSource()
     )
 
-    fun getProductsUseCase() = GetProductsUseCase(getProductsRepo())
+    fun getProductsUseCase() = GetMiniAdsUseCase(getProductsRepo())
 
     // home
     private fun getHomeRemoteSource() = HomeRemoteSource(getApiService())
