@@ -2,7 +2,7 @@ package com.hmaserv.rz.domain
 
 import com.squareup.moshi.Json
 
-data class ApiMiniAd(
+data class MiniAdResponse(
     @field:Json(name = "ads_uuid")
     val uuid: String?,
     @field:Json(name = "files")
@@ -31,7 +31,7 @@ data class MiniAd(
     val images: List<String>
 )
 
-fun ApiMiniAd.toMiniProduct(): MiniAd? {
+fun MiniAdResponse.toMiniProduct(): MiniAd? {
     if (this.uuid != null
         && this.title != null
         && this.price != null

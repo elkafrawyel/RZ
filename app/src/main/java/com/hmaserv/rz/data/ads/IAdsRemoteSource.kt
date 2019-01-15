@@ -1,9 +1,8 @@
 package com.hmaserv.rz.data.ads
 
-import com.hmaserv.rz.domain.DataResource
-import com.hmaserv.rz.domain.ApiMiniAd
-import com.hmaserv.rz.domain.MiniAdRequest
+import com.hmaserv.rz.domain.*
 
 interface IAdsRemoteSource {
-    suspend fun getMiniAds(miniAdRequest: MiniAdRequest): DataResource<List<ApiMiniAd>>
+    suspend fun getMiniAds(miniAdRequest: MiniAdRequest): DataResource<List<MiniAdResponse>>
+    suspend fun getAd(adRequest: AdRequest): DataResource<AdResponse>
 }

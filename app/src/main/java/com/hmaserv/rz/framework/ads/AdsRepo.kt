@@ -3,6 +3,7 @@ package com.hmaserv.rz.framework.ads
 import com.hmaserv.rz.data.ads.IAdsRemoteSource
 import com.hmaserv.rz.data.ads.IAdsRepo
 import com.hmaserv.rz.domain.*
+import java.io.IOException
 
 class AdsRepo(
     private var adsRemoteSource: IAdsRemoteSource
@@ -14,6 +15,10 @@ class AdsRepo(
             is DataResource.Success -> DataResource.Success(result.data.mapNotNull { it.toMiniProduct() })
             is DataResource.Error -> result
         }
+    }
+
+    override suspend fun getAd(adRequest: AdRequest): DataResource<Ad> {
+        return DataResource.Error(IOException("Not Implemented"))
     }
 
     companion object {
