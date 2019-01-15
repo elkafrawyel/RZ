@@ -70,7 +70,7 @@
     <string name="hint_address">العنوان</string>
     <string name="hint_description">وصف المنتج</string>
     <string name="hint_price">السعر</string>
-    <string name="hint_currency">ريال سعودي</string>
+    <string name="hint_currency"> ريال سعودي</string>
     <string name="hint_price_with_discount">السعر بعد الخصم</string>
     <string name="hint_product_quantity">المخزون</string>
     <string name="label_pick_category">اختر القسم</string>
@@ -82,8 +82,9 @@
     <string name="label_your_rate">تقييمك للمنتج</string>
     <string name="hint_leave_review">اكتب تعليقك عن المنتج</string>
     <string name="label_confirm_review">تأكيد</string>
-    <string name="hint_search_words">Search Words</string>
-    <string name="label_price">Price</string>
-    <string name="label_search">Search</string>
-
+    <string name="hint_search_words">كلمات البحث</string>
+    <string name="label_price">السعر</string>
+    <string name="label_search">بحث</string>
+    <string name="label_review_number">(%1$s)</string>
+    <string name="label_product_currency">%1$s ريال سعودي</string>
 </resources>

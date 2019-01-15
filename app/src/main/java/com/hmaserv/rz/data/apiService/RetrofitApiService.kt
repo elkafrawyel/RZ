@@ -36,6 +36,9 @@ interface RetrofitApiService {
     @POST("subCategories/ads")
     fun getMiniAds(@Body miniAdRequest: MiniAdRequest): Deferred<ApiResponse<List<MiniAdResponse>>>
 
+    @POST("ads/details")
+    fun getAd(@Body adRequest: AdRequest): Deferred<ApiResponse<AdResponse>>
+
     companion object {
         fun create(baseUrl: String, client: OkHttpClient): RetrofitApiService {
             val retrofit = Retrofit.Builder()

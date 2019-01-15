@@ -63,7 +63,7 @@
     <string name="hint_address">Address</string>
     <string name="hint_description">Description</string>
     <string name="hint_price">Price</string>
-    <string name="hint_currency">ريال سعودي</string>
+    <string name="hint_currency">RS</string>
     <string name="hint_price_with_discount">Price With Discount</string>
     <string name="hint_product_quantity">Quantity</string>
     <string name="label_pick_category">Choose Category</string>
@@ -78,5 +78,7 @@
     <string name="hint_search_words">Search Words</string>
     <string name="label_price">Price</string>
     <string name="label_search">Search</string>
+    <string name="label_review_number">(%1$s)</string>
+    <string name="label_product_currency">%1$s R.S</string>
 
 </resources>

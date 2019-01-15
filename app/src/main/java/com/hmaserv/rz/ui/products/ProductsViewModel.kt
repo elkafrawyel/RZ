@@ -15,7 +15,7 @@ import kotlinx.coroutines.withContext
 
 class ProductsViewModel : BaseViewModel() {
     private var getProductsJob: Job? = null
-    private val getProductsUseCase = Injector.getProductsUseCase()
+    private val getProductsUseCase = Injector.getAdsUseCase()
 
     private val _uiState = MutableLiveData<Event<ProductsUiState>>()
     val uiState: LiveData<Event<ProductsUiState>>

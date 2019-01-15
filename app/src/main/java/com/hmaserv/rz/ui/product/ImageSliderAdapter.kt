@@ -15,8 +15,7 @@ class ImageSliderAdapter : PagerAdapter() {
     private val images = ArrayList<String>()
 
     override fun getCount(): Int {
-        return 5
-//        return sliders.size
+        return images.size
     }
 
     override fun isViewFromObject(view: View, viewType: Any): Boolean {
@@ -31,7 +30,7 @@ class ImageSliderAdapter : PagerAdapter() {
         container.addView(imageView)
 
         Glide.with(imageView)
-            .load(R.drawable.test_image)
+            .load(images[position])
             .apply(RequestOptions.placeholderOf(R.drawable.test_image))
             .into(imageView)
 

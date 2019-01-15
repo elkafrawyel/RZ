@@ -6,38 +6,243 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.hmaserv.rz.R
+import com.hmaserv.rz.domain.Ad
+import com.hmaserv.rz.domain.Owner
+import com.hmaserv.rz.domain.observeEvent
 import kotlinx.android.synthetic.main.product_fragment.*
-import kotlinx.android.synthetic.main.product_fragment.view.*
 
 class ProductFragment : Fragment() {
 
     private var productId: String? = null
+    lateinit var viewModel: ProductViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.product_fragment, container, false)
+        return inflater.inflate(R.layout.product_fragment, container, false)
+    }
 
-        view.backImgv.setOnClickListener { activity?.onBackPressed() }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
 
-        view.shareImgv.setOnClickListener { shareProduct() }
+        viewModel.uiState.observeEvent(this) {
+            onProductResponse(it)
+        }
 
-        view.addToCartBtn.setOnClickListener { makeOrder() }
+        arguments?.let {
+            toolbar_ProductNameTv.text = ProductFragmentArgs.fromBundle(it).productName
+            productId = ProductFragmentArgs.fromBundle(it).productId
+            productId?.let {
+                viewModel.setAdId(productId!!)
+            }
+        }
 
-        val imageSliderAdapter = ImageSliderAdapter()
-        imageSliderAdapter.submitList(emptyList())
-        view.productVp.adapter = imageSliderAdapter
+        if (productId == null)
+            activity?.onBackPressed()
 
+        backImgv.setOnClickListener { activity?.onBackPressed() }
+
+        shareImgv.setOnClickListener { shareProduct() }
+
+        addToCartBtn.setOnClickListener { makeOrder() }
+    }
+
+    private fun onProductResponse(states: ProductViewModel.AdUiStates) {
+        when (states) {
+            ProductViewModel.AdUiStates.Loading -> showLoadingState()
+            is ProductViewModel.AdUiStates.Success -> showSuccessState(states.ad)
+            is ProductViewModel.AdUiStates.Error -> showStateError(states.message)
+            ProductViewModel.AdUiStates.NoInternetConnection -> showNoInterNetConnectionState()
+        }
+    }
+
+    private fun showLoadingState() {
+
+    }
+
+    private fun showNoInterNetConnectionState() {
+        Toast.makeText(activity, getString(R.string.label_no_internet_connection), Toast.LENGTH_LONG).show()
+    }
+
+    private fun showStateError(message: String) {
+        Toast.makeText(activity, message, Toast.LENGTH_LONG).show()
+    }
+
+    private fun showSuccessState(ad: Ad) {
+        productNameTv.text = ad.title
+
+        toolbar_ProductNameTv.text = ad.title
+
+        ratingTv.text = getString(R.string.label_review_number, ad.reviewsNo.toString())
+
+        addedDateTv.text = ad.date
+
+        productDescriptionTv.text = ad.description
+
+        priceTv.text = getString(R.string.label_product_currency,ad.price.toString())
+
+        val rate = ad.rate
+        addAdRate(rate)
+
+        addSliderImages(ad.images)
+
+        addOwnerInfo(ad.owner)
+    }
+
+    private fun addOwnerInfo(owner: Owner) {
         Glide.with(this)
-            .load(R.drawable.test_image)
+            .load(owner.image)
             .apply(RequestOptions.circleCropTransform())
-            .into(view.sellerImgv)
+            .into(sellerImgv)
 
-        return view
+        sellerNameTv.text = owner.fullName
+    }
+
+    private fun addSliderImages(images: List<String>) {
+        val imageSliderAdapter = ImageSliderAdapter()
+        productVp.adapter = imageSliderAdapter
+        imageSliderAdapter.submitList(images)
+    }
+
+    private fun addAdRate(rate: Int) {
+        when (rate) {
+            1 -> {
+                Glide.with(this)
+                    .load(R.drawable.ic_star_fill_rate)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(star_1)
+
+                Glide.with(this)
+                    .load(R.drawable.ic_star_rate)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(star_2)
+
+                Glide.with(this)
+                    .load(R.drawable.ic_star_rate)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(star_3)
+
+                Glide.with(this)
+                    .load(R.drawable.ic_star_rate)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(star_4)
+
+                Glide.with(this)
+                    .load(R.drawable.ic_star_rate)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(star_5)
+            }
+            2 -> {
+                Glide.with(this)
+                    .load(R.drawable.ic_star_fill_rate)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(star_1)
+
+                Glide.with(this)
+                    .load(R.drawable.ic_star_fill_rate)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(star_2)
+
+                Glide.with(this)
+                    .load(R.drawable.ic_star_rate)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(star_3)
+
+                Glide.with(this)
+                    .load(R.drawable.ic_star_rate)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(star_4)
+
+                Glide.with(this)
+                    .load(R.drawable.ic_star_rate)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(star_5)
+            }
+            3 -> {
+                Glide.with(this)
+                    .load(R.drawable.ic_star_fill_rate)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(star_1)
+
+                Glide.with(this)
+                    .load(R.drawable.ic_star_fill_rate)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(star_2)
+
+                Glide.with(this)
+                    .load(R.drawable.ic_star_fill_rate)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(star_3)
+
+                Glide.with(this)
+                    .load(R.drawable.ic_star_rate)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(star_4)
+
+                Glide.with(this)
+                    .load(R.drawable.ic_star_rate)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(star_5)
+            }
+            4 -> {
+                Glide.with(this)
+                    .load(R.drawable.ic_star_fill_rate)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(star_1)
+
+                Glide.with(this)
+                    .load(R.drawable.ic_star_fill_rate)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(star_2)
+
+                Glide.with(this)
+                    .load(R.drawable.ic_star_fill_rate)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(star_3)
+
+                Glide.with(this)
+                    .load(R.drawable.ic_star_fill_rate)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(star_4)
+
+                Glide.with(this)
+                    .load(R.drawable.ic_star_rate)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(star_5)
+            }
+            5 -> {
+                Glide.with(this)
+                    .load(R.drawable.ic_star_fill_rate)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(star_1)
+
+                Glide.with(this)
+                    .load(R.drawable.ic_star_fill_rate)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(star_2)
+
+                Glide.with(this)
+                    .load(R.drawable.ic_star_fill_rate)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(star_3)
+
+                Glide.with(this)
+                    .load(R.drawable.ic_star_fill_rate)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(star_4)
+
+                Glide.with(this)
+                    .load(R.drawable.ic_star_fill_rate)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(star_5)
+            }
+        }
     }
 
     private fun makeOrder() {
@@ -48,19 +253,5 @@ class ProductFragment : Fragment() {
 
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-            arguments?.let {
-                productId = ProductFragmentArgs.fromBundle(it).productId
-            }
 
-            Toast.makeText(activity, productId, Toast.LENGTH_LONG).show()
-
-            if (productId == null) {
-                activity?.onBackPressed()
-            } else {
-//                viewModel.setSubCategoryId(productId!!)
-//                viewModel.getProducts()
-            }
-    }
 }

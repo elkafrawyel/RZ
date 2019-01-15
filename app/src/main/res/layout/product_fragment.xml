@@ -29,6 +29,18 @@
                     app:layout_constraintTop_toTopOf="parent"
                     android:src="@drawable/ic_arrow_back"/>
 
+                <TextView
+                    android:id="@+id/toolbar_ProductNameTv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    tools:text="@string/label_product_name"
+                    android:textColor="@color/colorOnPrimary"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="@id/backImgv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/backImgv"
+                    app:layout_constraintTop_toTopOf="@id/backImgv" />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -94,7 +106,7 @@
                 android:maxLines="2"
                 android:padding="16dp"
                 android:textSize="18sp"
-                android:text="Camera canon model rzy555"
+                tools:text="Camera canon model rzy555"
                 android:textColor="@android:color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -152,7 +164,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:transitionName="productReviewsNo"
-                android:text="(18)"
+                tools:text="(18)"
                 app:layout_constraintTop_toTopOf="@id/star_1"
                 app:layout_constraintBottom_toBottomOf="@id/star_1"
                 app:layout_constraintStart_toEndOf="@id/star_5"/>
@@ -163,7 +175,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:transitionName="productPrice"
-                android:text="5550 EGP"
+                tools:text="5550 EGP"
                 android:padding="8dp"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
@@ -182,8 +194,8 @@
                 android:text="@string/label_order_product"
                 app:icon="@drawable/ic_add_to_cart"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@id/productNameTv"
                 app:layout_constraintTop_toBottomOf="@id/priceTv"
+                app:layout_constraintEnd_toEndOf="parent"
                 android:textAllCaps="false"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -211,7 +223,7 @@
                     android:id="@+id/sellerNameTv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Seller name"
+                    tools:text="Seller name"
                     android:layout_marginStart="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/sellerImgv"
@@ -222,7 +234,7 @@
                     android:id="@+id/addedDateTv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="10/11/2022"
+                    tools:text="10/11/2022"
                     app:layout_constraintBottom_toBottomOf="@id/sellerImgv"
                     app:layout_constraintTop_toBottomOf="@id/sellerNameTv"
                     app:layout_constraintStart_toStartOf="@id/sellerNameTv"
@@ -259,7 +271,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
-                    android:text="@string/cat_bottomappbar_lorem_ipsum"
+                    tools:text="@string/cat_bottomappbar_lorem_ipsum"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/description_label"
                     app:layout_constraintStart_toStartOf="parent"

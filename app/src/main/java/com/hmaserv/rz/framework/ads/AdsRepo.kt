@@ -11,14 +11,24 @@ class AdsRepo(
 
     override suspend fun getMiniAds(miniAdRequest: MiniAdRequest): DataResource<List<MiniAd>> {
         val result = adsRemoteSource.getMiniAds(miniAdRequest)
-        return when(result) {
+        return when (result) {
             is DataResource.Success -> DataResource.Success(result.data.mapNotNull { it.toMiniProduct() })
             is DataResource.Error -> result
         }
     }
 
     override suspend fun getAd(adRequest: AdRequest): DataResource<Ad> {
-        return DataResource.Error(IOException("Not Implemented"))
+        val result = adsRemoteSource.getAd(adRequest)
+        return when (result) {
+            is DataResource.Success -> {
+                val ad = result.data.toAd()
+                if (ad != null)
+                    DataResource.Success(ad)
+                else
+                    DataResource.Error(IOException("Error convert AdResponse to Ad"))
+            }
+            is DataResource.Error -> result
+        }
     }
 
     companion object {

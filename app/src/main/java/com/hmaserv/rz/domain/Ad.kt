@@ -4,52 +4,52 @@ import com.squareup.moshi.Json
 
 
 data class AdResponse(
-    @Json(name = "ads_uuid")
+    @field:Json(name = "ads_uuid")
     val adsUuid: String?,
-    @Json(name = "mainAttributes")
+    @field:Json(name = "characteristics")
     val mainAttributes: List<MainAttributeResponse?>?,
-    @Json(name = "create_ad")
+    @field:Json(name = "create_ad")
     val createAd: String?,
-    @Json(name = "decs")
+    @field:Json(name = "decs")
     val decs: String?,
-    @Json(name = "discount_price")
+    @field:Json(name = "discount_price")
     val discountPrice: Int?,
-    @Json(name = "files")
+    @field:Json(name = "files")
     val files: List<String?>?,
-    @Json(name = "owner")
+    @field:Json(name = "owner")
     val owner: OwnerResponse?,
-    @Json(name = "price")
+    @field:Json(name = "price")
     val price: Int?,
-    @Json(name = "rate")
+    @field:Json(name = "rate")
     val rate: Int?,
-    @Json(name = "reviews")
+    @field:Json(name = "reviews")
     val reviews: Int?,
-    @Json(name = "sub_category")
+    @field:Json(name = "sub_category")
     val subCategory: String?,
-    @Json(name = "title")
+    @field:Json(name = "title")
     val title: String?
 )
 
 data class MainAttributeResponse(
-    @Json(name = "name")
+    @field:Json(name = "name")
     val name: String?,
-    @Json(name = "values")
+    @field:Json(name = "values")
     val attributes: List<AttributeResponse?>?
 )
 
 data class AttributeResponse(
-    @Json(name = "name")
+    @field:Json(name = "name")
     val name: String?,
-    @Json(name = "price")
+    @field:Json(name = "price")
     val price: Int?
 )
 
 data class OwnerResponse(
-    @Json(name = "avatar")
+    @field:Json(name = "avatar")
     val avatar: String?,
-    @Json(name = "full_name")
+    @field:Json(name = "full_name")
     val fullName: String?,
-    @Json(name = "uuid")
+    @field:Json(name = "uuid")
     val uuid: String?
 )
 

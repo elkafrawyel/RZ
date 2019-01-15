@@ -1,7 +1,7 @@
 package com.hmaserv.rz.framework.ads
 
-import com.hmaserv.rz.data.apiService.RetrofitApiService
 import com.hmaserv.rz.data.ads.IAdsRemoteSource
+import com.hmaserv.rz.data.apiService.RetrofitApiService
 import com.hmaserv.rz.domain.*
 import com.hmaserv.rz.utils.safeApiCall
 import java.io.IOException
@@ -34,7 +34,26 @@ class AdsRemoteSource(
     }
 
     override suspend fun getAd(adRequest: AdRequest): DataResource<AdResponse> {
-        return DataResource.Error(IOException("Not implemented"))
+        return safeApiCall(
+            call = { getAdCall(adRequest) },
+            errorMessage = "Error getting Ad details"
+        )
+    }
+
+    private suspend fun getAdCall(adRequest: AdRequest): DataResource<AdResponse> {
+        val response = apiService.getAd(adRequest).await()
+        if (response.success != null && response.success) {
+            val body = response.data
+            if (body != null) {
+                return DataResource.Success(body)
+            }
+        }
+
+        if (response.message != null) {
+            return DataResource.Error(IOException(response.message))
+        }
+
+        return DataResource.Error(IOException("Error getting Ad details"))
     }
 
 }

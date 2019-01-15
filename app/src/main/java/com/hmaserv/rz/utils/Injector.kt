@@ -4,7 +4,6 @@ import android.util.Log
 import com.facebook.spectrum.DefaultPlugins
 import com.facebook.spectrum.Spectrum
 import com.facebook.spectrum.logging.SpectrumLogcatLogger
-import com.facebook.spectrum.logging.SpectrumLogger
 import com.hmaserv.rz.RzApplication
 import com.hmaserv.rz.data.apiService.RetrofitApiService
 import com.hmaserv.rz.data.apiService.RetrofitAuthApiService
@@ -115,12 +114,12 @@ object Injector {
     fun getSubCategoriesUseCase() = GetSubCategoriesUseCase(getSubCategoriesRepo())
 
     // Products
-    private fun getProductsRemoteSource() = AdsRemoteSource(getApiService())
-    private fun getProductsRepo() = AdsRepo.getInstance(
-        getProductsRemoteSource()
+    private fun getAdsRemoteSource() = AdsRemoteSource(getApiService())
+    private fun getAdsRepo() = AdsRepo.getInstance(
+        getAdsRemoteSource()
     )
 
-    fun getProductsUseCase() = GetMiniAdsUseCase(getProductsRepo())
+    fun getAdsUseCase() = GetMiniAdsUseCase(getAdsRepo())
 
     // home
     private fun getHomeRemoteSource() = HomeRemoteSource(getApiService())
@@ -132,4 +131,7 @@ object Injector {
     private fun getCreateProductRemoteSource() = CreateProductRemoteSource(getAuthApiService())
     private fun getCreateProductRepo() = CreateProductRepo.getInstance(getCreateProductRemoteSource())
     fun getCreateProductUseCase() = CreateProductUseCase(getLoggedInRepo(), getCreateProductRepo())
+
+    // Ad Details
+    fun getAdUseCase() = GetAdUseCase(getAdsRepo())
 }
