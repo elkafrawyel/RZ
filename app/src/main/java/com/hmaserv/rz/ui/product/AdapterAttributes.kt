@@ -9,9 +9,10 @@ import com.google.android.material.chip.ChipGroup
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.MainAttribute
 
-class AdapterAttributes : BaseQuickAdapter<MainAttribute, BaseViewHolder>
-    (R.layout.attribute_item_view, emptyList()) {
 
+class AdapterAttributes : BaseQuickAdapter<MainAttribute, BaseViewHolder>
+    (R.layout.attribute_item_view, emptyList()),
+    ChipGroup.OnCheckedChangeListener {
 
     override fun convert(helper: BaseViewHolder?, item: MainAttribute?) {
         helper?.setText(R.id.attrNameTv, item?.name)
@@ -21,9 +22,9 @@ class AdapterAttributes : BaseQuickAdapter<MainAttribute, BaseViewHolder>
         if (chipGroup != null) {
             for (i in 0 until (item?.attributes?.size ?: 0)) {
 
-                val attribute =item?.attributes?.get(i)
+                val attribute = item?.attributes?.get(i)
                 if (attribute != null) {
-                    val chip = Chip(chipGroup.context)
+                    val chip = Chip(chipGroup.context, null, R.style.Widget_MaterialComponents_Chip_Choice)
 
                     if (attribute.price == 0)
                         chip.text = attribute.name
@@ -32,7 +33,8 @@ class AdapterAttributes : BaseQuickAdapter<MainAttribute, BaseViewHolder>
                             .getString(
                                 R.string.lable_chip_text,
                                 attribute.name,
-                                attribute.price.toString())
+                                attribute.price.toString()
+                            )
 
                     chip.chipBackgroundColor = ContextCompat.getColorStateList(mContext, R.color.chip_bg)
                     chip.setTextColor(ContextCompat.getColorStateList(mContext, R.color.chip_text_selector))
@@ -46,11 +48,21 @@ class AdapterAttributes : BaseQuickAdapter<MainAttribute, BaseViewHolder>
 
                     chip.textAlignment = View.TEXT_ALIGNMENT_CENTER
                     chipGroup.addView(chip)
-
-                    if (i == 0){
-                        chip.isChecked= true
-                    }
                 }
+            }
+
+            val view = chipGroup.getChildAt(0)
+            chipGroup.check(view.id)
+            view.isClickable = false
+            chipGroup.setOnCheckedChangeListener(this)
+        }
+    }
+
+    override fun onCheckedChanged(group: ChipGroup?, checkedId: Int) {
+        if (group != null) {
+            for (i in 0 until group.childCount) {
+                val chip = group.getChildAt(i) as Chip
+                chip.isClickable = (chip.id != checkedId)
             }
         }
     }
