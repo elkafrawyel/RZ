@@ -22,6 +22,8 @@ import com.hmaserv.rz.framework.settings.SettingsRepo
 import com.hmaserv.rz.framework.subCategories.SubCategoriesLocalSource
 import com.hmaserv.rz.framework.subCategories.SubCategoriesRemoteSource
 import com.hmaserv.rz.framework.subCategories.SubCategoriesRepo
+import com.hmaserv.rz.framework.uploader.UploaderRemoteSource
+import com.hmaserv.rz.framework.uploader.UploaderRepo
 import com.hmaserv.rz.usecases.*
 import com.hmaserv.rz.utils.Constants.BASE_URL
 import com.hmaserv.rz.utils.Constants.Language
@@ -78,7 +80,7 @@ object Injector {
     private fun getAuthApiService() = RetrofitAuthApiService.create(BASE_URL, getOkHttpClient())
     private fun getBoxStore() = getApplicationContext().getBoxStore()
     fun getSpectrum() = mSpectrum
-    private fun getResizedImagesDir(): File {
+    fun getResizedImagesDir(): File {
         val outputDir = File(getApplicationContext().filesDir, Constants.RESIZED_IMAGES_OUTPUT_PATH)
         if (!outputDir.exists()) {
             outputDir.mkdirs() // should succeed
@@ -155,4 +157,10 @@ object Injector {
     private fun getHomeRepo() = HomeRepo.getInstance(getHomeRemoteSource())
     fun getSliderUseCase() = GetSliderUseCase(getHomeRepo())
     fun getPromotionsUseCase() = GetPromotionsUseCase(getHomeRepo())
+
+    // uploader
+    private fun getUploaderRemoteSource() = UploaderRemoteSource(getAuthApiService())
+    private fun getUploaderRepo() = UploaderRepo.getInstance(getUploaderRemoteSource())
+
+    fun getUploadAdImageUseCase() = UploadAdImage(getLoggedInRepo(), getUploaderRepo())
 }

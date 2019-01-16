@@ -1,8 +1,9 @@
 package com.hmaserv.rz.service
 
-import android.app.IntentService
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import androidx.core.app.JobIntentService
 import com.facebook.spectrum.SpectrumException
 import com.facebook.spectrum.EncodedImageSink
 import com.facebook.spectrum.EncodedImageSource
@@ -11,28 +12,26 @@ import com.facebook.spectrum.image.ImageSize
 import com.facebook.spectrum.requirements.EncodeRequirement
 import com.facebook.spectrum.options.TranscodeOptions
 import com.facebook.spectrum.requirements.ResizeRequirement
+import com.hmaserv.rz.domain.DataResource
+import com.hmaserv.rz.domain.MainAttribute
 import com.hmaserv.rz.utils.Injector
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import java.io.File
 import java.io.IOException
 
-const val CREATE_AD_SERVICE_NAME = "createAdService"
+const val CREATE_AD_SERVICE_NAME = "createAdJobService"
+const val CREATE_AD_JOB_ID = 1000
 
-class CreateAdService : IntentService(CREATE_AD_SERVICE_NAME) {
+class CreateAdJobService : JobIntentService() {
 
-    private val dispatcherProvider = Injector.getCoroutinesDispatcherProvider()
-    private val parentJob = Job()
-    private val scope = CoroutineScope(parentJob)
-
-    private var createProductJob: Job? = null
     private val createAdUseCase = Injector.createAdUseCase()
+    private val uploadAdImageUseCase = Injector.getUploadAdImageUseCase()
 
-    private val resizedImages = ArrayList<String>()
+    private val resizedImages = ArrayList<File>()
 
-    override fun onHandleIntent(intent: Intent?) {
+    override fun onHandleWork(intent: Intent) {
 
-        val uris = intent?.getStringArrayListExtra("imagesUris")
+        val uris = intent.getStringArrayListExtra("imagesUris")
 
         if (uris != null) {
             for (uri: String in uris) {
@@ -51,7 +50,7 @@ class CreateAdService : IntentService(CREATE_AD_SERVICE_NAME) {
                                 CREATE_AD_SERVICE_NAME
                             )
                             if (result.isSuccessful)
-                                resizedImages.add(imagePath)
+                                resizedImages.add(File(imagePath))
                         }
 
                     }
@@ -70,29 +69,53 @@ class CreateAdService : IntentService(CREATE_AD_SERVICE_NAME) {
     }
 
     fun createProductTest() {
-        if (createProductJob?.isActive == true) {
-            return
-        }
-
-        createProductJob = launchCreateProductTest()
+        launchCreateProductTest()
     }
 
-    private fun launchCreateProductTest(): Job {
-        return scope.launch {
+    private fun launchCreateProductTest() {
+        runBlocking {
             val result = createAdUseCase.create(
                 "3f6a93ed-781b-459f-923e-9af386119690",
-                "Test Android two",
+                "Test Android four",
                 "some description",
                 "1500",
                 "1200",
                 "100"
             )
+
+            when (result) {
+                is DataResource.Success -> {
+                    for (image: File in resizedImages) {
+                        uploadImage(result.data.adsUuid!!, image)
+                    }
+                }
+                is DataResource.Error -> {
+
+                }
+            }
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        parentJob.cancel()
+    private suspend fun uploadImage(adUuid: String, image: File) {
+        uploadAdImageUseCase.upload(adUuid, image)
+    }
+
+    companion object {
+        fun enqueueWork(
+            context: Context,
+            title: String,
+            description: String,
+            price: String,
+            discountPrice: String,
+            quantity: String,
+            subCategoryUuid: String,
+            attributes: List<MainAttribute>,
+            images: ArrayList<String>
+        ) {
+            val intent = Intent(context, CreateAdJobService::class.java)
+            intent.putStringArrayListExtra("imagesUris", images)
+            enqueueWork(context, CreateAdJobService::class.java, CREATE_AD_JOB_ID, intent)
+        }
     }
 
 }

@@ -12,15 +12,16 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.Category
 import com.hmaserv.rz.domain.SubCategory
 import com.hmaserv.rz.domain.observeEvent
-import com.hmaserv.rz.service.CreateAdService
+import com.hmaserv.rz.service.CreateAdJobService
 
 import kotlinx.android.synthetic.main.create_ad_fragment.*
-import kotlinx.android.synthetic.main.login_fragment.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import timber.log.Timber
@@ -35,6 +36,7 @@ class CreateAdFragment : Fragment() {
 
     lateinit var categoriesAdapter: ArrayAdapter<Category>
     lateinit var subCategoriesAdapter: ArrayAdapter<SubCategory>
+    lateinit var imageAdapter: AdImagesAdapter
 
     private var categories = ArrayList<Category>()
     private var subCategories = ArrayList<SubCategory>()
@@ -52,6 +54,7 @@ class CreateAdFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(CreateAdViewModel::class.java)
+
         addPictureImgv.setOnClickListener {
             val intent = Intent(Intent.ACTION_GET_CONTENT)
             intent.type = "image/*"
@@ -59,11 +62,21 @@ class CreateAdFragment : Fragment() {
             intent.addCategory(Intent.CATEGORY_OPENABLE)
             startActivityForResult(intent, RC_IMAGES)
         }
+
         confirmBtn.setOnClickListener {
-            if (viewModel.getSelectedImagesSize() > 0) {
-                createAdWithImages()
-            } else {
-                viewModel.createProductTest()
+            if (validateViews()) {
+                createAd()
+            }
+        }
+
+        imageAdapter = AdImagesAdapter(viewModel.getSelectedImagesList())
+        picturesRv.adapter = imageAdapter
+        picturesRv.layoutManager = LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false)
+        imageAdapter.setOnItemChildClickListener { _, clickedView, position ->
+            if (clickedView.id == R.id.deleteImageImgv) {
+                viewModel.removeUri(position)
+                imageAdapter.notifyDataSetChanged()
+                addPictureImgv.visibility = View.VISIBLE
             }
         }
 
@@ -107,12 +120,6 @@ class CreateAdFragment : Fragment() {
 
         backBtn.setOnClickListener { activity?.onBackPressed() }
 
-        confirmBtn.setOnClickListener { createAd() }
-
-    }
-
-    private fun createAd() {
-        validateViews()
     }
 
     private fun onSubCategoryResponse(state: CreateAdViewModel.SubCategoriesUiState) {
@@ -149,16 +156,22 @@ class CreateAdFragment : Fragment() {
 
     }
 
-    private fun validateViews() {
+    private fun validateViews(): Boolean {
         if (addressEt.text.isEmpty()) {
             showMessage("Address Is Empty")
+            return false
         }else if (descriptionEt.text.isEmpty()) {
             showMessage("Desc Is Empty")
+            return false
         }else if (priceEt.text.isEmpty()) {
             showMessage("Price Is Empty")
+            return false
         }else if (priceWithDiscountEt.text.isEmpty()) {
             showMessage("Price With Discount Is Empty")
+            return false
         }
+
+        return true
     }
 
     private fun showMessage(message: String){
@@ -170,13 +183,12 @@ class CreateAdFragment : Fragment() {
     }
 
     @AfterPermissionGranted(RC_PERMISSION_STORAGE)
-    fun createAdWithImages() {
+    fun createAd() {
         val perms = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         if (EasyPermissions.hasPermissions(requireActivity(), *perms)) {
             // Already have permission, do the thing
-            val intent = Intent(requireContext(), CreateAdService::class.java)
-            intent.putStringArrayListExtra("imagesUris", viewModel.getSelectedImagesStringList())
-            requireActivity().startService(intent)
+//            images -> viewModel.getSelectedImagesStringList()
+//            CreateAdJobService.enqueueWork(requireActivity(), )
         } else {
             // Do not have permissions, request them now
             EasyPermissions.requestPermissions(
@@ -195,12 +207,12 @@ class CreateAdFragment : Fragment() {
                     val uri = data?.data
                     if (result != null) {
                         if (viewModel.addSelectedImages(result)) {
-//                            imagesAdapter.notifyItemRangeInserted(
-//                                viewModel.getSelectedImagesSize() - 1,
-//                                data.getClipData()!!.itemCount
-//                            )
+                            imageAdapter.notifyItemRangeInserted(
+                                viewModel.getSelectedImagesSize() - 1,
+                                data.clipData!!.itemCount
+                            )
                             if (viewModel.getSelectedImagesSize() > 9) {
-//                                addImagesBtn.setVisibility(View.GONE)
+                                addPictureImgv.visibility = View.GONE
                             }
                         } else {
                             Toast.makeText(activity, "You can not add more than 10 images.", Toast.LENGTH_SHORT).show()
@@ -209,10 +221,10 @@ class CreateAdFragment : Fragment() {
                         Timber.i(uri.toString())
                         Timber.i(uri.path)
                         if (viewModel.addSelectedImage(uri)) {
-//                            imagesAdapter.notifyItemInserted(viewModel.getSelectedImagesSize() - 1)
-//                            if (viewModel.getSelectedImagesSize() > 9) {
-//                                addImagesBtn.setVisibility(View.GONE)
-//                            }
+                            imageAdapter.notifyItemInserted(viewModel.getSelectedImagesSize() - 1)
+                            if (viewModel.getSelectedImagesSize() > 9) {
+                                addPictureImgv.setVisibility(View.GONE)
+                            }
                         } else {
                             Toast.makeText(activity, "You can not add more than 10 images.", Toast.LENGTH_SHORT)
                                 .show()

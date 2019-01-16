@@ -5,6 +5,7 @@ import com.hmaserv.rz.data.apiService.RetrofitApiService
 import com.hmaserv.rz.data.apiService.RetrofitAuthApiService
 import com.hmaserv.rz.domain.*
 import com.hmaserv.rz.utils.safeApiCall
+import timber.log.Timber
 import java.io.IOException
 
 class AdsRemoteSource(
@@ -68,16 +69,20 @@ class AdsRemoteSource(
     private suspend fun createAdCall(token: String, createProductRequest: CreateProductRequest): DataResource<CreateProductResponse> {
         val response = authApiService.createProduct(token, createProductRequest).await()
         if (response.success != null && response.success) {
+            Timber.i("response success")
             val body = response.data
             if (body != null) {
+                Timber.i("body success")
                 return DataResource.Success(body)
             }
         }
 
         if (response.message != null) {
+            Timber.i("error message")
             return DataResource.Error(IOException(response.message))
         }
 
+        Timber.i("error message null")
         return DataResource.Error(IOException("Error creating Ad"))
     }
 
