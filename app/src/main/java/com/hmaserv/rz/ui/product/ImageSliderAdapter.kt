@@ -31,7 +31,7 @@ class ImageSliderAdapter : PagerAdapter() {
 
         Glide.with(imageView)
             .load(images[position])
-            .apply(RequestOptions.placeholderOf(R.drawable.test_image))
+//            .apply(RequestOptions.placeholderOf(R.drawable.test_image))
             .into(imageView)
 
         return imageView

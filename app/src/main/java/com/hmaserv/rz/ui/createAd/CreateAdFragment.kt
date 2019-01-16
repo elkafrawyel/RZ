@@ -19,7 +19,6 @@ import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.Category
 import com.hmaserv.rz.domain.SubCategory
 import com.hmaserv.rz.domain.observeEvent
-import com.hmaserv.rz.service.CreateAdJobService
 
 import kotlinx.android.synthetic.main.create_ad_fragment.*
 import pub.devrel.easypermissions.AfterPermissionGranted
@@ -158,16 +157,16 @@ class CreateAdFragment : Fragment() {
 
     private fun validateViews(): Boolean {
         if (addressEt.text.isEmpty()) {
-            showMessage("Address Is Empty")
+            showMessage(getString(R.string.label_empty_address))
             return false
         }else if (descriptionEt.text.isEmpty()) {
-            showMessage("Desc Is Empty")
+            showMessage(getString(R.string.label_empty_description))
             return false
         }else if (priceEt.text.isEmpty()) {
-            showMessage("Price Is Empty")
+            showMessage(getString(R.string.label_empty_price))
             return false
         }else if (priceWithDiscountEt.text.isEmpty()) {
-            showMessage("Price With Discount Is Empty")
+            showMessage(getString(R.string.label_empty_price_discount))
             return false
         }
 

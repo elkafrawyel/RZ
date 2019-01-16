@@ -81,6 +81,10 @@
     <string name="label_review_number">(%1$s)</string>
     <string name="label_product_currency">%1$s R.S</string>
     <string name="label_attributes">Attributes</string>
-    <string name="lable_chip_text">%1$s | %2$s</string>
+    <string name="label_chip_text">%1$s | %2$s</string>
+    <string name="label_empty_address">Address Is Empty</string>
+    <string name="label_empty_description">Description Is Empty</string>
+    <string name="label_empty_price">Price Is Empty</string>
+    <string name="label_empty_price_discount">Price Discount Is Empty</string>
 
 </resources>

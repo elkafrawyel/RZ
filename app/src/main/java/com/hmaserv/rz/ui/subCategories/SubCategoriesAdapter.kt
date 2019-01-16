@@ -15,7 +15,7 @@ class SubCategoriesAdapter :
         (helper?.getView(R.id.section_image) as ImageView).let {
             Glide.with(mContext)
                 .load(item?.image)
-                .apply(RequestOptions.placeholderOf(R.drawable.test_image))
+//                .apply(RequestOptions.placeholderOf(R.drawable.test_image))
                 .into(it)
         }
 

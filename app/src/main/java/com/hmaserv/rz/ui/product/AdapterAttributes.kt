@@ -31,7 +31,7 @@ class AdapterAttributes : BaseQuickAdapter<MainAttribute, BaseViewHolder>
                     else
                         chip.text = mContext
                             .getString(
-                                R.string.lable_chip_text,
+                                R.string.label_chip_text,
                                 attribute.name,
                                 attribute.price.toString()
                             )
