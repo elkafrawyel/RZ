@@ -19,8 +19,16 @@ import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.io.IOException
 
-const val CREATE_AD_SERVICE_NAME = "createAdJobService"
 const val CREATE_AD_JOB_ID = 1000
+const val CREATE_AD_SERVICE_NAME = "createAdJobService"
+const val AD_TITLE = "createAdJobService"
+const val AD_DESCRIPTION = "createAdJobService"
+const val AD_PRICE = "createAdJobService"
+const val AD_DISCOUNT_PRICE = "createAdJobService"
+const val AD_QUANTITY = "createAdJobService"
+const val AD_SUB_UUID = "createAdJobService"
+const val AD_ATTRIBUTES = "createAdJobService"
+const val AD_IMAGES = "images"
 
 class CreateAdJobService : JobIntentService() {
 
@@ -31,10 +39,17 @@ class CreateAdJobService : JobIntentService() {
 
     override fun onHandleWork(intent: Intent) {
 
-        val uris = intent.getStringArrayListExtra("imagesUris")
+        val title = intent.getStringExtra(AD_TITLE)
+        val description = intent.getStringExtra(AD_DESCRIPTION)
+        val price = intent.getStringExtra(AD_PRICE)
+        val discountPrice = intent.getStringExtra(AD_DISCOUNT_PRICE)
+        val quantity = intent.getStringExtra(AD_QUANTITY)
+        val subCategoryUuid = intent.getStringExtra(AD_SUB_UUID)
+//        val attributes = intent.getParcelableArrayListExtra<MainAttribute>(AD_ATTRIBUTES)
+        val images = intent.getStringArrayListExtra(AD_IMAGES)
 
-        if (uris != null) {
-            for (uri: String in uris) {
+        if (images != null) {
+            for (uri: String in images) {
                 try {
                     contentResolver.openInputStream(Uri.parse(uri)).use { inputStream ->
                         val transcodeOptions = TranscodeOptions.Builder(EncodeRequirement(PNG, 80))
@@ -63,24 +78,37 @@ class CreateAdJobService : JobIntentService() {
                 }
             }
 
-            createProductTest()
+            launchCreateProductTest(
+                title,
+                description,
+                price,
+                discountPrice,
+                quantity,
+                subCategoryUuid,
+                listOf()
+            )
         }
 
     }
 
-    fun createProductTest() {
-        launchCreateProductTest()
-    }
-
-    private fun launchCreateProductTest() {
+    private fun launchCreateProductTest(
+        title: String,
+        description: String,
+        price: String,
+        discountPrice: String,
+        quantity: String,
+        subCategoryUuid: String,
+        attributes: List<MainAttribute>
+    ) {
         runBlocking {
             val result = createAdUseCase.create(
-                "3f6a93ed-781b-459f-923e-9af386119690",
-                "Test Android four",
-                "some description",
-                "1500",
-                "1200",
-                "100"
+                subCategoryUuid,
+                title,
+                description,
+                price,
+                discountPrice,
+                quantity,
+                attributes
             )
 
             when (result) {

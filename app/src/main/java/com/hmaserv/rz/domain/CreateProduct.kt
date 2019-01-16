@@ -19,5 +19,7 @@ data class CreateProductRequest(
     @field:Json(name = "sub_cat_uuid")
     val subCatUuid: String,
     @field:Json(name = "title")
-    val title: String
+    val title: String,
+    @field:Json(name = "characteristics")
+    val mainAttribute: List<MainAttribute>
 )
