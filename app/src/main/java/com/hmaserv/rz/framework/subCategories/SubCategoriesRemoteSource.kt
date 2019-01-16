@@ -2,10 +2,7 @@ package com.hmaserv.rz.framework.subCategories
 
 import com.hmaserv.rz.data.apiService.RetrofitApiService
 import com.hmaserv.rz.data.subCategories.ISubCategoriesRemoteSource
-import com.hmaserv.rz.domain.DataResource
-import com.hmaserv.rz.domain.SubCategory
-import com.hmaserv.rz.domain.SubCategoryRequest
-import com.hmaserv.rz.domain.SubCategoryResponse
+import com.hmaserv.rz.domain.*
 import com.hmaserv.rz.utils.safeApiCall
 import java.io.IOException
 
@@ -34,5 +31,28 @@ class SubCategoriesRemoteSource(
         }
 
         return DataResource.Error(IOException("Error getting sub categories"))
+    }
+
+    override suspend fun getAttributes(attributesRequest: AttributesRequest): DataResource<List<MainAttributeResponse>> {
+        return safeApiCall(
+            call = { getAttributesCall(attributesRequest) },
+            errorMessage = "Error getting attributes"
+        )
+    }
+
+    private suspend fun getAttributesCall(attributesRequest: AttributesRequest): DataResource<List<MainAttributeResponse>> {
+        val response = apiService.getAttributes(attributesRequest).await()
+        if (response.success != null && response.success) {
+            val body = response.data
+            if (body != null) {
+                return DataResource.Success(body)
+            }
+        }
+
+        if (response.message != null) {
+            return DataResource.Error(IOException(response.message))
+        }
+
+        return DataResource.Error(IOException("Error getting attributes"))
     }
 }

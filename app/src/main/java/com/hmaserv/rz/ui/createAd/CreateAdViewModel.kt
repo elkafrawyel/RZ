@@ -4,9 +4,9 @@ import android.content.ClipData
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.hmaserv.rz.domain.Category
-import com.hmaserv.rz.domain.Event
-import com.hmaserv.rz.domain.SubCategory
+import com.blankj.utilcode.util.NetworkUtils
+import com.hmaserv.rz.R
+import com.hmaserv.rz.domain.*
 import com.hmaserv.rz.ui.BaseViewModel
 import com.hmaserv.rz.utils.Injector
 import kotlinx.coroutines.Job
@@ -15,15 +15,13 @@ import kotlinx.coroutines.withContext
 
 class CreateAdViewModel : BaseViewModel() {
 
-    private var createProductJob: Job? = null
     private var getSavedCategoriesJob: Job? = null
     private var getSavedSubCategoriesJob: Job? = null
+    private var getAttributesJob: Job? = null
 
-    private val selectedImagesList = ArrayList<Uri>(10)
-
-    private val createAdUseCase = Injector.createAdUseCase()
     private val getSavedCategoriesUseCase = Injector.getSavedCategoriesUseCase()
     private val getSavedSubCategoriesUseCase = Injector.getSavedSubCategoriesUseCase()
+    private val getAttributesUseCase = Injector.getAttributesUseCase()
 
     private val _categoriesUiState = MutableLiveData<Event<CategoriesUiState>>()
     val categoriesUiState: LiveData<Event<CategoriesUiState>>
@@ -32,6 +30,13 @@ class CreateAdViewModel : BaseViewModel() {
     private val _subCategoriesUiState = MutableLiveData<Event<SubCategoriesUiState>>()
     val subCategoriesUiState: LiveData<Event<SubCategoriesUiState>>
         get() = _subCategoriesUiState
+
+    private val _attributesUiState = MutableLiveData<Event<AttributesUiState>>()
+    val attributesUiState: LiveData<Event<AttributesUiState>>
+        get() = _attributesUiState
+
+    private val selectedImagesList = ArrayList<Uri>(10)
+    val attributes = ArrayList<AttributeSection>()
 
     init {
         getSavedCategories()
@@ -73,17 +78,57 @@ class CreateAdViewModel : BaseViewModel() {
         }
     }
 
+    fun getAttributes(subCategoryUuid: String) {
+        if (getAttributesJob?.isActive == true) {
+            return
+        }
+        getAttributesJob = launchGetAttributesJob(subCategoryUuid)
+    }
+
+    private fun launchGetAttributesJob(subCategoryUuid: String): Job {
+        return scope.launch(dispatcherProvider.io) {
+            withContext(dispatcherProvider.main) { showAttributesLoading() }
+            if (NetworkUtils.isConnected()) {
+                val result = getAttributesUseCase.get(subCategoryUuid)
+                val attributesResult = ArrayList<Attribute>()
+                withContext(dispatcherProvider.computation) {
+                    when(result) {
+                        is DataResource.Success -> {
+                            val attributes = result.data
+                            attributes.forEach { main ->
+                                attributesResult.add(main)
+                                main.attributes.forEach { sub ->
+                                    attributesResult.add(sub)
+                                }
+                            }
+                        }
+                    }
+                }
+                withContext(dispatcherProvider.main) {
+                    when (result) {
+                        is DataResource.Success ->
+                            if (result.data.isEmpty()) {
+                                showAttributesEmptyView()
+                            } else {
+                                showAttributesSuccess(attributesResult)
+                            }
+                        is DataResource.Error -> showAttributesError(result.exception.message)
+                    }
+                }
+            } else {
+                withContext(dispatcherProvider.main) {
+                    showAttributesNoInternetConnection()
+                }
+            }
+        }
+    }
+
     private fun showCategoryLoading() {
         _categoriesUiState.value = Event(CategoriesUiState.Loading)
     }
 
     private fun showCategorySuccess(data: List<Category>) {
         _categoriesUiState.value = Event(CategoriesUiState.Success(data))
-    }
-
-    sealed class CategoriesUiState {
-        object Loading : CategoriesUiState()
-        data class Success(val categories: List<Category>) : CategoriesUiState()
     }
 
     private fun showSubCategoryLoading() {
@@ -94,30 +139,28 @@ class CreateAdViewModel : BaseViewModel() {
         _subCategoriesUiState.value = Event(SubCategoriesUiState.Success(data))
     }
 
-    sealed class SubCategoriesUiState {
-        object Loading : SubCategoriesUiState()
-        data class Success(val subCategories: List<SubCategory>) : SubCategoriesUiState()
+    private fun showAttributesLoading() {
+        _attributesUiState.value = Event(AttributesUiState.Loading)
     }
 
-    fun createProductTest() {
-        if (createProductJob?.isActive == true) {
-            return
-        }
-
-        createProductJob = launchCreateProductTest()
+    private fun showAttributesSuccess(data: List<Attribute>) {
+        _attributesUiState.value = Event(AttributesUiState.Success(data))
     }
 
-    private fun launchCreateProductTest(): Job {
-        return scope.launch(dispatcherProvider.io) {
-            val result = createAdUseCase.create(
-                "3f6a93ed-781b-459f-923e-9af386119690",
-                "Test Android one",
-                "some description",
-                "1500",
-                "1200",
-                "100"
+    private fun showAttributesError(message: String?) {
+        if (message != null) _attributesUiState.value = Event(AttributesUiState.Error(message))
+        else _attributesUiState.value = Event(
+            AttributesUiState.Error(
+                Injector.getApplicationContext().getString(R.string.error_general)
             )
-        }
+        )
+    }
+    private fun showAttributesEmptyView() {
+        _attributesUiState.value = Event(AttributesUiState.EmptyView)
+    }
+
+    private fun showAttributesNoInternetConnection() {
+        _attributesUiState.value = Event(AttributesUiState.NoInternetConnection)
     }
 
     fun addSelectedImage(uri: Uri): Boolean {
@@ -154,5 +197,27 @@ class CreateAdViewModel : BaseViewModel() {
 
     fun removeUri(position: Int) {
         selectedImagesList.removeAt(position)
+    }
+
+    fun getSelectedAttributes(): ArrayList<Attribute.MainAttribute> {
+        return ArrayList(attributes.filter { it.t?.isChecked == true }.mapNotNull { it.toMainAttribute() })
+    }
+
+    sealed class CategoriesUiState {
+        object Loading : CategoriesUiState()
+        data class Success(val categories: List<Category>) : CategoriesUiState()
+    }
+
+    sealed class SubCategoriesUiState {
+        object Loading : SubCategoriesUiState()
+        data class Success(val subCategories: List<SubCategory>) : SubCategoriesUiState()
+    }
+
+    sealed class AttributesUiState {
+        object Loading : AttributesUiState()
+        data class Success(val attributes: List<Attribute>) : AttributesUiState()
+        data class Error(val message: String) : AttributesUiState()
+        object NoInternetConnection : AttributesUiState()
+        object EmptyView : AttributesUiState()
     }
 }

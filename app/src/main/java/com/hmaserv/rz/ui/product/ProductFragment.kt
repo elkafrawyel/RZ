@@ -14,7 +14,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.Ad
-import com.hmaserv.rz.domain.MainAttribute
+import com.hmaserv.rz.domain.Attribute
 import com.hmaserv.rz.domain.Owner
 import com.hmaserv.rz.domain.observeEvent
 import kotlinx.android.synthetic.main.product_fragment.*
@@ -115,7 +115,7 @@ class ProductFragment : Fragment() {
         setAttributes(ad.mainAttributes)
     }
 
-    private fun setAttributes(mainAttributes: List<MainAttribute>) {
+    private fun setAttributes(mainAttributes: List<Attribute.MainAttribute>) {
         adapter.submitList(mainAttributes)
     }
 

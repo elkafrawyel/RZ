@@ -3,10 +3,7 @@ package com.hmaserv.rz.framework.subCategories
 import com.hmaserv.rz.data.subCategories.ISubCategoriesLocalSource
 import com.hmaserv.rz.data.subCategories.ISubCategoriesRemoteSource
 import com.hmaserv.rz.data.subCategories.ISubCategoriesRepo
-import com.hmaserv.rz.domain.DataResource
-import com.hmaserv.rz.domain.SubCategory
-import com.hmaserv.rz.domain.SubCategoryRequest
-import com.hmaserv.rz.domain.toSubCategory
+import com.hmaserv.rz.domain.*
 
 class SubCategoriesRepo(
     private var subCategoriesLocalSource: ISubCategoriesLocalSource,
@@ -32,6 +29,17 @@ class SubCategoriesRepo(
 
     override suspend fun getSaved(categoryUuid: String): List<SubCategory> {
         return subCategoriesLocalSource.get(categoryUuid)
+    }
+
+    override suspend fun getAttributes(attributesRequest: AttributesRequest): DataResource<List<Attribute.MainAttribute>> {
+        val result = subCategoriesRemoteSource.getAttributes(attributesRequest)
+        return when (result) {
+            is DataResource.Success -> {
+                val data = result.data.mapNotNull { it.toMainAttribute() }
+                DataResource.Success(data)
+            }
+            is DataResource.Error -> result
+        }
     }
 
     companion object {

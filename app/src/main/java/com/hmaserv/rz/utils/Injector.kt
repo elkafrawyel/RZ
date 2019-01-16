@@ -141,6 +141,7 @@ object Injector {
 
     fun getSubCategoriesUseCase() = GetSubCategoriesUseCase(getSubCategoriesRepo())
     fun getSavedSubCategoriesUseCase() = GetSavedSubCategoriesUseCase(getSubCategoriesRepo())
+    fun getAttributesUseCase() = GetAttributesUseCase(getSubCategoriesRepo())
 
     // Ads
     private fun getAdsRemoteSource() = AdsRemoteSource(getApiService(), getAuthApiService())

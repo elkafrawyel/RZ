@@ -7,14 +7,13 @@ import com.chad.library.adapter.base.BaseViewHolder
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.hmaserv.rz.R
-import com.hmaserv.rz.domain.MainAttribute
+import com.hmaserv.rz.domain.Attribute
 
-
-class AdapterAttributes : BaseQuickAdapter<MainAttribute, BaseViewHolder>
+class AdapterAttributes : BaseQuickAdapter<Attribute.MainAttribute, BaseViewHolder>
     (R.layout.attribute_item_view, emptyList()),
     ChipGroup.OnCheckedChangeListener {
 
-    override fun convert(helper: BaseViewHolder?, item: MainAttribute?) {
+    override fun convert(helper: BaseViewHolder?, item: Attribute.MainAttribute?) {
         helper?.setText(R.id.attrNameTv, item?.name)
 
         val chipGroup = helper?.getView<ChipGroup>(R.id.chip_group)
@@ -67,7 +66,7 @@ class AdapterAttributes : BaseQuickAdapter<MainAttribute, BaseViewHolder>
         }
     }
 
-    fun submitList(mainAttribute: List<MainAttribute>) {
+    fun submitList(mainAttribute: List<Attribute.MainAttribute>) {
         mData = mainAttribute
         notifyDataSetChanged()
     }

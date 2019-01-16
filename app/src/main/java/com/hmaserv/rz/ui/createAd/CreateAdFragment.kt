@@ -12,13 +12,13 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.hmaserv.rz.R
-import com.hmaserv.rz.domain.Category
-import com.hmaserv.rz.domain.SubCategory
-import com.hmaserv.rz.domain.observeEvent
+import com.hmaserv.rz.domain.*
+import com.hmaserv.rz.service.CreateAdJobService
 
 import kotlinx.android.synthetic.main.create_ad_fragment.*
 import pub.devrel.easypermissions.AfterPermissionGranted
@@ -36,6 +36,7 @@ class CreateAdFragment : Fragment() {
     lateinit var categoriesAdapter: ArrayAdapter<Category>
     lateinit var subCategoriesAdapter: ArrayAdapter<SubCategory>
     lateinit var imageAdapter: AdImagesAdapter
+    lateinit var attributesAdapter: AttributesAdapter
 
     private var categories = ArrayList<Category>()
     private var subCategories = ArrayList<SubCategory>()
@@ -79,19 +80,28 @@ class CreateAdFragment : Fragment() {
             }
         }
 
+        attributesAdapter = AttributesAdapter(viewModel.attributes, object: AttributesAdapter.AttributesCallback {
+            override fun onAttributePriceChanged(position: Int, price: String) {
+                viewModel.attributes[position].t = viewModel.attributes[position].t.copy(price = price.toInt())
+            }
+
+            override fun onAttributeChecked(position: Int, isChecked: Boolean) {
+                viewModel.attributes[position].t = viewModel.attributes[position].t.copy(isChecked = isChecked)
+            }
+        })
+        attributesRv.adapter = attributesAdapter
+        attributesRv.layoutManager = LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false)
+        viewModel.attributesUiState.observeEvent(this) { onAttributesStateChanged(it) }
+
         categoriesAdapter = ArrayAdapter(view.context, R.layout.spinner_item_view, categories)
         categoriesSpinner.adapter = categoriesAdapter
 
         subCategoriesAdapter = ArrayAdapter(view.context, R.layout.spinner_item_view, subCategories)
         subCategoriesSpinner.adapter = subCategoriesAdapter
 
-        viewModel.categoriesUiState.observeEvent(this) {
-            onCategoryResponse(it)
-        }
+        viewModel.categoriesUiState.observeEvent(this) { onCategoryResponse(it) }
 
-        viewModel.subCategoriesUiState.observeEvent(this) {
-            onSubCategoryResponse(it)
-        }
+        viewModel.subCategoriesUiState.observeEvent(this) { onSubCategoryResponse(it) }
 
         categoriesSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -112,13 +122,42 @@ class CreateAdFragment : Fragment() {
             }
 
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long){
-                selectedSubCategory = subCategories.get(position)
-
+                selectedSubCategory = subCategories[position]
+                viewModel.getAttributes(selectedSubCategory.uuid)
             }
         }
 
         backBtn.setOnClickListener { activity?.onBackPressed() }
+    }
 
+    private fun onAttributesStateChanged(state: CreateAdViewModel.AttributesUiState) {
+        when(state) {
+            CreateAdViewModel.AttributesUiState.Loading -> {}
+            is CreateAdViewModel.AttributesUiState.Success -> {
+                viewModel.attributes.clear()
+                viewModel.attributes.addAll(
+                    state.attributes.map {
+                        when(it) {
+                            is Attribute.MainAttribute -> {
+                                AttributeSection(
+                                    true,
+                                    it.name
+                                )
+                            }
+                            is Attribute.SubAttribute -> {
+                                AttributeSection(
+                                    it
+                                )
+                            }
+                        }
+                    }
+                )
+                attributesAdapter.notifyDataSetChanged()
+            }
+            is CreateAdViewModel.AttributesUiState.Error -> {}
+            CreateAdViewModel.AttributesUiState.NoInternetConnection -> {}
+            CreateAdViewModel.AttributesUiState.EmptyView -> {}
+        }
     }
 
     private fun onSubCategoryResponse(state: CreateAdViewModel.SubCategoriesUiState) {
@@ -156,21 +195,26 @@ class CreateAdFragment : Fragment() {
     }
 
     private fun validateViews(): Boolean {
-        if (addressEt.text.isEmpty()) {
-            showMessage(getString(R.string.label_empty_address))
-            return false
-        }else if (descriptionEt.text.isEmpty()) {
-            showMessage(getString(R.string.label_empty_description))
-            return false
-        }else if (priceEt.text.isEmpty()) {
-            showMessage(getString(R.string.label_empty_price))
-            return false
-        }else if (priceWithDiscountEt.text.isEmpty()) {
-            showMessage(getString(R.string.label_empty_price_discount))
-            return false
+        when {
+            addressEt.text.isEmpty() -> {
+                showMessage(getString(R.string.label_empty_address))
+                return false
+            }
+            descriptionEt.text.isEmpty() -> {
+                showMessage(getString(R.string.label_empty_description))
+                return false
+            }
+            priceEt.text.isEmpty() -> {
+                showMessage(getString(R.string.label_empty_price))
+                return false
+            }
+            priceWithDiscountEt.text.isEmpty() -> {
+                showMessage(getString(R.string.label_empty_price_discount))
+                return false
+            }
+            else -> return true
         }
 
-        return true
     }
 
     private fun showMessage(message: String){
@@ -186,8 +230,16 @@ class CreateAdFragment : Fragment() {
         val perms = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         if (EasyPermissions.hasPermissions(requireActivity(), *perms)) {
             // Already have permission, do the thing
-//            images -> viewModel.getSelectedImagesStringList()
-//            CreateAdJobService.enqueueWork(requireActivity(), )
+            CreateAdJobService.enqueueWork(
+                requireActivity(),
+                addressEt.text.toString(),
+                descriptionEt.text.toString(),
+                priceEt.text.toString(),
+                priceWithDiscountEt.text.toString(),
+                quantityEt.text.toString(),
+                selectedSubCategory.uuid,
+                viewModel.getSelectedAttributes(),
+                viewModel.getSelectedImagesStringList())
         } else {
             // Do not have permissions, request them now
             EasyPermissions.requestPermissions(

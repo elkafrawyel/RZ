@@ -12,8 +12,8 @@ import com.facebook.spectrum.image.ImageSize
 import com.facebook.spectrum.requirements.EncodeRequirement
 import com.facebook.spectrum.options.TranscodeOptions
 import com.facebook.spectrum.requirements.ResizeRequirement
+import com.hmaserv.rz.domain.Attribute
 import com.hmaserv.rz.domain.DataResource
-import com.hmaserv.rz.domain.MainAttribute
 import com.hmaserv.rz.utils.Injector
 import kotlinx.coroutines.runBlocking
 import java.io.File
@@ -21,13 +21,13 @@ import java.io.IOException
 
 const val CREATE_AD_JOB_ID = 1000
 const val CREATE_AD_SERVICE_NAME = "createAdJobService"
-const val AD_TITLE = "createAdJobService"
-const val AD_DESCRIPTION = "createAdJobService"
-const val AD_PRICE = "createAdJobService"
-const val AD_DISCOUNT_PRICE = "createAdJobService"
-const val AD_QUANTITY = "createAdJobService"
-const val AD_SUB_UUID = "createAdJobService"
-const val AD_ATTRIBUTES = "createAdJobService"
+const val AD_TITLE = "title"
+const val AD_DESCRIPTION = "description"
+const val AD_PRICE = "price"
+const val AD_DISCOUNT_PRICE = "discountPrice"
+const val AD_QUANTITY = "quantity"
+const val AD_SUB_UUID = "subUuid"
+const val AD_ATTRIBUTES = "attributes"
 const val AD_IMAGES = "images"
 
 class CreateAdJobService : JobIntentService() {
@@ -45,7 +45,7 @@ class CreateAdJobService : JobIntentService() {
         val discountPrice = intent.getStringExtra(AD_DISCOUNT_PRICE)
         val quantity = intent.getStringExtra(AD_QUANTITY)
         val subCategoryUuid = intent.getStringExtra(AD_SUB_UUID)
-//        val attributes = intent.getParcelableArrayListExtra<MainAttribute>(AD_ATTRIBUTES)
+        val attributes = intent.getParcelableArrayListExtra<Attribute.MainAttribute>(AD_ATTRIBUTES)
         val images = intent.getStringArrayListExtra(AD_IMAGES)
 
         if (images != null) {
@@ -85,7 +85,7 @@ class CreateAdJobService : JobIntentService() {
                 discountPrice,
                 quantity,
                 subCategoryUuid,
-                listOf()
+                attributes
             )
         }
 
@@ -98,7 +98,7 @@ class CreateAdJobService : JobIntentService() {
         discountPrice: String,
         quantity: String,
         subCategoryUuid: String,
-        attributes: List<MainAttribute>
+        attributes: List<Attribute.MainAttribute>
     ) {
         runBlocking {
             val result = createAdUseCase.create(
@@ -137,11 +137,18 @@ class CreateAdJobService : JobIntentService() {
             discountPrice: String,
             quantity: String,
             subCategoryUuid: String,
-            attributes: List<MainAttribute>,
+            attributes: ArrayList<Attribute.MainAttribute>,
             images: ArrayList<String>
         ) {
             val intent = Intent(context, CreateAdJobService::class.java)
-            intent.putStringArrayListExtra("imagesUris", images)
+            intent.putExtra(AD_TITLE, title)
+            intent.putExtra(AD_DESCRIPTION, description)
+            intent.putExtra(AD_PRICE, price)
+            intent.putExtra(AD_DISCOUNT_PRICE, discountPrice)
+            intent.putExtra(AD_QUANTITY, quantity)
+            intent.putExtra(AD_SUB_UUID, subCategoryUuid)
+            intent.putParcelableArrayListExtra(AD_ATTRIBUTES, attributes)
+            intent.putStringArrayListExtra(AD_IMAGES, images)
             enqueueWork(context, CreateAdJobService::class.java, CREATE_AD_JOB_ID, intent)
         }
     }

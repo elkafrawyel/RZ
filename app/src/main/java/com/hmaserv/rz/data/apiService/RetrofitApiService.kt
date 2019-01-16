@@ -36,6 +36,9 @@ interface RetrofitApiService {
     @POST("subCategories/ads")
     fun getMiniAds(@Body miniAdRequest: MiniAdRequest): Deferred<ApiResponse<List<MiniAdResponse>>>
 
+    @POST("subCategories/characteristics")
+    fun getAttributes(@Body attributesRequest: AttributesRequest): Deferred<ApiResponse<List<MainAttributeResponse>>>
+
     @POST("ads/details")
     fun getAd(@Body adRequest: AdRequest): Deferred<ApiResponse<AdResponse>>
 

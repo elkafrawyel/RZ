@@ -29,6 +29,10 @@ android {
             enable true
         }
     }
+
+    androidExtensions {
+        experimental = true
+    }
 }
 
 dependencies {

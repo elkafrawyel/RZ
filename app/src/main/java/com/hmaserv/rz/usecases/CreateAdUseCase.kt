@@ -2,10 +2,10 @@ package com.hmaserv.rz.usecases
 
 import com.hmaserv.rz.data.ads.IAdsRepo
 import com.hmaserv.rz.data.logedInUser.ILoggedInUserRepo
+import com.hmaserv.rz.domain.Attribute
 import com.hmaserv.rz.domain.CreateProductRequest
 import com.hmaserv.rz.domain.CreateProductResponse
 import com.hmaserv.rz.domain.DataResource
-import com.hmaserv.rz.domain.MainAttribute
 import com.hmaserv.rz.utils.Constants
 
 class CreateAdUseCase(
@@ -20,17 +20,17 @@ class CreateAdUseCase(
         price: String,
         discountPrice: String,
         quantity: String,
-        mainAttributes: List<MainAttribute>
+        mainAttributes: List<Attribute.MainAttribute>
     ): DataResource<CreateProductResponse> {
         return adsRepo.createAd(
             "${Constants.AUTHORIZATION_START} ${loggedInUserRepo.getLoggedInUser().token}",
             CreateProductRequest(
-                description,
-                discountPrice.toInt(),
-                price.toInt(),
-                quantity.toInt(),
                 subCategoryUuid,
                 title,
+                description,
+                price.toInt(),
+                discountPrice.toInt(),
+                quantity.toInt(),
                 mainAttributes
             )
         )

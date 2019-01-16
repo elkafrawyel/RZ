@@ -30,20 +30,6 @@ data class AdResponse(
     val title: String?
 )
 
-data class MainAttributeResponse(
-    @field:Json(name = "name")
-    val name: String?,
-    @field:Json(name = "values")
-    val attributes: List<AttributeResponse?>?
-)
-
-data class AttributeResponse(
-    @field:Json(name = "name")
-    val name: String?,
-    @field:Json(name = "price")
-    val price: Int?
-)
-
 data class OwnerResponse(
     @field:Json(name = "avatar")
     val avatar: String?,
@@ -60,7 +46,7 @@ data class AdRequest(
 
 data class Ad(
     val uuid: String,
-    val mainAttributes: List<MainAttribute>,
+    val mainAttributes: List<Attribute.MainAttribute>,
     val date: String,
     val description: String,
     val discountPrice: Int,
@@ -71,16 +57,6 @@ data class Ad(
     val reviewsNo: Int,
     val subCategoryName: String,
     val title: String
-)
-
-data class MainAttribute(
-    val name: String,
-    val attributes: List<Attribute>
-)
-
-data class Attribute(
-    val name: String,
-    val price: Int
 )
 
 data class Owner(
@@ -116,32 +92,6 @@ fun AdResponse.toAd(): Ad? {
             reviews,
             subCategory,
             title
-        )
-    }
-
-    return null
-}
-
-fun MainAttributeResponse.toMainAttribute(): MainAttribute? {
-    if (this.name != null
-        && this.attributes != null
-    ) {
-        return MainAttribute(
-            name,
-            attributes.filterNotNull().mapNotNull { it.toAttribute() }
-        )
-    }
-
-    return null
-}
-
-fun AttributeResponse.toAttribute(): Attribute? {
-    if (this.name != null
-        && this.price != null
-    ) {
-        return Attribute(
-            name,
-            price
         )
     }
 
