@@ -17,8 +17,8 @@ class CategoriesRepo(
         return when (result) {
             is DataResource.Success -> {
                 val data = result.data.mapNotNull { it.toCategory() }
-                categoriesLocalSource.deleteCategories()
-                categoriesLocalSource.saveCategories(data)
+                categoriesLocalSource.deleteAll()
+                categoriesLocalSource.save(data)
                 DataResource.Success(data)
             }
             is DataResource.Error -> result
@@ -26,7 +26,7 @@ class CategoriesRepo(
     }
 
     override suspend fun getSavedCategories(): List<Category> {
-        return categoriesLocalSource.getCategories()
+        return categoriesLocalSource.getAll()
     }
 
     companion object {

@@ -12,16 +12,16 @@ class CategoriesLocalSource(
 
     private val categoriesBox: Box<Category> = boxStore.boxFor()
 
-    override suspend fun getCategories(): List<Category> {
+    override suspend fun getAll(): List<Category> {
         return categoriesBox.all?.filterNotNull() ?: listOf()
     }
 
-    override suspend fun saveCategories(categories: List<Category>): Boolean {
+    override suspend fun save(categories: List<Category>): Boolean {
         categoriesBox.put(categories)
         return true
     }
 
-    override suspend fun deleteCategories(): Boolean {
+    override suspend fun deleteAll(): Boolean {
         categoriesBox.removeAll()
         return true
     }

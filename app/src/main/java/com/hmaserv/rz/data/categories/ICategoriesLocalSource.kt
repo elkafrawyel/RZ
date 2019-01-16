@@ -3,7 +3,7 @@ package com.hmaserv.rz.data.categories
 import com.hmaserv.rz.domain.Category
 
 interface ICategoriesLocalSource {
-    suspend fun getCategories(): List<Category>
-    suspend fun saveCategories(categories: List<Category>): Boolean
-    suspend fun deleteCategories(): Boolean
+    suspend fun getAll(): List<Category>
+    suspend fun save(categories: List<Category>): Boolean
+    suspend fun deleteAll(): Boolean
 }
