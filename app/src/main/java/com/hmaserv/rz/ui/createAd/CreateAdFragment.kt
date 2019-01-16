@@ -1,10 +1,8 @@
-package com.hmaserv.rz.ui.createProduct
+package com.hmaserv.rz.ui.createAd
 
 import android.Manifest
 import android.app.Activity.RESULT_OK
-import android.content.ClipData
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,7 +13,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.hmaserv.rz.R
 import com.hmaserv.rz.service.CreateAdService
 
-import kotlinx.android.synthetic.main.create_product_fragment.*
+import kotlinx.android.synthetic.main.create_ad_fragment.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import timber.log.Timber
@@ -23,20 +21,20 @@ import timber.log.Timber
 const val RC_PERMISSION_STORAGE = 1
 const val RC_IMAGES = 2
 
-class CreateProductFragment : Fragment() {
+class CreateAdFragment : Fragment() {
 
-    lateinit var viewModel: CreateProductViewModel
+    lateinit var viewModel: CreateAdViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.create_product_fragment, container, false)
+        return inflater.inflate(R.layout.create_ad_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(CreateProductViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(CreateAdViewModel::class.java)
         addPictureImgv.setOnClickListener {
             val intent = Intent(Intent.ACTION_GET_CONTENT)
             intent.type = "image/*"

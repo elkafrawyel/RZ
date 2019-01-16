@@ -9,8 +9,6 @@ import com.hmaserv.rz.data.apiService.RetrofitApiService
 import com.hmaserv.rz.data.apiService.RetrofitAuthApiService
 import com.hmaserv.rz.framework.categories.CategoriesRemoteSource
 import com.hmaserv.rz.framework.categories.CategoriesRepo
-import com.hmaserv.rz.framework.createProduct.CreateProductRemoteSource
-import com.hmaserv.rz.framework.createProduct.CreateProductRepo
 import com.hmaserv.rz.framework.home.HomeRemoteSource
 import com.hmaserv.rz.framework.home.HomeRepo
 import com.hmaserv.rz.framework.logedInUser.LoggedInUserLocalSource
@@ -141,25 +139,19 @@ object Injector {
 
     fun getSubCategoriesUseCase() = GetSubCategoriesUseCase(getSubCategoriesRepo())
 
-    // Products
-    private fun getAdsRemoteSource() = AdsRemoteSource(getApiService())
+    // Ads
+    private fun getAdsRemoteSource() = AdsRemoteSource(getApiService(), getAuthApiService())
     private fun getAdsRepo() = AdsRepo.getInstance(
         getAdsRemoteSource()
     )
 
-    fun getAdsUseCase() = GetMiniAdsUseCase(getAdsRepo())
+    fun getMiniAdsUseCase() = GetMiniAdsUseCase(getAdsRepo())
+    fun getAdUseCase() = GetAdUseCase(getAdsRepo())
+    fun createAdUseCase() = CreateAdUseCase(getLoggedInRepo(), getAdsRepo())
 
     // home
     private fun getHomeRemoteSource() = HomeRemoteSource(getApiService())
     private fun getHomeRepo() = HomeRepo.getInstance(getHomeRemoteSource())
     fun getSliderUseCase() = GetSliderUseCase(getHomeRepo())
     fun getPromotionsUseCase() = GetPromotionsUseCase(getHomeRepo())
-
-    // create product
-    private fun getCreateProductRemoteSource() = CreateProductRemoteSource(getAuthApiService())
-    private fun getCreateProductRepo() = CreateProductRepo.getInstance(getCreateProductRemoteSource())
-    fun getCreateProductUseCase() = CreateProductUseCase(getLoggedInRepo(), getCreateProductRepo())
-
-    // Ad Details
-    fun getAdUseCase() = GetAdUseCase(getAdsRepo())
 }

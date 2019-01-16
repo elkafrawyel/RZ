@@ -14,8 +14,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class ProductsViewModel : BaseViewModel() {
+
     private var getProductsJob: Job? = null
-    private val getProductsUseCase = Injector.getAdsUseCase()
+    private val getMiniAdsUseCase = Injector.getMiniAdsUseCase()
 
     private val _uiState = MutableLiveData<Event<ProductsUiState>>()
     val uiState: LiveData<Event<ProductsUiState>>
@@ -49,7 +50,7 @@ class ProductsViewModel : BaseViewModel() {
         return scope.launch(dispatcherProvider.computation) {
             withContext(dispatcherProvider.main) { showLoading() }
             if (NetworkUtils.isConnected()) {
-                val result = getProductsUseCase.get(uuid)
+                val result = getMiniAdsUseCase.get(uuid)
                 withContext(dispatcherProvider.main) {
                     when (result) {
                         is DataResource.Success ->

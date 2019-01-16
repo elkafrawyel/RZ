@@ -1,4 +1,4 @@
-package com.hmaserv.rz.ui.createProduct
+package com.hmaserv.rz.ui.createAd
 
 import android.content.ClipData
 import android.net.Uri
@@ -7,12 +7,12 @@ import com.hmaserv.rz.utils.Injector
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class CreateProductViewModel : BaseViewModel() {
+class CreateAdViewModel : BaseViewModel() {
 
     private var createProductJob: Job? = null
     private val selectedImagesList = ArrayList<Uri>(10)
 
-    private val createProductUseCase = Injector.getCreateProductUseCase()
+    private val createAdUseCase = Injector.createAdUseCase()
 
     fun createProductTest() {
         if (createProductJob?.isActive == true) {
@@ -24,7 +24,7 @@ class CreateProductViewModel : BaseViewModel() {
 
     private fun launchCreateProductTest(): Job {
         return scope.launch(dispatcherProvider.io) {
-            val result = createProductUseCase.create(
+            val result = createAdUseCase.create(
                 "3f6a93ed-781b-459f-923e-9af386119690",
                 "Test Android one",
                 "some description",

@@ -46,9 +46,9 @@
     </fragment>
     <fragment
         android:id="@+id/createProductFragment"
-        android:name="com.hmaserv.rz.ui.createProduct.CreateProductFragment"
+        android:name="com.hmaserv.rz.ui.createAd.CreateAdFragment"
         android:label="create_product_fragment"
-        tools:layout="@layout/create_product_fragment" />
+        tools:layout="@layout/create_ad_fragment" />
     <fragment
         android:id="@+id/contactUsFragment"
         android:name="com.hmaserv.rz.ui.contactUs.ContactUsFragment"

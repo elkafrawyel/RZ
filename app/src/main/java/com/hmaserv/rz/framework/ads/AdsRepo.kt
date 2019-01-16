@@ -31,6 +31,10 @@ class AdsRepo(
         }
     }
 
+    override suspend fun createAd(token: String, createProductRequest: CreateProductRequest): DataResource<CreateProductResponse> {
+        return adsRemoteSource.createAd(token, createProductRequest)
+    }
+
     companion object {
         @Volatile
         private var INSTANCE: AdsRepo? = null

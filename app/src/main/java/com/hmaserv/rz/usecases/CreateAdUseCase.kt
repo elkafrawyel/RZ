@@ -1,15 +1,15 @@
 package com.hmaserv.rz.usecases
 
-import com.hmaserv.rz.data.createProduct.ICreateProductRepo
+import com.hmaserv.rz.data.ads.IAdsRepo
 import com.hmaserv.rz.data.logedInUser.ILoggedInUserRepo
 import com.hmaserv.rz.domain.CreateProductRequest
 import com.hmaserv.rz.domain.CreateProductResponse
 import com.hmaserv.rz.domain.DataResource
 import com.hmaserv.rz.utils.Constants
 
-class CreateProductUseCase(
+class CreateAdUseCase(
     private val loggedInUserRepo: ILoggedInUserRepo,
-    private val createProductRepo: ICreateProductRepo
+    private val adsRepo: IAdsRepo
 ) {
 
     suspend fun create(
@@ -20,7 +20,7 @@ class CreateProductUseCase(
         discountPrice: String,
         quantity: String
     ): DataResource<CreateProductResponse> {
-        return createProductRepo.createProduct(
+        return adsRepo.createAd(
             "${Constants.AUTHORIZATION_START} ${loggedInUserRepo.getLoggedInUser().token}",
             CreateProductRequest(
                 description,

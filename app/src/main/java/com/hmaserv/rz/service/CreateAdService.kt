@@ -26,7 +26,7 @@ class CreateAdService : IntentService(CREATE_AD_SERVICE_NAME) {
     private val scope = CoroutineScope(parentJob)
 
     private var createProductJob: Job? = null
-    private val createProductUseCase = Injector.getCreateProductUseCase()
+    private val createAdUseCase = Injector.createAdUseCase()
 
     private val resizedImages = ArrayList<String>()
 
@@ -79,7 +79,7 @@ class CreateAdService : IntentService(CREATE_AD_SERVICE_NAME) {
 
     private fun launchCreateProductTest(): Job {
         return scope.launch {
-            val result = createProductUseCase.create(
+            val result = createAdUseCase.create(
                 "3f6a93ed-781b-459f-923e-9af386119690",
                 "Test Android two",
                 "some description",
