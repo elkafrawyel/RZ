@@ -97,6 +97,14 @@ class LoginFragment : Fragment() {
 
     private fun showStateError(message: String) {
         loadingFl.visibility = View.GONE
-        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
+        showMessage(message)
+    }
+
+    private fun showMessage(message: String){
+        val snack_bar = Snackbar.make(rootViewSv,message,Snackbar.LENGTH_LONG)
+        val view = snack_bar.view
+        val textView = view.findViewById<View>(R.id.snackbar_text)
+        textView.textAlignment = View.TEXT_ALIGNMENT_CENTER
+        snack_bar.show()
     }
 }

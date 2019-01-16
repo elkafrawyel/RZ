@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.Event
 import com.hmaserv.rz.domain.LoggedInUser
@@ -23,12 +24,15 @@ class RegisterFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.register_fragment, container, false)
+        return inflater.inflate(R.layout.register_fragment, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         view.createAccountBtn.setOnClickListener { onRegisterClicked() }
-        view.loginTv.setOnClickListener{openLoginFragment()}
+        view.loginTv.setOnClickListener { openLoginFragment() }
         viewModel = ViewModelProviders.of(this).get(RegisterViewModel::class.java)
         viewModel.uiState.observe(this, Observer { onUiStateChanged(it) })
-        return view
     }
 
     private fun openLoginFragment() {
@@ -73,7 +77,14 @@ class RegisterFragment : Fragment() {
 
     private fun showStateError(message: String) {
 //        loadingFl.visibility = View.GONE
-        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
+        showMessage(message)
     }
 
+    private fun showMessage(message: String) {
+        val snack_bar = Snackbar.make(rootViewSv, message, Snackbar.LENGTH_LONG)
+        val view = snack_bar.view
+        val textView = view.findViewById<View>(R.id.snackbar_text)
+        textView.textAlignment = View.TEXT_ALIGNMENT_CENTER
+        snack_bar.show()
+    }
 }

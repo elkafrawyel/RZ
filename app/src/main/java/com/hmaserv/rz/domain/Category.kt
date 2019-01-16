@@ -20,7 +20,11 @@ data class Category(
     @Unique val uuid: String = "",
     val title: String = "",
     val image: String = ""
-)
+) {
+    override fun toString(): String {
+        return title
+    }
+}
 
 fun CategoryResponse.toCategory(): Category? {
     if (uuid != null
@@ -37,3 +41,4 @@ fun CategoryResponse.toCategory(): Category? {
 
     return null
 }
+

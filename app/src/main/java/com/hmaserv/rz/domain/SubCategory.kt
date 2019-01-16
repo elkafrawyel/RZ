@@ -26,7 +26,12 @@ data class SubCategory(
     @Unique val uuid: String = "",
     val title: String = "",
     val image: String = ""
-)
+
+) {
+    override fun toString(): String {
+        return title
+    }
+}
 
 fun SubCategoryResponse.toSubCategory(categoryUuid: String): SubCategory? {
     if (uuid != null

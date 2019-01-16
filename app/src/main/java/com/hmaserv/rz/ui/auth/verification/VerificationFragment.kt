@@ -5,14 +5,13 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-
+import com.google.android.material.snackbar.Snackbar
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.observeEvent
 import kotlinx.android.synthetic.main.verfication_fragment.*
@@ -164,7 +163,7 @@ class VerificationFragment : Fragment() {
     }
 
     private fun onUiStateChanged(state: VerficationViewModel.VerifyUiState) {
-        when(state) {
+        when (state) {
             VerficationViewModel.VerifyUiState.Loading -> showStateLoading()
             VerficationViewModel.VerifyUiState.Success -> showStateSuccess()
             is VerficationViewModel.VerifyUiState.Error -> showStateError()
@@ -176,7 +175,7 @@ class VerificationFragment : Fragment() {
     }
 
     private fun showStateSuccess() {
-        Toast.makeText(activity, "success", Toast.LENGTH_SHORT).show()
+        showMessage("success")
         val action = VerificationFragmentDirections.ActionVerificationFragmentToLoginFragment(
             phoneNumber,
             password
@@ -185,8 +184,14 @@ class VerificationFragment : Fragment() {
     }
 
     private fun showStateError() {
-        Toast.makeText(activity, "error", Toast.LENGTH_SHORT).show()
+        showMessage("error")
     }
 
-
+    private fun showMessage(message: String) {
+        val snack_bar = Snackbar.make(rootViewCl, message, Snackbar.LENGTH_LONG)
+        val view = snack_bar.view
+        val textView = view.findViewById<View>(R.id.snackbar_text)
+        textView.textAlignment = View.TEXT_ALIGNMENT_CENTER
+        snack_bar.show()
+    }
 }

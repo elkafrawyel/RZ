@@ -5,15 +5,31 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.hmaserv.rz.R
+import com.hmaserv.rz.domain.Category
+import com.hmaserv.rz.domain.SubCategory
+import com.hmaserv.rz.domain.observeEvent
+import kotlinx.android.synthetic.main.search_fragment.*
+import java.util.*
 
 
 class SearchFragment : Fragment() {
 
-    lateinit var categoriesAdapter: ArrayAdapter<String>
-    lateinit var subCategoriesAdapter: ArrayAdapter<String>
+    lateinit var viewModel: SearchViewModel
+
+    lateinit var categoriesAdapter: ArrayAdapter<Category>
+    lateinit var subCategoriesAdapter: ArrayAdapter<SubCategory>
+
+    private var categories = ArrayList<Category>()
+    private var subCategories = ArrayList<SubCategory>()
+
+    lateinit var selectedCategory: Category
+    lateinit var selectedSubCategory: SubCategory
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,6 +40,79 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel = ViewModelProviders.of(this).get(SearchViewModel::class.java)
+
+        categoriesAdapter = ArrayAdapter(view.context, R.layout.spinner_item_view, categories)
+        categoriesSpinner.adapter = categoriesAdapter
+
+        subCategoriesAdapter = ArrayAdapter(view.context, R.layout.spinner_item_view, subCategories)
+        subCategoriesSpinner.adapter = subCategoriesAdapter
+
+        viewModel.categoriesUiState.observeEvent(this) {
+            onCategoryResponse(it)
+        }
+
+        viewModel.subCategoriesUiState.observeEvent(this) {
+            onSubCategoryResponse(it)
+        }
+
+        categoriesSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
+            }
+
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
+                selectedCategory = categories.get(position)
+                val uuid = selectedCategory.uuid
+                viewModel.getSavedSubCategories(uuid)
+
+            }
+        }
+
+        subCategoriesSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
+            }
+
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long){
+                selectedSubCategory = subCategories.get(position)
+
+            }
+        }
+    }
+
+    private fun onSubCategoryResponse(state: SearchViewModel.SubCategoriesUiState) {
+        when (state) {
+
+            is SearchViewModel.SubCategoriesUiState.Loading -> showSubCategoryLoading()
+            is SearchViewModel.SubCategoriesUiState.Success -> showSubCategorySuccess(state.subCategories)
+        }
+    }
+
+    private fun showSubCategorySuccess(subCategoriesList: List<SubCategory>) {
+        subCategories.addAll(subCategoriesList)
+        subCategoriesAdapter.notifyDataSetChanged()
+    }
+
+    private fun showSubCategoryLoading() {
+
+    }
+
+    private fun onCategoryResponse(state: SearchViewModel.CategoriesUiState) {
+        when (state) {
+
+            is SearchViewModel.CategoriesUiState.Loading -> showCategoryLoading()
+            is SearchViewModel.CategoriesUiState.Success -> showCategorySuccess(state.categories)
+        }
+    }
+
+    private fun showCategorySuccess(categoriesList: List<Category>) {
+        categories.addAll(categoriesList)
+        categoriesAdapter.notifyDataSetChanged()
+    }
+
+    private fun showCategoryLoading() {
 
     }
 }

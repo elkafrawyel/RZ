@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".ui.auth.login.LoginFragment">
+    tools:context=".ui.auth.login.LoginFragment"
+    android:id="@+id/rootViewSv">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

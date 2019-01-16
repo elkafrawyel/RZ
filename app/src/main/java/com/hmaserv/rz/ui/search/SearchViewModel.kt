@@ -3,7 +3,6 @@ package com.hmaserv.rz.ui.search
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.hmaserv.rz.domain.Category
-import com.hmaserv.rz.domain.DataResource
 import com.hmaserv.rz.domain.Event
 import com.hmaserv.rz.domain.SubCategory
 import com.hmaserv.rz.ui.BaseViewModel
@@ -49,7 +48,7 @@ class SearchViewModel : BaseViewModel() {
         }
     }
 
-    private fun getSavedSubCategories(categoryUuid: String) {
+    fun getSavedSubCategories(categoryUuid: String) {
         if (getSavedCategoriesJob?.isActive == true) {
             return
         }
@@ -59,7 +58,7 @@ class SearchViewModel : BaseViewModel() {
 
     private fun launchGetSavedCategoriesJob(categoryUuid: String): Job? {
         return scope.launch(dispatcherProvider.computation) {
-            withContext(dispatcherProvider.main) { showCategoryLoading() }
+            withContext(dispatcherProvider.main) { showSubCategoryLoading() }
             val data = getSavedSubCategoriesUseCase.get(categoryUuid)
             withContext(dispatcherProvider.main) {
                 showSubCategorySuccess(data)
@@ -91,6 +90,5 @@ class SearchViewModel : BaseViewModel() {
     sealed class SubCategoriesUiState {
         object Loading : SubCategoriesUiState()
         data class Success(val subCategories: List<SubCategory>) : SubCategoriesUiState()
-        data class Error(val message: String) : SubCategoriesUiState()
     }
 }
