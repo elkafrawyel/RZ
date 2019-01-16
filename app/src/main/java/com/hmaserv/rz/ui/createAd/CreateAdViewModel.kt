@@ -200,7 +200,18 @@ class CreateAdViewModel : BaseViewModel() {
     }
 
     fun getSelectedAttributes(): ArrayList<Attribute.MainAttribute> {
-        return ArrayList(attributes.filter { it.t?.isChecked == true }.mapNotNull { it.toMainAttribute() })
+        val map = HashMap<String, ArrayList<Attribute.SubAttribute>>()
+        attributes
+            .filter { !it.isHeader && it.t?.isChecked == true }
+            .forEach {
+                val value = map[it.t.mainAttributeName]
+                if (value != null) {
+                    value.add(it.t)
+                } else {
+                    map[it.t.mainAttributeName] = arrayListOf(it.t)
+                }
+            }
+        return ArrayList(map.map { Attribute.MainAttribute(it.key, it.value) })
     }
 
     sealed class CategoriesUiState {
