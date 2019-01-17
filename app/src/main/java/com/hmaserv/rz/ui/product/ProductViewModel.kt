@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.blankj.utilcode.util.NetworkUtils
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.Ad
+import com.hmaserv.rz.domain.Attribute
 import com.hmaserv.rz.domain.DataResource
 import com.hmaserv.rz.domain.Event
 import com.hmaserv.rz.ui.BaseViewModel
@@ -24,6 +25,9 @@ class ProductViewModel : BaseViewModel() {
         get() = _uiState
 
     private var adUuid: String? = null
+
+    val attributes = ArrayList<Attribute.MainAttribute>()
+    val selectedAttributes = ArrayList<Attribute.MainAttribute>()
 
     fun setAdId(adUuid: String) {
         if (this.adUuid == null) {
@@ -49,7 +53,14 @@ class ProductViewModel : BaseViewModel() {
             val result = getAdUseCase.getAd(adUuid)
             withContext(dispatcherProvider.main) {
                 when (result) {
-                    is DataResource.Success -> showSuccess(result.data)
+                    is DataResource.Success -> {
+                        result.data.mainAttributes.forEach { main ->
+                            main.attributes.firstOrNull()?.isChecked = true
+                            selectedAttributes.add(main.copy(attributes = main.attributes.take(1)))
+                        }
+                        attributes.addAll(result.data.mainAttributes)
+                        showSuccess(result.data)
+                    }
                     is DataResource.Error -> showError(result.exception.message)
                 }
             }

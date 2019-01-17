@@ -3,4 +3,4 @@
     android:id="@+id/attributeHeaderTv"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:textAppearance="?attr/textAppearanceHeadline6" />
+    android:textAppearance="?attr/textAppearanceSubtitle1" />

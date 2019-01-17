@@ -19,11 +19,11 @@ import com.hmaserv.rz.domain.Owner
 import com.hmaserv.rz.domain.observeEvent
 import kotlinx.android.synthetic.main.product_fragment.*
 
-class ProductFragment : Fragment() {
+class ProductFragment : Fragment(), AdapterAttributes.AttributesListener {
 
     private var productId: String? = null
     lateinit var viewModel: ProductViewModel
-    val adapter = AdapterAttributes()
+    lateinit var adapter: AdapterAttributes
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,12 +63,18 @@ class ProductFragment : Fragment() {
             false
         )
 
+        adapter = AdapterAttributes(viewModel.attributes, this)
         attributesRv.adapter = adapter
+    }
 
-        adapter.onItemClickListener =
-                BaseQuickAdapter.OnItemClickListener { _, _, position ->
-
-                }
+    override fun onAttributeSelected(mainAttributePosition: Int, subAttributePosition: Int) {
+        viewModel.selectedAttributes[mainAttributePosition] =
+                viewModel.attributes[mainAttributePosition]
+                    .copy(
+                        attributes = listOf(
+                            viewModel.attributes[mainAttributePosition].attributes[subAttributePosition]
+                        )
+                    )
     }
 
     private fun onProductResponse(states: ProductViewModel.AdUiStates) {
@@ -103,7 +109,7 @@ class ProductFragment : Fragment() {
 
         productDescriptionTv.text = ad.description
 
-        priceTv.text = getString(R.string.label_product_currency,ad.price.toString())
+        priceTv.text = getString(R.string.label_product_currency, ad.price.toString())
 
         val rate = ad.rate
         addAdRate(rate)
@@ -112,11 +118,8 @@ class ProductFragment : Fragment() {
 
         addOwnerInfo(ad.owner)
 
-        setAttributes(ad.mainAttributes)
-    }
+        adapter.notifyDataSetChanged()
 
-    private fun setAttributes(mainAttributes: List<Attribute.MainAttribute>) {
-        adapter.submitList(mainAttributes)
     }
 
     private fun addOwnerInfo(owner: Owner) {
