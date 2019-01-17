@@ -16,7 +16,6 @@ class ProductsAdapter :
             if (item.images.isNotEmpty()) {
                 Glide.with(mContext)
                     .load(item.images[0])
-//                    .apply(RequestOptions.placeholderOf(R.drawable.test_image))
                     .into(it)
             }
         }

@@ -52,9 +52,32 @@
                     android:text="@string/label_promotions"
                     android:textAllCaps="true"
                     android:textColor="@color/colorSecondaryVariant"
-                    android:textSize="18sp"
+                    android:textAppearance="?attr/textAppearanceHeadline5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/bannerSliderVp" />
+
+                <ImageView
+                    android:id="@+id/actionListImgv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:visibility="invisible"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_reorder_black"
+                    app:layout_constraintBottom_toBottomOf="@id/labelTv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/labelTv"/>
+
+                <ImageView
+                    android:id="@+id/actionGridImgv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:visibility="invisible"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_apps_black50"
+                    app:layout_constraintEnd_toStartOf="@id/actionListImgv"
+                    app:layout_constraintTop_toTopOf="@id/actionListImgv"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/promotionsRv"

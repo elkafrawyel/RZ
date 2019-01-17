@@ -93,6 +93,7 @@
     <string name="label_empty_description">حقل الوصف فارغ</string>
     <string name="label_empty_price">حقل السعر فارغ</string>
     <string name="label_empty_price_discount">حقل الخصم فارغ</string>
+    <string name="label_empty_quantity">حقل المخزون فارغ</string>
 
 
     <string name="error_call_miniAds_api">خطأ في ارجاع الاعلانات</string>
@@ -121,5 +122,7 @@
     <string name="error_call_attributes_api">خطأ في طلب السمات</string>
     <string name="error_http_attributes_api">خطأ في طلب السمات</string>
     <string name="error_uploading_image">خطأ في رفع الصورة</string>
+    <string name="error_sign_in_first">برجاء تسجيل الدخول اولا</string>
+    <string name="label_sign_in">تسجيل الدخول</string>
 
 </resources>

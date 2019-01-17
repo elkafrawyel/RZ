@@ -86,6 +86,7 @@
     <string name="label_empty_description">Description Is Empty</string>
     <string name="label_empty_price">Price Is Empty</string>
     <string name="label_empty_price_discount">Price Discount Is Empty</string>
+    <string name="label_empty_quantity">Quantity is empty</string>
 
 
     <string name="error_call_miniAds_api">Error calling getting Ads</string>
@@ -114,5 +115,7 @@
     <string name="error_call_attributes_api">Error getting attributes</string>
     <string name="error_http_attributes_api">Error getting attributes</string>
     <string name="error_uploading_image">Error uploading ad image</string>
+    <string name="error_sign_in_first">برجاء تسجيل الدخول اولا</string>
+    <string name="label_sign_in">تسجيل الدخول</string>
 
 </resources>

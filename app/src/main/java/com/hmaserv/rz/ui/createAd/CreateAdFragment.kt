@@ -212,6 +212,10 @@ class CreateAdFragment : Fragment() {
                 showMessage(getString(R.string.label_empty_price_discount))
                 return false
             }
+            quantityEt.text.isEmpty() -> {
+                showMessage(getString(R.string.label_empty_quantity))
+                return false
+            }
             else -> return true
         }
 
@@ -240,6 +244,8 @@ class CreateAdFragment : Fragment() {
                 selectedSubCategory.uuid,
                 viewModel.getSelectedAttributes(),
                 viewModel.getSelectedImagesStringList())
+
+            requireActivity().onBackPressed()
         } else {
             // Do not have permissions, request them now
             EasyPermissions.requestPermissions(

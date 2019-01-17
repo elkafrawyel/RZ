@@ -19,12 +19,12 @@ class HomeViewModel : BaseViewModel() {
     private val getSliderUseCase = Injector.getSliderUseCase()
     private val getPromotionsUseCase = Injector.getPromotionsUseCase()
 
-    private val _sliderState = MutableLiveData<Event<SliderState>>()
-    val sliderState : LiveData<Event<SliderState>>
+    private val _sliderState = MutableLiveData<SliderState>()
+    val sliderState : LiveData<SliderState>
         get() = _sliderState
 
-    private val _promotionsState = MutableLiveData<Event<PromotionsState>>()
-    val promotionsState : LiveData<Event<PromotionsState>>
+    private val _promotionsState = MutableLiveData<PromotionsState>()
+    val promotionsState : LiveData<PromotionsState>
         get() = _promotionsState
 
     init {
@@ -89,47 +89,47 @@ class HomeViewModel : BaseViewModel() {
     }
 
     private fun showSliderLoading() {
-        _sliderState.value = Event(SliderState.Loading)
+        _sliderState.value = SliderState.Loading
     }
 
     private fun showSliderSuccess(sliders: List<Slider>) {
-        _sliderState.value = Event(SliderState.Success(sliders))
+        _sliderState.value = SliderState.Success(sliders)
     }
 
     private fun showSliderError(message: String?) {
-        if (message != null) _sliderState.value = Event(SliderState.Error(message))
-        else _sliderState.value = Event(SliderState.Error(Injector.getApplicationContext().getString(R.string.error_general)))
+        if (message != null) _sliderState.value = SliderState.Error(message)
+        else _sliderState.value = SliderState.Error(Injector.getApplicationContext().getString(R.string.error_general))
     }
 
 
     private fun showSliderEmpty() {
-        _sliderState.value = Event(SliderState.Empty)
+        _sliderState.value = SliderState.Empty
     }
 
     private fun showSliderNoInternetConnection() {
-        _sliderState.value = Event(SliderState.NoInternetConnection)
+        _sliderState.value = SliderState.NoInternetConnection
     }
 
     private fun showPromotionsLoading() {
-        _promotionsState.value = Event(PromotionsState.Loading)
+        _promotionsState.value = PromotionsState.Loading
     }
 
     private fun showPromotionsSuccess(data: List<MiniAd>) {
-        _promotionsState.value = Event(PromotionsState.Success(data))
+        _promotionsState.value = PromotionsState.Success(data)
     }
 
     private fun showPromotionsError(message: String?) {
-        if (message != null) _promotionsState.value = Event(PromotionsState.Error(message))
-        else _promotionsState.value = Event(PromotionsState.Error(Injector.getApplicationContext().getString(R.string.error_general)))
+        if (message != null) _promotionsState.value = PromotionsState.Error(message)
+        else _promotionsState.value = PromotionsState.Error(Injector.getApplicationContext().getString(R.string.error_general))
     }
 
 
     private fun showPromotionsEmpty() {
-        _promotionsState.value = Event(PromotionsState.Empty)
+        _promotionsState.value = PromotionsState.Empty
     }
 
     private fun showPromotionsNoInternetConnection() {
-        _promotionsState.value = Event(PromotionsState.NoInternetConnection)
+        _promotionsState.value = PromotionsState.NoInternetConnection
     }
 
     sealed class SliderState {

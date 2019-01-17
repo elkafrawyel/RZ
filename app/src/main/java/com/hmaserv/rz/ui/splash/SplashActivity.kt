@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.hmaserv.rz.ui.MainActivity
 import com.hmaserv.rz.R
+import com.hmaserv.rz.utils.Injector
 import com.hmaserv.rz.utils.changeLanguage
 
 class SplashActivity : AppCompatActivity() {
@@ -18,6 +19,7 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         createNotificationChannel()
+        Injector.init()
         MainActivity.start(this)
         finish()
     }

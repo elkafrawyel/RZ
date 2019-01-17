@@ -38,6 +38,12 @@ import kotlin.random.Random
 
 object Injector {
 
+    fun init() {
+        getApiService()
+        getAuthApiService()
+        getBoxStore()
+    }
+
     var language = Language.DEFAULT
         set(value) {
             LoggedInUserRepo.resetRemoteSource(getLoggedInRemoteSource())
@@ -48,12 +54,14 @@ object Injector {
         DefaultPlugins.get()
     )
 
-    fun getApplicationContext() = RzApplication.instance
-    fun getCoroutinesDispatcherProvider() = CoroutinesDispatcherProvider(
+    private val coroutinesDispatcherProvider = CoroutinesDispatcherProvider(
         Dispatchers.Main,
         Dispatchers.Default,
         Dispatchers.IO
     )
+
+    fun getApplicationContext() = RzApplication.instance
+    fun getCoroutinesDispatcherProvider() = coroutinesDispatcherProvider
     private fun getLoggingInterceptor(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY

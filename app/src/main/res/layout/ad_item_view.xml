@@ -3,12 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="16dp"
-    >
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginBottom="16dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="16dp">
 
         <ImageView
             android:id="@+id/item_image"
@@ -27,8 +28,10 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="2"
-            android:padding="16dp"
-            android:text="Camera canon model rzy555"
+            android:padding="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            tools:text="Camera canon model rzy555"
             android:textColor="@android:color/black"
             android:textSize="18sp"
             android:transitionName="productName"
@@ -87,7 +90,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="(18)"
+            tools:text="(18)"
             android:transitionName="productReviewsNo"
             app:layout_constraintBottom_toBottomOf="@id/star_1"
             app:layout_constraintStart_toEndOf="@id/star_5"
@@ -98,11 +101,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="5550 EGP"
+            tools:text="5550 EGP"
             android:textColor="@android:color/black"
             android:textSize="16sp"
-            android:padding="8dp"
             android:transitionName="productPrice"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/name"
             app:layout_constraintStart_toStartOf="@id/name"
             app:layout_constraintTop_toBottomOf="@id/star_1" />

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
@@ -15,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
 
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.*
@@ -27,7 +29,7 @@ import kotlin.concurrent.timerTask
 
 class HomeFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener {
 
-    var mainViewModel: MainViewModel? = null
+    private lateinit var mainViewModel: MainViewModel
 
     private var timer: Timer? = null
     private val imageSliderAdapter = ImageSliderAdapter()
@@ -43,13 +45,13 @@ class HomeFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mainViewModel = requireActivity().let { ViewModelProviders.of(it).get(MainViewModel::class.java) }
+        mainViewModel = ViewModelProviders.of(requireActivity()).get(MainViewModel::class.java)
         val homeViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
 
-        mainViewModel?.logInLiveData?.observe(this, Observer { onLogInState(it) })
-        mainViewModel?.logOutState?.observeEvent(this) { onLogOutState(it) }
-        homeViewModel.sliderState.observeEvent(this) { onSliderState(it) }
-        homeViewModel.promotionsState.observeEvent(this) { onPromotionsState(it) }
+        mainViewModel.logInLiveData.observe(this, Observer { onLogInState(it) })
+        mainViewModel.logOutState.observeEvent(this) { onLogOutState(it) }
+        homeViewModel.sliderState.observe(this, Observer { onSliderState(it) })
+        homeViewModel.promotionsState.observe(this, Observer { onPromotionsState(it) })
 
         navigationView.setNavigationItemSelectedListener(this)
         bottomAppBar.setNavigationOnClickListener { rootViewDl.openDrawer(GravityCompat.START) }
@@ -77,11 +79,13 @@ class HomeFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
         super.onResume()
         timer = Timer()
         timer?.scheduleAtFixedRate(timerTask {
-            activity?.runOnUiThread {
-                if (bannerSliderVp.currentItem < imageSliderAdapter.count - 1) {
-                    bannerSliderVp.setCurrentItem(bannerSliderVp.currentItem + 1, true)
-                } else {
-                    bannerSliderVp.setCurrentItem(0, true)
+            requireActivity().runOnUiThread {
+                if (bannerSliderVp != null) {
+                    if (bannerSliderVp.currentItem < imageSliderAdapter.count - 1) {
+                        bannerSliderVp.setCurrentItem(bannerSliderVp.currentItem + 1, true)
+                    } else {
+                        bannerSliderVp.setCurrentItem(0, true)
+                    }
                 }
             }
         }, 5000, 5000)
@@ -97,16 +101,35 @@ class HomeFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
             R.id.nav_profile -> findNavController().navigate(R.id.action_homeFragment_to_profileFragment)
             R.id.nav_my_orders -> findNavController().navigate(R.id.action_homeFragment_to_myOrdersFragment)
             R.id.nav_my_products -> findNavController().navigate(R.id.action_homeFragment_to_myProductsFragment)
-            R.id.nav_create_product -> findNavController().navigate(R.id.action_homeFragment_to_createProductFragment)
+            R.id.nav_create_product -> onCreateProductClicked()
             R.id.nav_about_us -> findNavController().navigate(R.id.action_homeFragment_to_aboutUsFragment)
             R.id.nav_contact_us -> findNavController().navigate(R.id.action_homeFragment_to_contactUsFragment)
             R.id.nav_privacy -> findNavController().navigate(R.id.action_homeFragment_to_privacyFragment)
             R.id.nav_terms -> findNavController().navigate(R.id.action_homeFragment_to_termsConditionsFragment)
-            R.id.nav_log_out -> mainViewModel?.logOut()
+            R.id.nav_log_out -> mainViewModel.logOut()
         }
 
         rootViewDl.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    private fun onCreateProductClicked() {
+        when(mainViewModel.logInLiveData.value) {
+            MainViewModel.LogInState.NoLogIn -> {
+                Snackbar.make(rootViewDl, getString(R.string.error_sign_in_first), Snackbar.LENGTH_SHORT)
+                    .setAction(getString(R.string.label_sign_in)) {
+                        findNavController().navigate(R.id.action_homeFragment_to_authGraph)
+                    }
+                    .setActionTextColor(ContextCompat.getColor(requireContext(), R.color.colorSecondaryVariant))
+                    .show()
+            }
+            is MainViewModel.LogInState.BuyerLoggedIn -> {
+                findNavController().navigate(R.id.action_homeFragment_to_createProductFragment)
+            }
+            is MainViewModel.LogInState.SellerLoggedIn -> {
+                findNavController().navigate(R.id.action_homeFragment_to_createProductFragment)
+            }
+        }
     }
 
     private fun onSignInSignUpClicked() {
