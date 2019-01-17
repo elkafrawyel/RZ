@@ -18,18 +18,8 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         createNotificationChannel()
-
-        val splashViewModel = ViewModelProviders.of(this).get(SplashViewModel::class.java)
-        splashViewModel.getCurrentLanguage()
-        splashViewModel.uiState.observe(this, Observer {
-            when(it) {
-                is SplashViewModel.SplashUiState.Success -> {
-                    changeLanguage(it.language)
-                    MainActivity.start(this)
-                    finish()
-                }
-            }
-        })
+        MainActivity.start(this)
+        finish()
     }
 
     private fun createNotificationChannel() {
