@@ -87,4 +87,32 @@
     <string name="label_empty_price">Price Is Empty</string>
     <string name="label_empty_price_discount">Price Discount Is Empty</string>
 
+
+    <string name="error_call_miniAds_api">Error calling getting Ads</string>
+    <string name="error_http_miniAds_api">Error getting Ads</string>
+    <string name="error_call_ad_api">Error getting Ad details</string>
+    <string name="error_http_ad_api">Error getting Ad details</string>
+    <string name="error_call_create_ad_api">Error creating Ad</string>
+    <string name="error_http_create_ad_api">Error creating Ad</string>
+    <string name="error_getting_ad">Error convert AdResponse to Ad</string>
+    <string name="error_call_categories_api">Error getting categories</string>
+    <string name="error_http_categories_api">Error getting categories</string>
+    <string name="error_call_sliders_api">Error getting slider</string>
+    <string name="error_http_sliders_api">Error getting slider</string>
+    <string name="error_call_promotion_api">Error getting Promotions</string>
+    <string name="error_http_promotion_api">Error getting Promotions</string>
+    <string name="error_call_login_api">Error logging user</string>
+    <string name="error_http_login_api">Error logging user</string>
+    <string name="error_call_register_api">Error registering user</string>
+    <string name="error_http_register_api">Error registering user</string>
+    <string name="error_call_forgetPassword_api">Error reset password</string>
+    <string name="error_http_forgetPassword_api">Error reset password</string>
+    <string name="error_call_verifyPhone_api">Error verify phone</string>
+    <string name="error_http_verifyPhone_api">Error verify phone</string>
+    <string name="error_call_subCategory_api">Error getting sub categories</string>
+    <string name="error_http_subCategory_api">Error getting sub categories</string>
+    <string name="error_call_attributes_api">Error getting attributes</string>
+    <string name="error_http_attributes_api">Error getting attributes</string>
+    <string name="error_uploading_image">Error uploading ad image</string>
+
 </resources>

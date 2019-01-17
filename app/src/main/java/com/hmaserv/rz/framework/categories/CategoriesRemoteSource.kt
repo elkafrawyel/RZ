@@ -1,10 +1,12 @@
 package com.hmaserv.rz.framework.categories
 
+import com.hmaserv.rz.R
 import com.hmaserv.rz.data.apiService.RetrofitApiService
 import com.hmaserv.rz.data.categories.ICategoriesRemoteSource
 import com.hmaserv.rz.domain.Category
 import com.hmaserv.rz.domain.CategoryResponse
 import com.hmaserv.rz.domain.DataResource
+import com.hmaserv.rz.utils.Injector
 import com.hmaserv.rz.utils.safeApiCall
 import java.io.IOException
 
@@ -15,7 +17,7 @@ class CategoriesRemoteSource(
     override suspend fun getCategories(): DataResource<List<CategoryResponse>> {
         return safeApiCall(
             call = { getCategoriesCall() },
-            errorMessage = "Error getting categories"
+            errorMessage = Injector.getApplicationContext().getString(R.string.error_call_categories_api)
         )
     }
 
@@ -32,7 +34,7 @@ class CategoriesRemoteSource(
             return DataResource.Error(IOException(response.message))
         }
 
-        return DataResource.Error(IOException("Error getting categories"))
+        return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_http_categories_api)))
     }
 
 }

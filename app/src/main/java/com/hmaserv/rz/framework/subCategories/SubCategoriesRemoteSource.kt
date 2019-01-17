@@ -1,8 +1,10 @@
 package com.hmaserv.rz.framework.subCategories
 
+import com.hmaserv.rz.R
 import com.hmaserv.rz.data.apiService.RetrofitApiService
 import com.hmaserv.rz.data.subCategories.ISubCategoriesRemoteSource
 import com.hmaserv.rz.domain.*
+import com.hmaserv.rz.utils.Injector
 import com.hmaserv.rz.utils.safeApiCall
 import java.io.IOException
 
@@ -13,7 +15,7 @@ class SubCategoriesRemoteSource(
     override suspend fun getSubCategories(subCategoryRequest: SubCategoryRequest): DataResource<List<SubCategoryResponse>> {
         return safeApiCall(
             call = { getSubCategoriesCall(subCategoryRequest) },
-            errorMessage = "Error getting sub categories"
+            errorMessage = Injector.getApplicationContext().getString(R.string.error_call_subCategory_api)
         )
     }
 
@@ -30,13 +32,13 @@ class SubCategoriesRemoteSource(
             return DataResource.Error(IOException(response.message))
         }
 
-        return DataResource.Error(IOException("Error getting sub categories"))
+        return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_http_subCategory_api)))
     }
 
     override suspend fun getAttributes(attributesRequest: AttributesRequest): DataResource<List<MainAttributeResponse>> {
         return safeApiCall(
             call = { getAttributesCall(attributesRequest) },
-            errorMessage = "Error getting attributes"
+            errorMessage = Injector.getApplicationContext().getString(R.string.error_call_attributes_api)
         )
     }
 
@@ -53,6 +55,6 @@ class SubCategoriesRemoteSource(
             return DataResource.Error(IOException(response.message))
         }
 
-        return DataResource.Error(IOException("Error getting attributes"))
+        return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_http_attributes_api)))
     }
 }

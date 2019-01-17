@@ -1,8 +1,10 @@
 package com.hmaserv.rz.framework.uploader
 
+import com.hmaserv.rz.R
 import com.hmaserv.rz.data.apiService.RetrofitAuthApiService
 import com.hmaserv.rz.data.uploader.IUploaderRemoteSource
 import com.hmaserv.rz.domain.DataResource
+import com.hmaserv.rz.utils.Injector
 import com.hmaserv.rz.utils.safeApiCall
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -19,7 +21,7 @@ class UploaderRemoteSource(
     ): DataResource<Boolean> {
         return safeApiCall(
             call = { uploadAdImageCall(token, adUuid, image) },
-            errorMessage = "Error uploading ad image"
+            errorMessage = Injector.getApplicationContext().getString(R.string.error_uploading_image)
         )
     }
 
@@ -41,7 +43,7 @@ class UploaderRemoteSource(
             return DataResource.Error(IOException(response.message))
         }
 
-        return DataResource.Error(IOException("Error uploading ad image"))
+        return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_uploading_image)))
     }
 
 }

@@ -1,9 +1,11 @@
 package com.hmaserv.rz.framework.ads
 
+import com.hmaserv.rz.R
 import com.hmaserv.rz.data.ads.IAdsRemoteSource
 import com.hmaserv.rz.data.apiService.RetrofitApiService
 import com.hmaserv.rz.data.apiService.RetrofitAuthApiService
 import com.hmaserv.rz.domain.*
+import com.hmaserv.rz.utils.Injector
 import com.hmaserv.rz.utils.safeApiCall
 import timber.log.Timber
 import java.io.IOException
@@ -16,7 +18,7 @@ class AdsRemoteSource(
     override suspend fun getMiniAds(miniAdRequest: MiniAdRequest): DataResource<List<MiniAdResponse>> {
         return safeApiCall(
             call = { getMiniAdsCall(miniAdRequest) },
-            errorMessage = "Error getting categories"
+            errorMessage = Injector.getApplicationContext().getString(R.string.error_call_miniAds_api)
         )
     }
 
@@ -33,13 +35,13 @@ class AdsRemoteSource(
             return DataResource.Error(IOException(response.message))
         }
 
-        return DataResource.Error(IOException("Error getting ads"))
+        return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_http_miniAds_api)))
     }
 
     override suspend fun getAd(adRequest: AdRequest): DataResource<AdResponse> {
         return safeApiCall(
             call = { getAdCall(adRequest) },
-            errorMessage = "Error getting Ad details"
+            errorMessage = Injector.getApplicationContext().getString(R.string.error_call_ad_api)
         )
     }
 
@@ -56,17 +58,18 @@ class AdsRemoteSource(
             return DataResource.Error(IOException(response.message))
         }
 
-        return DataResource.Error(IOException("Error getting Ad details"))
+        return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_http_ad_api)))
     }
 
     override suspend fun createAd(token: String, createProductRequest: CreateProductRequest): DataResource<CreateProductResponse> {
         return safeApiCall(
             call = { createAdCall(token, createProductRequest) },
-            errorMessage = "Error creating Ad"
+            errorMessage = Injector.getApplicationContext().getString(R.string.error_call_create_ad_api)
         )
     }
 
-    private suspend fun createAdCall(token: String, createProductRequest: CreateProductRequest): DataResource<CreateProductResponse> {
+    private suspend fun createAdCall(token: String, createProductRequest: CreateProductRequest):
+            DataResource<CreateProductResponse> {
         val response = authApiService.createProduct(token, createProductRequest).await()
         if (response.success != null && response.success) {
             Timber.i("response success")
@@ -83,7 +86,7 @@ class AdsRemoteSource(
         }
 
         Timber.i("error message null")
-        return DataResource.Error(IOException("Error creating Ad"))
+        return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_http_create_ad_api)))
     }
 
 }

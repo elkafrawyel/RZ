@@ -1,8 +1,10 @@
 package com.hmaserv.rz.framework.ads
 
+import com.hmaserv.rz.R
 import com.hmaserv.rz.data.ads.IAdsRemoteSource
 import com.hmaserv.rz.data.ads.IAdsRepo
 import com.hmaserv.rz.domain.*
+import com.hmaserv.rz.utils.Injector
 import java.io.IOException
 
 class AdsRepo(
@@ -25,7 +27,9 @@ class AdsRepo(
                 if (ad != null)
                     DataResource.Success(ad)
                 else
-                    DataResource.Error(IOException("Error convert AdResponse to Ad"))
+                    DataResource.Error(IOException(Injector.getApplicationContext().getString(
+                        R.string.error_getting_ad
+                    )))
             }
             is DataResource.Error -> result
         }

@@ -1,9 +1,11 @@
 package com.hmaserv.rz.framework.logedInUser
 
+import com.hmaserv.rz.R
 import com.hmaserv.rz.data.logedInUser.ILoggedInUserRemoteSource
 import com.hmaserv.rz.domain.*
 import com.hmaserv.rz.data.apiService.RetrofitApiService
 import com.hmaserv.rz.data.apiService.RetrofitAuthApiService
+import com.hmaserv.rz.utils.Injector
 import com.hmaserv.rz.utils.safeApiCall
 import java.io.IOException
 
@@ -15,7 +17,7 @@ class LoggedInUserRemoteSource(
     override suspend fun login(logInUserRequest: LogInUserRequest): DataResource<LoggedInUser> {
         return safeApiCall(
             call = { loginCall(logInUserRequest) },
-            errorMessage = "Error logging user"
+            errorMessage = Injector.getApplicationContext().getString(R.string.error_call_login_api)
         )
     }
 
@@ -32,13 +34,13 @@ class LoggedInUserRemoteSource(
             return DataResource.Error(IOException(response.message))
         }
 
-        return DataResource.Error(IOException("Error logging user"))
+        return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_http_login_api)))
     }
 
     override suspend fun register(registerUserRequest: RegisterUserRequest): DataResource<LoggedInUser> {
         return safeApiCall(
             call = { registerCall(registerUserRequest) },
-            errorMessage = "Error registering user"
+            errorMessage = Injector.getApplicationContext().getString(R.string.error_call_register_api)
         )
     }
 
@@ -55,13 +57,13 @@ class LoggedInUserRemoteSource(
             return DataResource.Error(IOException(response.message))
         }
 
-        return DataResource.Error(IOException("Error registering user"))
+        return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_http_register_api)))
     }
 
     override suspend fun forgetPassword(forgetPassword: ForgetPassword): DataResource<Boolean> {
         return safeApiCall(
             call = { forgetPasswordCall(forgetPassword) },
-            errorMessage = "Error reset password"
+            errorMessage = Injector.getApplicationContext().getString(R.string.error_call_forgetPassword_api)
         )
     }
 
@@ -78,14 +80,14 @@ class LoggedInUserRemoteSource(
             return DataResource.Error(IOException(response.message))
         }
 
-        return DataResource.Error(IOException("Error reset password"))
+        return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_http_forgetPassword_api)))
 
     }
 
     override suspend fun verifyPhone(token: String): DataResource<Boolean> {
         return safeApiCall(
             call = { verifyPhoneCall(token) },
-            errorMessage = "Error verify phone"
+            errorMessage = Injector.getApplicationContext().getString(R.string.error_call_verifyPhone_api)
         )
     }
 
@@ -99,6 +101,6 @@ class LoggedInUserRemoteSource(
             return DataResource.Error(IOException(response.message))
         }
 
-        return DataResource.Error(IOException("Error verify phone"))
+        return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_http_verifyPhone_api)))
     }
 }

@@ -94,4 +94,32 @@
     <string name="label_empty_price">حقل السعر فارغ</string>
     <string name="label_empty_price_discount">حقل الخصم فارغ</string>
 
+
+    <string name="error_call_miniAds_api">خطأ في ارجاع الاعلانات</string>
+    <string name="error_http_miniAds_api">خطأ في ارجاع الاعلانات</string>
+    <string name="error_call_ad_api">خطأ في ارجاع تفاصيل الاعلان</string>
+    <string name="error_http_ad_api">خطأ في ارجاع تفاصيل الاعلان</string>
+    <string name="error_call_create_ad_api">خطأ في انشاء الاعلان</string>
+    <string name="error_http_create_ad_api">خطأ في انشاء الاعلان</string>
+    <string name="error_getting_ad">خطأ في ارجاع تفاصيل الاعلان</string>
+    <string name="error_call_categories_api">خطأ في طلب الاقسام</string>
+    <string name="error_http_categories_api">خطأ في طلب الاقسام</string>
+    <string name="error_call_sliders_api">خطأ في طلب تنزيل الصور</string>
+    <string name="error_http_sliders_api">خطأ في طلب تنزيل الصور</string>
+    <string name="error_call_promotion_api">خطأ في تنزيل اخر العروض</string>
+    <string name="error_http_promotion_api">خطأ في تنزيل اخر العروض</string>
+    <string name="error_call_login_api">خطأ في تسجيل الدخول</string>
+    <string name="error_http_login_api">خطأ في تسجيل الدخول</string>
+    <string name="error_call_register_api">خطأ في انشاء حساب جديد</string>
+    <string name="error_http_register_api">خطأ في انشاء حساب جديد</string>
+    <string name="error_call_forgetPassword_api">خطأ في استرداد كلمة السر</string>
+    <string name="error_http_forgetPassword_api">خطأ في استرداد كلمة السر</string>
+    <string name="error_call_verifyPhone_api">خطأ في تفعيل رقم الهاتف</string>
+    <string name="error_http_verifyPhone_api">خطأ في تفعيل رقم الهاتف</string>
+    <string name="error_call_subCategory_api">خطأ في ارجاع الاقسام الفرعية</string>
+    <string name="error_http_subCategory_api">خطأ في ارجاع الاقسام الفرعية</string>
+    <string name="error_call_attributes_api">خطأ في طلب السمات</string>
+    <string name="error_http_attributes_api">خطأ في طلب السمات</string>
+    <string name="error_uploading_image">خطأ في رفع الصورة</string>
+
 </resources>
