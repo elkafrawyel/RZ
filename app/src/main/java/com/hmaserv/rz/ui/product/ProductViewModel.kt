@@ -67,6 +67,15 @@ class ProductViewModel : BaseViewModel() {
         }
     }
 
+    fun getAttributesPrice(): Int {
+        var price = 0
+        selectedAttributes.forEach {
+            price += it.attributes.firstOrNull()?.price ?: 0
+        }
+
+        return price
+    }
+
     private fun showLoading() {
         _uiState.value = Event(AdUiStates.Loading)
     }

@@ -2,8 +2,15 @@ package com.hmaserv.rz.service
 
 import android.content.Context
 import android.content.Intent
+import android.media.RingtoneManager
 import android.net.Uri
+import android.os.Bundle
+import android.widget.Toast
 import androidx.core.app.JobIntentService
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.navigation.NavDeepLinkBuilder
+import androidx.navigation.Navigation
 import com.facebook.spectrum.SpectrumException
 import com.facebook.spectrum.EncodedImageSink
 import com.facebook.spectrum.EncodedImageSource
@@ -12,10 +19,13 @@ import com.facebook.spectrum.image.ImageSize
 import com.facebook.spectrum.requirements.EncodeRequirement
 import com.facebook.spectrum.options.TranscodeOptions
 import com.facebook.spectrum.requirements.ResizeRequirement
+import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.Attribute
 import com.hmaserv.rz.domain.DataResource
+import com.hmaserv.rz.ui.MainActivity
 import com.hmaserv.rz.utils.Injector
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.IOException
 
@@ -29,6 +39,7 @@ const val AD_QUANTITY = "quantity"
 const val AD_SUB_UUID = "subUuid"
 const val AD_ATTRIBUTES = "attributes"
 const val AD_IMAGES = "images"
+var NOTIFICATION_ID = 1000
 
 class CreateAdJobService : JobIntentService() {
 
@@ -47,48 +58,74 @@ class CreateAdJobService : JobIntentService() {
         val subCategoryUuid = intent.getStringExtra(AD_SUB_UUID)
         val attributes = intent.getParcelableArrayListExtra<Attribute.MainAttribute>(AD_ATTRIBUTES)
         val images = intent.getStringArrayListExtra(AD_IMAGES)
+        NOTIFICATION_ID++
 
-        if (images != null) {
-            for (uri: String in images) {
-                try {
-                    contentResolver.openInputStream(Uri.parse(uri)).use { inputStream ->
-                        val transcodeOptions = TranscodeOptions.Builder(EncodeRequirement(PNG, 80))
-                            .resize(ResizeRequirement.Mode.EXACT_OR_SMALLER, ImageSize(1080, 1080))
-                            .build()
+        val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
-                        val imagePath = Injector.getNewResizedImagePath()
-                        if (imagePath != null) {
-                            val result = Injector.getSpectrum().transcode(
-                                EncodedImageSource.from(inputStream),
-                                EncodedImageSink.from(imagePath),
-                                transcodeOptions,
-                                CREATE_AD_SERVICE_NAME
-                            )
-                            if (result.isSuccessful)
-                                resizedImages.add(File(imagePath))
-                        }
+        val mBuilder = NotificationCompat.Builder(this, "createAdId")
+            .setSmallIcon(R.drawable.ic_fb_notification)
+            .setContentTitle("RZ")
+            .setContentText("Creating Ad in progress...")
+            .setProgress(0, 0, true)
+            .setOngoing(true)
+            .setSound(uri)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
 
-                    }
-                } catch (e: IOException) {
-                    // e.g. file not found
-                    e.printStackTrace()
-                } catch (e: SpectrumException) {
-                    // e.g. invalid input image
-                    e.printStackTrace()
+
+        with(NotificationManagerCompat.from(this)) {
+
+            if (images != null) {
+                runBlocking(Injector.getCoroutinesDispatcherProvider().main) {
+                    Toast.makeText(this@CreateAdJobService, "Creating your Ad started.", Toast.LENGTH_LONG).show()
                 }
-            }
+                notify(NOTIFICATION_ID, mBuilder.build())
+                resizeImages(images)
 
-            launchCreateProductTest(
-                title,
-                description,
-                price,
-                discountPrice,
-                quantity,
-                subCategoryUuid,
-                attributes
-            )
+                launchCreateProductTest(
+                    title,
+                    description,
+                    price,
+                    discountPrice,
+                    quantity,
+                    subCategoryUuid,
+                    attributes,
+                    this,
+                    mBuilder
+                )
+            }
         }
 
+    }
+
+    private fun resizeImages(images: java.util.ArrayList<String>) {
+        for (uri: String in images) {
+            try {
+                contentResolver.openInputStream(Uri.parse(uri)).use { inputStream ->
+                    val transcodeOptions = TranscodeOptions.Builder(EncodeRequirement(PNG, 80))
+                        .resize(ResizeRequirement.Mode.EXACT_OR_SMALLER, ImageSize(1080, 1080))
+                        .build()
+
+                    val imagePath = Injector.getNewResizedImagePath()
+                    if (imagePath != null) {
+                        val result = Injector.getSpectrum().transcode(
+                            EncodedImageSource.from(inputStream),
+                            EncodedImageSink.from(imagePath),
+                            transcodeOptions,
+                            CREATE_AD_SERVICE_NAME
+                        )
+                        if (result.isSuccessful)
+                            resizedImages.add(File(imagePath))
+                    }
+
+                }
+            } catch (e: IOException) {
+                // e.g. file not found
+                e.printStackTrace()
+            } catch (e: SpectrumException) {
+                // e.g. invalid input image
+                e.printStackTrace()
+            }
+        }
     }
 
     private fun launchCreateProductTest(
@@ -98,7 +135,9 @@ class CreateAdJobService : JobIntentService() {
         discountPrice: String,
         quantity: String,
         subCategoryUuid: String,
-        attributes: List<Attribute.MainAttribute>
+        attributes: List<Attribute.MainAttribute>,
+        notificationManagerCompat: NotificationManagerCompat,
+        mBuilder: NotificationCompat.Builder
     ) {
         runBlocking {
             val result = createAdUseCase.create(
@@ -116,11 +155,35 @@ class CreateAdJobService : JobIntentService() {
                     for (image: File in resizedImages) {
                         uploadImage(result.data.adsUuid!!, image)
                     }
+                    val bundle = Bundle()
+
+                    bundle.putString("productId", result.data.adsUuid)
+                    bundle.putString("productName", title)
+                    val pendingIntent = NavDeepLinkBuilder(this@CreateAdJobService)
+                        .setGraph(R.navigation.nav_graph)
+                        .setComponentName(MainActivity::class.java)
+                        .setDestination(R.id.productFragment)
+                        .setArguments(bundle)
+                        .createPendingIntent()
+
+                    mBuilder.setProgress(0, 0, false)
+                        .setContentText("Your Ad is created successfully")
+                        .setContentIntent(pendingIntent)
+
+                    withContext(Injector.getCoroutinesDispatcherProvider().main) {
+                        Toast.makeText(this@CreateAdJobService, "Your Ad is created successfully.", Toast.LENGTH_LONG)
+                            .show()
+                    }
                 }
                 is DataResource.Error -> {
-
+                    mBuilder.setProgress(0, 0, false)
+                        .setContentText("Failed to create your Ad")
+                    withContext(Injector.getCoroutinesDispatcherProvider().main) {
+                        Toast.makeText(this@CreateAdJobService, "Failed to create your Ad.", Toast.LENGTH_LONG).show()
+                    }
                 }
             }
+            notificationManagerCompat.notify(NOTIFICATION_ID, mBuilder.build())
         }
     }
 

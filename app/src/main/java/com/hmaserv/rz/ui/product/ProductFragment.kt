@@ -24,6 +24,7 @@ class ProductFragment : Fragment(), AdapterAttributes.AttributesListener {
     private var productId: String? = null
     lateinit var viewModel: ProductViewModel
     lateinit var adapter: AdapterAttributes
+    private var adPrice = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -75,6 +76,10 @@ class ProductFragment : Fragment(), AdapterAttributes.AttributesListener {
                             viewModel.attributes[mainAttributePosition].attributes[subAttributePosition]
                         )
                     )
+
+        viewModel.getAttributesPrice()
+        val price = adPrice + viewModel.getAttributesPrice()
+        priceTv.text = getString(R.string.label_product_currency, price.toString())
     }
 
     private fun onProductResponse(states: ProductViewModel.AdUiStates) {
@@ -109,7 +114,10 @@ class ProductFragment : Fragment(), AdapterAttributes.AttributesListener {
 
         productDescriptionTv.text = ad.description
 
-        priceTv.text = getString(R.string.label_product_currency, ad.price.toString())
+        viewModel.getAttributesPrice()
+        adPrice = ad.price
+        val price = adPrice + viewModel.getAttributesPrice()
+        priceTv.text = getString(R.string.label_product_currency, price.toString())
 
         val rate = ad.rate
         addAdRate(rate)
