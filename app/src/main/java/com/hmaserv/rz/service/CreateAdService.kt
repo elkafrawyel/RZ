@@ -154,6 +154,7 @@ class CreateAdJobService : JobIntentService() {
                 is DataResource.Success -> {
                     for (image: File in resizedImages) {
                         uploadImage(result.data.adsUuid!!, image)
+                        deleteResizedImage(image)
                     }
                     val bundle = Bundle()
 
@@ -187,8 +188,12 @@ class CreateAdJobService : JobIntentService() {
         }
     }
 
-    private suspend fun uploadImage(adUuid: String, image: File) {
-        uploadAdImageUseCase.upload(adUuid, image)
+    private suspend fun uploadImage(adUuid: String, image: File): DataResource<Boolean> {
+        return uploadAdImageUseCase.upload(adUuid, image)
+    }
+
+    private suspend fun deleteResizedImage(image: File): Boolean {
+        return image.delete()
     }
 
     companion object {
