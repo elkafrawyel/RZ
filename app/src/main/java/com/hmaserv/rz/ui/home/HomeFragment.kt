@@ -62,6 +62,9 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
         searchImgv.setOnClickListener { onSearchClicked() }
         categoriesImgv.setOnClickListener { onCategoriesClicked() }
         notificationsImgv.setOnClickListener { onNotificationsClicked() }
+        noConnectionCl.setOnClickListener { homeViewModel.refresh() }
+        errorCl.setOnClickListener { homeViewModel.refresh() }
+        loadingFl.setOnClickListener {  }
 
         bannerSliderVp.adapter = imageSliderAdapter
 
@@ -229,26 +232,26 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun showLoading() {
-        loadingViewGroup.visibility = View.VISIBLE
+        loadingFl.visibility = View.VISIBLE
         dataGroup.visibility = View.GONE
-        errorViewGroup.visibility = View.GONE
+        errorCl.visibility = View.GONE
         emptyViewGroup.visibility = View.GONE
-        noConnectionGroup.visibility = View.GONE
+        noConnectionCl.visibility = View.GONE
     }
 
     override fun showSuccess(dataMap: Map<String, Any>) {
         val sliders = dataMap[DATA_SLIDER_KEY] as List<Slider>
         val promotions = dataMap[DATA_PROMOTIONS_KEY] as List<MiniAd>
 
-        loadingViewGroup.visibility = View.GONE
+        loadingFl.visibility = View.GONE
 
         if (sliders.isEmpty() || promotions.isEmpty()) {
             showStateEmptyView()
         } else {
             dataGroup.visibility = View.VISIBLE
             emptyViewGroup.visibility = View.GONE
-            noConnectionGroup.visibility = View.GONE
-            errorViewGroup.visibility = View.GONE
+            noConnectionCl.visibility = View.GONE
+            errorCl.visibility = View.GONE
 
             setSliders(sliders)
             setPromotions(promotions)
@@ -256,27 +259,27 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun showError(message: String) {
-        loadingViewGroup.visibility = View.GONE
+        loadingFl.visibility = View.GONE
         dataGroup.visibility = View.GONE
-        errorViewGroup.visibility = View.VISIBLE
+        errorCl.visibility = View.VISIBLE
         emptyViewGroup.visibility = View.GONE
-        noConnectionGroup.visibility = View.GONE
+        noConnectionCl.visibility = View.GONE
     }
 
     override fun showNoInternetConnection() {
-        loadingViewGroup.visibility = View.GONE
+        loadingFl.visibility = View.GONE
         dataGroup.visibility = View.GONE
-        errorViewGroup.visibility = View.GONE
+        errorCl.visibility = View.GONE
         emptyViewGroup.visibility = View.GONE
-        noConnectionGroup.visibility = View.VISIBLE
+        noConnectionCl.visibility = View.VISIBLE
     }
 
     private fun showStateEmptyView() {
-        loadingViewGroup.visibility = View.GONE
+        loadingFl.visibility = View.GONE
         dataGroup.visibility = View.GONE
         emptyViewGroup.visibility = View.VISIBLE
-        noConnectionGroup.visibility = View.GONE
-        errorViewGroup.visibility = View.GONE
+        noConnectionCl.visibility = View.GONE
+        errorCl.visibility = View.GONE
     }
 
     private fun setSliders(sliders: List<Slider>) {

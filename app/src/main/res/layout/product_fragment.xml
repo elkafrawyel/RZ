@@ -58,11 +58,12 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:paddingBottom="16dp">
 
             <androidx.viewpager.widget.ViewPager
@@ -76,6 +77,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.rd.PageIndicatorView
+                android:id="@+id/pageIndicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
@@ -88,7 +90,7 @@
                 app:piv_viewPager="@id/productVp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/product_info_group"
+                android:id="@+id/productInfoCl"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@color/colorSurface"
@@ -117,7 +119,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:src="@drawable/ic_star_rate"
-                    android:transitionName="starOne"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/productNameTv" />
 
@@ -126,7 +127,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_star_rate"
-                    android:transitionName="starTwo"
                     app:layout_constraintStart_toEndOf="@id/star_1"
                     app:layout_constraintTop_toTopOf="@id/star_1" />
 
@@ -135,7 +135,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_star_rate"
-                    android:transitionName="starThree"
                     app:layout_constraintStart_toEndOf="@id/star_2"
                     app:layout_constraintTop_toTopOf="@id/star_1" />
 
@@ -144,7 +143,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_star_rate"
-                    android:transitionName="starFour"
                     app:layout_constraintStart_toEndOf="@id/star_3"
                     app:layout_constraintTop_toTopOf="@id/star_1" />
 
@@ -153,7 +151,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_star_rate"
-                    android:transitionName="starFive"
                     app:layout_constraintStart_toEndOf="@id/star_4"
                     app:layout_constraintTop_toTopOf="@id/star_1" />
 
@@ -162,7 +159,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:transitionName="productReviewsNo"
                     app:layout_constraintBottom_toBottomOf="@id/star_1"
                     app:layout_constraintStart_toEndOf="@id/star_5"
                     app:layout_constraintTop_toTopOf="@id/star_1"
@@ -177,7 +173,6 @@
                     android:padding="8dp"
                     android:textColor="@android:color/black"
                     android:textSize="16sp"
-                    android:transitionName="productPrice"
                     app:layout_constraintEnd_toEndOf="@id/productNameTv"
                     app:layout_constraintStart_toStartOf="@id/productNameTv"
                     app:layout_constraintTop_toBottomOf="@id/star_1"
@@ -191,7 +186,6 @@
                     android:layout_margin="16dp"
                     android:text="@string/label_order_product"
                     android:textAllCaps="false"
-                    android:transitionName="addToCartBtn"
                     app:icon="@drawable/ic_add_to_cart"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -200,7 +194,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/sellerInfoGr"
+                android:id="@+id/sellerInfoCl"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -208,7 +202,7 @@
                 android:padding="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/product_info_group">
+                app:layout_constraintTop_toBottomOf="@id/productInfoCl">
 
                 <ImageView
                     android:id="@+id/sellerImgv"
@@ -242,14 +236,14 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/description_group"
+                android:id="@+id/descriptionCl"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:background="@color/colorSurface"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/sellerInfoGr">
+                app:layout_constraintTop_toBottomOf="@id/sellerInfoCl">
 
                 <TextView
                     android:id="@+id/description_label"
@@ -279,15 +273,15 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/attributes_group"
+                android:id="@+id/attributesCl"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:paddingBottom="8dp"
                 android:background="@color/colorSurface"
+                android:paddingBottom="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/description_group">
+                app:layout_constraintTop_toBottomOf="@id/descriptionCl">
 
                 <TextView
                     android:id="@+id/attributes_label"
@@ -304,15 +298,160 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/attributesRv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/attributes_label"
-                    app:layout_constraintTop_toBottomOf="@id/attributes_label"
-                    android:id="@+id/attributesRv" />
+                    app:layout_constraintTop_toBottomOf="@id/attributes_label" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/noConnectionCl"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/noConnectionImgv"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:src="@drawable/ic_no_connection"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/noConnectionTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="@string/label_no_internet_connection"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/noConnectionImgv" />
+
+                <TextView
+                    android:id="@+id/noConnectionTryAgainTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="@string/label_try_again"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/noConnectionTv" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ImageView
+                android:id="@+id/emptyViewImgv"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:src="@drawable/ic_no_connection"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/emptyViewTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="@string/success_empty_view"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/emptyViewImgv" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/errorCl"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/errorViewImgv"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:src="@drawable/ic_error_red"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/errorViewTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="@string/error_general"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/errorViewImgv" />
+
+                <TextView
+                    android:id="@+id/errorTryAgainTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_try_again"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/errorViewTv" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <FrameLayout
+                android:id="@+id/loadingFl"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@color/colorScrim"
+                android:elevation="2dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+
+            </FrameLayout>
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/dataGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="productVp, attributesCl, descriptionCl, pageIndicator,productInfoCl,sellerInfoCl" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/emptyViewGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="emptyViewImgv, emptyViewTv" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

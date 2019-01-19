@@ -4,8 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,13 +13,13 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.MiniAd
-import com.hmaserv.rz.domain.observeEvent
+import com.hmaserv.rz.ui.BaseFragment
 import kotlinx.android.synthetic.main.empty_view.*
 import kotlinx.android.synthetic.main.no_internet_connection_view.*
 import kotlinx.android.synthetic.main.products_fragment.*
-import kotlinx.android.synthetic.main.products_fragment.view.*
 
-class ProductsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
+class ProductsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
+
 
     val adapter = ProductsAdapter()
     lateinit var viewModel: ProductsViewModel
@@ -35,7 +34,7 @@ class ProductsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(ProductsViewModel::class.java)
-        viewModel.uiState.observeEvent(this) { onProductStateResponse(it) }
+        viewModel.uiState.observe(this, Observer { onUiStateChanged(it) })
 
         arguments?.let {
             headerNameTv.text = ProductsFragmentArgs.fromBundle(it).headerName
@@ -46,8 +45,17 @@ class ProductsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         }
 
         backBtn.setOnClickListener { activity?.onBackPressed() }
+
         searchImgv.setOnClickListener { openSearchFragment() }
+
         sortImgv.setOnClickListener { openFilterDialog() }
+
+        noConnectionCl.setOnClickListener { viewModel.refresh() }
+
+        errorCl.setOnClickListener { viewModel.refresh() }
+
+        loadingFl.setOnClickListener {  }
+
         productsRv.layoutManager = LinearLayoutManager(
             context,
             RecyclerView.VERTICAL,
@@ -61,7 +69,7 @@ class ProductsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                     openProductDetails(this.adapter.data[position])
                 }
 
-        view.productsSwipe.setOnRefreshListener(this)
+        productsSwipe.setOnRefreshListener(this)
     }
 
     private fun openFilterDialog() {
@@ -72,54 +80,56 @@ class ProductsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         findNavController().navigate(R.id.action_productsFragment_to_searchFragment)
     }
 
-    private fun onProductStateResponse(state: ProductsViewModel.ProductsUiState) {
-        when (state) {
+    override fun showLoading() {
+        productsSwipe.isRefreshing = false
+        loadingFl.visibility = View.VISIBLE
+        dataGroup.visibility = View.GONE
+        emptyViewGroup.visibility = View.GONE
+        noConnectionCl.visibility = View.GONE
+        errorCl.visibility = View.GONE
+    }
 
-            ProductsViewModel.ProductsUiState.Loading -> showLoadingState()
-            is ProductsViewModel.ProductsUiState.Success -> showSuccessState(state.ads)
-            is ProductsViewModel.ProductsUiState.Error -> showErrorState(state.message)
-            ProductsViewModel.ProductsUiState.NoInternetConnection -> showNoInternetConnectionState()
-            ProductsViewModel.ProductsUiState.EmptyView -> showEmptyViewState()
+    override fun showSuccess(dataMap: Map<String, Any>) {
+        val products = dataMap[DATA_PRODUCTS_KEY] as List<MiniAd>
+        productsSwipe.isRefreshing = false
+        loadingFl.visibility = View.GONE
+
+        if (products.isEmpty()) {
+            showEmptyViewState()
+        } else {
+            dataGroup.visibility = View.VISIBLE
+            emptyViewGroup.visibility = View.GONE
+            noConnectionCl.visibility = View.GONE
+            errorCl.visibility = View.GONE
+            adapter.submitList(products)
         }
     }
 
+    override fun showError(message: String) {
+        loadingFl.visibility = View.GONE
+        productsSwipe.isRefreshing = false
+        dataGroup.visibility = View.GONE
+        emptyViewGroup.visibility = View.GONE
+        noConnectionCl.visibility = View.GONE
+        errorCl.visibility = View.VISIBLE
+    }
+
+    override fun showNoInternetConnection() {
+        loadingFl.visibility = View.GONE
+        productsSwipe.isRefreshing = false
+        dataGroup.visibility = View.GONE
+        emptyViewGroup.visibility = View.GONE
+        noConnectionCl.visibility = View.VISIBLE
+        errorCl.visibility = View.GONE
+    }
+
     private fun showEmptyViewState() {
-        emptyViewCl.visibility = View.VISIBLE
-        productsRv.visibility = View.GONE
+        loadingFl.visibility = View.GONE
         productsSwipe.isRefreshing = false
-        noInternetConnectionCl.visibility = View.GONE
-    }
-
-    private fun showNoInternetConnectionState() {
-        emptyViewCl.visibility = View.GONE
-        productsRv.visibility = View.GONE
-        productsSwipe.isRefreshing = false
-        noInternetConnectionCl.visibility = View.VISIBLE
-    }
-
-    private fun showErrorState(message: String) {
-        emptyViewCl.visibility = View.GONE
-        productsRv.visibility = View.GONE
-        productsSwipe.isRefreshing = false
-        noInternetConnectionCl.visibility = View.GONE
-
-        Toast.makeText(activity, message, Toast.LENGTH_LONG).show()
-    }
-
-    private fun showSuccessState(ads: List<MiniAd>) {
-        emptyViewCl.visibility = View.GONE
-        productsRv.visibility = View.VISIBLE
-        productsSwipe.isRefreshing = false
-        noInternetConnectionCl.visibility = View.GONE
-
-        adapter.submitList(ads)
-    }
-
-    private fun showLoadingState() {
-        emptyViewCl.visibility = View.GONE
-        productsRv.visibility = View.VISIBLE
-        productsSwipe.isRefreshing = true
-        noInternetConnectionCl.visibility = View.GONE
+        dataGroup.visibility = View.GONE
+        emptyViewGroup.visibility = View.VISIBLE
+        noConnectionCl.visibility = View.GONE
+        errorCl.visibility = View.GONE
     }
 
     private fun openProductDetails(ad: MiniAd) {
@@ -135,6 +145,6 @@ class ProductsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     override fun onRefresh() {
-        viewModel.refreshProducts()
+        viewModel.refresh()
     }
 }

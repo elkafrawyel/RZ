@@ -20,11 +20,24 @@
         android:layout_height="wrap_content"
         android:padding="8dp"
         android:text="@string/label_no_internet_connection"
-        android:textColor="@android:color/darker_gray"
+        android:textColor="@android:color/black"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/noConnectionImgv" />
+
+    <TextView
+        android:id="@+id/noConnectionTryAgainTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/label_try_again"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/noConnectionTv"/>
 
     <ImageView
         android:id="@+id/emptyViewImgv"
@@ -93,7 +106,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="noConnectionImgv, noConnectionTv" />
+        app:constraint_referenced_ids="noConnectionImgv, noConnectionTv, noConnectionTryAgainTv" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/emptyViewGroup"
@@ -106,7 +119,7 @@
         android:id="@+id/errorViewGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:visibility="visible"
         app:constraint_referenced_ids="errorViewImgv, errorViewTv" />
 
     <androidx.constraintlayout.widget.Group

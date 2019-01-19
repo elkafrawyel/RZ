@@ -4,25 +4,25 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.chad.library.adapter.base.BaseQuickAdapter
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.Ad
-import com.hmaserv.rz.domain.Attribute
 import com.hmaserv.rz.domain.Owner
-import com.hmaserv.rz.domain.observeEvent
+import com.hmaserv.rz.ui.BaseFragment
+import com.hmaserv.rz.ui.home.ImageSliderAdapter
 import kotlinx.android.synthetic.main.product_fragment.*
 
-class ProductFragment : Fragment(), AdapterAttributes.AttributesListener {
+class ProductFragment : BaseFragment(), AdapterAttributes.AttributesListener {
+
 
     private var productId: String? = null
     lateinit var viewModel: ProductViewModel
+    private val imageSliderAdapter = ImageSliderAdapter()
     lateinit var adapter: AdapterAttributes
     private var adPrice = 0
 
@@ -37,9 +37,7 @@ class ProductFragment : Fragment(), AdapterAttributes.AttributesListener {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
 
-        viewModel.uiState.observeEvent(this) {
-            onProductResponse(it)
-        }
+        viewModel.uiState.observe(this, Observer { onUiStateChanged(it) })
 
         arguments?.let {
             toolbar_ProductNameTv.text = ProductFragmentArgs.fromBundle(it).productName
@@ -52,11 +50,19 @@ class ProductFragment : Fragment(), AdapterAttributes.AttributesListener {
         if (productId == null)
             activity?.onBackPressed()
 
+        productVp.adapter = imageSliderAdapter
+
         backImgv.setOnClickListener { activity?.onBackPressed() }
 
         shareImgv.setOnClickListener { shareProduct() }
 
         addToCartBtn.setOnClickListener { makeOrder() }
+
+        noConnectionCl.setOnClickListener { viewModel.refresh() }
+
+        errorCl.setOnClickListener { viewModel.refresh() }
+
+        loadingFl.setOnClickListener {  }
 
         attributesRv.layoutManager = LinearLayoutManager(
             context,
@@ -82,28 +88,10 @@ class ProductFragment : Fragment(), AdapterAttributes.AttributesListener {
         priceTv.text = getString(R.string.label_product_currency, price.toString())
     }
 
-    private fun onProductResponse(states: ProductViewModel.AdUiStates) {
-        when (states) {
-            ProductViewModel.AdUiStates.Loading -> showLoadingState()
-            is ProductViewModel.AdUiStates.Success -> showSuccessState(states.ad)
-            is ProductViewModel.AdUiStates.Error -> showStateError(states.message)
-            ProductViewModel.AdUiStates.NoInternetConnection -> showNoInterNetConnectionState()
-        }
-    }
+    override fun showSuccess(dataMap: Map<String, Any>) {
 
-    private fun showLoadingState() {
+        val ad = dataMap[DATA_PRODUCT_DETAILS] as Ad
 
-    }
-
-    private fun showNoInterNetConnectionState() {
-        Toast.makeText(activity, getString(R.string.label_no_internet_connection), Toast.LENGTH_LONG).show()
-    }
-
-    private fun showStateError(message: String) {
-        Toast.makeText(activity, message, Toast.LENGTH_LONG).show()
-    }
-
-    private fun showSuccessState(ad: Ad) {
         productNameTv.text = ad.title
 
         toolbar_ProductNameTv.text = ad.title
@@ -128,6 +116,35 @@ class ProductFragment : Fragment(), AdapterAttributes.AttributesListener {
 
         adapter.notifyDataSetChanged()
 
+        loadingFl.visibility = View.GONE
+        dataGroup.visibility = View.VISIBLE
+        emptyViewGroup.visibility = View.GONE
+        noConnectionCl.visibility = View.GONE
+        errorCl.visibility = View.GONE
+    }
+
+    override fun showError(message: String) {
+        loadingFl.visibility = View.GONE
+        dataGroup.visibility = View.GONE
+        emptyViewGroup.visibility = View.GONE
+        noConnectionCl.visibility = View.GONE
+        errorCl.visibility = View.VISIBLE
+    }
+
+    override fun showNoInternetConnection() {
+        loadingFl.visibility = View.GONE
+        dataGroup.visibility = View.GONE
+        emptyViewGroup.visibility = View.GONE
+        noConnectionCl.visibility = View.VISIBLE
+        errorCl.visibility = View.GONE
+    }
+
+    override fun showLoading() {
+        loadingFl.visibility = View.VISIBLE
+        dataGroup.visibility = View.GONE
+        emptyViewGroup.visibility = View.GONE
+        noConnectionCl.visibility = View.GONE
+        errorCl.visibility = View.GONE
     }
 
     private fun addOwnerInfo(owner: Owner) {
@@ -140,142 +157,45 @@ class ProductFragment : Fragment(), AdapterAttributes.AttributesListener {
     }
 
     private fun addSliderImages(images: List<String>) {
-        val imageSliderAdapter = ImageSliderAdapter()
-        productVp.adapter = imageSliderAdapter
         imageSliderAdapter.submitList(images)
     }
 
     private fun addAdRate(rate: Int) {
         when (rate) {
             1 -> {
-                Glide.with(this)
-                    .load(R.drawable.ic_star_fill_rate)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(star_1)
-
-                Glide.with(this)
-                    .load(R.drawable.ic_star_rate)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(star_2)
-
-                Glide.with(this)
-                    .load(R.drawable.ic_star_rate)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(star_3)
-
-                Glide.with(this)
-                    .load(R.drawable.ic_star_rate)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(star_4)
-
-                Glide.with(this)
-                    .load(R.drawable.ic_star_rate)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(star_5)
+                star_1.setImageResource(R.drawable.ic_star_fill_rate)
+                star_2.setImageResource(R.drawable.ic_star_rate)
+                star_3.setImageResource(R.drawable.ic_star_rate)
+                star_4.setImageResource(R.drawable.ic_star_rate)
+                star_5.setImageResource(R.drawable.ic_star_rate)
             }
             2 -> {
-                Glide.with(this)
-                    .load(R.drawable.ic_star_fill_rate)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(star_1)
-
-                Glide.with(this)
-                    .load(R.drawable.ic_star_fill_rate)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(star_2)
-
-                Glide.with(this)
-                    .load(R.drawable.ic_star_rate)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(star_3)
-
-                Glide.with(this)
-                    .load(R.drawable.ic_star_rate)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(star_4)
-
-                Glide.with(this)
-                    .load(R.drawable.ic_star_rate)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(star_5)
+                star_1.setImageResource(R.drawable.ic_star_fill_rate)
+                star_2.setImageResource(R.drawable.ic_star_fill_rate)
+                star_3.setImageResource(R.drawable.ic_star_rate)
+                star_4.setImageResource(R.drawable.ic_star_rate)
+                star_5.setImageResource(R.drawable.ic_star_rate)
             }
             3 -> {
-                Glide.with(this)
-                    .load(R.drawable.ic_star_fill_rate)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(star_1)
-
-                Glide.with(this)
-                    .load(R.drawable.ic_star_fill_rate)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(star_2)
-
-                Glide.with(this)
-                    .load(R.drawable.ic_star_fill_rate)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(star_3)
-
-                Glide.with(this)
-                    .load(R.drawable.ic_star_rate)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(star_4)
-
-                Glide.with(this)
-                    .load(R.drawable.ic_star_rate)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(star_5)
+                star_1.setImageResource(R.drawable.ic_star_fill_rate)
+                star_2.setImageResource(R.drawable.ic_star_fill_rate)
+                star_3.setImageResource(R.drawable.ic_star_fill_rate)
+                star_4.setImageResource(R.drawable.ic_star_rate)
+                star_5.setImageResource(R.drawable.ic_star_rate)
             }
             4 -> {
-                Glide.with(this)
-                    .load(R.drawable.ic_star_fill_rate)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(star_1)
-
-                Glide.with(this)
-                    .load(R.drawable.ic_star_fill_rate)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(star_2)
-
-                Glide.with(this)
-                    .load(R.drawable.ic_star_fill_rate)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(star_3)
-
-                Glide.with(this)
-                    .load(R.drawable.ic_star_fill_rate)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(star_4)
-
-                Glide.with(this)
-                    .load(R.drawable.ic_star_rate)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(star_5)
+                star_1.setImageResource(R.drawable.ic_star_fill_rate)
+                star_2.setImageResource(R.drawable.ic_star_fill_rate)
+                star_3.setImageResource(R.drawable.ic_star_fill_rate)
+                star_4.setImageResource(R.drawable.ic_star_fill_rate)
+                star_5.setImageResource(R.drawable.ic_star_rate)
             }
             5 -> {
-                Glide.with(this)
-                    .load(R.drawable.ic_star_fill_rate)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(star_1)
-
-                Glide.with(this)
-                    .load(R.drawable.ic_star_fill_rate)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(star_2)
-
-                Glide.with(this)
-                    .load(R.drawable.ic_star_fill_rate)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(star_3)
-
-                Glide.with(this)
-                    .load(R.drawable.ic_star_fill_rate)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(star_4)
-
-                Glide.with(this)
-                    .load(R.drawable.ic_star_fill_rate)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(star_5)
+                star_1.setImageResource(R.drawable.ic_star_fill_rate)
+                star_2.setImageResource(R.drawable.ic_star_fill_rate)
+                star_3.setImageResource(R.drawable.ic_star_fill_rate)
+                star_4.setImageResource(R.drawable.ic_star_fill_rate)
+                star_5.setImageResource(R.drawable.ic_star_fill_rate)
             }
         }
     }
