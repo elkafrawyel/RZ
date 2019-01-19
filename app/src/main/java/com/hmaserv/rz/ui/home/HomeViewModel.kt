@@ -25,8 +25,8 @@ class HomeViewModel : NewBaseViewModel() {
     override fun launchDataJob(): Job {
         return scope.launch(dispatcherProvider.computation) {
             withContext(dispatcherProvider.main) { showDataLoading() }
-            val sliderJob = async(dispatcherProvider.io) { getSliderUseCase.getSlider() }
-            val promotionsJob = async(dispatcherProvider.io) { getPromotionsUseCase.getPromotions() }
+            val sliderJob = async(dispatcherProvider.io) { getSliderUseCase.get() }
+            val promotionsJob = async(dispatcherProvider.io) { getPromotionsUseCase.get() }
 
             val sliderResult = sliderJob.await()
             val promotionsResult = promotionsJob.await()

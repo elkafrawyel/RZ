@@ -9,8 +9,6 @@ import com.hmaserv.rz.data.apiService.RetrofitApiService
 import com.hmaserv.rz.data.apiService.RetrofitAuthApiService
 import com.hmaserv.rz.framework.categories.CategoriesRemoteSource
 import com.hmaserv.rz.framework.categories.CategoriesRepo
-import com.hmaserv.rz.framework.home.HomeRemoteSource
-import com.hmaserv.rz.framework.home.HomeRepo
 import com.hmaserv.rz.framework.logedInUser.LoggedInUserLocalSource
 import com.hmaserv.rz.framework.logedInUser.LoggedInUserRemoteSource
 import com.hmaserv.rz.framework.logedInUser.LoggedInUserRepo
@@ -157,15 +155,11 @@ object Injector {
         getAdsRemoteSource()
     )
 
+    fun getSliderUseCase() = GetSliderUseCase(getAdsRepo())
+    fun getPromotionsUseCase() = GetPromotionsUseCase(getAdsRepo())
     fun getMiniAdsUseCase() = GetMiniAdsUseCase(getAdsRepo())
     fun getAdUseCase() = GetAdUseCase(getAdsRepo())
     fun createAdUseCase() = CreateAdUseCase(getLoggedInRepo(), getAdsRepo())
-
-    // home
-    private fun getHomeRemoteSource() = HomeRemoteSource(getApiService())
-    private fun getHomeRepo() = HomeRepo.getInstance(getHomeRemoteSource())
-    fun getSliderUseCase() = GetSliderUseCase(getHomeRepo())
-    fun getPromotionsUseCase() = GetPromotionsUseCase(getHomeRepo())
 
     // uploader
     private fun getUploaderRemoteSource() = UploaderRemoteSource(getAuthApiService())

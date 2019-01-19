@@ -15,6 +15,52 @@ class AdsRemoteSource(
     private val authApiService: RetrofitAuthApiService
 ) : IAdsRemoteSource {
 
+    override suspend fun getSlider(): DataResource<List<Slider>> {
+        return safeApiCall(
+            call = { getSliderCall() },
+            errorMessage = Injector.getApplicationContext().getString(R.string.error_call_sliders_api)
+        )
+    }
+
+    private suspend fun getSliderCall(): DataResource<List<Slider>> {
+        val response = apiService.getSlider().await()
+        if (response.success != null && response.success) {
+            val body = response.data
+            if (body != null) {
+                return DataResource.Success(body)
+            }
+        }
+
+        if (response.message != null) {
+            return DataResource.Error(IOException(response.message))
+        }
+
+        return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_http_sliders_api)))
+    }
+
+    override suspend fun getPromotions(): DataResource<List<MiniAdResponse>> {
+        return safeApiCall(
+            call = { getPromotionsCall() },
+            errorMessage = Injector.getApplicationContext().getString(R.string.error_call_promotion_api)
+        )
+    }
+
+    private suspend fun getPromotionsCall(): DataResource<List<MiniAdResponse>> {
+        val response = apiService.getPromotions().await()
+        if (response.success != null && response.success) {
+            val body = response.data
+            if (body != null) {
+                return DataResource.Success(body)
+            }
+        }
+
+        if (response.message != null) {
+            return DataResource.Error(IOException(response.message))
+        }
+
+        return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_http_promotion_api)))
+    }
+
     override suspend fun getMiniAds(miniAdRequest: MiniAdRequest): DataResource<List<MiniAdResponse>> {
         return safeApiCall(
             call = { getMiniAdsCall(miniAdRequest) },

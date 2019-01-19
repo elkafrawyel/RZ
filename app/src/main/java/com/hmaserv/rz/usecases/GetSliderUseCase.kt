@@ -1,13 +1,13 @@
 package com.hmaserv.rz.usecases
 
-import com.hmaserv.rz.data.home.IHomeRepo
+import com.hmaserv.rz.data.ads.IAdsRepo
 import com.hmaserv.rz.domain.DataResource
 import com.hmaserv.rz.domain.Slider
 
 class GetSliderUseCase(
-    private val homeRepo: IHomeRepo
+    private val adsRepo: IAdsRepo
 ) {
-    suspend fun getSlider(): DataResource<List<Slider>> {
-        return homeRepo.getSlider()
+    suspend fun get(): DataResource<List<Slider>> {
+        return adsRepo.getSlider()
     }
 }

@@ -11,6 +11,18 @@ class AdsRepo(
     private var adsRemoteSource: IAdsRemoteSource
 ) : IAdsRepo {
 
+    override suspend fun getSlider(): DataResource<List<Slider>> {
+        return adsRemoteSource.getSlider()
+    }
+
+    override suspend fun getPromotions(): DataResource<List<MiniAd>> {
+        val result = adsRemoteSource.getPromotions()
+        return when(result) {
+            is DataResource.Success -> DataResource.Success(result.data.mapNotNull { it.toMiniProduct() })
+            is DataResource.Error -> result
+        }
+    }
+
     override suspend fun getMiniAds(miniAdRequest: MiniAdRequest): DataResource<List<MiniAd>> {
         val result = adsRemoteSource.getMiniAds(miniAdRequest)
         return when (result) {
