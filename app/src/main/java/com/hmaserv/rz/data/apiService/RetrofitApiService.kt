@@ -27,7 +27,7 @@ interface RetrofitApiService {
     @GET("landing/promotions")
     fun getPromotions(): Deferred<ApiResponse<List<MiniAdResponse>>>
 
-    @GET("categories")
+    @GET("category/all")
     fun getCategories(): Deferred<ApiResponse<List<CategoryResponse>>>
 
     @POST("category/subs")

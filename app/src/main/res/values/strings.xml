@@ -124,5 +124,6 @@
     <string name="error_uploading_image">خطأ في رفع الصورة</string>
     <string name="error_sign_in_first">برجاء تسجيل الدخول اولا</string>
     <string name="label_sign_in">تسجيل الدخول</string>
+    <string name="success_empty_view">لا توجد بيانات</string>
 
 </resources>

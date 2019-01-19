@@ -41,16 +41,16 @@
                 app:layout_constraintTop_toTopOf="@id/backBtn" />
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/searchMcv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="16dp"
-                app:layout_constraintTop_toBottomOf="@id/backBtn"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:id="@+id/searchMcv">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/backBtn">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -60,22 +60,22 @@
                         android:id="@+id/search_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_search_gray"
                         android:padding="8dp"
+                        android:src="@drawable/ic_search_gray"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/hint_search"
                         android:padding="12dp"
+                        android:text="@string/hint_search"
                         android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/search_icon"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"/>
+                        app:layout_constraintStart_toEndOf="@id/search_icon"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -98,13 +98,124 @@
             android:id="@+id/categoriesRv"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:clipToPadding="false"
             android:padding="8dp"
-            android:clipToPadding="false"/>
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:reverseLayout="false"
+            tools:listitem="@layout/category_item_view" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <include layout="@layout/no_internet_connection_view" />
+    <ImageView
+        android:id="@+id/noConnectionImgv"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/ic_no_connection"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <include layout="@layout/empty_view" />
+    <TextView
+        android:id="@+id/noConnectionTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="@string/label_no_internet_connection"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/noConnectionImgv" />
+
+    <ImageView
+        android:id="@+id/emptyViewImgv"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/ic_no_connection"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/emptyViewTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="@string/success_empty_view"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/emptyViewImgv" />
+
+    <ImageView
+        android:id="@+id/errorViewImgv"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/ic_no_connection"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/errorViewTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="@string/error_general"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/emptyViewImgv" />
+
+    <FrameLayout
+        android:id="@+id/loadingFl"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/colorScrim"
+        android:elevation="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+
+    </FrameLayout>
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/noConnectionGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="noConnectionImgv, noConnectionTv" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/emptyViewGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="emptyViewImgv, emptyViewTv" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/errorViewGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="errorViewImgv, errorViewTv" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/loadingViewGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="loadingFl" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

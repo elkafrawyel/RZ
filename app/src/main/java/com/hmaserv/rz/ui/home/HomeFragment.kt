@@ -50,8 +50,7 @@ class HomeFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
 
         mainViewModel.logInLiveData.observe(this, Observer { onLogInState(it) })
         mainViewModel.logOutState.observeEvent(this) { onLogOutState(it) }
-        homeViewModel.sliderState.observe(this, Observer { onSliderState(it) })
-        homeViewModel.promotionsState.observe(this, Observer { onPromotionsState(it) })
+        homeViewModel.uiState.observe(this, Observer { onUiStateChanged(it) })
 
         navigationView.setNavigationItemSelectedListener(this)
         bottomAppBar.setNavigationOnClickListener { rootViewDl.openDrawer(GravityCompat.START) }
@@ -224,36 +223,21 @@ class HomeFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
         }
     }
 
-    private fun onSliderState(state: HomeViewModel.SliderState) {
-        when (state) {
-            HomeViewModel.SliderState.Loading -> {
+    private fun onUiStateChanged(state: UiState?) {
+        when(state) {
+            UiState.Loading -> {}
+            is UiState.Success -> {
+                stateSliderSuccess(state.dataMap[DATA_SLIDER_KEY] as List<Slider>)
+                statePromotionsSuccess(state.dataMap[DATA_PROMOTIONS_KEY] as List<MiniAd>)
             }
-            HomeViewModel.SliderState.Empty -> {
-            }
-            is HomeViewModel.SliderState.Success -> stateSliderSuccess(state.sliders)
-            is HomeViewModel.SliderState.Error -> {
-            }
-            HomeViewModel.SliderState.NoInternetConnection -> {
-            }
+            is UiState.Error -> {}
+            UiState.NoInternetConnection -> {}
+            null -> {}
         }
     }
 
     private fun stateSliderSuccess(sliders: List<Slider>) {
         imageSliderAdapter.submitList(sliders.mapNotNull { it.image })
-    }
-
-    private fun onPromotionsState(state: HomeViewModel.PromotionsState) {
-        when (state) {
-            HomeViewModel.PromotionsState.Loading -> {
-            }
-            HomeViewModel.PromotionsState.Empty -> {
-            }
-            is HomeViewModel.PromotionsState.Success -> statePromotionsSuccess(state.promotions)
-            is HomeViewModel.PromotionsState.Error -> {
-            }
-            HomeViewModel.PromotionsState.NoInternetConnection -> {
-            }
-        }
     }
 
     private fun statePromotionsSuccess(promotions: List<MiniAd>) {

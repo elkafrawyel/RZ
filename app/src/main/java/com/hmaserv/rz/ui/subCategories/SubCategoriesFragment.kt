@@ -4,8 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,14 +13,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.SubCategory
-import com.hmaserv.rz.domain.observeEvent
-import kotlinx.android.synthetic.main.empty_view.*
-import kotlinx.android.synthetic.main.no_internet_connection_view.*
+import com.hmaserv.rz.ui.BaseFragment
 import kotlinx.android.synthetic.main.sub_categories_fragment.*
-import kotlinx.android.synthetic.main.sub_categories_fragment.view.*
 
-
-class SubCategoriesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
+class SubCategoriesFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private var categoryId: String? = null
     private val adapter = SubCategoriesAdapter()
@@ -31,36 +26,14 @@ class SubCategoriesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.sub_categories_fragment, container, false)
-
-        viewModel = ViewModelProviders.of(this).get(SubCategoriesViewModel::class.java)
-
-        viewModel.uiState.observeEvent(this) { onSubCategoryStateResponse(it) }
-
-        view.backBtn.setOnClickListener { activity?.onBackPressed() }
-
-        view.searchMcv.setOnClickListener { openSearchFragment() }
-
-        view.subCategoriesRv.layoutManager = LinearLayoutManager(
-            context,
-            RecyclerView.VERTICAL,
-            false
-        )
-
-        view.subCategoriesRv.adapter = adapter
-
-        adapter.onItemClickListener =
-                BaseQuickAdapter.OnItemClickListener { _, _, position ->
-                    openProducts(this.adapter.data[position])
-                }
-
-        view.subCategoriesSwipe.setOnRefreshListener(this)
-
-        return view
+        return inflater.inflate(R.layout.sub_categories_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel = ViewModelProviders.of(this).get(SubCategoriesViewModel::class.java)
+        viewModel.uiState.observe(this, Observer { onUiStateChanged(it) })
 
         arguments?.let {
 
@@ -72,51 +45,81 @@ class SubCategoriesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         }
 
         if (categoryId == null) activity?.onBackPressed()
+
+        backBtn.setOnClickListener { activity?.onBackPressed() }
+
+        searchMcv.setOnClickListener { openSearchFragment() }
+
+        subCategoriesRv.layoutManager = LinearLayoutManager(
+            context,
+            RecyclerView.VERTICAL,
+            false
+        )
+
+        subCategoriesRv.adapter = adapter
+
+        adapter.onItemClickListener =
+                BaseQuickAdapter.OnItemClickListener { _, _, position ->
+                    openProducts(this.adapter.data[position])
+                }
+
+        subCategoriesSwipe.setOnRefreshListener(this)
     }
 
-    private fun onSubCategoryStateResponse(state: SubCategoriesViewModel.SubCategoriesUiState) {
-        when (state) {
+    override fun showLoading() {
+        subCategoriesSwipe.isRefreshing = false
+        loadingViewGroup.visibility = View.VISIBLE
+        subCategoriesRv.visibility = View.GONE
+        emptyViewGroup.visibility = View.GONE
+        noConnectionGroup.visibility = View.GONE
+        errorViewGroup.visibility = View.GONE
+    }
 
-            SubCategoriesViewModel.SubCategoriesUiState.Loading -> showStateLoading()
-            is SubCategoriesViewModel.SubCategoriesUiState.Success -> showStateSuccess(state.categories)
-            is SubCategoriesViewModel.SubCategoriesUiState.Error -> showStateError(state.message)
-            SubCategoriesViewModel.SubCategoriesUiState.NoInternetConnection -> showStateNoConnection()
-            SubCategoriesViewModel.SubCategoriesUiState.EmptyView -> showStateEmptyView()
+    override fun showSuccess(dataMap: Map<String, Any>) {
+        val subCategories = dataMap[DATA_SUB_CATEGORIES_KEY] as List<SubCategory>
+        subCategoriesSwipe.isRefreshing = false
+        loadingViewGroup.visibility = View.GONE
+
+        if (subCategories.isEmpty()) {
+            showStateEmptyView()
+        } else {
+            subCategoriesRv.visibility = View.VISIBLE
+            emptyViewGroup.visibility = View.GONE
+            noConnectionGroup.visibility = View.GONE
+            errorViewGroup.visibility = View.GONE
+            adapter.submitList(subCategories)
         }
+    }
+
+    override fun showError(message: String) {
+        loadingViewGroup.visibility = View.GONE
+        subCategoriesSwipe.isRefreshing = false
+        subCategoriesRv.visibility = View.GONE
+        emptyViewGroup.visibility = View.GONE
+        noConnectionGroup.visibility = View.GONE
+        errorViewGroup.visibility = View.VISIBLE
+    }
+
+    override fun showNoInternetConnection() {
+        loadingViewGroup.visibility = View.GONE
+        subCategoriesSwipe.isRefreshing = false
+        subCategoriesRv.visibility = View.GONE
+        emptyViewGroup.visibility = View.GONE
+        noConnectionGroup.visibility = View.VISIBLE
+        errorViewGroup.visibility = View.GONE
+    }
+
+    private fun showStateEmptyView() {
+        loadingViewGroup.visibility = View.GONE
+        subCategoriesSwipe.isRefreshing = false
+        subCategoriesRv.visibility = View.GONE
+        emptyViewGroup.visibility = View.VISIBLE
+        noConnectionGroup.visibility = View.GONE
+        errorViewGroup.visibility = View.GONE
     }
 
     private fun openSearchFragment() {
         findNavController().navigate(R.id.action_subCategoriesFragment_to_searchFragment)
-    }
-
-    private fun showStateLoading() {
-        subCategoriesSwipe.isRefreshing = true
-        noInternetConnectionCl.visibility = View.GONE
-    }
-
-    private fun showStateError(message: String) {
-        subCategoriesSwipe.isRefreshing = false
-        Toast.makeText(activity, message, Toast.LENGTH_LONG).show()
-    }
-
-    private fun showStateSuccess(categories: List<SubCategory>) {
-        subCategoriesSwipe.isRefreshing = false
-        noInternetConnectionCl.visibility = View.GONE
-        subCategoriesRv.visibility = View.VISIBLE
-        adapter.submitList(categories)
-    }
-
-    private fun showStateEmptyView() {
-        emptyViewCl.visibility = View.VISIBLE
-        noInternetConnectionCl.visibility = View.GONE
-        subCategoriesRv.visibility = View.GONE
-        subCategoriesSwipe.isRefreshing = false
-    }
-
-    private fun showStateNoConnection() {
-        noInternetConnectionCl.visibility = View.VISIBLE
-        subCategoriesRv.visibility = View.GONE
-        subCategoriesSwipe.isRefreshing = false
     }
 
     private fun openProducts(subCategory: SubCategory) {
@@ -133,6 +136,6 @@ class SubCategoriesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     override fun onRefresh() {
-        viewModel.refreshSubCategories()
+        viewModel.refresh()
     }
 }

@@ -117,5 +117,6 @@
     <string name="error_uploading_image">Error uploading ad image</string>
     <string name="error_sign_in_first">برجاء تسجيل الدخول اولا</string>
     <string name="label_sign_in">تسجيل الدخول</string>
+    <string name="success_empty_view">No Data Found</string>
 
 </resources>
