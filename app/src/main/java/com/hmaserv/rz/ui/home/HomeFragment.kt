@@ -1,8 +1,10 @@
 package com.hmaserv.rz.ui.home
 
 import android.os.Bundle
-import android.view.*
-import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
@@ -17,9 +19,12 @@ import com.bumptech.glide.request.RequestOptions
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
-
 import com.hmaserv.rz.R
-import com.hmaserv.rz.domain.*
+import com.hmaserv.rz.domain.LoggedInUser
+import com.hmaserv.rz.domain.MiniAd
+import com.hmaserv.rz.domain.Slider
+import com.hmaserv.rz.domain.observeEvent
+import com.hmaserv.rz.ui.BaseFragment
 import com.hmaserv.rz.ui.MainViewModel
 import com.hmaserv.rz.ui.products.ProductsAdapter
 import kotlinx.android.synthetic.main.home_fragment.*
@@ -27,7 +32,7 @@ import kotlinx.android.synthetic.main.home_nav_header.view.*
 import java.util.*
 import kotlin.concurrent.timerTask
 
-class HomeFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener {
+class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var mainViewModel: MainViewModel
 
@@ -113,7 +118,7 @@ class HomeFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
     }
 
     private fun onCreateProductClicked() {
-        when(mainViewModel.logInLiveData.value) {
+        when (mainViewModel.logInLiveData.value) {
             MainViewModel.LogInState.NoLogIn -> {
                 Snackbar.make(rootViewDl, getString(R.string.error_sign_in_first), Snackbar.LENGTH_SHORT)
                     .setAction(getString(R.string.label_sign_in)) {
@@ -223,24 +228,62 @@ class HomeFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
         }
     }
 
-    private fun onUiStateChanged(state: UiState?) {
-        when(state) {
-            UiState.Loading -> {}
-            is UiState.Success -> {
-                stateSliderSuccess(state.dataMap[DATA_SLIDER_KEY] as List<Slider>)
-                statePromotionsSuccess(state.dataMap[DATA_PROMOTIONS_KEY] as List<MiniAd>)
-            }
-            is UiState.Error -> {}
-            UiState.NoInternetConnection -> {}
-            null -> {}
+    override fun showLoading() {
+        loadingViewGroup.visibility = View.VISIBLE
+        dataGroup.visibility = View.GONE
+        errorViewGroup.visibility = View.GONE
+        emptyViewGroup.visibility = View.GONE
+        noConnectionGroup.visibility = View.GONE
+    }
+
+    override fun showSuccess(dataMap: Map<String, Any>) {
+        val sliders = dataMap[DATA_SLIDER_KEY] as List<Slider>
+        val promotions = dataMap[DATA_PROMOTIONS_KEY] as List<MiniAd>
+
+        loadingViewGroup.visibility = View.GONE
+
+        if (sliders.isEmpty() || promotions.isEmpty()) {
+            showStateEmptyView()
+        } else {
+            dataGroup.visibility = View.VISIBLE
+            emptyViewGroup.visibility = View.GONE
+            noConnectionGroup.visibility = View.GONE
+            errorViewGroup.visibility = View.GONE
+
+            setSliders(sliders)
+            setPromotions(promotions)
         }
     }
 
-    private fun stateSliderSuccess(sliders: List<Slider>) {
+    override fun showError(message: String) {
+        loadingViewGroup.visibility = View.GONE
+        dataGroup.visibility = View.GONE
+        errorViewGroup.visibility = View.VISIBLE
+        emptyViewGroup.visibility = View.GONE
+        noConnectionGroup.visibility = View.GONE
+    }
+
+    override fun showNoInternetConnection() {
+        loadingViewGroup.visibility = View.GONE
+        dataGroup.visibility = View.GONE
+        errorViewGroup.visibility = View.GONE
+        emptyViewGroup.visibility = View.GONE
+        noConnectionGroup.visibility = View.VISIBLE
+    }
+
+    private fun showStateEmptyView() {
+        loadingViewGroup.visibility = View.GONE
+        dataGroup.visibility = View.GONE
+        emptyViewGroup.visibility = View.VISIBLE
+        noConnectionGroup.visibility = View.GONE
+        errorViewGroup.visibility = View.GONE
+    }
+
+    private fun setSliders(sliders: List<Slider>) {
         imageSliderAdapter.submitList(sliders.mapNotNull { it.image })
     }
 
-    private fun statePromotionsSuccess(promotions: List<MiniAd>) {
+    private fun setPromotions(promotions: List<MiniAd>) {
         productsAdapter.submitList(promotions)
     }
 }

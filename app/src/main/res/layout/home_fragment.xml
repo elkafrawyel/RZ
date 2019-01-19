@@ -32,6 +32,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.rd.PageIndicatorView
+                    android:id="@+id/pageIndicator"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
@@ -51,8 +52,8 @@
                     android:layout_marginTop="16dp"
                     android:text="@string/label_promotions"
                     android:textAllCaps="true"
-                    android:textColor="@color/colorSecondaryVariant"
                     android:textAppearance="?attr/textAppearanceHeadline5"
+                    android:textColor="@color/colorSecondaryVariant"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/bannerSliderVp" />
 
@@ -61,23 +62,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
-                    android:visibility="invisible"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_reorder_black"
+                    android:visibility="invisible"
                     app:layout_constraintBottom_toBottomOf="@id/labelTv"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/labelTv"/>
+                    app:layout_constraintTop_toTopOf="@id/labelTv" />
 
                 <ImageView
                     android:id="@+id/actionGridImgv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
-                    android:visibility="invisible"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_apps_black50"
+                    android:visibility="invisible"
                     app:layout_constraintEnd_toStartOf="@id/actionListImgv"
-                    app:layout_constraintTop_toTopOf="@id/actionListImgv"/>
+                    app:layout_constraintTop_toTopOf="@id/actionListImgv" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/promotionsRv"
@@ -88,6 +89,123 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/labelTv" />
 
+                <ImageView
+                    android:id="@+id/noConnectionImgv"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:src="@drawable/ic_no_connection"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/noConnectionTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="@string/label_no_internet_connection"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/noConnectionImgv" />
+
+                <ImageView
+                    android:id="@+id/emptyViewImgv"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:src="@drawable/ic_no_connection"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/emptyViewTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="@string/success_empty_view"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/emptyViewImgv" />
+
+                <ImageView
+                    android:id="@+id/errorViewImgv"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:src="@drawable/ic_no_connection"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/errorViewTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="@string/error_general"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/emptyViewImgv" />
+
+
+                <FrameLayout
+                    android:id="@+id/loadingFl"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@color/colorScrim"
+                    android:elevation="2dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ProgressBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center" />
+                </FrameLayout>
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/dataGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="bannerSliderVp, pageIndicator, labelTv,actionListImgv, promotionsRv, actionGridImgv" />
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/noConnectionGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:constraint_referenced_ids="noConnectionImgv, noConnectionTv" />
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/emptyViewGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:constraint_referenced_ids="emptyViewImgv, emptyViewTv" />
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/errorViewGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:constraint_referenced_ids="errorViewImgv, errorViewTv" />
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/loadingViewGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:constraint_referenced_ids="loadingFl" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
@@ -133,8 +251,8 @@
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="8dp"
-                    android:visibility="gone"
                     android:src="@drawable/ic_notifications_white"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@id/categoriesImgv"
                     app:layout_constraintTop_toTopOf="parent" />
