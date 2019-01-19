@@ -9,4 +9,6 @@ interface IAdsRemoteSource {
     suspend fun getAd(adRequest: AdRequest): DataResource<AdResponse>
     suspend fun createAd(token: String, createProductRequest: CreateProductRequest) : DataResource<CreateProductResponse>
     suspend fun myAds(token: String): DataResource<List<MiniAd>>
+    suspend fun deleteAd(token: String, request: AdRequest): DataResource<Boolean>
+    suspend fun updateAd(token: String, request: CreateProductRequest) : DataResource<CreateProductResponse>
 }

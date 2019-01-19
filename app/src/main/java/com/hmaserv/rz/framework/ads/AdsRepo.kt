@@ -51,6 +51,21 @@ class AdsRepo(
         return adsRemoteSource.createAd(token, createProductRequest)
     }
 
+    override suspend fun myAds(token: String): DataResource<List<MiniAd>> {
+        return adsRemoteSource.myAds(token)
+    }
+
+    override suspend fun deleteAd(token: String, request: AdRequest): DataResource<Boolean> {
+        return adsRemoteSource.deleteAd(token, request)
+    }
+
+    override suspend fun updateAd(
+        token: String,
+        request: CreateProductRequest
+    ): DataResource<CreateProductResponse> {
+        return adsRemoteSource.updateAd(token, request)
+    }
+
     companion object {
         @Volatile
         private var INSTANCE: AdsRepo? = null

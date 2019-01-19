@@ -107,31 +107,109 @@ class AdsRemoteSource(
         return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_http_ad_api)))
     }
 
-    override suspend fun createAd(token: String, createProductRequest: CreateProductRequest): DataResource<CreateProductResponse> {
+    override suspend fun createAd(
+        token: String,
+        createProductRequest: CreateProductRequest
+    ): DataResource<CreateProductResponse> {
         return safeApiCall(
             call = { createAdCall(token, createProductRequest) },
             errorMessage = Injector.getApplicationContext().getString(R.string.error_call_create_ad_api)
         )
     }
 
-    private suspend fun createAdCall(token: String, createProductRequest: CreateProductRequest):
-            DataResource<CreateProductResponse> {
+    private suspend fun createAdCall(
+        token: String,
+        createProductRequest: CreateProductRequest
+    ): DataResource<CreateProductResponse> {
         val response = authApiService.createProduct(token, createProductRequest).await()
         if (response.success != null && response.success) {
-            Timber.i("response success")
             val body = response.data
             if (body != null) {
-                Timber.i("body success")
                 return DataResource.Success(body)
             }
         }
 
         if (response.message != null) {
-            Timber.i("error message")
             return DataResource.Error(IOException(response.message))
         }
 
-        Timber.i("error message null")
+        return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_http_create_ad_api)))
+    }
+
+    override suspend fun myAds(token: String): DataResource<List<MiniAd>> {
+        return safeApiCall(
+            call = { myAdsCall(token) },
+            errorMessage = Injector.getApplicationContext().getString(R.string.error_call_create_ad_api)
+        )
+    }
+
+    private suspend fun myAdsCall(
+        token: String
+    ): DataResource<List<MiniAd>> {
+        val response = authApiService.myAds(token).await()
+        if (response.success != null && response.success) {
+            val body = response.data
+            if (body != null) {
+                return DataResource.Success(body)
+            }
+        }
+
+        if (response.message != null) {
+            return DataResource.Error(IOException(response.message))
+        }
+
+        return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_http_create_ad_api)))
+    }
+
+    override suspend fun deleteAd(token: String, request: AdRequest): DataResource<Boolean> {
+        return safeApiCall(
+            call = { deleteAdCall(token, request) },
+            errorMessage = Injector.getApplicationContext().getString(R.string.error_call_create_ad_api)
+        )
+    }
+
+    private suspend fun deleteAdCall(token: String, request: AdRequest): DataResource<Boolean> {
+        val response = authApiService.deleteAd(token, request).await()
+        if (response.success != null && response.success) {
+            val body = response.data
+            if (body != null) {
+                return DataResource.Success(body)
+            }
+        }
+
+        if (response.message != null) {
+            return DataResource.Error(IOException(response.message))
+        }
+
+        return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_http_create_ad_api)))
+    }
+
+    override suspend fun updateAd(
+        token: String,
+        request: CreateProductRequest
+    ): DataResource<CreateProductResponse> {
+        return safeApiCall(
+            call = { updateAdCall(token, request) },
+            errorMessage = Injector.getApplicationContext().getString(R.string.error_call_create_ad_api)
+        )
+    }
+
+    private suspend fun updateAdCall(
+        token: String,
+        request: CreateProductRequest
+    ): DataResource<CreateProductResponse> {
+        val response = authApiService.updateAd(token, request).await()
+        if (response.success != null && response.success) {
+            val body = response.data
+            if (body != null) {
+                return DataResource.Success(body)
+            }
+        }
+
+        if (response.message != null) {
+            return DataResource.Error(IOException(response.message))
+        }
+
         return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_http_create_ad_api)))
     }
 

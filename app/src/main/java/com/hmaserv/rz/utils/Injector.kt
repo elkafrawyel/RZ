@@ -160,6 +160,9 @@ object Injector {
     fun getMiniAdsUseCase() = GetMiniAdsUseCase(getAdsRepo())
     fun getAdUseCase() = GetAdUseCase(getAdsRepo())
     fun createAdUseCase() = CreateAdUseCase(getLoggedInRepo(), getAdsRepo())
+    fun getMyAdsUseCase() = GetMyAdsUseCase(getLoggedInRepo(), getAdsRepo())
+    fun deleteAdUseCase() = DeleteAdUseCase(getLoggedInRepo(), getAdsRepo())
+    fun updateAdUseCase() = UpdateAdUseCase(getLoggedInRepo(), getAdsRepo())
 
     // uploader
     private fun getUploaderRemoteSource() = UploaderRemoteSource(getAuthApiService())
