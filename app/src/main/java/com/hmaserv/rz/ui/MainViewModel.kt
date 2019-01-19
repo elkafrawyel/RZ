@@ -26,8 +26,8 @@ class MainViewModel : BaseViewModel() {
             val loggedInUser = list[0]
             if (loggedInUser != null) {
                 when (loggedInUser.roleId) {
-                    0 -> return@map LogInState.SellerLoggedIn(loggedInUser)
                     1 -> return@map LogInState.BuyerLoggedIn(loggedInUser)
+                    2 -> return@map LogInState.SellerLoggedIn(loggedInUser)
                     else -> return@map LogInState.BuyerLoggedIn(loggedInUser)
                 }
             }
