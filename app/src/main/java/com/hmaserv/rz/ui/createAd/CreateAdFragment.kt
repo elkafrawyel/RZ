@@ -233,16 +233,16 @@ class CreateAdFragment : Fragment() {
             // Already have permission, do the thing
             CreateAdJobService.enqueueWork(
                 requireActivity(),
-                addressEt.text.toString(),
-                descriptionEt.text.toString(),
-                priceEt.text.toString(),
-                priceWithDiscountEt.text.toString(),
-                quantityEt.text.toString(),
-                selectedSubCategory.uuid,
-                viewModel.getSelectedAttributes(),
-                viewModel.getSelectedImagesStringList())
+                title = addressEt.text.toString(),
+                description = descriptionEt.text.toString(),
+                price = priceEt.text.toString(),
+                discountPrice = priceWithDiscountEt.text.toString(),
+                quantity = quantityEt.text.toString(),
+                subCategoryUuid = selectedSubCategory.uuid,
+                attributes = viewModel.getSelectedAttributes(),
+                images = viewModel.getSelectedImagesStringList())
 
-            requireActivity().onBackPressed()
+            findNavController().navigateUp()
         } else {
             // Do not have permissions, request them now
             EasyPermissions.requestPermissions(
@@ -277,7 +277,7 @@ class CreateAdFragment : Fragment() {
                         if (viewModel.addSelectedImage(uri)) {
                             imageAdapter.notifyItemInserted(viewModel.getSelectedImagesSize() - 1)
                             if (viewModel.getSelectedImagesSize() > 9) {
-                                addPictureImgv.setVisibility(View.GONE)
+                                addPictureImgv.visibility = View.GONE
                             }
                         } else {
                             Toast.makeText(activity, "You can not add more than 10 images.", Toast.LENGTH_SHORT)

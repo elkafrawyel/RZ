@@ -1,5 +1,6 @@
 package com.hmaserv.rz.domain
 
+import android.net.Uri
 import com.squareup.moshi.Json
 
 
@@ -50,7 +51,7 @@ data class Ad(
     val date: String,
     val description: String,
     val discountPrice: Int,
-    val images: List<String>,
+    val images: List<Image.UrlImage>,
     val owner: Owner,
     val price: Int,
     val rate: Int,
@@ -58,6 +59,11 @@ data class Ad(
     val subCategoryName: String,
     val title: String
 )
+
+sealed class Image {
+    data class UrlImage(val url: String) : Image()
+    data class UriImage(val uri: Uri) : Image()
+}
 
 data class Owner(
     val image: String,
@@ -85,7 +91,7 @@ fun AdResponse.toAd(): Ad? {
             createAd,
             decs,
             discountPrice,
-            files.filterNotNull(),
+            files.filterNotNull().toImages(),
             owner.toOwner(),
             price,
             rate,
@@ -104,4 +110,8 @@ fun OwnerResponse.toOwner(): Owner {
         fullName ?: "Name is null",
         uuid ?: "uuid is null"
     )
+}
+
+fun List<String>.toImages(): List<Image.UrlImage> {
+    return this.map { Image.UrlImage(it) }
 }

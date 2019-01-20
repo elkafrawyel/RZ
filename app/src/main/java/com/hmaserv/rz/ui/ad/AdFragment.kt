@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.Ad
+import com.hmaserv.rz.domain.Image
 import com.hmaserv.rz.domain.Owner
 import com.hmaserv.rz.ui.BaseFragment
 import com.hmaserv.rz.ui.home.ImageSliderAdapter
@@ -140,7 +141,7 @@ class AdFragment : BaseFragment(), AdapterAttributes.AttributesListener {
         val rate = ad.rate
         addAdRate(rate)
 
-        addSliderImages(ad.images)
+        addSliderImages(ad.images.map { it.url })
 
         addOwnerInfo(ad.owner)
 

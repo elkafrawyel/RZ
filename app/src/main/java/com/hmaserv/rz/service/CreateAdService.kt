@@ -31,6 +31,8 @@ import java.io.IOException
 
 const val CREATE_AD_JOB_ID = 1000
 const val CREATE_AD_SERVICE_NAME = "createAdJobService"
+const val MODE = "mode"
+const val AD_UUID = "uuid"
 const val AD_TITLE = "title"
 const val AD_DESCRIPTION = "description"
 const val AD_PRICE = "price"
@@ -39,7 +41,13 @@ const val AD_QUANTITY = "quantity"
 const val AD_SUB_UUID = "subUuid"
 const val AD_ATTRIBUTES = "attributes"
 const val AD_IMAGES = "images"
+const val AD_DELETED_IMAGES = "deletedIages"
 var NOTIFICATION_ID = 1000
+
+enum class Mode {
+    CREATE,
+    EDIT
+}
 
 class CreateAdJobService : JobIntentService() {
 
@@ -50,6 +58,8 @@ class CreateAdJobService : JobIntentService() {
 
     override fun onHandleWork(intent: Intent) {
 
+        val mode = intent.getIntExtra(MODE, Mode.CREATE.ordinal)
+        val adUuid = intent.getStringExtra(AD_UUID)
         val title = intent.getStringExtra(AD_TITLE)
         val description = intent.getStringExtra(AD_DESCRIPTION)
         val price = intent.getStringExtra(AD_PRICE)
@@ -58,6 +68,7 @@ class CreateAdJobService : JobIntentService() {
         val subCategoryUuid = intent.getStringExtra(AD_SUB_UUID)
         val attributes = intent.getParcelableArrayListExtra<Attribute.MainAttribute>(AD_ATTRIBUTES)
         val images = intent.getStringArrayListExtra(AD_IMAGES)
+        val deletedImages = intent.getStringArrayListExtra(AD_DELETED_IMAGES)
         NOTIFICATION_ID++
 
         val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
@@ -74,24 +85,28 @@ class CreateAdJobService : JobIntentService() {
 
         with(NotificationManagerCompat.from(this)) {
 
-            if (images != null) {
-                runBlocking(Injector.getCoroutinesDispatcherProvider().main) {
-                    Toast.makeText(this@CreateAdJobService, "Creating your Ad started.", Toast.LENGTH_LONG).show()
-                }
-                notify(NOTIFICATION_ID, mBuilder.build())
-                resizeImages(images)
+            if (mode == Mode.CREATE.ordinal) {
+                if (images != null) {
+                    runBlocking(Injector.getCoroutinesDispatcherProvider().main) {
+                        Toast.makeText(this@CreateAdJobService, "Creating your Ad started.", Toast.LENGTH_LONG).show()
+                    }
+                    notify(NOTIFICATION_ID, mBuilder.build())
+                    resizeImages(images)
 
-                launchCreateProductTest(
-                    title,
-                    description,
-                    price,
-                    discountPrice,
-                    quantity,
-                    subCategoryUuid,
-                    attributes,
-                    this,
-                    mBuilder
-                )
+                    launchCreateProductTest(
+                        title,
+                        description,
+                        price,
+                        discountPrice,
+                        quantity,
+                        subCategoryUuid,
+                        attributes,
+                        this,
+                        mBuilder
+                    )
+                }
+            } else {
+
             }
         }
 
@@ -158,8 +173,8 @@ class CreateAdJobService : JobIntentService() {
                     }
                     val bundle = Bundle()
 
-                    bundle.putString("productId", result.data.adsUuid)
-                    bundle.putString("productName", title)
+                    bundle.putString("adUuid", result.data.adsUuid)
+                    bundle.putString("adName", title)
                     val pendingIntent = NavDeepLinkBuilder(this@CreateAdJobService)
                         .setGraph(R.navigation.nav_graph)
                         .setComponentName(MainActivity::class.java)
@@ -170,6 +185,7 @@ class CreateAdJobService : JobIntentService() {
                     mBuilder.setProgress(0, 0, false)
                         .setContentText("Your Ad is created successfully")
                         .setContentIntent(pendingIntent)
+                        .setOngoing(false)
 
                     withContext(Injector.getCoroutinesDispatcherProvider().main) {
                         Toast.makeText(this@CreateAdJobService, "Your Ad is created successfully.", Toast.LENGTH_LONG)
@@ -179,6 +195,8 @@ class CreateAdJobService : JobIntentService() {
                 is DataResource.Error -> {
                     mBuilder.setProgress(0, 0, false)
                         .setContentText("Failed to create your Ad")
+                        .setOngoing(false)
+
                     withContext(Injector.getCoroutinesDispatcherProvider().main) {
                         Toast.makeText(this@CreateAdJobService, "Failed to create your Ad.", Toast.LENGTH_LONG).show()
                     }
@@ -199,6 +217,7 @@ class CreateAdJobService : JobIntentService() {
     companion object {
         fun enqueueWork(
             context: Context,
+            adUuid: String = "",
             title: String,
             description: String,
             price: String,
@@ -206,9 +225,13 @@ class CreateAdJobService : JobIntentService() {
             quantity: String,
             subCategoryUuid: String,
             attributes: ArrayList<Attribute.MainAttribute>,
-            images: ArrayList<String>
+            images: ArrayList<String>,
+            deletedImages: ArrayList<String> = ArrayList(),
+            mode: Mode = Mode.CREATE
         ) {
             val intent = Intent(context, CreateAdJobService::class.java)
+            intent.putExtra(MODE, mode.ordinal)
+            intent.putExtra(AD_UUID, adUuid)
             intent.putExtra(AD_TITLE, title)
             intent.putExtra(AD_DESCRIPTION, description)
             intent.putExtra(AD_PRICE, price)
@@ -217,6 +240,7 @@ class CreateAdJobService : JobIntentService() {
             intent.putExtra(AD_SUB_UUID, subCategoryUuid)
             intent.putParcelableArrayListExtra(AD_ATTRIBUTES, attributes)
             intent.putStringArrayListExtra(AD_IMAGES, images)
+            intent.putStringArrayListExtra(AD_DELETED_IMAGES, deletedImages)
             enqueueWork(context, CreateAdJobService::class.java, CREATE_AD_JOB_ID, intent)
         }
     }
