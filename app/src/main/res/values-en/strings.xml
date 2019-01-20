@@ -119,5 +119,6 @@
     <string name="label_sign_in">تسجيل الدخول</string>
     <string name="success_empty_view">No Data Found</string>
     <string name="label_try_again">Try Again</string>
+    <string name="label_my_ads_title">My Ads</string>
 
 </resources>

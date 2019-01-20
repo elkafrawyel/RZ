@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginBottom="16dp"
-    >
+    android:layout_marginBottom="16dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -13,7 +12,7 @@
         android:paddingBottom="16dp">
 
         <ImageView
-            android:id="@+id/item_image"
+            android:id="@+id/adImgv"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scaleType="centerCrop"
@@ -21,95 +20,126 @@
             app:layout_constraintDimensionRatio="16:9"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/test_image" />
 
         <TextView
-            android:id="@+id/name"
+            android:id="@+id/nameTv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:ellipsize="end"
             android:maxLines="2"
             android:padding="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            tools:text="Camera canon model rzy555"
             android:textColor="@android:color/black"
             android:textSize="18sp"
             android:transitionName="productName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/item_image" />
+            app:layout_constraintTop_toBottomOf="@id/adImgv"
+            tools:text="Camera canon model rzy555" />
 
         <ImageView
-            android:id="@+id/star_1"
+            android:id="@+id/starOneImgv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:src="@drawable/ic_star_rate"
             android:transitionName="starOne"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/name" />
+            app:layout_constraintTop_toBottomOf="@id/nameTv" />
 
         <ImageView
-            android:id="@+id/star_2"
+            android:id="@+id/starTwoImgv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_star_rate"
             android:transitionName="starTwo"
-            app:layout_constraintStart_toEndOf="@id/star_1"
-            app:layout_constraintTop_toTopOf="@id/star_1" />
+            app:layout_constraintStart_toEndOf="@id/starOneImgv"
+            app:layout_constraintTop_toTopOf="@id/starOneImgv" />
 
         <ImageView
-            android:id="@+id/star_3"
+            android:id="@+id/starThreeImgv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_star_rate"
             android:transitionName="starThree"
-            app:layout_constraintStart_toEndOf="@id/star_2"
-            app:layout_constraintTop_toTopOf="@id/star_1" />
+            app:layout_constraintStart_toEndOf="@id/starTwoImgv"
+            app:layout_constraintTop_toTopOf="@id/starOneImgv" />
 
         <ImageView
-            android:id="@+id/star_4"
+            android:id="@+id/starFourImgv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_star_rate"
             android:transitionName="starFour"
-            app:layout_constraintStart_toEndOf="@id/star_3"
-            app:layout_constraintTop_toTopOf="@id/star_1" />
+            app:layout_constraintStart_toEndOf="@id/starThreeImgv"
+            app:layout_constraintTop_toTopOf="@id/starOneImgv" />
 
         <ImageView
-            android:id="@+id/star_5"
+            android:id="@+id/starFiveImgv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_star_rate"
             android:transitionName="starFive"
-            app:layout_constraintStart_toEndOf="@id/star_4"
-            app:layout_constraintTop_toTopOf="@id/star_1" />
+            app:layout_constraintStart_toEndOf="@id/starFourImgv"
+            app:layout_constraintTop_toTopOf="@id/starOneImgv" />
 
         <TextView
             android:id="@+id/rating"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            tools:text="(18)"
             android:transitionName="productReviewsNo"
-            app:layout_constraintBottom_toBottomOf="@id/star_1"
-            app:layout_constraintStart_toEndOf="@id/star_5"
-            app:layout_constraintTop_toTopOf="@id/star_1" />
+            app:layout_constraintBottom_toBottomOf="@id/starOneImgv"
+            app:layout_constraintStart_toEndOf="@id/starFiveImgv"
+            app:layout_constraintTop_toTopOf="@id/starOneImgv"
+            tools:text="(18)" />
 
         <TextView
             android:id="@+id/price"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            tools:text="5550 EGP"
             android:textColor="@android:color/black"
             android:textSize="16sp"
             android:transitionName="productPrice"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/name"
-            app:layout_constraintStart_toStartOf="@id/name"
-            app:layout_constraintTop_toBottomOf="@id/star_1" />
+            app:layout_constraintEnd_toEndOf="@id/nameTv"
+            app:layout_constraintStart_toStartOf="@id/nameTv"
+            app:layout_constraintTop_toBottomOf="@id/starOneImgv"
+            tools:text="5550 EGP" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/adEditMbtn"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton.Icon"
+            android:layout_width="40dp"
+            android:layout_height="46dp"
+            android:padding="10dp"
+            app:cornerRadius="8dp"
+            app:icon="@drawable/ic_edit"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            android:backgroundTint="@color/colorSecondary"
+            app:layout_constraintBottom_toTopOf="@id/adDeleteMbtn"
+            app:layout_constraintEnd_toEndOf="@id/adDeleteMbtn"
+            app:tint="@color/colorSecondaryVariant" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/adDeleteMbtn"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton.Icon"
+            android:layout_width="40dp"
+            android:layout_height="46dp"
+            android:layout_margin="8dp"
+            android:padding="8dp"
+            app:cornerRadius="8dp"
+            app:icon="@drawable/ic_delete_white"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            android:backgroundTint="@color/colorError"
+            app:layout_constraintBottom_toBottomOf="@id/adImgv"
+            app:layout_constraintEnd_toEndOf="@id/adImgv" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

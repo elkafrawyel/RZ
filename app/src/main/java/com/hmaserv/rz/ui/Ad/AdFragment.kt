@@ -194,39 +194,39 @@ class AdFragment : BaseFragment(), AdapterAttributes.AttributesListener {
     private fun addAdRate(rate: Int) {
         when (rate) {
             1 -> {
-                star_1.setImageResource(R.drawable.ic_star_fill_rate)
-                star_2.setImageResource(R.drawable.ic_star_rate)
-                star_3.setImageResource(R.drawable.ic_star_rate)
-                star_4.setImageResource(R.drawable.ic_star_rate)
-                star_5.setImageResource(R.drawable.ic_star_rate)
+                starOneImgv.setImageResource(R.drawable.ic_star_fill_rate)
+                starTwoImgv.setImageResource(R.drawable.ic_star_rate)
+                starThreeImgv.setImageResource(R.drawable.ic_star_rate)
+                starFourImgv.setImageResource(R.drawable.ic_star_rate)
+                starFiveImgv.setImageResource(R.drawable.ic_star_rate)
             }
             2 -> {
-                star_1.setImageResource(R.drawable.ic_star_fill_rate)
-                star_2.setImageResource(R.drawable.ic_star_fill_rate)
-                star_3.setImageResource(R.drawable.ic_star_rate)
-                star_4.setImageResource(R.drawable.ic_star_rate)
-                star_5.setImageResource(R.drawable.ic_star_rate)
+                starOneImgv.setImageResource(R.drawable.ic_star_fill_rate)
+                starTwoImgv.setImageResource(R.drawable.ic_star_fill_rate)
+                starThreeImgv.setImageResource(R.drawable.ic_star_rate)
+                starFourImgv.setImageResource(R.drawable.ic_star_rate)
+                starFiveImgv.setImageResource(R.drawable.ic_star_rate)
             }
             3 -> {
-                star_1.setImageResource(R.drawable.ic_star_fill_rate)
-                star_2.setImageResource(R.drawable.ic_star_fill_rate)
-                star_3.setImageResource(R.drawable.ic_star_fill_rate)
-                star_4.setImageResource(R.drawable.ic_star_rate)
-                star_5.setImageResource(R.drawable.ic_star_rate)
+                starOneImgv.setImageResource(R.drawable.ic_star_fill_rate)
+                starTwoImgv.setImageResource(R.drawable.ic_star_fill_rate)
+                starThreeImgv.setImageResource(R.drawable.ic_star_fill_rate)
+                starFourImgv.setImageResource(R.drawable.ic_star_rate)
+                starFiveImgv.setImageResource(R.drawable.ic_star_rate)
             }
             4 -> {
-                star_1.setImageResource(R.drawable.ic_star_fill_rate)
-                star_2.setImageResource(R.drawable.ic_star_fill_rate)
-                star_3.setImageResource(R.drawable.ic_star_fill_rate)
-                star_4.setImageResource(R.drawable.ic_star_fill_rate)
-                star_5.setImageResource(R.drawable.ic_star_rate)
+                starOneImgv.setImageResource(R.drawable.ic_star_fill_rate)
+                starTwoImgv.setImageResource(R.drawable.ic_star_fill_rate)
+                starThreeImgv.setImageResource(R.drawable.ic_star_fill_rate)
+                starFourImgv.setImageResource(R.drawable.ic_star_fill_rate)
+                starFiveImgv.setImageResource(R.drawable.ic_star_rate)
             }
             5 -> {
-                star_1.setImageResource(R.drawable.ic_star_fill_rate)
-                star_2.setImageResource(R.drawable.ic_star_fill_rate)
-                star_3.setImageResource(R.drawable.ic_star_fill_rate)
-                star_4.setImageResource(R.drawable.ic_star_fill_rate)
-                star_5.setImageResource(R.drawable.ic_star_fill_rate)
+                starOneImgv.setImageResource(R.drawable.ic_star_fill_rate)
+                starTwoImgv.setImageResource(R.drawable.ic_star_fill_rate)
+                starThreeImgv.setImageResource(R.drawable.ic_star_fill_rate)
+                starFourImgv.setImageResource(R.drawable.ic_star_fill_rate)
+                starFiveImgv.setImageResource(R.drawable.ic_star_fill_rate)
             }
         }
     }

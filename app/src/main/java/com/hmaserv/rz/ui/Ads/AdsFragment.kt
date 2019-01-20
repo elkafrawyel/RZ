@@ -54,12 +54,6 @@ class AdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
         loadingFl.setOnClickListener {  }
 
-        productsRv.layoutManager = LinearLayoutManager(
-            context,
-            RecyclerView.VERTICAL,
-            false
-        )
-
         productsRv.adapter = adapter
 
         adapter.onItemClickListener =

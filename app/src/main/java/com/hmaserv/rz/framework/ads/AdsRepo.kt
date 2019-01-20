@@ -52,7 +52,11 @@ class AdsRepo(
     }
 
     override suspend fun myAds(token: String): DataResource<List<MiniAd>> {
-        return adsRemoteSource.myAds(token)
+        val result = adsRemoteSource.myAds(token)
+        return when (result) {
+            is DataResource.Success -> DataResource.Success(result.data.mapNotNull { it.toMiniProduct() })
+            is DataResource.Error -> result
+        }
     }
 
     override suspend fun deleteAd(token: String, request: AdRequest): DataResource<Boolean> {

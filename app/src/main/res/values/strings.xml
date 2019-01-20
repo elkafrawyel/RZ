@@ -126,5 +126,6 @@
     <string name="label_sign_in">تسجيل الدخول</string>
     <string name="success_empty_view">لا توجد بيانات</string>
     <string name="label_try_again">اضغط لاعادة المحاولة مرة اخري</string>
+    <string name="label_my_ads_title">أعلاناتي</string>
 
 </resources>

@@ -136,7 +136,7 @@ class AdsRemoteSource(
         return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_http_create_ad_api)))
     }
 
-    override suspend fun myAds(token: String): DataResource<List<MiniAd>> {
+    override suspend fun myAds(token: String): DataResource<List<MiniAdResponse>> {
         return safeApiCall(
             call = { myAdsCall(token) },
             errorMessage = Injector.getApplicationContext().getString(R.string.error_call_create_ad_api)
@@ -145,7 +145,7 @@ class AdsRemoteSource(
 
     private suspend fun myAdsCall(
         token: String
-    ): DataResource<List<MiniAd>> {
+    ): DataResource<List<MiniAdResponse>> {
         val response = authApiService.myAds(token).await()
         if (response.success != null && response.success) {
             val body = response.data

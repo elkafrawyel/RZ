@@ -30,7 +30,7 @@ interface RetrofitAuthApiService {
     ): Deferred<ApiResponse<CreateProductResponse>>
 
     @GET("user/ads")
-    fun myAds(@Header("Authorization") token: String): Deferred<ApiResponse<List<MiniAd>>>
+    fun myAds(@Header("Authorization") token: String): Deferred<ApiResponse<List<MiniAdResponse>>>
 
     @GET("ads/delete")
     fun deleteAd(
