@@ -12,8 +12,10 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.TransitionManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -27,6 +29,7 @@ import com.hmaserv.rz.domain.observeEvent
 import com.hmaserv.rz.ui.BaseFragment
 import com.hmaserv.rz.ui.MainViewModel
 import com.hmaserv.rz.ui.ads.AdsAdapter
+import com.hmaserv.rz.utils.SpacesItemDecoration
 import kotlinx.android.synthetic.main.home_fragment.*
 import kotlinx.android.synthetic.main.home_nav_header.view.*
 import java.util.*
@@ -37,8 +40,8 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
     private lateinit var mainViewModel: MainViewModel
 
     private var timer: Timer? = null
-    private val imageSliderAdapter = ImageSliderAdapter()
 
+    private val imageSliderAdapter = ImageSliderAdapter()
     private val productsAdapter = AdsAdapter()
 
     override fun onCreateView(
@@ -64,22 +67,64 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
         notificationsImgv.setOnClickListener { onNotificationsClicked() }
         noConnectionCl.setOnClickListener { homeViewModel.refresh() }
         errorCl.setOnClickListener { homeViewModel.refresh() }
-        loadingFl.setOnClickListener {  }
 
         bannerSliderVp.adapter = imageSliderAdapter
-
-        promotionsRv.layoutManager = LinearLayoutManager(
-            context,
-            RecyclerView.VERTICAL,
-            false
-        )
-
         promotionsRv.adapter = productsAdapter
 
         productsAdapter.onItemClickListener =
                 BaseQuickAdapter.OnItemClickListener { _, _, position ->
                     onProductClicked(productsAdapter.data[position])
                 }
+
+        val spacesItemDecoration = SpacesItemDecoration(resources.getDimensionPixelSize(R.dimen.list_space))
+
+        if (homeViewModel.isList) {
+            actionListMbtn.setIconResource(R.drawable.ic_reorder_black)
+            actionGridMbtn.setIconResource(R.drawable.ic_apps_black50)
+            promotionsRv.layoutManager = GridLayoutManager(
+                requireContext(),
+                1,
+                RecyclerView.VERTICAL,
+                false
+            )
+        } else {
+            actionListMbtn.setIconResource(R.drawable.ic_reorder_black50)
+            actionGridMbtn.setIconResource(R.drawable.ic_apps_black)
+            promotionsRv.layoutManager = GridLayoutManager(
+                requireContext(),
+                2,
+                RecyclerView.VERTICAL,
+                false
+            )
+            promotionsRv.addItemDecoration(spacesItemDecoration)
+        }
+
+        actionListMbtn.setOnClickListener {
+            if (!homeViewModel.isList) {
+                actionListMbtn.setIconResource(R.drawable.ic_reorder_black)
+                actionGridMbtn.setIconResource(R.drawable.ic_apps_black50)
+                promotionsRv.post {
+                    TransitionManager.beginDelayedTransition(promotionsRv)
+                    (promotionsRv.layoutManager as GridLayoutManager).spanCount = 1
+                    promotionsRv.removeItemDecoration(spacesItemDecoration)
+                }
+                homeViewModel.isList = true
+            }
+        }
+
+        actionGridMbtn.setOnClickListener {
+            if (homeViewModel.isList) {
+                actionListMbtn.setIconResource(R.drawable.ic_reorder_black50)
+                actionGridMbtn.setIconResource(R.drawable.ic_apps_black)
+                promotionsRv.post {
+                    TransitionManager.beginDelayedTransition(promotionsRv)
+                    (promotionsRv.layoutManager as GridLayoutManager).spanCount = 2
+                    promotionsRv.addItemDecoration(spacesItemDecoration)
+                }
+                homeViewModel.isList = false
+            }
+        }
+
     }
 
     override fun onResume() {
@@ -232,26 +277,29 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun showLoading() {
-        loadingFl.visibility = View.VISIBLE
-        dataGroup.visibility = View.GONE
+        loadingPb.visibility = View.VISIBLE
         errorCl.visibility = View.GONE
-        emptyViewGroup.visibility = View.GONE
         noConnectionCl.visibility = View.GONE
+        emptyViewCl.visibility = View.GONE
+        mainViewNsv.visibility = View.GONE
     }
 
     override fun showSuccess(dataMap: Map<String, Any>) {
+        loadingPb.visibility = View.GONE
+        errorCl.visibility = View.GONE
+        noConnectionCl.visibility = View.GONE
+        emptyViewCl.visibility = View.GONE
+        mainViewNsv.visibility = View.GONE
+
         val sliders = dataMap[DATA_SLIDER_KEY] as List<Slider>
         val promotions = dataMap[DATA_PROMOTIONS_KEY] as List<MiniAd>
 
-        loadingFl.visibility = View.GONE
-
         if (sliders.isEmpty() || promotions.isEmpty()) {
-            showStateEmptyView()
+            emptyViewCl.visibility = View.VISIBLE
+            mainViewNsv.visibility = View.GONE
         } else {
-            dataGroup.visibility = View.VISIBLE
-            emptyViewGroup.visibility = View.GONE
-            noConnectionCl.visibility = View.GONE
-            errorCl.visibility = View.GONE
+            emptyViewCl.visibility = View.GONE
+            mainViewNsv.visibility = View.VISIBLE
 
             setSliders(sliders)
             setPromotions(promotions)
@@ -259,27 +307,19 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun showError(message: String) {
-        loadingFl.visibility = View.GONE
-        dataGroup.visibility = View.GONE
+        loadingPb.visibility = View.GONE
         errorCl.visibility = View.VISIBLE
-        emptyViewGroup.visibility = View.GONE
         noConnectionCl.visibility = View.GONE
+        emptyViewCl.visibility = View.GONE
+        mainViewNsv.visibility = View.GONE
     }
 
     override fun showNoInternetConnection() {
-        loadingFl.visibility = View.GONE
-        dataGroup.visibility = View.GONE
+        loadingPb.visibility = View.GONE
         errorCl.visibility = View.GONE
-        emptyViewGroup.visibility = View.GONE
         noConnectionCl.visibility = View.VISIBLE
-    }
-
-    private fun showStateEmptyView() {
-        loadingFl.visibility = View.GONE
-        dataGroup.visibility = View.GONE
-        emptyViewGroup.visibility = View.VISIBLE
-        noConnectionCl.visibility = View.GONE
-        errorCl.visibility = View.GONE
+        emptyViewCl.visibility = View.GONE
+        mainViewNsv.visibility = View.GONE
     }
 
     private fun setSliders(sliders: List<Slider>) {

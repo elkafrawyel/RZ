@@ -17,6 +17,8 @@ class HomeViewModel : NewBaseViewModel() {
     private val getSliderUseCase = Injector.getSliderUseCase()
     private val getPromotionsUseCase = Injector.getPromotionsUseCase()
 
+    var isList = true
+
     init {
         getData()
     }
