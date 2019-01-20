@@ -130,7 +130,7 @@ class SubCategoriesFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListen
 
     private fun openProducts(subCategory: SubCategory) {
         val action = SubCategoriesFragmentDirections
-            .actionSubCategoriesFragmentToProductsFragment(
+            .actionSubCategoriesFragmentToAdsFragment(
                 subCategory.uuid,
                 subCategory.title ?: getString(R.string.label_sub_category_name),
                 null,

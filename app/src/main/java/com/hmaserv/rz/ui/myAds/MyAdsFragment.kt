@@ -1,4 +1,4 @@
-package com.hmaserv.rz.ui.myProducts
+package com.hmaserv.rz.ui.myAds
 
 
 import android.os.Bundle
@@ -9,13 +9,13 @@ import android.view.ViewGroup
 
 import com.hmaserv.rz.R
 
-class MyProductsFragment : Fragment() {
+class MyAdsFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.my_products_fragment, container, false)
+        return inflater.inflate(R.layout.my_ads_fragment, container, false)
     }
 
 

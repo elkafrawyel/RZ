@@ -1,4 +1,4 @@
-package com.hmaserv.rz.ui.products
+package com.hmaserv.rz.ui.Ads
 
 import com.blankj.utilcode.util.NetworkUtils
 import com.hmaserv.rz.domain.DataResource
@@ -12,7 +12,7 @@ import kotlinx.coroutines.withContext
 
 const val DATA_PRODUCTS_KEY = "products"
 
-class ProductsViewModel : NewBaseViewModel() {
+class AdsViewModel : NewBaseViewModel() {
 
     private val getMiniAdsUseCase = Injector.getMiniAdsUseCase()
 

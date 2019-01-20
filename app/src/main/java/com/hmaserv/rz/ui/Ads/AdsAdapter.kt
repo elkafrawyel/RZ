@@ -1,14 +1,13 @@
-package com.hmaserv.rz.ui.products
+package com.hmaserv.rz.ui.Ads
 
 import android.widget.ImageView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.MiniAd
 
-class ProductsAdapter :
+class AdsAdapter :
     BaseQuickAdapter<MiniAd, BaseViewHolder>(R.layout.ad_item_view, emptyList()) {
     override fun convert(helper: BaseViewHolder?, item: MiniAd) {
 

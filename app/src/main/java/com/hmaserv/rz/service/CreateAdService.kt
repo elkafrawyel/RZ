@@ -163,7 +163,7 @@ class CreateAdJobService : JobIntentService() {
                     val pendingIntent = NavDeepLinkBuilder(this@CreateAdJobService)
                         .setGraph(R.navigation.nav_graph)
                         .setComponentName(MainActivity::class.java)
-                        .setDestination(R.id.productFragment)
+                        .setDestination(R.id.adFragment)
                         .setArguments(bundle)
                         .createPendingIntent()
 

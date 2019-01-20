@@ -1,4 +1,4 @@
-package com.hmaserv.rz.ui.product
+package com.hmaserv.rz.ui.Ad
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,42 +15,47 @@ import com.hmaserv.rz.domain.Ad
 import com.hmaserv.rz.domain.Owner
 import com.hmaserv.rz.ui.BaseFragment
 import com.hmaserv.rz.ui.home.ImageSliderAdapter
-import kotlinx.android.synthetic.main.product_fragment.*
+import kotlinx.android.synthetic.main.ad_fragment.*
+import java.util.*
+import kotlin.concurrent.timerTask
 
-class ProductFragment : BaseFragment(), AdapterAttributes.AttributesListener {
+class AdFragment : BaseFragment(), AdapterAttributes.AttributesListener {
 
 
-    private var productId: String? = null
-    lateinit var viewModel: ProductViewModel
+    private var adId: String? = null
+    lateinit var viewModel: AdViewModel
     private val imageSliderAdapter = ImageSliderAdapter()
     lateinit var adapter: AdapterAttributes
     private var adPrice = 0
+    private var timer: Timer? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.product_fragment, container, false)
+        return inflater.inflate(R.layout.ad_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(AdViewModel::class.java)
 
         viewModel.uiState.observe(this, Observer { onUiStateChanged(it) })
 
         arguments?.let {
-            toolbar_ProductNameTv.text = ProductFragmentArgs.fromBundle(it).productName
-            productId = ProductFragmentArgs.fromBundle(it).productId
-            productId?.let {
-                viewModel.setAdId(productId!!)
+            toolbar_ProductNameTv.text = AdFragmentArgs.fromBundle(it).adName
+            adId = AdFragmentArgs.fromBundle(it).adId
+            adId?.let {
+                viewModel.setAdId(adId!!)
             }
         }
 
-        if (productId == null)
+        if (adId == null)
             activity?.onBackPressed()
 
         productVp.adapter = imageSliderAdapter
+
+        pageIndicator.setViewPager(productVp)
 
         backImgv.setOnClickListener { activity?.onBackPressed() }
 
@@ -62,7 +67,7 @@ class ProductFragment : BaseFragment(), AdapterAttributes.AttributesListener {
 
         errorCl.setOnClickListener { viewModel.refresh() }
 
-        loadingFl.setOnClickListener {  }
+        loadingFl.setOnClickListener { }
 
         attributesRv.layoutManager = LinearLayoutManager(
             context,
@@ -72,6 +77,32 @@ class ProductFragment : BaseFragment(), AdapterAttributes.AttributesListener {
 
         adapter = AdapterAttributes(viewModel.attributes, this)
         attributesRv.adapter = adapter
+    }
+
+    override fun onResume() {
+        super.onResume()
+        timer = Timer()
+        timer?.scheduleAtFixedRate(timerTask {
+            requireActivity().runOnUiThread {
+                if (productVp != null) {
+                    if (imageSliderAdapter.count > 1) {
+                        if (productVp.currentItem < imageSliderAdapter.count - 1) {
+                            productVp.setCurrentItem(productVp.currentItem + 1, true)
+                        } else {
+                            productVp.setCurrentItem(0, true)
+                        }
+                    }else{
+                        timer?.cancel()
+                        pageIndicator.visibility = View.INVISIBLE
+                    }
+                }
+            }
+        }, 5000, 5000)
+    }
+
+    override fun onPause() {
+        timer?.cancel()
+        super.onPause()
     }
 
     override fun onAttributeSelected(mainAttributePosition: Int, subAttributePosition: Int) {
@@ -90,7 +121,7 @@ class ProductFragment : BaseFragment(), AdapterAttributes.AttributesListener {
 
     override fun showSuccess(dataMap: Map<String, Any>) {
 
-        val ad = dataMap[DATA_PRODUCT_DETAILS] as Ad
+        val ad = dataMap[DATA_AD_DETAILS] as Ad
 
         productNameTv.text = ad.title
 

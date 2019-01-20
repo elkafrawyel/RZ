@@ -1,7 +1,6 @@
-package com.hmaserv.rz.ui.product
+package com.hmaserv.rz.ui.Ad
 
 import android.view.View
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder

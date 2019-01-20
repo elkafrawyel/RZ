@@ -20,6 +20,53 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="adFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="1462" />
+                            <option name="y" value="1656" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_adFragment_to_reviewsFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="adsFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="1209" />
+                            <option name="y" value="2840" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_adsFragment_to_adFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_adsFragment_to_searchFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="authGraph">
                     <value>
                       <LayoutPositions>
@@ -31,11 +78,6 @@
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_global_homeFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
                             <entry key="forgetPassFragment">
                               <value>
                                 <LayoutPositions>
@@ -176,7 +218,7 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="createProductFragment">
+                  <entry key="createAdFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
@@ -204,6 +246,11 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
+                            <entry key="action_homeFragment_to_adFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_homeFragment_to_authGraph">
                               <value>
                                 <LayoutPositions />
@@ -219,17 +266,17 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
-                            <entry key="action_homeFragment_to_createProductFragment">
+                            <entry key="action_homeFragment_to_createAdFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_homeFragment_to_myAdsFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
                             </entry>
                             <entry key="action_homeFragment_to_myOrdersFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                            <entry key="action_homeFragment_to_myProductsFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -240,11 +287,6 @@
                               </value>
                             </entry>
                             <entry key="action_homeFragment_to_privacyFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                            <entry key="action_homeFragment_to_productFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -269,6 +311,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="myAdsFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="myOrdersFragment">
                     <value>
                       <LayoutPositions>
@@ -276,18 +330,6 @@
                           <Point>
                             <option name="x" value="450" />
                             <option name="y" value="1436" />
-                          </Point>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
-                  <entry key="myProductsFragment">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="450" />
-                            <option name="y" value="2506" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -313,53 +355,6 @@
                             <option name="x" value="450" />
                             <option name="y" value="3218" />
                           </Point>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
-                  <entry key="productFragment">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="1462" />
-                            <option name="y" value="1656" />
-                          </Point>
-                        </option>
-                        <option name="myPositions">
-                          <map>
-                            <entry key="action_productFragment_to_reviewsFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                          </map>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
-                  <entry key="productsFragment">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="1209" />
-                            <option name="y" value="2840" />
-                          </Point>
-                        </option>
-                        <option name="myPositions">
-                          <map>
-                            <entry key="action_productsFragment_to_productFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                            <entry key="action_productsFragment_to_searchFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                          </map>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -413,7 +408,7 @@
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_searchFragment_to_productsFragment">
+                            <entry key="action_searchFragment_to_adsFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -434,7 +429,7 @@
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_subCategoriesFragment_to_productsFragment">
+                            <entry key="action_subCategoriesFragment_to_adsFragment">
                               <value>
                                 <LayoutPositions />
                               </value>

@@ -1,4 +1,4 @@
-package com.hmaserv.rz.ui.products
+package com.hmaserv.rz.ui.Ads
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,31 +14,29 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.MiniAd
 import com.hmaserv.rz.ui.BaseFragment
-import kotlinx.android.synthetic.main.empty_view.*
-import kotlinx.android.synthetic.main.no_internet_connection_view.*
-import kotlinx.android.synthetic.main.products_fragment.*
+import kotlinx.android.synthetic.main.ads_fragment.*
 
-class ProductsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
+class AdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
 
-    val adapter = ProductsAdapter()
-    lateinit var viewModel: ProductsViewModel
+    val adapter = AdsAdapter()
+    lateinit var viewModel: AdsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.products_fragment, container, false)
+        return inflater.inflate(R.layout.ads_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(ProductsViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(AdsViewModel::class.java)
         viewModel.uiState.observe(this, Observer { onUiStateChanged(it) })
 
         arguments?.let {
-            headerNameTv.text = ProductsFragmentArgs.fromBundle(it).headerName
-            val subCategoryUuid = ProductsFragmentArgs.fromBundle(it).subCategoryUuid
+            headerNameTv.text = AdsFragmentArgs.fromBundle(it).headerName
+            val subCategoryUuid = AdsFragmentArgs.fromBundle(it).subCategoryUuid
             subCategoryUuid?.let { uuid ->
                     viewModel.setSubCategoryId(uuid)
             }
@@ -77,7 +75,7 @@ class ProductsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun openSearchFragment() {
-        findNavController().navigate(R.id.action_productsFragment_to_searchFragment)
+        findNavController().navigate(R.id.action_adsFragment_to_searchFragment)
     }
 
     override fun showLoading() {
@@ -134,8 +132,8 @@ class ProductsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private fun openProductDetails(ad: MiniAd) {
         ad.uuid.let { uuid ->
-            val action = ProductsFragmentDirections
-                .actionProductsFragmentToProductFragment(
+            val action = AdsFragmentDirections
+                .actionAdsFragmentToAdFragment(
                     uuid,
                     ad.title
                 )

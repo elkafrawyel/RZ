@@ -26,7 +26,7 @@ import com.hmaserv.rz.domain.Slider
 import com.hmaserv.rz.domain.observeEvent
 import com.hmaserv.rz.ui.BaseFragment
 import com.hmaserv.rz.ui.MainViewModel
-import com.hmaserv.rz.ui.products.ProductsAdapter
+import com.hmaserv.rz.ui.Ads.AdsAdapter
 import kotlinx.android.synthetic.main.home_fragment.*
 import kotlinx.android.synthetic.main.home_nav_header.view.*
 import java.util.*
@@ -39,7 +39,7 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
     private var timer: Timer? = null
     private val imageSliderAdapter = ImageSliderAdapter()
 
-    private val productsAdapter = ProductsAdapter()
+    private val productsAdapter = AdsAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -107,8 +107,8 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
         when (item.itemId) {
             R.id.nav_profile -> findNavController().navigate(R.id.action_homeFragment_to_profileFragment)
             R.id.nav_my_orders -> findNavController().navigate(R.id.action_homeFragment_to_myOrdersFragment)
-            R.id.nav_my_products -> findNavController().navigate(R.id.action_homeFragment_to_myProductsFragment)
-            R.id.nav_create_product -> onCreateProductClicked()
+            R.id.nav_my_ads -> findNavController().navigate(R.id.action_homeFragment_to_myAdsFragment)
+            R.id.nav_create_product -> onCreateAdClicked()
             R.id.nav_about_us -> findNavController().navigate(R.id.action_homeFragment_to_aboutUsFragment)
             R.id.nav_contact_us -> findNavController().navigate(R.id.action_homeFragment_to_contactUsFragment)
             R.id.nav_privacy -> findNavController().navigate(R.id.action_homeFragment_to_privacyFragment)
@@ -120,7 +120,7 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
         return true
     }
 
-    private fun onCreateProductClicked() {
+    private fun onCreateAdClicked() {
         when (mainViewModel.logInLiveData.value) {
             MainViewModel.LogInState.NoLogIn -> {
                 Snackbar.make(rootViewDl, getString(R.string.error_sign_in_first), Snackbar.LENGTH_SHORT)
@@ -131,10 +131,10 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
                     .show()
             }
             is MainViewModel.LogInState.BuyerLoggedIn -> {
-                findNavController().navigate(R.id.action_homeFragment_to_createProductFragment)
+                findNavController().navigate(R.id.action_homeFragment_to_createAdFragment)
             }
             is MainViewModel.LogInState.SellerLoggedIn -> {
-                findNavController().navigate(R.id.action_homeFragment_to_createProductFragment)
+                findNavController().navigate(R.id.action_homeFragment_to_createAdFragment)
             }
         }
     }
@@ -164,7 +164,7 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
     private fun onProductClicked(ad: MiniAd) {
         ad.uuid.let { uuid ->
             val action = HomeFragmentDirections
-                .actionHomeFragmentToProductFragment(
+                .actionHomeFragmentToAdFragment(
                     uuid,
                     ad.title
                 )
@@ -188,7 +188,7 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
         navigationView.getHeaderView(0).userNameTv.text = getString(R.string.label_sign_in_sign_up)
         navigationView.getHeaderView(0).userNameTv.setOnClickListener { onSignInSignUpClicked() }
         navigationView.menu.findItem(R.id.nav_profile).isVisible = false
-        navigationView.menu.findItem(R.id.nav_my_products).isVisible = false
+        navigationView.menu.findItem(R.id.nav_my_ads).isVisible = false
         navigationView.menu.findItem(R.id.nav_orders_received).isVisible = false
         navigationView.menu.findItem(R.id.nav_log_out).isVisible = false
         notificationsImgv.isVisible = false
@@ -203,7 +203,7 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
         navigationView.getHeaderView(0).userNameTv.text = loggedInUser.fullName
         navigationView.getHeaderView(0).userNameTv.setOnClickListener { onUserNameClicked() }
         navigationView.menu.findItem(R.id.nav_profile).isVisible = true
-        navigationView.menu.findItem(R.id.nav_my_products).isVisible = false
+        navigationView.menu.findItem(R.id.nav_my_ads).isVisible = false
         navigationView.menu.findItem(R.id.nav_orders_received).isVisible = false
         navigationView.menu.findItem(R.id.nav_log_out).isVisible = true
         notificationsImgv.isVisible = true
@@ -218,7 +218,7 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
         navigationView.getHeaderView(0).userNameTv.text = loggedInUser.fullName
         navigationView.getHeaderView(0).userNameTv.setOnClickListener { onUserNameClicked() }
         navigationView.menu.findItem(R.id.nav_profile).isVisible = true
-        navigationView.menu.findItem(R.id.nav_my_products).isVisible = true
+        navigationView.menu.findItem(R.id.nav_my_ads).isVisible = true
         navigationView.menu.findItem(R.id.nav_orders_received).isVisible = true
         navigationView.menu.findItem(R.id.nav_log_out).isVisible = true
         notificationsImgv.isVisible = true

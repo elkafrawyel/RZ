@@ -1,4 +1,4 @@
-package com.hmaserv.rz.ui.product
+package com.hmaserv.rz.ui.Ad
 
 import com.hmaserv.rz.domain.Ad
 import com.hmaserv.rz.domain.Attribute
@@ -10,9 +10,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-const val DATA_PRODUCT_DETAILS = "product_details"
+const val DATA_AD_DETAILS = "ad_details"
 
-class ProductViewModel : NewBaseViewModel() {
+class AdViewModel : NewBaseViewModel() {
 
     private val getAdUseCase = Injector.getAdUseCase()
 
@@ -62,6 +62,6 @@ class ProductViewModel : NewBaseViewModel() {
     }
 
     private fun showSuccess(ad: Ad) {
-        _uiState.value = UiState.Success(mapOf(Pair(DATA_PRODUCT_DETAILS, ad)))
+        _uiState.value = UiState.Success(mapOf(Pair(DATA_AD_DETAILS, ad)))
     }
 }

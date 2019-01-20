@@ -22,7 +22,7 @@
         android:icon="@drawable/ic_add"
         android:title="@string/label_create_product" />
     <item
-        android:id="@+id/nav_my_products"
+        android:id="@+id/nav_my_ads"
         android:icon="@drawable/ic_my_products"
         android:title="@string/label_my_products" />
     <item
