@@ -21,7 +21,6 @@ import kotlin.concurrent.timerTask
 
 class AdFragment : BaseFragment(), AdapterAttributes.AttributesListener {
 
-
     private var adId: String? = null
     lateinit var viewModel: AdViewModel
     private val imageSliderAdapter = ImageSliderAdapter()
@@ -44,7 +43,7 @@ class AdFragment : BaseFragment(), AdapterAttributes.AttributesListener {
 
         arguments?.let {
             toolbar_ProductNameTv.text = AdFragmentArgs.fromBundle(it).adName
-            adId = AdFragmentArgs.fromBundle(it).adId
+            adId = AdFragmentArgs.fromBundle(it).adUuid
             adId?.let {
                 viewModel.setAdId(adId!!)
             }

@@ -58,10 +58,15 @@ class MyAdsFragment : BaseFragment() {
                         }
 
                         R.id.adEditMbtn -> {
-                            Toast.makeText(activity,"edit",Toast.LENGTH_LONG).show()
+                            onEditAdClicked(adapter.data[position].uuid)
                         }
                     }
                 }
+    }
+
+    private fun onEditAdClicked(uuid: String) {
+        val action = MyAdsFragmentDirections.actionMyAdsFragmentToEditAdFragment(uuid)
+        findNavController().navigate(action)
     }
 
     private fun openAdDetails(adUuid: String) {

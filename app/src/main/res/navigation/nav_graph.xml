@@ -29,7 +29,7 @@
         android:label="write_review_fragment"
         tools:layout="@layout/write_review_fragment">
         <argument
-            android:name="productId"
+            android:name="adUuid"
             app:argType="string" />
     </fragment>
     <fragment
@@ -60,11 +60,6 @@
         android:label="about_us_fragment"
         tools:layout="@layout/about_us_fragment" />
     <fragment
-        android:id="@+id/cartFragment"
-        android:name="com.hmaserv.rz.ui.cart.CartFragment"
-        android:label="cart_fragment"
-        tools:layout="@layout/cart_fragment" />
-    <fragment
         android:id="@+id/searchFragment"
         android:name="com.hmaserv.rz.ui.search.SearchFragment"
         android:label="search_fragment"
@@ -72,6 +67,9 @@
         <action
             android:id="@+id/action_searchFragment_to_adsFragment"
             app:destination="@id/adsFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_editAdFragment"
+            app:destination="@id/editAdFragment" />
     </fragment>
     <fragment
         android:id="@+id/reviewsFragment"
@@ -85,7 +83,7 @@
             android:id="@+id/action_reviewsFragment_to_authGraph"
             app:destination="@id/authGraph" />
         <argument
-            android:name="productId"
+            android:name="adUuid"
             app:argType="string" />
     </fragment>
     <fragment
@@ -127,6 +125,9 @@
             android:name="searchPriceTo"
             app:argType="string"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_adsFragment_to_editAdFragment"
+            app:destination="@id/editAdFragment" />
     </fragment>
     <fragment
         android:id="@+id/adFragment"
@@ -137,11 +138,14 @@
             android:id="@+id/action_adFragment_to_reviewsFragment"
             app:destination="@id/reviewsFragment" />
         <argument
-            android:name="adId"
+            android:name="adUuid"
             app:argType="string" />
         <argument
             android:name="adName"
             app:argType="string" />
+        <action
+            android:id="@+id/action_adFragment_to_editAdFragment"
+            app:destination="@id/editAdFragment" />
     </fragment>
     <fragment
         android:id="@+id/privacyFragment"
@@ -156,8 +160,15 @@
     <fragment
         android:id="@+id/myAdsFragment"
         android:name="com.hmaserv.rz.ui.myAds.MyAdsFragment"
-        android:label="my_products_fragment"
-        tools:layout="@layout/my_ads_fragment" />
+        android:label="my_ads_fragment"
+        tools:layout="@layout/my_ads_fragment" >
+        <action
+            android:id="@+id/action_myAdsFragment_to_editAdFragment"
+            app:destination="@id/editAdFragment" />
+        <action
+            android:id="@+id/action_myAdsFragment_to_adFragment"
+            app:destination="@id/adFragment" />
+    </fragment>
     <fragment
         android:id="@+id/myOrdersFragment"
         android:name="com.hmaserv.rz.ui.myOrders.MyOrdersFragment"
@@ -213,6 +224,14 @@
         android:name="com.hmaserv.rz.ui.termsConditions.TermsConditionsFragment"
         android:label="terms_conditions_fragment"
         tools:layout="@layout/terms_conditions_fragment" />
+    <fragment
+        android:id="@+id/editAdFragment"
+        android:name="com.hmaserv.rz.ui.editAd.EditAdFragment"
+        android:label="EditAdFragment" >
+        <argument
+            android:name="adUuid"
+            app:argType="string" />
+    </fragment>
     <navigation
         android:id="@+id/authGraph"
         app:startDestination="@id/loginFragment">
