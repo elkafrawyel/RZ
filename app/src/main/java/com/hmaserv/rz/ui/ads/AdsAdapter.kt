@@ -1,4 +1,4 @@
-package com.hmaserv.rz.ui.Ads
+package com.hmaserv.rz.ui.ads
 
 import android.widget.ImageView
 import com.bumptech.glide.Glide

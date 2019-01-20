@@ -5,23 +5,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.google.android.material.snackbar.Snackbar
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.MiniAd
-import com.hmaserv.rz.ui.Ads.AdsAdapter
 import com.hmaserv.rz.ui.BaseFragment
+import com.hmaserv.rz.ui.ads.AdsAdapter
 import kotlinx.android.synthetic.main.my_ads_fragment.*
 
-class MyAdsFragment : BaseFragment() {
-
+class MyAdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
     lateinit var viewModel: MyAdsViewModel
     private var adapter = AdsAdapter(true)
-
+    var adPosition: Int? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,7 +34,7 @@ class MyAdsFragment : BaseFragment() {
 
         viewModel = ViewModelProviders.of(this).get(MyAdsViewModel::class.java)
         viewModel.uiState.observe(this, Observer { onUiStateChanged(it) })
-
+        viewModel.deleteState.observe(this, Observer { onAdDeleteStateChanged(it) })
         myAdsRv.adapter = adapter
 
         backImgv.setOnClickListener { activity?.onBackPressed() }
@@ -47,14 +47,15 @@ class MyAdsFragment : BaseFragment() {
 
         adapter.onItemClickListener =
                 BaseQuickAdapter.OnItemClickListener { _, _, position ->
-                    openAdDetails(adapter.data[position].uuid)
+                    onOpenAdClicked(adapter.data[position].uuid, adapter.data[position].title)
                 }
 
         adapter.onItemChildClickListener =
                 BaseQuickAdapter.OnItemChildClickListener { _, view, position ->
                     when (view.id) {
                         R.id.adDeleteMbtn -> {
-                            Toast.makeText(activity,"delete",Toast.LENGTH_LONG).show()
+                            adPosition = position
+                            onAdDeleteClicked(adapter.data[position].uuid)
                         }
 
                         R.id.adEditMbtn -> {
@@ -62,6 +63,61 @@ class MyAdsFragment : BaseFragment() {
                         }
                     }
                 }
+
+        myAdsSwipe.setOnRefreshListener(this)
+    }
+
+    private fun onAdDeleteStateChanged(state: MyAdsViewModel.DeleteUiState?) {
+        when (state) {
+
+            MyAdsViewModel.DeleteUiState.Loading -> showDeleteLoading()
+            is MyAdsViewModel.DeleteUiState.Success -> showDeleteSuccess(state.ifDeleted)
+            is MyAdsViewModel.DeleteUiState.Error -> showDeleteError(state.message)
+            MyAdsViewModel.DeleteUiState.NoInternetConnection -> showDeleteNoInternetState()
+            null -> {
+            }
+        }
+    }
+
+    private fun showDeleteNoInternetState() {
+        loadingFl.visibility = View.GONE
+        showMessage(getString(R.string.label_no_internet_connection))
+    }
+
+    private fun showDeleteError(message: String) {
+        loadingFl.visibility = View.GONE
+        showMessage(message)
+    }
+
+    private fun showDeleteSuccess(ifDeleted: Boolean) {
+        loadingFl.visibility = View.GONE
+        if (ifDeleted && adPosition != null) {
+            adapter.data.removeAt(adPosition!!)
+            adapter.notifyDataSetChanged()
+            showMessage(getString(R.string.success_delete_ad))
+
+            if (adapter.data.size == 0) {
+                showStateEmptyView()
+            }
+        } else {
+            showMessage(getString(R.string.error_delete_ad))
+        }
+    }
+
+    private fun showDeleteLoading() {
+        loadingFl.visibility = View.VISIBLE
+    }
+
+    private fun onAdDeleteClicked(uuid: String) {
+        viewModel.deleteAd(uuid)
+    }
+
+    private fun showMessage(message: String) {
+        val snackBar = Snackbar.make(rootViewCl, message, Snackbar.LENGTH_LONG)
+        val view = snackBar.view
+        val textView = view.findViewById<View>(R.id.snackbar_text)
+        textView.textAlignment = View.TEXT_ALIGNMENT_CENTER
+        snackBar.show()
     }
 
     private fun onEditAdClicked(uuid: String) {
@@ -69,10 +125,10 @@ class MyAdsFragment : BaseFragment() {
         findNavController().navigate(action)
     }
 
-    private fun openAdDetails(adUuid: String) {
-
+    private fun onOpenAdClicked(adUuid: String, adName: String) {
+        val action = MyAdsFragmentDirections.actionMyAdsFragmentToAdFragment(adUuid, adName)
+        findNavController().navigate(action)
     }
-
 
     override fun showLoading() {
         myAdsSwipe.isRefreshing = false
@@ -125,6 +181,10 @@ class MyAdsFragment : BaseFragment() {
         emptyViewGroup.visibility = View.GONE
         noConnectionCl.visibility = View.VISIBLE
         errorCl.visibility = View.GONE
+    }
+
+    override fun onRefresh() {
+        viewModel.refresh()
     }
 
 }

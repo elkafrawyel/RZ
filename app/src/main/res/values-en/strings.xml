@@ -120,5 +120,7 @@
     <string name="success_empty_view">No Data Found</string>
     <string name="label_try_again">Try Again</string>
     <string name="label_my_ads_title">My Ads</string>
+    <string name="success_delete_ad">Ad Deleted Successfully</string>
+    <string name="error_delete_ad">Failed To Delete Ad</string>
 
 </resources>

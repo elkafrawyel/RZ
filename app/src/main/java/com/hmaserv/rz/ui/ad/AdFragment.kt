@@ -1,4 +1,4 @@
-package com.hmaserv.rz.ui.Ad
+package com.hmaserv.rz.ui.ad
 
 import android.os.Bundle
 import android.view.LayoutInflater

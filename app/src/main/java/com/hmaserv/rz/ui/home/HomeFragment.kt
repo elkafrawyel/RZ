@@ -26,7 +26,7 @@ import com.hmaserv.rz.domain.Slider
 import com.hmaserv.rz.domain.observeEvent
 import com.hmaserv.rz.ui.BaseFragment
 import com.hmaserv.rz.ui.MainViewModel
-import com.hmaserv.rz.ui.Ads.AdsAdapter
+import com.hmaserv.rz.ui.ads.AdsAdapter
 import kotlinx.android.synthetic.main.home_fragment.*
 import kotlinx.android.synthetic.main.home_nav_header.view.*
 import java.util.*

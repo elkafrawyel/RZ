@@ -1,4 +1,4 @@
-package com.hmaserv.rz.ui.Ad
+package com.hmaserv.rz.ui.ad
 
 import com.hmaserv.rz.domain.Ad
 import com.hmaserv.rz.domain.Attribute

@@ -127,5 +127,7 @@
     <string name="success_empty_view">لا توجد بيانات</string>
     <string name="label_try_again">اضغط لاعادة المحاولة مرة اخري</string>
     <string name="label_my_ads_title">أعلاناتي</string>
+    <string name="success_delete_ad">تم حذف الاعلان بنجاح</string>
+    <string name="error_delete_ad">فشل في حذف الاعلان</string>
 
 </resources>

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.myAds.MyAdsFragment">
+    tools:context=".ui.myAds.MyAdsFragment"
+    android:id="@+id/rootViewCl">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tool_bar"

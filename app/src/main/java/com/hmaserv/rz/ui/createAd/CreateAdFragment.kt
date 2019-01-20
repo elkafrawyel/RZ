@@ -208,10 +208,7 @@ class CreateAdFragment : Fragment() {
                 showMessage(getString(R.string.label_empty_price))
                 return false
             }
-            priceWithDiscountEt.text.isEmpty() -> {
-                showMessage(getString(R.string.label_empty_price_discount))
-                return false
-            }
+
             quantityEt.text.isEmpty() -> {
                 showMessage(getString(R.string.label_empty_quantity))
                 return false

@@ -1,4 +1,4 @@
-package com.hmaserv.rz.ui.Ad
+package com.hmaserv.rz.ui.ad
 
 import android.view.View
 import androidx.core.content.ContextCompat

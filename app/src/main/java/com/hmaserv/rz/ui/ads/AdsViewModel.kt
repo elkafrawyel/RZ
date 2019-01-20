@@ -1,4 +1,4 @@
-package com.hmaserv.rz.ui.Ads
+package com.hmaserv.rz.ui.ads
 
 import com.blankj.utilcode.util.NetworkUtils
 import com.hmaserv.rz.domain.DataResource

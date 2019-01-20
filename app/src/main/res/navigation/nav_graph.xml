@@ -93,7 +93,7 @@
         tools:layout="@layout/profile_fragment" />
     <fragment
         android:id="@+id/adsFragment"
-        android:name="com.hmaserv.rz.ui.Ads.AdsFragment"
+        android:name="com.hmaserv.rz.ui.ads.AdsFragment"
         android:label="ads_fragment"
         tools:layout="@layout/ads_fragment">
         <action
@@ -131,7 +131,7 @@
     </fragment>
     <fragment
         android:id="@+id/adFragment"
-        android:name="com.hmaserv.rz.ui.Ad.AdFragment"
+        android:name="com.hmaserv.rz.ui.ad.AdFragment"
         android:label="ad_fragment"
         tools:layout="@layout/ad_fragment">
         <action

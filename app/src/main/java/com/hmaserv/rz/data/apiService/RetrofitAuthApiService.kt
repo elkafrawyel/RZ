@@ -32,7 +32,7 @@ interface RetrofitAuthApiService {
     @GET("user/ads")
     fun myAds(@Header("Authorization") token: String): Deferred<ApiResponse<List<MiniAdResponse>>>
 
-    @GET("ads/delete")
+    @HTTP(method = "DELETE", path = "ads/delete", hasBody = true)
     fun deleteAd(
         @Header("Authorization") token: String,
         @Body request: AdRequest
