@@ -13,6 +13,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.MiniAd
+import com.hmaserv.rz.domain.observeEvent
 import com.hmaserv.rz.ui.BaseFragment
 import com.hmaserv.rz.ui.ads.AdsAdapter
 import kotlinx.android.synthetic.main.my_ads_fragment.*
@@ -34,7 +35,7 @@ class MyAdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
         viewModel = ViewModelProviders.of(this).get(MyAdsViewModel::class.java)
         viewModel.uiState.observe(this, Observer { onUiStateChanged(it) })
-        viewModel.deleteState.observe(this, Observer { onAdDeleteStateChanged(it) })
+        viewModel.deleteState.observeEvent(this, { onAdDeleteStateChanged(it) })
         myAdsRv.adapter = adapter
 
         backImgv.setOnClickListener { findNavController().navigateUp() }
@@ -42,8 +43,6 @@ class MyAdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         noConnectionCl.setOnClickListener { viewModel.refresh() }
 
         errorCl.setOnClickListener { viewModel.refresh() }
-
-        loadingFl.setOnClickListener { }
 
         adapter.onItemClickListener =
                 BaseQuickAdapter.OnItemClickListener { _, _, position ->
@@ -80,17 +79,17 @@ class MyAdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun showDeleteNoInternetState() {
-        loadingFl.visibility = View.GONE
+        loadingPb.visibility = View.GONE
         showMessage(getString(R.string.label_no_internet_connection))
     }
 
     private fun showDeleteError(message: String) {
-        loadingFl.visibility = View.GONE
+        loadingPb.visibility = View.GONE
         showMessage(message)
     }
 
     private fun showDeleteSuccess(ifDeleted: Boolean) {
-        loadingFl.visibility = View.GONE
+        loadingPb.visibility = View.GONE
         if (ifDeleted && adPosition != null) {
             adapter.data.removeAt(adPosition!!)
             adapter.notifyDataSetChanged()
@@ -105,7 +104,7 @@ class MyAdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun showDeleteLoading() {
-        loadingFl.visibility = View.VISIBLE
+        loadingPb.visibility = View.VISIBLE
     }
 
     private fun onAdDeleteClicked(uuid: String) {
@@ -131,10 +130,9 @@ class MyAdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     override fun showLoading() {
-        myAdsSwipe.isRefreshing = false
-        loadingFl.visibility = View.VISIBLE
-        dataGroup.visibility = View.GONE
-        emptyViewGroup.visibility = View.GONE
+        loadingPb.visibility = View.VISIBLE
+        dataCl.visibility = View.GONE
+        emptyViewCl.visibility = View.GONE
         noConnectionCl.visibility = View.GONE
         errorCl.visibility = View.GONE
     }
@@ -142,14 +140,14 @@ class MyAdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     override fun showSuccess(dataMap: Map<String, Any>) {
         val myAds = dataMap[DATA_MY_ADS_KEY] as List<MiniAd>
 
-        myAdsSwipe.isRefreshing = false
-        loadingFl.visibility = View.GONE
+        loadingPb.visibility = View.GONE
 
         if (myAds.isEmpty()) {
             showStateEmptyView()
         } else {
-            dataGroup.visibility = View.VISIBLE
-            emptyViewGroup.visibility = View.GONE
+            myAdsSwipe.isRefreshing = false
+            dataCl.visibility = View.VISIBLE
+            emptyViewCl.visibility = View.GONE
             noConnectionCl.visibility = View.GONE
             errorCl.visibility = View.GONE
             adapter.submitList(myAds)
@@ -158,27 +156,27 @@ class MyAdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private fun showStateEmptyView() {
         myAdsSwipe.isRefreshing = false
-        loadingFl.visibility = View.GONE
-        dataGroup.visibility = View.GONE
-        emptyViewGroup.visibility = View.VISIBLE
+        loadingPb.visibility = View.GONE
+        dataCl.visibility = View.GONE
+        emptyViewCl.visibility = View.VISIBLE
         noConnectionCl.visibility = View.GONE
         errorCl.visibility = View.GONE
     }
 
     override fun showError(message: String) {
         myAdsSwipe.isRefreshing = false
-        loadingFl.visibility = View.GONE
-        dataGroup.visibility = View.GONE
-        emptyViewGroup.visibility = View.GONE
+        loadingPb.visibility = View.GONE
+        dataCl.visibility = View.GONE
+        emptyViewCl.visibility = View.GONE
         noConnectionCl.visibility = View.GONE
         errorCl.visibility = View.VISIBLE
     }
 
     override fun showNoInternetConnection() {
         myAdsSwipe.isRefreshing = false
-        loadingFl.visibility = View.GONE
-        dataGroup.visibility = View.GONE
-        emptyViewGroup.visibility = View.GONE
+        loadingPb.visibility = View.GONE
+        dataCl.visibility = View.GONE
+        emptyViewCl.visibility = View.GONE
         noConnectionCl.visibility = View.VISIBLE
         errorCl.visibility = View.GONE
     }

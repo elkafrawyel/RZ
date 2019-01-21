@@ -54,14 +54,6 @@ class SubCategoriesFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListen
 
         errorCl.setOnClickListener { viewModel.refresh() }
 
-        loadingFl.setOnClickListener {  }
-
-        subCategoriesRv.layoutManager = LinearLayoutManager(
-            context,
-            RecyclerView.VERTICAL,
-            false
-        )
-
         subCategoriesRv.adapter = adapter
 
         adapter.onItemClickListener =
@@ -74,23 +66,23 @@ class SubCategoriesFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListen
 
     override fun showLoading() {
         subCategoriesSwipe.isRefreshing = false
-        loadingFl.visibility = View.VISIBLE
-        dataGroup.visibility = View.GONE
-        emptyViewGroup.visibility = View.GONE
+        loadingPb.visibility = View.VISIBLE
+        dataCl.visibility = View.GONE
+        emptyViewCl.visibility = View.GONE
         noConnectionCl.visibility = View.GONE
         errorCl.visibility = View.GONE
     }
 
     override fun showSuccess(dataMap: Map<String, Any>) {
         val subCategories = dataMap[DATA_SUB_CATEGORIES_KEY] as List<SubCategory>
-        subCategoriesSwipe.isRefreshing = false
-        loadingFl.visibility = View.GONE
+        loadingPb.visibility = View.GONE
 
         if (subCategories.isEmpty()) {
             showStateEmptyView()
         } else {
-            dataGroup.visibility = View.VISIBLE
-            emptyViewGroup.visibility = View.GONE
+            subCategoriesSwipe.isRefreshing = false
+            dataCl.visibility = View.VISIBLE
+            emptyViewCl.visibility = View.GONE
             noConnectionCl.visibility = View.GONE
             errorCl.visibility = View.GONE
             adapter.submitList(subCategories)
@@ -98,28 +90,28 @@ class SubCategoriesFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListen
     }
 
     override fun showError(message: String) {
-        loadingFl.visibility = View.GONE
+        loadingPb.visibility = View.GONE
         subCategoriesSwipe.isRefreshing = false
-        dataGroup.visibility = View.GONE
-        emptyViewGroup.visibility = View.GONE
+        dataCl.visibility = View.GONE
+        emptyViewCl.visibility = View.GONE
         noConnectionCl.visibility = View.GONE
         errorCl.visibility = View.VISIBLE
     }
 
     override fun showNoInternetConnection() {
-        loadingFl.visibility = View.GONE
+        loadingPb.visibility = View.GONE
         subCategoriesSwipe.isRefreshing = false
-        dataGroup.visibility = View.GONE
-        emptyViewGroup.visibility = View.GONE
+        dataCl.visibility = View.GONE
+        emptyViewCl.visibility = View.GONE
         noConnectionCl.visibility = View.VISIBLE
         errorCl.visibility = View.GONE
     }
 
     private fun showStateEmptyView() {
-        loadingFl.visibility = View.GONE
+        loadingPb.visibility = View.GONE
         subCategoriesSwipe.isRefreshing = false
-        dataGroup.visibility = View.GONE
-        emptyViewGroup.visibility = View.VISIBLE
+        dataCl.visibility = View.GONE
+        emptyViewCl.visibility = View.VISIBLE
         noConnectionCl.visibility = View.GONE
         errorCl.visibility = View.GONE
     }

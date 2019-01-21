@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.blankj.utilcode.util.NetworkUtils
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.DataResource
+import com.hmaserv.rz.domain.Event
 import com.hmaserv.rz.domain.MiniAd
 import com.hmaserv.rz.domain.UiState
 import com.hmaserv.rz.ui.NewBaseViewModel
@@ -22,8 +23,8 @@ class MyAdsViewModel : NewBaseViewModel() {
     private val myAdsUseCase = Injector.getMyAdsUseCase()
     private val deleteAdUseCase = Injector.deleteAdUseCase()
 
-    protected val _deleteState = MutableLiveData<DeleteUiState>()
-    val deleteState: LiveData<DeleteUiState>
+    protected val _deleteState = MutableLiveData<Event<DeleteUiState>>()
+    val deleteState: LiveData<Event<DeleteUiState>>
         get() = _deleteState
 
     init {
@@ -80,19 +81,19 @@ class MyAdsViewModel : NewBaseViewModel() {
     }
 
     private fun showDeleteError() {
-        _deleteState.value = DeleteUiState.Error(Injector.getApplicationContext().getString(R.string.error_general))
+        _deleteState.value = Event(DeleteUiState.Error(Injector.getApplicationContext().getString(R.string.error_general)))
     }
 
     private fun showDeleteSuccess(result: DataResource.Success<Boolean>) {
-        _deleteState.value = DeleteUiState.Success(result.data)
+        _deleteState.value = Event(DeleteUiState.Success(result.data))
     }
 
     private fun showDeleteLoading() {
-        _deleteState.value = DeleteUiState.Loading
+        _deleteState.value = Event(DeleteUiState.Loading)
     }
 
     private fun showDeleteNoInternetConnection() {
-        _deleteState.value = DeleteUiState.NoInternetConnection
+        _deleteState.value = Event(DeleteUiState.NoInternetConnection)
     }
 
     sealed class DeleteUiState {

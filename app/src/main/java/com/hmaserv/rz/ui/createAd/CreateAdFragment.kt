@@ -4,13 +4,14 @@ import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,12 +20,11 @@ import com.google.android.material.snackbar.Snackbar
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.*
 import com.hmaserv.rz.service.CreateAdJobService
-
 import kotlinx.android.synthetic.main.create_ad_fragment.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import timber.log.Timber
-import java.util.ArrayList
+import java.util.*
 
 const val RC_PERMISSION_STORAGE = 1
 const val RC_IMAGES = 2
@@ -37,9 +37,6 @@ class CreateAdFragment : Fragment() {
     lateinit var subCategoriesAdapter: ArrayAdapter<SubCategory>
     lateinit var imageAdapter: AdImagesAdapter
     lateinit var attributesAdapter: AttributesAdapter
-
-    private var categories = ArrayList<Category>()
-    private var subCategories = ArrayList<SubCategory>()
 
     lateinit var selectedCategory: Category
     lateinit var selectedSubCategory: SubCategory
@@ -80,7 +77,7 @@ class CreateAdFragment : Fragment() {
             }
         }
 
-        attributesAdapter = AttributesAdapter(viewModel.attributes, object: AttributesAdapter.AttributesCallback {
+        attributesAdapter = AttributesAdapter(viewModel.attributes, object : AttributesAdapter.AttributesCallback {
             override fun onAttributePriceChanged(position: Int, price: String) {
                 viewModel.attributes[position].t = viewModel.attributes[position].t.copy(price = price.toInt())
             }
@@ -93,36 +90,35 @@ class CreateAdFragment : Fragment() {
         attributesRv.layoutManager = LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false)
         viewModel.attributesUiState.observeEvent(this) { onAttributesStateChanged(it) }
 
-        categoriesAdapter = ArrayAdapter(view.context, R.layout.spinner_item_view, categories)
+        categoriesAdapter = ArrayAdapter(view.context, R.layout.spinner_item_view, viewModel.categories)
         categoriesSpinner.adapter = categoriesAdapter
 
-        subCategoriesAdapter = ArrayAdapter(view.context, R.layout.spinner_item_view, subCategories)
+        subCategoriesAdapter = ArrayAdapter(view.context, R.layout.spinner_item_view, viewModel.subCategories)
         subCategoriesSpinner.adapter = subCategoriesAdapter
 
-        viewModel.categoriesUiState.observeEvent(this) { onCategoryResponse(it) }
+        viewModel.categoriesUiState.observe(this, Observer { onCategoryResponse(it) })
 
-        viewModel.subCategoriesUiState.observeEvent(this) { onSubCategoryResponse(it) }
+        viewModel.subCategoriesUiState.observe(this, Observer { onSubCategoryResponse(it) })
 
-        categoriesSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+        categoriesSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {
 
             }
 
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
-                selectedCategory = categories.get(position)
+                selectedCategory = viewModel.categories.get(position)
                 val uuid = selectedCategory.uuid
                 viewModel.getSavedSubCategories(uuid)
-
             }
         }
 
-        subCategoriesSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+        subCategoriesSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {
 
             }
 
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long){
-                selectedSubCategory = subCategories[position]
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
+                selectedSubCategory = viewModel.subCategories[position]
                 viewModel.getAttributes(selectedSubCategory.uuid)
             }
         }
@@ -131,13 +127,14 @@ class CreateAdFragment : Fragment() {
     }
 
     private fun onAttributesStateChanged(state: CreateAdViewModel.AttributesUiState) {
-        when(state) {
-            CreateAdViewModel.AttributesUiState.Loading -> {}
+        when (state) {
+            CreateAdViewModel.AttributesUiState.Loading -> {
+            }
             is CreateAdViewModel.AttributesUiState.Success -> {
                 viewModel.attributes.clear()
                 viewModel.attributes.addAll(
                     state.attributes.map {
-                        when(it) {
+                        when (it) {
                             is Attribute.MainAttribute -> {
                                 AttributeSection(
                                     true,
@@ -154,9 +151,12 @@ class CreateAdFragment : Fragment() {
                 )
                 attributesAdapter.notifyDataSetChanged()
             }
-            is CreateAdViewModel.AttributesUiState.Error -> {}
-            CreateAdViewModel.AttributesUiState.NoInternetConnection -> {}
-            CreateAdViewModel.AttributesUiState.EmptyView -> {}
+            is CreateAdViewModel.AttributesUiState.Error -> {
+            }
+            CreateAdViewModel.AttributesUiState.NoInternetConnection -> {
+            }
+            CreateAdViewModel.AttributesUiState.EmptyView -> {
+            }
         }
     }
 
@@ -164,12 +164,11 @@ class CreateAdFragment : Fragment() {
         when (state) {
 
             is CreateAdViewModel.SubCategoriesUiState.Loading -> showSubCategoryLoading()
-            is CreateAdViewModel.SubCategoriesUiState.Success -> showSubCategorySuccess(state.subCategories)
+            is CreateAdViewModel.SubCategoriesUiState.Success -> showSubCategorySuccess()
         }
     }
 
-    private fun showSubCategorySuccess(subCategoriesList: List<SubCategory>) {
-        subCategories.addAll(subCategoriesList)
+    private fun showSubCategorySuccess() {
         subCategoriesAdapter.notifyDataSetChanged()
     }
 
@@ -181,12 +180,11 @@ class CreateAdFragment : Fragment() {
         when (state) {
 
             is CreateAdViewModel.CategoriesUiState.Loading -> showCategoryLoading()
-            is CreateAdViewModel.CategoriesUiState.Success -> showCategorySuccess(state.categories)
+            is CreateAdViewModel.CategoriesUiState.Success -> showCategorySuccess()
         }
     }
 
-    private fun showCategorySuccess(categoriesList: List<Category>) {
-        categories.addAll(categoriesList)
+    private fun showCategorySuccess() {
         categoriesAdapter.notifyDataSetChanged()
     }
 
@@ -218,8 +216,8 @@ class CreateAdFragment : Fragment() {
 
     }
 
-    private fun showMessage(message: String){
-        val snack_bar = Snackbar.make(rootViewCl,message,Snackbar.LENGTH_LONG)
+    private fun showMessage(message: String) {
+        val snack_bar = Snackbar.make(rootViewCl, message, Snackbar.LENGTH_LONG)
         val view = snack_bar.view
         val textView = view.findViewById<View>(R.id.snackbar_text)
         textView.textAlignment = View.TEXT_ALIGNMENT_CENTER
@@ -240,7 +238,8 @@ class CreateAdFragment : Fragment() {
                 quantity = quantityEt.text.toString(),
                 subCategoryUuid = selectedSubCategory.uuid,
                 attributes = viewModel.getSelectedAttributes(),
-                images = viewModel.getSelectedImagesStringList())
+                images = viewModel.getSelectedImagesStringList()
+            )
 
             findNavController().navigateUp()
         } else {

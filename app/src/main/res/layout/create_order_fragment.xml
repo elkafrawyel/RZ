@@ -32,14 +32,19 @@
 
             <TextView
                 android:id="@+id/categoryNameTv"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/label_create_order_title"
                 android:textColor="@color/colorOnPrimary"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="@id/backImgv"
+                android:lines="1"
+                android:ellipsize="end"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/backImgv"
-                app:layout_constraintTop_toTopOf="@id/backImgv" />
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

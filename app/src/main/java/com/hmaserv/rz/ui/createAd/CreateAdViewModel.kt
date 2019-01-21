@@ -23,12 +23,15 @@ class CreateAdViewModel : BaseViewModel() {
     private val getSavedSubCategoriesUseCase = Injector.getSavedSubCategoriesUseCase()
     private val getAttributesUseCase = Injector.getAttributesUseCase()
 
-    private val _categoriesUiState = MutableLiveData<Event<CategoriesUiState>>()
-    val categoriesUiState: LiveData<Event<CategoriesUiState>>
+    var categories = java.util.ArrayList<Category>()
+    var subCategories = java.util.ArrayList<SubCategory>()
+
+    private val _categoriesUiState = MutableLiveData<CategoriesUiState>()
+    val categoriesUiState: LiveData<CategoriesUiState>
         get() = _categoriesUiState
 
-    private val _subCategoriesUiState = MutableLiveData<Event<SubCategoriesUiState>>()
-    val subCategoriesUiState: LiveData<Event<SubCategoriesUiState>>
+    private val _subCategoriesUiState = MutableLiveData<SubCategoriesUiState>()
+    val subCategoriesUiState: LiveData<SubCategoriesUiState>
         get() = _subCategoriesUiState
 
     private val _attributesUiState = MutableLiveData<Event<AttributesUiState>>()
@@ -124,19 +127,23 @@ class CreateAdViewModel : BaseViewModel() {
     }
 
     private fun showCategoryLoading() {
-        _categoriesUiState.value = Event(CategoriesUiState.Loading)
+        _categoriesUiState.value = CategoriesUiState.Loading
     }
 
     private fun showCategorySuccess(data: List<Category>) {
-        _categoriesUiState.value = Event(CategoriesUiState.Success(data))
+        categories.clear()
+        categories.addAll(data)
+        _categoriesUiState.value = CategoriesUiState.Success
     }
 
     private fun showSubCategoryLoading() {
-        _subCategoriesUiState.value = Event(SubCategoriesUiState.Loading)
+        _subCategoriesUiState.value = SubCategoriesUiState.Loading
     }
 
     private fun showSubCategorySuccess(data: List<SubCategory>) {
-        _subCategoriesUiState.value = Event(SubCategoriesUiState.Success(data))
+        subCategories.clear()
+        subCategories.addAll(data)
+        _subCategoriesUiState.value = SubCategoriesUiState.Success
     }
 
     private fun showAttributesLoading() {
@@ -216,12 +223,12 @@ class CreateAdViewModel : BaseViewModel() {
 
     sealed class CategoriesUiState {
         object Loading : CategoriesUiState()
-        data class Success(val categories: List<Category>) : CategoriesUiState()
+        object Success : CategoriesUiState()
     }
 
     sealed class SubCategoriesUiState {
         object Loading : SubCategoriesUiState()
-        data class Success(val subCategories: List<SubCategory>) : SubCategoriesUiState()
+        object Success : SubCategoriesUiState()
     }
 
     sealed class AttributesUiState {

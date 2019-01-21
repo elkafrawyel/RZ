@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -35,68 +34,61 @@ class CategoriesFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener 
 
         backBtn.setOnClickListener { findNavController().navigateUp() }
         searchMcv.setOnClickListener{openSearchFragment()}
-        loadingFl.setOnClickListener {  }
         categoriesRv.adapter = adapter
-
+        noConnectionCl.setOnClickListener { viewModel.refresh() }
+        errorCl.setOnClickListener { viewModel.refresh() }
         adapter.onItemClickListener =
                 BaseQuickAdapter.OnItemClickListener { _, _, position ->
                     openSubCategories(adapter.data[position])
                 }
-
         categoriesSwipe.setOnRefreshListener(this)
-
     }
 
     override fun showLoading() {
-        categoriesSwipe.isRefreshing = false
-        loadingViewGroup.visibility = View.VISIBLE
-        categoriesRv.visibility = View.GONE
-        emptyViewGroup.visibility = View.GONE
-        noConnectionGroup.visibility = View.GONE
-        errorViewGroup.visibility = View.GONE
+        loadingPb.visibility = View.VISIBLE
+        dataCl.visibility = View.GONE
+        emptyViewCl.visibility = View.GONE
+        noConnectionCl.visibility = View.GONE
+        errorCl.visibility = View.GONE
     }
 
     override fun showSuccess(dataMap: Map<String, Any>) {
         val categories = dataMap[DATA_CATEGORIES_KEY] as List<Category>
-        categoriesSwipe.isRefreshing = false
-        loadingViewGroup.visibility = View.GONE
-
         if (categories.isEmpty()) {
             showStateEmptyView()
         } else {
-            categoriesRv.visibility = View.VISIBLE
-            emptyViewGroup.visibility = View.GONE
-            noConnectionGroup.visibility = View.GONE
-            errorViewGroup.visibility = View.GONE
+            loadingPb.visibility = View.GONE
+            categoriesSwipe.isRefreshing = false
+            dataCl.visibility = View.VISIBLE
+            emptyViewCl.visibility = View.GONE
+            noConnectionCl.visibility = View.GONE
+            errorCl.visibility = View.GONE
             adapter.submitList(categories)
         }
     }
 
     override fun showError(message: String) {
-        loadingViewGroup.visibility = View.GONE
-        categoriesSwipe.isRefreshing = false
-        categoriesRv.visibility = View.GONE
-        emptyViewGroup.visibility = View.GONE
-        noConnectionGroup.visibility = View.GONE
-        errorViewGroup.visibility = View.VISIBLE
+        loadingPb.visibility = View.GONE
+        dataCl.visibility = View.GONE
+        emptyViewCl.visibility = View.GONE
+        noConnectionCl.visibility = View.GONE
+        errorCl.visibility = View.VISIBLE
     }
 
     override fun showNoInternetConnection() {
-        loadingViewGroup.visibility = View.GONE
-        categoriesSwipe.isRefreshing = false
-        categoriesRv.visibility = View.GONE
-        emptyViewGroup.visibility = View.GONE
-        noConnectionGroup.visibility = View.VISIBLE
-        errorViewGroup.visibility = View.GONE
+        loadingPb.visibility = View.GONE
+        dataCl.visibility = View.GONE
+        emptyViewCl.visibility = View.GONE
+        noConnectionCl.visibility = View.VISIBLE
+        errorCl.visibility = View.GONE
     }
 
     private fun showStateEmptyView () {
-        loadingViewGroup.visibility = View.GONE
-        categoriesSwipe.isRefreshing = false
-        categoriesRv.visibility = View.GONE
-        emptyViewGroup.visibility = View.VISIBLE
-        noConnectionGroup.visibility = View.GONE
-        errorViewGroup.visibility = View.GONE
+        loadingPb.visibility = View.GONE
+        dataCl.visibility = View.GONE
+        emptyViewCl.visibility = View.VISIBLE
+        noConnectionCl.visibility = View.GONE
+        errorCl.visibility = View.GONE
     }
 
     private fun openSearchFragment() {

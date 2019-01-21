@@ -67,8 +67,6 @@ class AdFragment : BaseFragment(), AdapterAttributes.AttributesListener {
 
         errorCl.setOnClickListener { viewModel.refresh() }
 
-        loadingFl.setOnClickListener { }
-
         attributesRv.layoutManager = LinearLayoutManager(
             context,
             RecyclerView.VERTICAL,
@@ -91,7 +89,7 @@ class AdFragment : BaseFragment(), AdapterAttributes.AttributesListener {
                         } else {
                             productVp.setCurrentItem(0, true)
                         }
-                    }else{
+                    } else {
                         timer?.cancel()
                         pageIndicator.visibility = View.INVISIBLE
                     }
@@ -147,33 +145,33 @@ class AdFragment : BaseFragment(), AdapterAttributes.AttributesListener {
 
         adapter.notifyDataSetChanged()
 
-        loadingFl.visibility = View.GONE
-        dataGroup.visibility = View.VISIBLE
-        emptyViewGroup.visibility = View.GONE
+        loadingPb.visibility = View.GONE
+        dataNsv.visibility = View.VISIBLE
+        emptyViewCl.visibility = View.GONE
         noConnectionCl.visibility = View.GONE
         errorCl.visibility = View.GONE
     }
 
     override fun showError(message: String) {
-        loadingFl.visibility = View.GONE
-        dataGroup.visibility = View.GONE
-        emptyViewGroup.visibility = View.GONE
+        loadingPb.visibility = View.GONE
+        dataNsv.visibility = View.GONE
+        emptyViewCl.visibility = View.GONE
         noConnectionCl.visibility = View.GONE
         errorCl.visibility = View.VISIBLE
     }
 
     override fun showNoInternetConnection() {
-        loadingFl.visibility = View.GONE
-        dataGroup.visibility = View.GONE
-        emptyViewGroup.visibility = View.GONE
+        loadingPb.visibility = View.GONE
+        dataNsv.visibility = View.GONE
+        emptyViewCl.visibility = View.GONE
         noConnectionCl.visibility = View.VISIBLE
         errorCl.visibility = View.GONE
     }
 
     override fun showLoading() {
-        loadingFl.visibility = View.VISIBLE
-        dataGroup.visibility = View.GONE
-        emptyViewGroup.visibility = View.GONE
+        loadingPb.visibility = View.VISIBLE
+        dataNsv.visibility = View.GONE
+        emptyViewCl.visibility = View.GONE
         noConnectionCl.visibility = View.GONE
         errorCl.visibility = View.GONE
     }

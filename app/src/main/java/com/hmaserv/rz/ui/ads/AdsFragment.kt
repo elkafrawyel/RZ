@@ -50,8 +50,6 @@ class AdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
         errorCl.setOnClickListener { viewModel.refresh() }
 
-        loadingFl.setOnClickListener {  }
-
         productsRv.adapter = adapter
 
         adapter.onItemClickListener =
@@ -72,23 +70,23 @@ class AdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
     override fun showLoading() {
         productsSwipe.isRefreshing = false
-        loadingFl.visibility = View.VISIBLE
-        dataGroup.visibility = View.GONE
-        emptyViewGroup.visibility = View.GONE
+        loadingPb.visibility = View.VISIBLE
+        dataCl.visibility = View.GONE
+        emptyViewCl.visibility = View.GONE
         noConnectionCl.visibility = View.GONE
         errorCl.visibility = View.GONE
     }
 
     override fun showSuccess(dataMap: Map<String, Any>) {
         val products = dataMap[DATA_PRODUCTS_KEY] as List<MiniAd>
-        productsSwipe.isRefreshing = false
-        loadingFl.visibility = View.GONE
+        loadingPb.visibility = View.GONE
 
         if (products.isEmpty()) {
             showEmptyViewState()
         } else {
-            dataGroup.visibility = View.VISIBLE
-            emptyViewGroup.visibility = View.GONE
+            productsSwipe.isRefreshing = false
+            dataCl.visibility = View.VISIBLE
+            emptyViewCl.visibility = View.GONE
             noConnectionCl.visibility = View.GONE
             errorCl.visibility = View.GONE
             adapter.submitList(products)
@@ -96,28 +94,28 @@ class AdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     override fun showError(message: String) {
-        loadingFl.visibility = View.GONE
+        loadingPb.visibility = View.GONE
         productsSwipe.isRefreshing = false
-        dataGroup.visibility = View.GONE
-        emptyViewGroup.visibility = View.GONE
+        dataCl.visibility = View.GONE
+        emptyViewCl.visibility = View.GONE
         noConnectionCl.visibility = View.GONE
         errorCl.visibility = View.VISIBLE
     }
 
     override fun showNoInternetConnection() {
-        loadingFl.visibility = View.GONE
+        loadingPb.visibility = View.GONE
         productsSwipe.isRefreshing = false
-        dataGroup.visibility = View.GONE
-        emptyViewGroup.visibility = View.GONE
+        dataCl.visibility = View.GONE
+        emptyViewCl.visibility = View.GONE
         noConnectionCl.visibility = View.VISIBLE
         errorCl.visibility = View.GONE
     }
 
     private fun showEmptyViewState() {
-        loadingFl.visibility = View.GONE
+        loadingPb.visibility = View.GONE
         productsSwipe.isRefreshing = false
-        dataGroup.visibility = View.GONE
-        emptyViewGroup.visibility = View.VISIBLE
+        dataCl.visibility = View.GONE
+        emptyViewCl.visibility = View.VISIBLE
         noConnectionCl.visibility = View.GONE
         errorCl.visibility = View.GONE
     }
