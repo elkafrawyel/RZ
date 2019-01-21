@@ -171,6 +171,7 @@ object Injector {
     private fun getUploaderRepo() = UploaderRepo.getInstance(getUploaderRemoteSource())
 
     fun getUploadAdImageUseCase() = UploadAdImage(getLoggedInRepo(), getUploaderRepo())
+    fun deleteAdImageUseCase() = DeleteImageUseCase(getLoggedInRepo(), getUploaderRepo())
 
     // orders
     private fun getOrdersRemoteSource() = OrdersRemoteSource(getAuthApiService())

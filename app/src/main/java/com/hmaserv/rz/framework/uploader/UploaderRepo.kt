@@ -18,6 +18,15 @@ class UploaderRepo(
         return uploaderRemoteSource.uploadAdImage(token, adUuid, image)
     }
 
+    override suspend fun deleteAdImage(
+        token: String,
+        adUuid: RequestBody,
+        imagePath: RequestBody,
+        flag: RequestBody
+    ): DataResource<Boolean> {
+        return uploaderRemoteSource.deleteAdImage(token, adUuid, imagePath, flag)
+    }
+
     companion object {
         @Volatile
         private var INSTANCE: UploaderRepo? = null

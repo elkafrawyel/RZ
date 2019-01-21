@@ -46,4 +46,39 @@ class UploaderRemoteSource(
         return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_uploading_image)))
     }
 
+    override suspend fun deleteAdImage(
+        token: String,
+        adUuid: RequestBody,
+        imagePath: RequestBody,
+        flag: RequestBody
+    ): DataResource<Boolean> {
+        return safeApiCall(
+            call = { deleteAdImageCall(token, adUuid, imagePath, flag) },
+            errorMessage = Injector.getApplicationContext().getString(R.string.error_uploading_image)
+        )
+    }
+
+    private suspend fun deleteAdImageCall(
+        token: String,
+        adUuid: RequestBody,
+        imagePath: RequestBody,
+        flag: RequestBody
+    ): DataResource<Boolean> {
+        val response = authApiService.deleteImage(
+            token,
+            adUuid,
+            imagePath,
+            flag
+        ).await()
+        if (response.success != null && response.success) {
+            return DataResource.Success(true)
+        }
+
+        if (response.message != null) {
+            return DataResource.Error(IOException(response.message))
+        }
+
+        return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_uploading_image)))
+    }
+
 }

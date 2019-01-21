@@ -65,7 +65,7 @@ class AdsRepo(
 
     override suspend fun updateAd(
         token: String,
-        request: CreateProductRequest
+        request: UpdateAdRequest
     ): DataResource<CreateProductResponse> {
         return adsRemoteSource.updateAd(token, request)
     }

@@ -110,7 +110,7 @@ class EditAdViewModel : NewBaseViewModel() {
     fun getNewImages(): ArrayList<String> {
         return ArrayList(
             images
-                .filter { it is Image.UrlImage }
+                .filter { it is Image.UriImage }
                 .map { (it as Image.UriImage).uri.toString() }
         )
     }

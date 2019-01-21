@@ -20,6 +20,15 @@ interface RetrofitAuthApiService {
         @Part image: MultipartBody.Part
     ): Deferred<ApiResponse<String>>
 
+    @Multipart
+    @POST("ads/uploader")
+    fun deleteImage(
+        @Header("Authorization") token: String,
+        @Part("ads_uuid") adUuid: RequestBody,
+        @Part("delete_file") imagePath: RequestBody,
+        @Part("garbageCollector") flag: RequestBody
+    ): Deferred<ApiResponse<String>>
+
     @PUT("auth/activeUser")
     fun verifyPhone(@Header("Authorization") token: String): Deferred<ApiResponse<Boolean>>
 
@@ -41,7 +50,7 @@ interface RetrofitAuthApiService {
     @PUT("ads/update")
     fun updateAd(
         @Header("Authorization") token: String,
-        @Body request: CreateProductRequest
+        @Body request: UpdateAdRequest
     ): Deferred<ApiResponse<CreateProductResponse>>
 
     @POST("order/create")

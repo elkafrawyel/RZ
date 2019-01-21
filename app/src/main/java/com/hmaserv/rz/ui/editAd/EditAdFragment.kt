@@ -129,7 +129,7 @@ class EditAdFragment : BaseFragment(), AttributesAdapter.AttributesCallback {
                 viewModel.getSelectedAttributes(),
                 viewModel.getNewImages(),
                 viewModel.getDeletedImages(),
-                Mode.EDIT)
+                Mode.UPDATE)
 
             findNavController().navigateUp()
         } else {

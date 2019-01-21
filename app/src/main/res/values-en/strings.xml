@@ -130,5 +130,7 @@
     <string name="label_empty_phone">Phone Number Field Is Empty</string>
     <string name="success_create_order">Create Order Completed</string>
     <string name="error_create_order">Create Order Failed</string>
+    <string name="status_create_ad">Creating your Ad started.</string>
+    <string name="status_edit_ad">Editing your Ad started.</string>
 
 </resources>

@@ -2,10 +2,7 @@ package com.hmaserv.rz.usecases
 
 import com.hmaserv.rz.data.ads.IAdsRepo
 import com.hmaserv.rz.data.logedInUser.ILoggedInUserRepo
-import com.hmaserv.rz.domain.Attribute
-import com.hmaserv.rz.domain.CreateProductRequest
-import com.hmaserv.rz.domain.CreateProductResponse
-import com.hmaserv.rz.domain.DataResource
+import com.hmaserv.rz.domain.*
 import com.hmaserv.rz.utils.Constants
 
 class UpdateAdUseCase(
@@ -14,6 +11,7 @@ class UpdateAdUseCase(
 ) {
 
     suspend fun update(
+        adUuid: String,
         subCategoryUuid: String,
         title: String,
         description: String,
@@ -24,7 +22,8 @@ class UpdateAdUseCase(
     ): DataResource<CreateProductResponse> {
         return adsRepo.updateAd(
             "${Constants.AUTHORIZATION_START} ${loggedInUserRepo.getLoggedInUser().token}",
-            CreateProductRequest(
+            UpdateAdRequest(
+                adUuid,
                 subCategoryUuid,
                 title,
                 description,

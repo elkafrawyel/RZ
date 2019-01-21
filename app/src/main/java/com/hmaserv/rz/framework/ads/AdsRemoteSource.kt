@@ -186,7 +186,7 @@ class AdsRemoteSource(
 
     override suspend fun updateAd(
         token: String,
-        request: CreateProductRequest
+        request: UpdateAdRequest
     ): DataResource<CreateProductResponse> {
         return safeApiCall(
             call = { updateAdCall(token, request) },
@@ -196,7 +196,7 @@ class AdsRemoteSource(
 
     private suspend fun updateAdCall(
         token: String,
-        request: CreateProductRequest
+        request: UpdateAdRequest
     ): DataResource<CreateProductResponse> {
         val response = authApiService.updateAd(token, request).await()
         if (response.success != null && response.success) {
