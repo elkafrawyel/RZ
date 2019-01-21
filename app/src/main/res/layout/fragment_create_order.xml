@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rootViewCl"
+    tools:context=".ui.createOrder.CreateOrderFragment">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:contentInsetStart="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/backImgv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:src="@drawable/ic_arrow_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/categoryNameTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/label_create_order_title"
+                android:textColor="@color/colorOnPrimary"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@id/backImgv"
+                app:layout_constraintStart_toEndOf="@id/backImgv"
+                app:layout_constraintTop_toTopOf="@id/backImgv" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <EditText
+        android:id="@+id/nameEt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@drawable/create_product_fields_bg"
+        android:hint="@string/hint_user_name"
+        android:padding="8dp"
+        android:singleLine="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolBar" />
+
+    <EditText
+        android:id="@+id/phoneEt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/create_product_fields_bg"
+        android:hint="@string/hint_phone_number"
+        android:inputType="phone"
+        android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="@id/nameEt"
+        app:layout_constraintStart_toStartOf="@id/nameEt"
+        app:layout_constraintTop_toBottomOf="@id/nameEt" />
+
+    <EditText
+        android:id="@+id/addressEt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/create_product_fields_bg"
+        android:hint="@string/hint_address"
+        android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="@id/nameEt"
+        app:layout_constraintStart_toStartOf="@id/nameEt"
+        app:layout_constraintTop_toBottomOf="@id/phoneEt" />
+
+    <Spinner
+        android:id="@+id/citySpinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/create_product_fields_bg"
+        android:spinnerMode="dialog"
+        app:layout_constraintEnd_toEndOf="@id/nameEt"
+        app:layout_constraintStart_toStartOf="@id/nameEt"
+        app:layout_constraintTop_toBottomOf="@id/addressEt" />
+
+    <Spinner
+        android:id="@+id/paymentSpinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/create_product_fields_bg"
+        android:spinnerMode="dialog"
+        app:layout_constraintEnd_toEndOf="@id/nameEt"
+        app:layout_constraintStart_toStartOf="@id/nameEt"
+        app:layout_constraintTop_toBottomOf="@id/citySpinner" />
+
+    <EditText
+        android:id="@+id/noteEt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/create_product_fields_bg"
+        android:hint="@string/hint_note"
+        app:layout_constraintEnd_toEndOf="@id/nameEt"
+        app:layout_constraintStart_toStartOf="@id/nameEt"
+        app:layout_constraintTop_toBottomOf="@id/paymentSpinner" />
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/makeOrderMbtn"
+        android:layout_margin="24dp"
+        app:layout_constraintEnd_toEndOf="@id/nameEt"
+        app:layout_constraintStart_toStartOf="@id/nameEt"
+        app:layout_constraintTop_toBottomOf="@id/noteEt"
+        android:text="@string/label_make_order"
+        />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/dateGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="nameEt, phoneEt, addressEt, citySpinner, paymentSpinner, noteEt, makeOrderMbtn" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

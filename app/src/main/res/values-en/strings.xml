@@ -115,12 +115,18 @@
     <string name="error_call_attributes_api">Error getting attributes</string>
     <string name="error_http_attributes_api">Error getting attributes</string>
     <string name="error_uploading_image">Error uploading ad image</string>
-    <string name="error_sign_in_first">برجاء تسجيل الدخول اولا</string>
-    <string name="label_sign_in">تسجيل الدخول</string>
+    <string name="error_sign_in_first">Please Sign In First</string>
+    <string name="label_sign_in">Sign In</string>
     <string name="success_empty_view">No Data Found</string>
     <string name="label_try_again">Try Again</string>
     <string name="label_my_ads_title">My Ads</string>
     <string name="success_delete_ad">Ad Deleted Successfully</string>
     <string name="error_delete_ad">Failed To Delete Ad</string>
+    <string name="label_create_order_title">Create Order</string>
+    <string name="hint_note">Notes</string>
+    <string name="label_make_order">Create Order</string>
+    <string name="label_empty_notes">Notes Field Is Empty</string>
+    <string name="label_empty_name">Name Field Is Empty</string>
+    <string name="label_empty_phone">Phone Number Field Is Empty</string>
 
 </resources>

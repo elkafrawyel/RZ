@@ -129,5 +129,11 @@
     <string name="label_my_ads_title">أعلاناتي</string>
     <string name="success_delete_ad">تم حذف الاعلان بنجاح</string>
     <string name="error_delete_ad">فشل في حذف الاعلان</string>
+    <string name="label_create_order_title">طلب الاعلان</string>
+    <string name="hint_note">ملاحظات</string>
+    <string name="label_make_order">طلب الاعلان</string>
+    <string name="label_empty_notes">حقل الملاحظات فارغ</string>
+    <string name="label_empty_name">حقل الاسم فارغ</string>
+    <string name="label_empty_phone">حقل رقم الهاتف فارغ</string>
 
 </resources>
