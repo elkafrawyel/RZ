@@ -13,7 +13,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.Ad
-import com.hmaserv.rz.domain.Image
 import com.hmaserv.rz.domain.Owner
 import com.hmaserv.rz.ui.BaseFragment
 import com.hmaserv.rz.ui.home.ImageSliderAdapter
@@ -23,7 +22,7 @@ import kotlin.concurrent.timerTask
 
 class AdFragment : BaseFragment(), AdapterAttributes.AttributesListener {
 
-    private var adId: String? = null
+    private var adUuid: String? = null
     lateinit var viewModel: AdViewModel
     private val imageSliderAdapter = ImageSliderAdapter()
     lateinit var adapter: AdapterAttributes
@@ -45,13 +44,13 @@ class AdFragment : BaseFragment(), AdapterAttributes.AttributesListener {
 
         arguments?.let {
             toolbar_ProductNameTv.text = AdFragmentArgs.fromBundle(it).adName
-            adId = AdFragmentArgs.fromBundle(it).adUuid
-            adId?.let {
-                viewModel.setAdId(adId!!)
+            adUuid = AdFragmentArgs.fromBundle(it).adUuid
+            adUuid?.let {
+                viewModel.setAdId(adUuid!!)
             }
         }
 
-        if (adId == null)
+        if (adUuid == null)
             findNavController().navigateUp()
 
         productVp.adapter = imageSliderAdapter
@@ -62,7 +61,7 @@ class AdFragment : BaseFragment(), AdapterAttributes.AttributesListener {
 
         shareImgv.setOnClickListener { shareProduct() }
 
-        addToCartBtn.setOnClickListener { makeOrder() }
+        createOrderMbtn.setOnClickListener { createOrder() }
 
         noConnectionCl.setOnClickListener { viewModel.refresh() }
 
@@ -232,8 +231,9 @@ class AdFragment : BaseFragment(), AdapterAttributes.AttributesListener {
         }
     }
 
-    private fun makeOrder() {
-
+    private fun createOrder() {
+        val action = AdFragmentDirections.actionAdFragmentToCreateOrderFragment(adUuid!!)
+        findNavController().navigate(action)
     }
 
     private fun shareProduct() {

@@ -128,5 +128,7 @@
     <string name="label_empty_notes">Notes Field Is Empty</string>
     <string name="label_empty_name">Name Field Is Empty</string>
     <string name="label_empty_phone">Phone Number Field Is Empty</string>
+    <string name="success_create_order">Create Order Completed</string>
+    <string name="error_create_order">Create Order Failed</string>
 
 </resources>

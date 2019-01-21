@@ -179,7 +179,7 @@
                     tools:text="5550 EGP" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/addToCartBtn"
+                    android:id="@+id/createOrderMbtn"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

@@ -135,5 +135,7 @@
     <string name="label_empty_notes">حقل الملاحظات فارغ</string>
     <string name="label_empty_name">حقل الاسم فارغ</string>
     <string name="label_empty_phone">حقل رقم الهاتف فارغ</string>
+    <string name="success_create_order">تم طلب الاعلان بنجاح</string>
+    <string name="error_create_order">فشل في طلب الاعلان</string>
 
 </resources>
