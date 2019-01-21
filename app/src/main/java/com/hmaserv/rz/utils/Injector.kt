@@ -15,6 +15,8 @@ import com.hmaserv.rz.framework.logedInUser.LoggedInUserRepo
 import com.hmaserv.rz.framework.ads.AdsRemoteSource
 import com.hmaserv.rz.framework.ads.AdsRepo
 import com.hmaserv.rz.framework.categories.CategoriesLocalSource
+import com.hmaserv.rz.framework.orders.OrdersRemoteSource
+import com.hmaserv.rz.framework.orders.OrdersRepo
 import com.hmaserv.rz.framework.settings.SettingsLocalSource
 import com.hmaserv.rz.framework.settings.SettingsRepo
 import com.hmaserv.rz.framework.subCategories.SubCategoriesLocalSource
@@ -169,4 +171,11 @@ object Injector {
     private fun getUploaderRepo() = UploaderRepo.getInstance(getUploaderRemoteSource())
 
     fun getUploadAdImageUseCase() = UploadAdImage(getLoggedInRepo(), getUploaderRepo())
+
+    // orders
+    private fun getOrdersRemoteSource() = OrdersRemoteSource(getAuthApiService())
+    private fun getOrdersRepo() = OrdersRepo.getInstance(getOrdersRemoteSource())
+
+    fun createOrderUseCase() = CreateOrderUseCase(getLoggedInRepo(), getOrdersRepo())
+    fun getMyOrdersUseCase() = GetMyOrdersUseCase(getLoggedInRepo(), getOrdersRepo())
 }

@@ -40,7 +40,7 @@ class AdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             }
         }
 
-        backBtn.setOnClickListener { activity?.onBackPressed() }
+        backBtn.setOnClickListener { findNavController().navigateUp() }
 
         searchImgv.setOnClickListener { openSearchFragment() }
 

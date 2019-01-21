@@ -146,6 +146,9 @@
         <action
             android:id="@+id/action_adFragment_to_editAdFragment"
             app:destination="@id/editAdFragment" />
+        <action
+            android:id="@+id/action_adFragment_to_createOrderFragment"
+            app:destination="@id/createOrderFragment" />
     </fragment>
     <fragment
         android:id="@+id/privacyFragment"
@@ -173,7 +176,38 @@
         android:id="@+id/myOrdersFragment"
         android:name="com.hmaserv.rz.ui.myOrders.MyOrdersFragment"
         android:label="my_orders_fragment"
-        tools:layout="@layout/my_orders_fragment" />
+        tools:layout="@layout/my_orders_fragment" >
+        <action
+            android:id="@+id/action_myOrdersFragment_to_myOrderDetailsFragment"
+            app:destination="@id/myOrderDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myOrderDetailsFragment"
+        android:name="com.hmaserv.rz.ui.myOrderDetails.MyOrderDetailsFragment"
+        android:label="my_order_details_fragment"
+        tools:layout="@layout/my_order_details_fragment" >
+        <argument
+            android:name="orderUuid"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/ordersReceivedFragment"
+        android:name="com.hmaserv.rz.ui.ordersReceived.OrdersReceivedFragment"
+        android:label="orders_received_fragment"
+        tools:layout="@layout/orders_received_fragment" >
+        <action
+            android:id="@+id/action_ordersReceivedFragment_to_orderReceivedDetailsFragment"
+            app:destination="@id/orderReceivedDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/orderReceivedDetailsFragment"
+        android:name="com.hmaserv.rz.ui.orderReceivedDetails.OrderReceivedDetailsFragment"
+        android:label="order_received_details_fragment"
+        tools:layout="@layout/order_received_details_fragment" >
+        <argument
+            android:name="orderReceivedUuid"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.hmaserv.rz.ui.home.HomeFragment"
@@ -218,6 +252,9 @@
         <action
             android:id="@+id/action_homeFragment_to_termsConditionsFragment"
             app:destination="@id/termsConditionsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_ordersReceivedFragment"
+            app:destination="@id/ordersReceivedFragment" />
     </fragment>
     <fragment
         android:id="@+id/termsConditionsFragment"
@@ -228,6 +265,15 @@
         android:id="@+id/editAdFragment"
         android:name="com.hmaserv.rz.ui.editAd.EditAdFragment"
         android:label="EditAdFragment" >
+        <argument
+            android:name="adUuid"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/createOrderFragment"
+        android:name="com.hmaserv.rz.ui.createOrder.CreateOrderFragment"
+        android:label="create_order_fragment"
+        tools:layout="@layout/create_order_fragment" >
         <argument
             android:name="adUuid"
             app:argType="string" />

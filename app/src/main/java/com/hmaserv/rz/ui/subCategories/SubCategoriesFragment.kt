@@ -44,9 +44,9 @@ class SubCategoriesFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListen
             }
         }
 
-        if (categoryId == null) activity?.onBackPressed()
+        if (categoryId == null) findNavController().navigateUp()
 
-        backBtn.setOnClickListener { activity?.onBackPressed() }
+        backBtn.setOnClickListener { findNavController().navigateUp() }
 
         searchMcv.setOnClickListener { openSearchFragment() }
 

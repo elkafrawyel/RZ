@@ -37,7 +37,7 @@ class MyAdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         viewModel.deleteState.observe(this, Observer { onAdDeleteStateChanged(it) })
         myAdsRv.adapter = adapter
 
-        backImgv.setOnClickListener { activity?.onBackPressed() }
+        backImgv.setOnClickListener { findNavController().navigateUp() }
 
         noConnectionCl.setOnClickListener { viewModel.refresh() }
 

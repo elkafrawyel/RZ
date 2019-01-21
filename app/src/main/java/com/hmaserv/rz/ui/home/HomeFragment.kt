@@ -152,6 +152,7 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
         when (item.itemId) {
             R.id.nav_profile -> findNavController().navigate(R.id.action_homeFragment_to_profileFragment)
             R.id.nav_my_orders -> findNavController().navigate(R.id.action_homeFragment_to_myOrdersFragment)
+            R.id.nav_orders_received -> findNavController().navigate(R.id.action_homeFragment_to_ordersReceivedFragment)
             R.id.nav_my_ads -> findNavController().navigate(R.id.action_homeFragment_to_myAdsFragment)
             R.id.nav_create_product -> onCreateAdClicked()
             R.id.nav_about_us -> findNavController().navigate(R.id.action_homeFragment_to_aboutUsFragment)

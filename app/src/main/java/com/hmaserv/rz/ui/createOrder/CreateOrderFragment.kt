@@ -8,7 +8,7 @@ import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
 import com.hmaserv.rz.R
 import com.hmaserv.rz.ui.BaseFragment
-import kotlinx.android.synthetic.main.fragment_create_order.*
+import kotlinx.android.synthetic.main.create_order_fragment.*
 
 class CreateOrderFragment : BaseFragment() {
 
@@ -16,7 +16,7 @@ class CreateOrderFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_create_order, container, false)
+        return inflater.inflate(R.layout.create_order_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
