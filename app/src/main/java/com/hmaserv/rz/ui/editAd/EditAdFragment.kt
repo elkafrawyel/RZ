@@ -119,13 +119,13 @@ class EditAdFragment : BaseFragment(), AttributesAdapter.AttributesCallback {
             // Already have permission, do the thing
             CreateAdJobService.enqueueWork(
                 requireActivity(),
-                viewModel.getAdUuid(),
+                viewModel.currentAd.uuid,
                 titleEt.text.toString(),
                 descriptionEt.text.toString(),
                 priceEt.text.toString(),
                 priceWithDiscountEt.text.toString(),
                 quantityEt.text.toString(),
-                "3f6a93ed-781b-459f-923e-9af386119690",
+                viewModel.currentAd.subCategoryUuid,
                 viewModel.getSelectedAttributes(),
                 viewModel.getNewImages(),
                 viewModel.getDeletedImages(),
@@ -164,8 +164,8 @@ class EditAdFragment : BaseFragment(), AttributesAdapter.AttributesCallback {
         descriptionEt.setText(ad.description)
         priceEt.setText(ad.price.toString())
         priceWithDiscountEt.setText(ad.discountPrice.toString())
-        quantityEt.setText("No quantity")
-        categoriesTv.text = "category name"
+        quantityEt.setText(ad.quantity.toString())
+        categoriesTv.text = ad.categoryName
         subCategoriesTv.text = ad.subCategoryName
         when {
             ad.images.isEmpty() -> {

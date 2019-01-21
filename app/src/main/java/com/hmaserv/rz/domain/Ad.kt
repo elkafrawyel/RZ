@@ -7,28 +7,34 @@ import com.squareup.moshi.Json
 data class AdResponse(
     @field:Json(name = "ads_uuid")
     val adsUuid: String?,
-    @field:Json(name = "characteristics")
-    val mainAttributes: List<MainAttributeResponse?>?,
-    @field:Json(name = "create_ad")
-    val createAd: String?,
-    @field:Json(name = "decs")
-    val decs: String?,
-    @field:Json(name = "discount_price")
-    val discountPrice: Int?,
-    @field:Json(name = "files")
-    val files: List<String?>?,
-    @field:Json(name = "owner")
-    val owner: OwnerResponse?,
+    @field:Json(name = "title")
+    val title: String?,
     @field:Json(name = "price")
     val price: Int?,
+    @field:Json(name = "discount_price")
+    val discountPrice: Int?,
+    @field:Json(name = "quantity")
+    val quantity: Int?,
     @field:Json(name = "rate")
     val rate: Int?,
     @field:Json(name = "reviews")
     val reviews: Int?,
+    @field:Json(name = "created_at")
+    val createdAt: String?,
+    @field:Json(name = "decs")
+    val decs: String?,
+    @field:Json(name = "files")
+    val files: List<String?>?,
+    @field:Json(name = "owner")
+    val owner: OwnerResponse?,
+    @field:Json(name = "category")
+    val category: String?,
+    @field:Json(name = "sub_category_uuid")
+    val subCategoryUuid: String?,
     @field:Json(name = "sub_category")
     val subCategory: String?,
-    @field:Json(name = "title")
-    val title: String?
+    @field:Json(name = "characteristics")
+    val mainAttributes: List<MainAttributeResponse?>?
 )
 
 data class OwnerResponse(
@@ -51,11 +57,14 @@ data class Ad(
     val date: String,
     val description: String,
     val discountPrice: Int,
+    val quantity: Int,
     val images: List<Image.UrlImage>,
     val owner: Owner,
     val price: Int,
     val rate: Int,
     val reviewsNo: Int,
+    val categoryName: String,
+    val subCategoryUuid: String,
     val subCategoryName: String,
     val title: String
 )
@@ -72,30 +81,36 @@ data class Owner(
 )
 
 fun AdResponse.toAd(): Ad? {
-    if (this.adsUuid != null
-        && this.title != null
-        && this.price != null
-        && this.discountPrice != null
-        && this.rate != null
-        && this.reviews != null
-        && this.createAd != null
-        && this.decs != null
-        && this.files != null
-        && this.owner != null
-        && this.subCategory != null
-        && this.mainAttributes != null
+    if (adsUuid != null
+        && title != null
+        && price != null
+        && discountPrice != null
+        && quantity != null
+        && rate != null
+        && reviews != null
+        && createdAt != null
+        && decs != null
+        && files != null
+        && owner != null
+        && category != null
+        && subCategoryUuid != null
+        && subCategory != null
+        && mainAttributes != null
     ) {
         return Ad(
             adsUuid,
             mainAttributes.filterNotNull().mapNotNull { it.toMainAttribute() },
-            createAd,
+            createdAt,
             decs,
             discountPrice,
+            quantity,
             files.filterNotNull().toImages(),
             owner.toOwner(),
             price,
             rate,
             reviews,
+            category,
+            subCategoryUuid,
             subCategory,
             title
         )

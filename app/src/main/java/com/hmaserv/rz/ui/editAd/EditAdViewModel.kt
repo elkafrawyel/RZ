@@ -22,9 +22,7 @@ class EditAdViewModel : NewBaseViewModel() {
     private val deletedImages = ArrayList<Image.UrlImage>(10)
     val attributes = ArrayList<AttributeSection>()
 
-    fun getAdUuid(): String {
-        return this.adUuid ?: ""
-    }
+    lateinit var currentAd: Ad
 
     fun setAdUuid(adUuid: String) {
         if (this.adUuid == null) {
@@ -73,6 +71,7 @@ class EditAdViewModel : NewBaseViewModel() {
                             )
                         }
                     }
+                    currentAd = adResult.data
                     withContext(dispatcherProvider.main) { showSuccess(adResult.data) }
                 } else {
                     withContext(dispatcherProvider.main) { showDataError() }
