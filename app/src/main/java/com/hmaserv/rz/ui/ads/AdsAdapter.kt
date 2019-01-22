@@ -27,6 +27,7 @@ class AdsAdapter(
         }
 
         helper.setText(R.id.nameTv, item.title)
+//            .setText(R.id.discountPriceTv, item)
 
         val rate = item.rate
         when (rate) {

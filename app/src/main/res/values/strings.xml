@@ -124,7 +124,7 @@
     <string name="error_uploading_image">خطأ في رفع الصورة</string>
     <string name="error_sign_in_first">برجاء تسجيل الدخول اولا</string>
     <string name="label_sign_in">تسجيل الدخول</string>
-    <string name="success_empty_view">لا توجد بيانات</string>
+    <string name="success_empty_view">يتعذر عرض المحتوي</string>
     <string name="label_try_again">اضغط لاعادة المحاولة مرة اخري</string>
     <string name="label_my_ads_title">أعلاناتي</string>
     <string name="success_delete_ad">تم حذف الاعلان بنجاح</string>
@@ -137,10 +137,14 @@
     <string name="label_empty_phone">حقل رقم الهاتف فارغ</string>
     <string name="success_create_order">تم طلب الاعلان بنجاح</string>
     <string name="error_create_order">فشل في طلب الاعلان</string>
-    <string name="status_create_ad">Creating your Ad started.</string>
-    <string name="status_edit_ad">Editing your Ad started.</string>
+    <string name="status_create_ad">جاري انشاء اعلاناك برجاء الانتظار.</string>
+    <string name="status_edit_ad">جاري التعديل برجاء الانتظار.</string>
     <string name="label_paypal">باي بال</string>
     <string name="label_cash">كاش</string>
     <string name="label_my_orders_title">طلباتي</string>
+    <string name="success_create_ad">تم انشاء اعلانك بنجاح</string>
+    <string name="error_create_ad">فشل انشاء اعلانك</string>
+    <string name="success_edit_ad">تم التعديل بنجاح</string>
+    <string name="error_edit_ad">فشل التعديل</string>
 
 </resources>

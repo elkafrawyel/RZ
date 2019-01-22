@@ -284,7 +284,7 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun showLoading() {
-        loadingPb.visibility = View.VISIBLE
+        loadinLav.visibility = View.VISIBLE
         errorCl.visibility = View.GONE
         noConnectionCl.visibility = View.GONE
         emptyViewCl.visibility = View.GONE
@@ -292,7 +292,7 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun showSuccess(dataMap: Map<String, Any>) {
-        loadingPb.visibility = View.GONE
+        loadinLav.visibility = View.GONE
         errorCl.visibility = View.GONE
         noConnectionCl.visibility = View.GONE
         emptyViewCl.visibility = View.GONE
@@ -314,7 +314,9 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun showError(message: String) {
-        loadingPb.visibility = View.GONE
+        errorLav.progress = 0F
+        errorLav.playAnimation()
+        loadinLav.visibility = View.GONE
         errorCl.visibility = View.VISIBLE
         noConnectionCl.visibility = View.GONE
         emptyViewCl.visibility = View.GONE
@@ -322,7 +324,7 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun showNoInternetConnection() {
-        loadingPb.visibility = View.GONE
+        loadinLav.visibility = View.GONE
         errorCl.visibility = View.GONE
         noConnectionCl.visibility = View.VISIBLE
         emptyViewCl.visibility = View.GONE

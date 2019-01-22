@@ -84,7 +84,7 @@ class CreateAdJobService : JobIntentService() {
         val mBuilder = NotificationCompat.Builder(this, "createAdId")
             .setSmallIcon(R.drawable.ic_fb_notification)
             .setContentTitle(getString(R.string.app_name))
-            .setContentText("Creating Ad in progress...")
+            .setContentText(getString(R.string.status_create_ad))
             .setProgress(0, 0, true)
             .setOngoing(true)
             .setSound(soundUri)
@@ -158,22 +158,22 @@ class CreateAdJobService : JobIntentService() {
                         .createPendingIntent()
 
                     mBuilder.setProgress(0, 0, false)
-                        .setContentText("Your Ad is created successfully")
+                        .setContentText(getString(R.string.success_create_ad))
                         .setContentIntent(pendingIntent)
                         .setOngoing(false)
 
                     withContext(Injector.getCoroutinesDispatcherProvider().main) {
-                        Toast.makeText(this@CreateAdJobService, "Your Ad is created successfully.", Toast.LENGTH_LONG)
+                        Toast.makeText(this@CreateAdJobService, getString(R.string.success_create_ad), Toast.LENGTH_LONG)
                             .show()
                     }
                 }
                 is DataResource.Error -> {
                     mBuilder.setProgress(0, 0, false)
-                        .setContentText("Failed to create your Ad")
+                        .setContentText(getString(R.string.error_create_ad))
                         .setOngoing(false)
 
                     withContext(Injector.getCoroutinesDispatcherProvider().main) {
-                        Toast.makeText(this@CreateAdJobService, "Failed to create your Ad.", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@CreateAdJobService, getString(R.string.error_create_ad), Toast.LENGTH_LONG).show()
                     }
                 }
             }
@@ -200,7 +200,7 @@ class CreateAdJobService : JobIntentService() {
         val mBuilder = NotificationCompat.Builder(this, "createAdId")
             .setSmallIcon(R.drawable.ic_fb_notification)
             .setContentTitle("RZ")
-            .setContentText("Editing Ad in progress...")
+            .setContentText(getString(R.string.status_edit_ad))
             .setProgress(0, 0, true)
             .setOngoing(true)
             .setSound(soundUri)
@@ -284,22 +284,22 @@ class CreateAdJobService : JobIntentService() {
                         .createPendingIntent()
 
                     mBuilder.setProgress(0, 0, false)
-                        .setContentText("Your Ad is edited successfully")
+                        .setContentText(getString(R.string.success_edit_ad))
                         .setContentIntent(pendingIntent)
                         .setOngoing(false)
 
                     withContext(Injector.getCoroutinesDispatcherProvider().main) {
-                        Toast.makeText(this@CreateAdJobService, "Your Ad is edited successfully.", Toast.LENGTH_LONG)
+                        Toast.makeText(this@CreateAdJobService, getString(R.string.success_edit_ad), Toast.LENGTH_LONG)
                             .show()
                     }
                 }
                 is DataResource.Error -> {
                     mBuilder.setProgress(0, 0, false)
-                        .setContentText("Failed to edit your Ad")
+                        .setContentText(getString(R.string.error_edit_ad))
                         .setOngoing(false)
 
                     withContext(Injector.getCoroutinesDispatcherProvider().main) {
-                        Toast.makeText(this@CreateAdJobService, "Failed to edit your Ad.", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@CreateAdJobService, getString(R.string.error_edit_ad), Toast.LENGTH_LONG).show()
                     }
                 }
             }

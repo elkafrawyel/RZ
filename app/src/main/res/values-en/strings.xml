@@ -135,5 +135,9 @@
     <string name="label_paypal">Paypal</string>
     <string name="label_cash">Cash</string>
     <string name="label_my_orders_title">My Orders</string>
+    <string name="success_create_ad">Your Ad is created successfully</string>
+    <string name="error_create_ad">Failed to create your Ad</string>
+    <string name="success_edit_ad">Your Ad is edited successfully</string>
+    <string name="error_edit_ad">Failed to edit your Ad</string>
 
 </resources>
