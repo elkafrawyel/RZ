@@ -15,6 +15,8 @@ import com.hmaserv.rz.framework.logedInUser.LoggedInUserRepo
 import com.hmaserv.rz.framework.ads.AdsRemoteSource
 import com.hmaserv.rz.framework.ads.AdsRepo
 import com.hmaserv.rz.framework.categories.CategoriesLocalSource
+import com.hmaserv.rz.framework.lookups.LookUpsRemoteSource
+import com.hmaserv.rz.framework.lookups.LookUpsRepo
 import com.hmaserv.rz.framework.orders.OrdersRemoteSource
 import com.hmaserv.rz.framework.orders.OrdersRepo
 import com.hmaserv.rz.framework.settings.SettingsLocalSource
@@ -180,4 +182,10 @@ object Injector {
 
     fun createOrderUseCase() = CreateOrderUseCase(getLoggedInRepo(), getOrdersRepo())
     fun getMyOrdersUseCase() = GetMyOrdersUseCase(getLoggedInRepo(), getOrdersRepo())
+
+    // lookups
+    private fun getLookUpsRemoteSource() = LookUpsRemoteSource(getApiService())
+    private fun getLookUpsRepo() = LookUpsRepo.getInstance(getLookUpsRemoteSource())
+
+    fun getCitiesUseCase() = GetCitiesUseCase(getLookUpsRepo())
 }

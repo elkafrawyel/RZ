@@ -5,6 +5,7 @@ import com.hmaserv.rz.data.orders.IOrdersRepo
 import com.hmaserv.rz.domain.CreateOrderRequest
 import com.hmaserv.rz.domain.DataResource
 import com.hmaserv.rz.domain.MiniOrder
+import com.hmaserv.rz.domain.toMiniOrder
 import com.hmaserv.rz.utils.ValidetionException
 
 class OrdersRepo(
@@ -12,11 +13,18 @@ class OrdersRepo(
 ) : IOrdersRepo {
 
     override suspend fun createOrder(token: String, request: CreateOrderRequest): DataResource<Boolean> {
-        return DataResource.Error(ValidetionException("not implemented."))
+        return orderRemoteSource.createOrder(token, request)
     }
 
     override suspend fun myOrders(token: String): DataResource<List<MiniOrder>> {
-        return DataResource.Error(ValidetionException("not implemented."))
+        val result = orderRemoteSource.myOrders(token)
+        return when (result) {
+            is DataResource.Success -> {
+                val data = result.data.mapNotNull { it.toMiniOrder() }
+                DataResource.Success(data)
+            }
+            is DataResource.Error -> result
+        }
     }
 
     companion object {

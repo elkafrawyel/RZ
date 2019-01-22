@@ -12,6 +12,9 @@ import retrofit2.http.POST
 
 interface RetrofitApiService {
 
+    @GET("lookups/cities")
+    fun getCities(): Deferred<ApiResponse<List<CityResponse>>>
+
     @POST("auth/login")
     fun login(@Body logInUserRequest: LogInUserRequest): Deferred<ApiResponse<LoggedInUser>>
 
