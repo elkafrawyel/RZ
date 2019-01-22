@@ -67,6 +67,7 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
         notificationsImgv.setOnClickListener { onNotificationsClicked() }
         noConnectionCl.setOnClickListener { homeViewModel.refresh() }
         errorCl.setOnClickListener { homeViewModel.refresh() }
+        emptyViewCl.setOnClickListener { homeViewModel.refresh() }
 
         bannerSliderVp.adapter = imageSliderAdapter
         promotionsRv.adapter = productsAdapter
