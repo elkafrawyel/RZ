@@ -66,7 +66,7 @@ class SubCategoriesFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListen
 
     override fun showLoading() {
         subCategoriesSwipe.isRefreshing = false
-        loadingPb.visibility = View.VISIBLE
+        loadinLav.visibility = View.VISIBLE
         dataCl.visibility = View.GONE
         emptyViewCl.visibility = View.GONE
         noConnectionCl.visibility = View.GONE
@@ -75,7 +75,7 @@ class SubCategoriesFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListen
 
     override fun showSuccess(dataMap: Map<String, Any>) {
         val subCategories = dataMap[DATA_SUB_CATEGORIES_KEY] as List<SubCategory>
-        loadingPb.visibility = View.GONE
+        loadinLav.visibility = View.GONE
 
         if (subCategories.isEmpty()) {
             showStateEmptyView()
@@ -90,7 +90,7 @@ class SubCategoriesFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListen
     }
 
     override fun showError(message: String) {
-        loadingPb.visibility = View.GONE
+        loadinLav.visibility = View.GONE
         subCategoriesSwipe.isRefreshing = false
         dataCl.visibility = View.GONE
         emptyViewCl.visibility = View.GONE
@@ -99,7 +99,7 @@ class SubCategoriesFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListen
     }
 
     override fun showNoInternetConnection() {
-        loadingPb.visibility = View.GONE
+        loadinLav.visibility = View.GONE
         subCategoriesSwipe.isRefreshing = false
         dataCl.visibility = View.GONE
         emptyViewCl.visibility = View.GONE
@@ -108,7 +108,7 @@ class SubCategoriesFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListen
     }
 
     private fun showStateEmptyView() {
-        loadingPb.visibility = View.GONE
+        loadinLav.visibility = View.GONE
         subCategoriesSwipe.isRefreshing = false
         dataCl.visibility = View.GONE
         emptyViewCl.visibility = View.VISIBLE

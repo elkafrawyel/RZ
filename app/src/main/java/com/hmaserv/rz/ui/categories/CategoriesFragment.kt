@@ -45,7 +45,7 @@ class CategoriesFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener 
     }
 
     override fun showLoading() {
-        loadingPb.visibility = View.VISIBLE
+        loadinLav.visibility = View.VISIBLE
         dataCl.visibility = View.GONE
         emptyViewCl.visibility = View.GONE
         noConnectionCl.visibility = View.GONE
@@ -57,7 +57,7 @@ class CategoriesFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener 
         if (categories.isEmpty()) {
             showStateEmptyView()
         } else {
-            loadingPb.visibility = View.GONE
+            loadinLav.visibility = View.GONE
             categoriesSwipe.isRefreshing = false
             dataCl.visibility = View.VISIBLE
             emptyViewCl.visibility = View.GONE
@@ -68,7 +68,7 @@ class CategoriesFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener 
     }
 
     override fun showError(message: String) {
-        loadingPb.visibility = View.GONE
+        loadinLav.visibility = View.GONE
         dataCl.visibility = View.GONE
         emptyViewCl.visibility = View.GONE
         noConnectionCl.visibility = View.GONE
@@ -76,7 +76,7 @@ class CategoriesFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener 
     }
 
     override fun showNoInternetConnection() {
-        loadingPb.visibility = View.GONE
+        loadinLav.visibility = View.GONE
         dataCl.visibility = View.GONE
         emptyViewCl.visibility = View.GONE
         noConnectionCl.visibility = View.VISIBLE
@@ -84,7 +84,7 @@ class CategoriesFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener 
     }
 
     private fun showStateEmptyView () {
-        loadingPb.visibility = View.GONE
+        loadinLav.visibility = View.GONE
         dataCl.visibility = View.GONE
         emptyViewCl.visibility = View.VISIBLE
         noConnectionCl.visibility = View.GONE

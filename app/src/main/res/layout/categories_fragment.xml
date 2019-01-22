@@ -93,7 +93,7 @@
         android:id="@+id/dataCl"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -122,15 +122,17 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ProgressBar
-        android:id="@+id/loadingPb"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/loadinLav"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/loading"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/errorCl"
@@ -142,16 +144,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/errorViewImgv"
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/errorLav"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/ic_error_red"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.4" />
+            app:layout_constraintVertical_bias="0.4"
+            app:lottie_autoPlay="true"
+            app:lottie_rawRes="@raw/error_cross"
+            app:lottie_speed="0.7" />
 
         <TextView
             android:id="@+id/errorViewTv"
@@ -159,22 +163,20 @@
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:text="@string/error_general"
-            android:textColor="@android:color/black"
-            android:textSize="18sp"
+            android:textAppearance="?attr/textAppearanceHeadline6"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/errorViewImgv" />
+            app:layout_constraintTop_toBottomOf="@id/errorLav" />
 
         <TextView
             android:id="@+id/errorTryAgainTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/label_try_again"
-            android:textSize="16sp"
+            android:textAppearance="?attr/textAppearanceBody2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/errorViewTv" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -187,16 +189,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/emptyViewImgv"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/ic_empty"
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/emptyLav"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.4" />
+            app:layout_constraintVertical_bias="0.4"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/empty_list" />
 
         <TextView
             android:id="@+id/emptyViewTv"
@@ -204,11 +209,10 @@
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:text="@string/success_empty_view"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="18sp"
+            android:textAppearance="?attr/textAppearanceHeadline6"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/emptyViewImgv" />
+            app:layout_constraintTop_toBottomOf="@id/emptyLav" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -222,16 +226,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/noConnectionImgv"
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/noConnectionLav"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/ic_no_connection"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.4" />
+            app:layout_constraintVertical_bias="0.4"
+            app:lottie_speed="1.7"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/no_connection" />
 
         <TextView
             android:id="@+id/noConnectionTv"
@@ -239,11 +246,10 @@
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:text="@string/label_no_internet_connection"
-            android:textColor="@android:color/black"
-            android:textSize="18sp"
+            android:textAppearance="?attr/textAppearanceHeadline6"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/noConnectionImgv" />
+            app:layout_constraintTop_toBottomOf="@id/noConnectionLav" />
 
         <TextView
             android:id="@+id/noConnectionTryAgainTv"
@@ -251,8 +257,7 @@
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:text="@string/label_try_again"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="16sp"
+            android:textAppearance="?attr/textAppearanceBody2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/noConnectionTv" />

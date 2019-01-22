@@ -79,17 +79,17 @@ class MyAdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun showDeleteNoInternetState() {
-        loadingPb.visibility = View.GONE
+        loadinLav.visibility = View.GONE
         showMessage(getString(R.string.label_no_internet_connection))
     }
 
     private fun showDeleteError(message: String) {
-        loadingPb.visibility = View.GONE
+        loadinLav.visibility = View.GONE
         showMessage(message)
     }
 
     private fun showDeleteSuccess(ifDeleted: Boolean) {
-        loadingPb.visibility = View.GONE
+        loadinLav.visibility = View.GONE
         if (ifDeleted && adPosition != null) {
             adapter.data.removeAt(adPosition!!)
             adapter.notifyDataSetChanged()
@@ -104,7 +104,7 @@ class MyAdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun showDeleteLoading() {
-        loadingPb.visibility = View.VISIBLE
+        loadinLav.visibility = View.VISIBLE
     }
 
     private fun onAdDeleteClicked(uuid: String) {
@@ -130,7 +130,7 @@ class MyAdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     override fun showLoading() {
-        loadingPb.visibility = View.VISIBLE
+        loadinLav.visibility = View.VISIBLE
         dataCl.visibility = View.GONE
         emptyViewCl.visibility = View.GONE
         noConnectionCl.visibility = View.GONE
@@ -140,7 +140,7 @@ class MyAdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     override fun showSuccess(dataMap: Map<String, Any>) {
         val myAds = dataMap[DATA_MY_ADS_KEY] as List<MiniAd>
 
-        loadingPb.visibility = View.GONE
+        loadinLav.visibility = View.GONE
 
         if (myAds.isEmpty()) {
             showStateEmptyView()
@@ -156,7 +156,7 @@ class MyAdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private fun showStateEmptyView() {
         myAdsSwipe.isRefreshing = false
-        loadingPb.visibility = View.GONE
+        loadinLav.visibility = View.GONE
         dataCl.visibility = View.GONE
         emptyViewCl.visibility = View.VISIBLE
         noConnectionCl.visibility = View.GONE
@@ -165,7 +165,7 @@ class MyAdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
     override fun showError(message: String) {
         myAdsSwipe.isRefreshing = false
-        loadingPb.visibility = View.GONE
+        loadinLav.visibility = View.GONE
         dataCl.visibility = View.GONE
         emptyViewCl.visibility = View.GONE
         noConnectionCl.visibility = View.GONE
@@ -174,7 +174,7 @@ class MyAdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
     override fun showNoInternetConnection() {
         myAdsSwipe.isRefreshing = false
-        loadingPb.visibility = View.GONE
+        loadinLav.visibility = View.GONE
         dataCl.visibility = View.GONE
         emptyViewCl.visibility = View.GONE
         noConnectionCl.visibility = View.VISIBLE

@@ -146,5 +146,6 @@
     <string name="error_create_ad">فشل انشاء اعلانك</string>
     <string name="success_edit_ad">تم التعديل بنجاح</string>
     <string name="error_edit_ad">فشل التعديل</string>
+    <string name="error_images_count">عدد الصور المسموح لا يزيد 10 صور</string>
 
 </resources>

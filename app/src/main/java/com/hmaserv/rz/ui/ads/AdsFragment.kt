@@ -70,7 +70,7 @@ class AdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
     override fun showLoading() {
         productsSwipe.isRefreshing = false
-        loadingPb.visibility = View.VISIBLE
+        loadinLav.visibility = View.VISIBLE
         dataCl.visibility = View.GONE
         emptyViewCl.visibility = View.GONE
         noConnectionCl.visibility = View.GONE
@@ -79,7 +79,7 @@ class AdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
     override fun showSuccess(dataMap: Map<String, Any>) {
         val products = dataMap[DATA_PRODUCTS_KEY] as List<MiniAd>
-        loadingPb.visibility = View.GONE
+        loadinLav.visibility = View.GONE
 
         if (products.isEmpty()) {
             showEmptyViewState()
@@ -94,7 +94,7 @@ class AdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     override fun showError(message: String) {
-        loadingPb.visibility = View.GONE
+        loadinLav.visibility = View.GONE
         productsSwipe.isRefreshing = false
         dataCl.visibility = View.GONE
         emptyViewCl.visibility = View.GONE
@@ -103,7 +103,7 @@ class AdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     override fun showNoInternetConnection() {
-        loadingPb.visibility = View.GONE
+        loadinLav.visibility = View.GONE
         productsSwipe.isRefreshing = false
         dataCl.visibility = View.GONE
         emptyViewCl.visibility = View.GONE
@@ -112,7 +112,7 @@ class AdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun showEmptyViewState() {
-        loadingPb.visibility = View.GONE
+        loadinLav.visibility = View.GONE
         productsSwipe.isRefreshing = false
         dataCl.visibility = View.GONE
         emptyViewCl.visibility = View.VISIBLE

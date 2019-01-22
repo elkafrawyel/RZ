@@ -136,7 +136,7 @@ class CreateAdFragment : Fragment() {
             CreateAdViewModel.AttributesUiState.Loading -> {
             }
             is CreateAdViewModel.AttributesUiState.Success -> {
-                loadingPb.visibility = View.GONE
+                loadinLav.visibility = View.GONE
                 containerNsv.visibility = View.VISIBLE
                 viewModel.attributes.clear()
                 viewModel.attributes.addAll(

@@ -143,12 +143,12 @@ class EditAdFragment : BaseFragment(), AttributesAdapter.AttributesCallback {
 
     override fun showLoading() {
         containerNsv.visibility = View.GONE
-        loadingPb.visibility = View.VISIBLE
+        loadinLav.visibility = View.VISIBLE
     }
 
     override fun showSuccess(dataMap: Map<String, Any>) {
         containerNsv.visibility = View.VISIBLE
-        loadingPb.visibility = View.GONE
+        loadinLav.visibility = View.GONE
         val ad = dataMap[DATA_AD_KEY] as Ad
         loadAd(ad)
     }
@@ -210,7 +210,7 @@ class EditAdFragment : BaseFragment(), AttributesAdapter.AttributesCallback {
                                 addImageMbtn.isEnabled = false
                             }
                         } else {
-                            Toast.makeText(activity, "You can not add more than 10 images.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(activity, getString(R.string.error_images_count), Toast.LENGTH_SHORT).show()
                         }
                     } else if (uri != null) {
                         Timber.i(uri.toString())

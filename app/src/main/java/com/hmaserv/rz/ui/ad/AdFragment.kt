@@ -147,7 +147,7 @@ class AdFragment : BaseFragment(), AdapterAttributes.AttributesListener {
 
         adapter.notifyDataSetChanged()
 
-        loadingPb.visibility = View.GONE
+        loadinLav.visibility = View.GONE
         dataNsv.visibility = View.VISIBLE
         emptyViewCl.visibility = View.GONE
         noConnectionCl.visibility = View.GONE
@@ -155,7 +155,7 @@ class AdFragment : BaseFragment(), AdapterAttributes.AttributesListener {
     }
 
     override fun showError(message: String) {
-        loadingPb.visibility = View.GONE
+        loadinLav.visibility = View.GONE
         dataNsv.visibility = View.GONE
         emptyViewCl.visibility = View.GONE
         noConnectionCl.visibility = View.GONE
@@ -163,7 +163,7 @@ class AdFragment : BaseFragment(), AdapterAttributes.AttributesListener {
     }
 
     override fun showNoInternetConnection() {
-        loadingPb.visibility = View.GONE
+        loadinLav.visibility = View.GONE
         dataNsv.visibility = View.GONE
         emptyViewCl.visibility = View.GONE
         noConnectionCl.visibility = View.VISIBLE
@@ -171,7 +171,7 @@ class AdFragment : BaseFragment(), AdapterAttributes.AttributesListener {
     }
 
     override fun showLoading() {
-        loadingPb.visibility = View.VISIBLE
+        loadinLav.visibility = View.VISIBLE
         dataNsv.visibility = View.GONE
         emptyViewCl.visibility = View.GONE
         noConnectionCl.visibility = View.GONE

@@ -15,7 +15,7 @@ import com.hmaserv.rz.domain.City
 import com.hmaserv.rz.domain.Payment
 import com.hmaserv.rz.ui.MainViewModel
 import kotlinx.android.synthetic.main.create_order_fragment.*
-import java.util.ArrayList
+import java.util.*
 
 class CreateOrderFragment : Fragment() {
 
@@ -30,7 +30,7 @@ class CreateOrderFragment : Fragment() {
         ArrayAdapter(requireContext(), R.layout.spinner_item_view, Payment.values())
     }
 
-        override fun onCreateView(
+    override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
@@ -57,7 +57,7 @@ class CreateOrderFragment : Fragment() {
     }
 
     private fun onUiStateChanged(state: CreateOrderViewModel.DataState?) {
-        when(state) {
+        when (state) {
             CreateOrderViewModel.DataState.Loading -> showLoadingState()
             is CreateOrderViewModel.DataState.Success -> showSuccessState(state.cities)
             CreateOrderViewModel.DataState.Error -> showErrorState()
@@ -67,21 +67,21 @@ class CreateOrderFragment : Fragment() {
     }
 
     private fun showLoadingState() {
-        loadingPb.visibility = View.VISIBLE
+        loadinLav.visibility = View.VISIBLE
         mainViewSv.visibility = View.GONE
         errorCl.visibility = View.GONE
         noConnectionCl.visibility = View.GONE
     }
 
     private fun showErrorState() {
-        loadingPb.visibility = View.GONE
+        loadinLav.visibility = View.GONE
         mainViewSv.visibility = View.GONE
         errorCl.visibility = View.VISIBLE
         noConnectionCl.visibility = View.GONE
     }
 
     private fun showNoConnectionState() {
-        loadingPb.visibility = View.GONE
+        loadinLav.visibility = View.GONE
         mainViewSv.visibility = View.GONE
         errorCl.visibility = View.GONE
         noConnectionCl.visibility = View.VISIBLE
@@ -89,8 +89,7 @@ class CreateOrderFragment : Fragment() {
 
     private fun showSuccessState(cities: List<City>) {
         citiesAdapter.addAll(cities.map { it.title })
-
-        loadingPb.visibility = View.GONE
+        loadinLav.visibility = View.GONE
         mainViewSv.visibility = View.VISIBLE
         errorCl.visibility = View.GONE
         noConnectionCl.visibility = View.GONE
