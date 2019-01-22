@@ -139,5 +139,8 @@
     <string name="error_create_order">فشل في طلب الاعلان</string>
     <string name="status_create_ad">Creating your Ad started.</string>
     <string name="status_edit_ad">Editing your Ad started.</string>
+    <string name="label_paypal">باي بال</string>
+    <string name="label_cash">كاش</string>
+    <string name="label_my_orders_title">طلباتي</string>
 
 </resources>

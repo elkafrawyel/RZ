@@ -132,5 +132,8 @@
     <string name="error_create_order">Create Order Failed</string>
     <string name="status_create_ad">Creating your Ad started.</string>
     <string name="status_edit_ad">Editing your Ad started.</string>
+    <string name="label_paypal">Paypal</string>
+    <string name="label_cash">Cash</string>
+    <string name="label_my_orders_title">My Orders</string>
 
 </resources>
