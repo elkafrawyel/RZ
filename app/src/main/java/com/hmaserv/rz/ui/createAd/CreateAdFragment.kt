@@ -24,7 +24,6 @@ import kotlinx.android.synthetic.main.create_ad_fragment.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import timber.log.Timber
-import java.util.*
 
 const val RC_PERMISSION_STORAGE = 1
 const val RC_IMAGES = 2
@@ -33,12 +32,12 @@ class CreateAdFragment : Fragment() {
 
     lateinit var viewModel: CreateAdViewModel
 
-    lateinit var categoriesAdapter: ArrayAdapter<Category>
-    lateinit var subCategoriesAdapter: ArrayAdapter<SubCategory>
-    lateinit var imageAdapter: AdImagesAdapter
-    lateinit var attributesAdapter: AttributesAdapter
+    private lateinit var categoriesAdapter: ArrayAdapter<Category>
+    private lateinit var subCategoriesAdapter: ArrayAdapter<SubCategory>
+    private lateinit var imageAdapter: AdImagesAdapter
+    private lateinit var attributesAdapter: AttributesAdapter
 
-    lateinit var selectedCategory: Category
+    private var selectedCategory: Category? = null
     lateinit var selectedSubCategory: SubCategory
 
     override fun onCreateView(
@@ -52,7 +51,7 @@ class CreateAdFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(CreateAdViewModel::class.java)
 
-        addPictureImgv.setOnClickListener {
+        addImageMbtn.setOnClickListener {
             val intent = Intent(Intent.ACTION_GET_CONTENT)
             intent.type = "image/*"
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
@@ -60,20 +59,20 @@ class CreateAdFragment : Fragment() {
             startActivityForResult(intent, RC_IMAGES)
         }
 
-        confirmBtn.setOnClickListener {
+        saveMbtn.setOnClickListener {
             if (validateViews()) {
                 createAd()
             }
         }
 
         imageAdapter = AdImagesAdapter(viewModel.getSelectedImagesList())
-        picturesRv.adapter = imageAdapter
-        picturesRv.layoutManager = LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false)
+        adImagesRv.adapter = imageAdapter
+        adImagesRv.layoutManager = LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false)
         imageAdapter.setOnItemChildClickListener { _, clickedView, position ->
             if (clickedView.id == R.id.deleteImageImgv) {
                 viewModel.removeUri(position)
                 imageAdapter.notifyDataSetChanged()
-                addPictureImgv.visibility = View.VISIBLE
+                addImageMbtn.isEnabled = true
             }
         }
 
@@ -106,9 +105,15 @@ class CreateAdFragment : Fragment() {
             }
 
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
-                selectedCategory = viewModel.categories.get(position)
-                val uuid = selectedCategory.uuid
-                viewModel.getSavedSubCategories(uuid)
+                if(selectedCategory != null) {
+                    viewModel.subCategories.clear()
+                    subCategoriesAdapter.notifyDataSetChanged()
+                }
+
+                selectedCategory = viewModel.categories[position]
+                val uuid = selectedCategory?.uuid
+                viewModel.getSavedSubCategories(uuid!!)
+
             }
         }
 
@@ -123,7 +128,7 @@ class CreateAdFragment : Fragment() {
             }
         }
 
-        backBtn.setOnClickListener { activity?.onBackPressed() }
+        backBtn.setOnClickListener { findNavController().navigateUp() }
     }
 
     private fun onAttributesStateChanged(state: CreateAdViewModel.AttributesUiState) {
@@ -131,6 +136,8 @@ class CreateAdFragment : Fragment() {
             CreateAdViewModel.AttributesUiState.Loading -> {
             }
             is CreateAdViewModel.AttributesUiState.Success -> {
+                loadingPb.visibility = View.GONE
+                containerNsv.visibility = View.VISIBLE
                 viewModel.attributes.clear()
                 viewModel.attributes.addAll(
                     state.attributes.map {
@@ -162,7 +169,6 @@ class CreateAdFragment : Fragment() {
 
     private fun onSubCategoryResponse(state: CreateAdViewModel.SubCategoriesUiState) {
         when (state) {
-
             is CreateAdViewModel.SubCategoriesUiState.Loading -> showSubCategoryLoading()
             is CreateAdViewModel.SubCategoriesUiState.Success -> showSubCategorySuccess()
         }
@@ -194,7 +200,7 @@ class CreateAdFragment : Fragment() {
 
     private fun validateViews(): Boolean {
         when {
-            addressEt.text.isEmpty() -> {
+            titleEt.text.isEmpty() -> {
                 showMessage(getString(R.string.label_empty_address))
                 return false
             }
@@ -206,9 +212,16 @@ class CreateAdFragment : Fragment() {
                 showMessage(getString(R.string.label_empty_price))
                 return false
             }
-
+            priceWithDiscountEt.text.isEmpty() -> {
+                showMessage(getString(R.string.label_empty_price_discount))
+                return false
+            }
             quantityEt.text.isEmpty() -> {
                 showMessage(getString(R.string.label_empty_quantity))
+                return false
+            }
+            viewModel.getSelectedImagesList().isEmpty() -> {
+                showMessage("You must select at least one image.")
                 return false
             }
             else -> return true
@@ -217,11 +230,7 @@ class CreateAdFragment : Fragment() {
     }
 
     private fun showMessage(message: String) {
-        val snack_bar = Snackbar.make(rootViewCl, message, Snackbar.LENGTH_LONG)
-        val view = snack_bar.view
-        val textView = view.findViewById<View>(R.id.snackbar_text)
-        textView.textAlignment = View.TEXT_ALIGNMENT_CENTER
-        snack_bar.show()
+        Snackbar.make(rootViewCl, message, Snackbar.LENGTH_LONG).show()
     }
 
     @AfterPermissionGranted(RC_PERMISSION_STORAGE)
@@ -231,7 +240,7 @@ class CreateAdFragment : Fragment() {
             // Already have permission, do the thing
             CreateAdJobService.enqueueWork(
                 requireActivity(),
-                title = addressEt.text.toString(),
+                title = titleEt.text.toString(),
                 description = descriptionEt.text.toString(),
                 price = priceEt.text.toString(),
                 discountPrice = priceWithDiscountEt.text.toString(),
@@ -265,7 +274,7 @@ class CreateAdFragment : Fragment() {
                                 data.clipData!!.itemCount
                             )
                             if (viewModel.getSelectedImagesSize() > 9) {
-                                addPictureImgv.visibility = View.GONE
+                                addImageMbtn.isEnabled = false
                             }
                         } else {
                             Toast.makeText(activity, "You can not add more than 10 images.", Toast.LENGTH_SHORT).show()
@@ -276,7 +285,7 @@ class CreateAdFragment : Fragment() {
                         if (viewModel.addSelectedImage(uri)) {
                             imageAdapter.notifyItemInserted(viewModel.getSelectedImagesSize() - 1)
                             if (viewModel.getSelectedImagesSize() > 9) {
-                                addPictureImgv.visibility = View.GONE
+                                addImageMbtn.isEnabled = false
                             }
                         } else {
                             Toast.makeText(activity, "You can not add more than 10 images.", Toast.LENGTH_SHORT)

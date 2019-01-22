@@ -1,13 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootViewCl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.createAd.CreateAdFragment"
-    android:id="@+id/rootViewCl">
+    tools:context=".ui.createAd.CreateAdFragment">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tool_bar"
+        android:id="@+id/toolBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
@@ -30,70 +31,97 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/addProductTv"
+                android:id="@+id/toolBarTitleTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/label_add_product"
                 android:textColor="@color/colorOnPrimary"
                 android:textSize="18sp"
-                android:lines="1"
-                android:ellipsize="end"
                 app:layout_constrainedWidth="true"
-                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/addImageMbtn"
+                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toEndOf="@id/backBtn"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/addImageMbtn"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:minWidth="0dp"
+                app:icon="@drawable/ic_add_picture"
+                app:iconPadding="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/saveMbtn"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/saveMbtn"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginEnd="8dp"
+                android:minWidth="0dp"
+                app:icon="@drawable/ic_save_white"
+                app:iconPadding="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.appcompat.widget.Toolbar>
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:fillViewport="true"
+    <ProgressBar
+        android:id="@+id/loadingPb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tool_bar">
+        app:layout_constraintTop_toBottomOf="@id/toolBar" />
 
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/containerNsv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolBar">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:padding="16dp">
 
-            <TextView
-                android:id="@+id/addPictureTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:padding="8dp"
-                android:text="@string/label_add_pic"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/addPictureImgv"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:src="@drawable/ic_add_picture"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/addPictureTv" />
-
-            <EditText
-                android:id="@+id/addressEt"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/adImagesRv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/create_product_fields_bg"
-                android:hint="@string/hint_address"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/addPictureImgv" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:listitem="@layout/add_picture_item_view" />
+
+            <EditText
+                android:id="@+id/titleEt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/create_product_fields_bg"
+                android:hint="@string/hint_address"
+                android:singleLine="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/adImagesRv" />
 
             <EditText
                 android:id="@+id/descriptionEt"
@@ -102,9 +130,9 @@
                 android:layout_marginTop="16dp"
                 android:background="@drawable/create_product_fields_bg"
                 android:hint="@string/hint_description"
-                app:layout_constraintEnd_toEndOf="@id/addressEt"
-                app:layout_constraintStart_toStartOf="@id/addressEt"
-                app:layout_constraintTop_toBottomOf="@id/addressEt" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/titleEt" />
 
             <EditText
                 android:id="@+id/priceEt"
@@ -114,20 +142,10 @@
                 android:background="@drawable/create_product_fields_bg"
                 android:hint="@string/hint_price"
                 android:inputType="numberSigned"
-                app:layout_constraintEnd_toStartOf="@id/priceTv"
-                app:layout_constraintStart_toStartOf="@id/addressEt"
+                android:singleLine="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/descriptionEt" />
-
-            <TextView
-                android:id="@+id/priceTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:padding="8dp"
-                android:text="@string/hint_currency"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@id/priceEt"
-                app:layout_constraintEnd_toEndOf="@id/addressEt" />
 
             <EditText
                 android:id="@+id/priceWithDiscountEt"
@@ -137,20 +155,10 @@
                 android:background="@drawable/create_product_fields_bg"
                 android:hint="@string/hint_price_with_discount"
                 android:inputType="numberSigned"
-                app:layout_constraintEnd_toStartOf="@id/priceWithDiscountTv"
-                app:layout_constraintStart_toStartOf="@id/addressEt"
+                android:singleLine="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/priceEt" />
-
-            <TextView
-                android:id="@+id/priceWithDiscountTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:padding="8dp"
-                android:text="@string/hint_currency"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@id/priceWithDiscountEt"
-                app:layout_constraintEnd_toEndOf="@id/addressEt" />
 
             <EditText
                 android:id="@+id/quantityEt"
@@ -160,20 +168,10 @@
                 android:background="@drawable/create_product_fields_bg"
                 android:hint="@string/hint_product_quantity"
                 android:inputType="numberSigned"
-                app:layout_constraintEnd_toEndOf="@id/addressEt"
-                app:layout_constraintStart_toStartOf="@id/addressEt"
-                app:layout_constraintTop_toBottomOf="@id/priceWithDiscountEt" />
-
-            <TextView
-                android:id="@+id/pickCategoryTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:padding="8dp"
-                android:text="@string/label_pick_category"
-                android:textStyle="bold"
+                android:singleLine="true"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/quantityEt" />
+                app:layout_constraintTop_toBottomOf="@id/priceWithDiscountEt" />
 
             <Spinner
                 android:id="@+id/categoriesSpinner"
@@ -182,20 +180,9 @@
                 android:layout_marginTop="8dp"
                 android:background="@drawable/create_product_fields_bg"
                 android:spinnerMode="dialog"
-                app:layout_constraintEnd_toEndOf="@id/addressEt"
-                app:layout_constraintStart_toStartOf="@id/addressEt"
-                app:layout_constraintTop_toBottomOf="@id/pickCategoryTv" />
-
-            <TextView
-                android:id="@+id/pickSubCategoryTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:padding="8dp"
-                android:text="@string/label_pick_sub_category"
-                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/categoriesSpinner" />
+                app:layout_constraintTop_toBottomOf="@id/quantityEt" />
 
             <Spinner
                 android:id="@+id/subCategoriesSpinner"
@@ -204,61 +191,26 @@
                 android:layout_marginTop="8dp"
                 android:background="@drawable/create_product_fields_bg"
                 android:spinnerMode="dialog"
-                app:layout_constraintEnd_toEndOf="@id/addressEt"
-                app:layout_constraintStart_toStartOf="@id/addressEt"
-                app:layout_constraintTop_toBottomOf="@id/pickSubCategoryTv" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/picturesRv"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="@id/addressEt"
-                app:layout_constraintStart_toStartOf="@id/addressEt"
-                app:layout_constraintTop_toBottomOf="@id/subCategoriesSpinner" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/categoriesSpinner" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/attributesRv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:background="@color/colorWhite"
-                app:layout_constraintEnd_toEndOf="@id/addressEt"
-                app:layout_constraintStart_toStartOf="@id/addressEt"
-                app:layout_constraintTop_toBottomOf="@id/picturesRv" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/confirmBtn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/label_confirm_create_product"
-                android:textAllCaps="false"
-                app:layout_constraintEnd_toEndOf="@id/halfGl"
-                app:layout_constraintStart_toStartOf="@id/addressEt"
-                app:layout_constraintTop_toBottomOf="@id/attributesRv" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/AddAttrBtn"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/label_add_attr_product"
-                android:textAllCaps="false"
-                app:layout_constraintEnd_toEndOf="@id/addressEt"
-                app:layout_constraintStart_toEndOf="@id/halfGl"
-                app:layout_constraintTop_toBottomOf="@id/attributesRv"
-                app:strokeColor="@color/colorPrimary" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/halfGl"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:background="@drawable/create_product_fields_bg"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.5" />
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/subCategoriesSpinner"
+                tools:itemCount="5"
+                tools:listitem="@layout/attribute_section_item" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.core.widget.NestedScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

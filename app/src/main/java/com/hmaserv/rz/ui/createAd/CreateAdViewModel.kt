@@ -64,14 +64,14 @@ class CreateAdViewModel : BaseViewModel() {
     }
 
     fun getSavedSubCategories(categoryUuid: String) {
-        if (getSavedCategoriesJob?.isActive == true) {
+        if (getSavedSubCategoriesJob?.isActive == true) {
             return
         }
 
-        getSavedSubCategoriesJob = launchGetSavedCategoriesJob(categoryUuid)
+        getSavedSubCategoriesJob = launchSubCategoriesJob(categoryUuid)
     }
 
-    private fun launchGetSavedCategoriesJob(categoryUuid: String): Job? {
+    private fun launchSubCategoriesJob(categoryUuid: String): Job? {
         return scope.launch(dispatcherProvider.computation) {
             withContext(dispatcherProvider.main) { showSubCategoryLoading() }
             val data = getSavedSubCategoriesUseCase.get(categoryUuid)
