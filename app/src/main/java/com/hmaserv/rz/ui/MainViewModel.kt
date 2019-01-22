@@ -3,6 +3,7 @@ package com.hmaserv.rz.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import com.hmaserv.rz.domain.Attribute
 import com.hmaserv.rz.domain.DataResource
 import com.hmaserv.rz.domain.Event
 import com.hmaserv.rz.domain.LoggedInUser
@@ -38,6 +39,8 @@ class MainViewModel : BaseViewModel() {
     private val _logOutState = MutableLiveData<Event<Boolean>>()
     val logOutState: LiveData<Event<Boolean>>
         get() = _logOutState
+
+    val orderSelectedAttributes = ArrayList<Attribute.MainAttribute>()
 
     init {
         getData()

@@ -17,27 +17,17 @@ class MyOrdersViewModel : NewBaseViewModel() {
 
     private val getMyOrderUseCase = Injector.getMyOrdersUseCase()
 
-    var payPalOredrs: ArrayList<MiniOrder> = ArrayList()
-    var cashOredrs: ArrayList<MiniOrder> = ArrayList()
+    var miniOrders: ArrayList<MiniOrder> = ArrayList()
 
-    private var paymentMethod: Payment? = Payment.PAYPAL
+    var paymentMethod: Payment = Payment.PAYPAL
+        set(value) {
+            field = value
+            getData()
+        }
 
     init {
         paymentMethod = Payment.PAYPAL
         getData()
-    }
-
-    fun setPaymentMethod(payment: Payment) {
-        paymentMethod = payment
-        getData()
-    }
-
-    fun getPaymentMethod(): Payment {
-        return if (paymentMethod != null) {
-            paymentMethod!!
-        } else {
-            Payment.PAYPAL
-        }
     }
 
     override fun launchDataJob(): Job {
@@ -45,30 +35,13 @@ class MyOrdersViewModel : NewBaseViewModel() {
             if (NetworkUtils.isConnected()) {
                 withContext(dispatcherProvider.main) { showDataLoading() }
                 val result = getMyOrderUseCase.get()
-                withContext(dispatcherProvider.main) {
-                    when (result) {
-                        is DataResource.Success -> {
-
-                            val miniOrders = result.data
-
-                            when (paymentMethod) {
-
-                                Payment.CASH -> {
-                                    payPalOredrs.addAll(miniOrders)
-                                    showDataSuccess(miniOrders)
-                                }
-
-                                Payment.PAYPAL -> {
-                                    cashOredrs.addAll(miniOrders)
-                                    showDataSuccess(miniOrders)
-                                }
-
-                                null -> {
-                                }
-                            }
-                        }
-                        is DataResource.Error -> showDataError()
+                when (result) {
+                    is DataResource.Success -> {
+                        miniOrders.clear()
+                        miniOrders.addAll(result.data)
+                        withContext(dispatcherProvider.main) { showDataSuccess(result.data) }
                     }
+                    is DataResource.Error -> withContext(dispatcherProvider.main) { showDataError() }
                 }
             } else {
                 withContext(dispatcherProvider.main) {

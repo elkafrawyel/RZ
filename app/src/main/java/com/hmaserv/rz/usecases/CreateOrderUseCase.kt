@@ -2,10 +2,7 @@ package com.hmaserv.rz.usecases
 
 import com.hmaserv.rz.data.logedInUser.ILoggedInUserRepo
 import com.hmaserv.rz.data.orders.IOrdersRepo
-import com.hmaserv.rz.domain.CreateOrderRequest
-import com.hmaserv.rz.domain.DataResource
-import com.hmaserv.rz.domain.OrderContact
-import com.hmaserv.rz.domain.Payment
+import com.hmaserv.rz.domain.*
 import com.hmaserv.rz.utils.Constants
 
 class CreateOrderUseCase(
@@ -20,6 +17,7 @@ class CreateOrderUseCase(
         city: String,
         mobile: String,
         notes: String,
+        attributes: List<Attribute.MainAttribute>,
         payment: Payment
     ): DataResource<Boolean> {
         return ordersRepo.createOrder(
@@ -33,6 +31,7 @@ class CreateOrderUseCase(
                     mobile,
                     notes
                 ),
+                attributes,
                 payment.value
             )
         )

@@ -277,6 +277,10 @@
         <argument
             android:name="adUuid"
             app:argType="string" />
+        <action
+            android:id="@+id/action_createOrderFragment_to_myOrdersFragment"
+            app:destination="@id/myOrdersFragment"
+            app:popUpTo="@+id/adFragment" />
     </fragment>
     <navigation
         android:id="@+id/authGraph"

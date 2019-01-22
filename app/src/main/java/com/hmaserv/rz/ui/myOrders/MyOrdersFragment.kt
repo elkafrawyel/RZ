@@ -1,6 +1,5 @@
 package com.hmaserv.rz.ui.myOrders
 
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,8 +18,8 @@ import kotlinx.android.synthetic.main.my_orders_fragment.*
 
 class MyOrdersFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
-    lateinit var ordersAdapter: OrdersAdapter
-    lateinit var viewModel: MyOrdersViewModel
+    private val viewModel by lazy { ViewModelProviders.of(this).get(MyOrdersViewModel::class.java) }
+    private val ordersAdapter by lazy { OrdersAdapter(viewModel.miniOrders) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,46 +30,27 @@ class MyOrdersFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MyOrdersViewModel::class.java)
+
         viewModel.uiState.observe(this, Observer { onUiStateChanged(it) })
-
-//        when(viewModel.getPaymentMethod()){
-//
-//            Payment.CASH -> {
-//                ordersAdapter = OrdersAdapter(viewModel.cashOredrs)
-//                ordersAdapter.notifyDataSetChanged()
-//            }
-//            Payment.PAYPAL -> {
-//                ordersAdapter = OrdersAdapter(viewModel.payPalOredrs)
-//                ordersAdapter.notifyDataSetChanged()
-//            }
-//        }
-
-
-        ordersAdapter = OrdersAdapter(viewModel.payPalOredrs)
         myOrdersRv.adapter = ordersAdapter
 
         backBtn.setOnClickListener { findNavController().navigateUp() }
-
         myOrdersSwipe.setOnRefreshListener(this)
-
         ordersTl.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (tab?.position) {
                     0 -> {
-                        viewModel.setPaymentMethod(Payment.PAYPAL)
+                        viewModel.paymentMethod = Payment.PAYPAL
                     }
 
                     1 -> {
-                        viewModel.setPaymentMethod(Payment.CASH)
+                        viewModel.paymentMethod = Payment.CASH
                     }
                 }
             }
@@ -78,11 +58,16 @@ class MyOrdersFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
         ordersAdapter.onItemClickListener =
                 BaseQuickAdapter.OnItemClickListener { _, _, position ->
-                    when (viewModel.getPaymentMethod()) {
-                        Payment.CASH -> openOrderDetails(ordersAdapter.data.get(position).miniAd.uuid)
-                        Payment.PAYPAL -> openOrderDetails(ordersAdapter.data.get(position).miniAd.uuid)
-                    }
+                        openOrderDetails(ordersAdapter.data[position].miniAd.uuid)
                 }
+
+        ordersAdapter.onItemChildClickListener = BaseQuickAdapter.OnItemChildClickListener {
+                _, _, position ->
+            openOrderDetails(ordersAdapter.data[position].miniAd.uuid)
+        }
+
+        errorCl.setOnClickListener { viewModel.refresh() }
+        noConnectionCl.setOnClickListener { viewModel.refresh() }
     }
 
     private fun openOrderDetails(uuid: String?) {

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -12,18 +11,26 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.hmaserv.rz.R
+import com.hmaserv.rz.domain.City
 import com.hmaserv.rz.domain.Payment
+import com.hmaserv.rz.ui.MainViewModel
 import kotlinx.android.synthetic.main.create_order_fragment.*
+import java.util.ArrayList
 
 class CreateOrderFragment : Fragment() {
 
-    lateinit var viewModel: CreateOrderViewModel
+    private val mainViewModel by lazy { ViewModelProviders.of(requireActivity()).get(MainViewModel::class.java) }
+    private val viewModel by lazy { ViewModelProviders.of(this).get(CreateOrderViewModel::class.java) }
     private var adUuid: String? = null
-    private var paymentMethodPosition: Int = 0
 
-    lateinit var paymentAdapter: ArrayAdapter<Payment>
+    private val citiesAdapter by lazy {
+        ArrayAdapter<String>(requireContext(), R.layout.spinner_item_view, ArrayList())
+    }
+    private val paymentAdapter by lazy {
+        ArrayAdapter(requireContext(), R.layout.spinner_item_view, Payment.values())
+    }
 
-    override fun onCreateView(
+        override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
@@ -32,8 +39,7 @@ class CreateOrderFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel = ViewModelProviders.of(this).get(CreateOrderViewModel::class.java)
+        viewModel.dataState.observe(this, Observer { onUiStateChanged(it) })
         viewModel.uiState.observe(this, Observer { onCreateOrderStateChanged(it) })
 
         arguments?.let {
@@ -42,27 +48,56 @@ class CreateOrderFragment : Fragment() {
 
         if (adUuid == null) findNavController().navigateUp()
 
-        paymentAdapter = ArrayAdapter(view.context, R.layout.spinner_item_view, Payment.values())
+        citySpinner.adapter = citiesAdapter
         paymentSpinner.adapter = paymentAdapter
-
-        paymentSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-
-            }
-
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
-                paymentMethodPosition = position
-            }
-        }
 
         makeOrderMbtn.setOnClickListener { createOrder() }
 
         backImgv.setOnClickListener { findNavController().navigateUp() }
     }
 
+    private fun onUiStateChanged(state: CreateOrderViewModel.DataState?) {
+        when(state) {
+            CreateOrderViewModel.DataState.Loading -> showLoadingState()
+            is CreateOrderViewModel.DataState.Success -> showSuccessState(state.cities)
+            CreateOrderViewModel.DataState.Error -> showErrorState()
+            CreateOrderViewModel.DataState.NoInternetConnection -> showNoConnectionState()
+            null -> showLoadingState()
+        }
+    }
+
+    private fun showLoadingState() {
+        loadingPb.visibility = View.VISIBLE
+        mainViewSv.visibility = View.GONE
+        errorCl.visibility = View.GONE
+        noConnectionCl.visibility = View.GONE
+    }
+
+    private fun showErrorState() {
+        loadingPb.visibility = View.GONE
+        mainViewSv.visibility = View.GONE
+        errorCl.visibility = View.VISIBLE
+        noConnectionCl.visibility = View.GONE
+    }
+
+    private fun showNoConnectionState() {
+        loadingPb.visibility = View.GONE
+        mainViewSv.visibility = View.GONE
+        errorCl.visibility = View.GONE
+        noConnectionCl.visibility = View.VISIBLE
+    }
+
+    private fun showSuccessState(cities: List<City>) {
+        citiesAdapter.addAll(cities.map { it.title })
+
+        loadingPb.visibility = View.GONE
+        mainViewSv.visibility = View.VISIBLE
+        errorCl.visibility = View.GONE
+        noConnectionCl.visibility = View.GONE
+    }
+
     private fun onCreateOrderStateChanged(state: CreateOrderViewModel.CreateOrderUiState?) {
         when (state) {
-
             CreateOrderViewModel.CreateOrderUiState.Loading -> showLoading()
             is CreateOrderViewModel.CreateOrderUiState.Success -> showSuccess(state.ifCreated)
             is CreateOrderViewModel.CreateOrderUiState.Error -> showError(state.message)
@@ -79,10 +114,11 @@ class CreateOrderFragment : Fragment() {
                     adUuid!!,
                     nameEt.text.toString(),
                     addressEt.text.toString(),
-                    "city",
+                    citiesAdapter.getItem(citySpinner.selectedItemPosition)!!,
                     phoneEt.text.toString(),
                     noteEt.text.toString(),
-                    Payment.values()[paymentMethodPosition]
+                    mainViewModel.orderSelectedAttributes,
+                    paymentAdapter.getItem(paymentSpinner.selectedItemPosition)!!
                 )
             }
         }
@@ -123,6 +159,7 @@ class CreateOrderFragment : Fragment() {
         loadingFl.visibility = View.GONE
         if (ifCreated) {
             showMessage(getString(R.string.success_create_order))
+            findNavController().navigate(R.id.action_createOrderFragment_to_myOrdersFragment)
         } else {
             showMessage(getString(R.string.error_create_order))
         }

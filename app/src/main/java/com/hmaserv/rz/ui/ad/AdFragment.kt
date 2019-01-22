@@ -15,6 +15,7 @@ import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.Ad
 import com.hmaserv.rz.domain.Owner
 import com.hmaserv.rz.ui.BaseFragment
+import com.hmaserv.rz.ui.MainViewModel
 import com.hmaserv.rz.ui.home.ImageSliderAdapter
 import kotlinx.android.synthetic.main.ad_fragment.*
 import java.util.*
@@ -22,6 +23,7 @@ import kotlin.concurrent.timerTask
 
 class AdFragment : BaseFragment(), AdapterAttributes.AttributesListener {
 
+    private val mainViewModel by lazy { ViewModelProviders.of(requireActivity()).get(MainViewModel::class.java) }
     private var adUuid: String? = null
     lateinit var viewModel: AdViewModel
     private val imageSliderAdapter = ImageSliderAdapter()
@@ -230,6 +232,8 @@ class AdFragment : BaseFragment(), AdapterAttributes.AttributesListener {
     }
 
     private fun createOrder() {
+        mainViewModel.orderSelectedAttributes.clear()
+        mainViewModel.orderSelectedAttributes.addAll(viewModel.selectedAttributes)
         val action = AdFragmentDirections.actionAdFragmentToCreateOrderFragment(adUuid!!)
         findNavController().navigate(action)
     }

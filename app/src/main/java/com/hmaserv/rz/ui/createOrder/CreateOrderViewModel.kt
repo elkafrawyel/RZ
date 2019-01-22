@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.blankj.utilcode.util.NetworkUtils
 import com.hmaserv.rz.R
+import com.hmaserv.rz.domain.Attribute
+import com.hmaserv.rz.domain.City
 import com.hmaserv.rz.domain.DataResource
 import com.hmaserv.rz.domain.Payment
 import com.hmaserv.rz.ui.BaseViewModel
@@ -15,12 +17,43 @@ import kotlinx.coroutines.withContext
 class CreateOrderViewModel : BaseViewModel() {
 
     private var dataJob: Job? = null
+    private var createOrderJob: Job? = null
 
+    private val getCitiesUseCase = Injector.getCitiesUseCase()
     private val getCreateOrderUseCase = Injector.createOrderUseCase()
+
+    private val _dataState = MutableLiveData<DataState>()
+    val dataState: LiveData<DataState>
+        get() = _dataState
 
     private val _uiState = MutableLiveData<CreateOrderUiState>()
     val uiState: LiveData<CreateOrderUiState>
         get() = _uiState
+
+    init {
+        getData()
+    }
+
+    fun getData() {
+        if (NetworkUtils.isConnected()) {
+            if (dataJob?.isActive == true) {
+                return
+            }
+
+            dataJob = launchGetData()
+        } else {
+            _dataState.value = DataState.NoInternetConnection
+        }
+    }
+
+    private fun launchGetData() = scope.launch(dispatcherProvider.io) {
+        withContext(dispatcherProvider.main) { _dataState.value = DataState.Loading }
+        val dataResult = getCitiesUseCase.getCities()
+        when(dataResult) {
+            is DataResource.Success -> withContext(dispatcherProvider.main) { _dataState.value = DataState.Success(dataResult.data) }
+            is DataResource.Error -> withContext(dispatcherProvider.main) { _dataState.value = DataState.Error }
+        }
+    }
 
     fun createOrder(
         adUuid: String,
@@ -29,20 +62,22 @@ class CreateOrderViewModel : BaseViewModel() {
         city: String,
         mobile: String,
         notes: String,
+        attributes: List<Attribute.MainAttribute>,
         payment: Payment
     ) {
         if (NetworkUtils.isConnected()) {
-            if (dataJob?.isActive == true) {
+            if (createOrderJob?.isActive == true) {
                 return
             }
 
-            dataJob = launchDataJob(
+            createOrderJob = launchCreateOrderJob(
                 adUuid,
                 name,
                 address,
                 city,
                 mobile,
                 notes,
+                attributes,
                 payment
             )
         } else {
@@ -50,13 +85,14 @@ class CreateOrderViewModel : BaseViewModel() {
         }
     }
 
-    private fun launchDataJob(
+    private fun launchCreateOrderJob(
         adUuid: String,
         name: String,
         address: String,
         city: String,
         mobile: String,
         notes: String,
+        attributes: List<Attribute.MainAttribute>,
         payment: Payment
     ): Job {
         return scope.launch(dispatcherProvider.io) {
@@ -68,6 +104,7 @@ class CreateOrderViewModel : BaseViewModel() {
                 city,
                 mobile,
                 notes,
+                attributes,
                 payment
             )
             withContext(dispatcherProvider.main) {
@@ -93,6 +130,13 @@ class CreateOrderViewModel : BaseViewModel() {
 
     private fun showNoInternetConnection() {
         _uiState.value = CreateOrderUiState.NoInternetConnection
+    }
+
+    sealed class DataState {
+        object Loading : DataState()
+        data class Success(val cities: List<City>) : DataState()
+        object Error : DataState()
+        object NoInternetConnection : DataState()
     }
 
     sealed class CreateOrderUiState {

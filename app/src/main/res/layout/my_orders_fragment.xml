@@ -7,7 +7,7 @@
     tools:context=".ui.myOrders.MyOrdersFragment">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tool_bar"
+        android:id="@+id/toolBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
@@ -49,6 +49,28 @@
 
     </androidx.appcompat.widget.Toolbar>
 
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/ordersTl"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolBar">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/paypalTi"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/label_paypal" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/cashTi"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/label_cash" />
+
+    </com.google.android.material.tabs.TabLayout>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/dataCl"
         android:layout_width="0dp"
@@ -57,30 +79,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tool_bar">
-
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/ordersTl"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/paypalTi"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/label_paypal" />
-
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/cashTi"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/label_cash" />
-
-        </com.google.android.material.tabs.TabLayout>
+        app:layout_constraintTop_toBottomOf="@id/ordersTl">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/myOrdersSwipe"
@@ -89,7 +88,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ordersTl">
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/myOrdersRv"
@@ -97,11 +96,14 @@
                 android:layout_height="match_parent"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:reverseLayout="false"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:clipToPadding="false"
                 tools:listitem="@layout/order_item_view" />
+
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     <ProgressBar
         android:id="@+id/loadingPb"
@@ -111,7 +113,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/ordersTl" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/errorCl"
@@ -121,7 +123,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tool_bar">
+        app:layout_constraintTop_toBottomOf="@id/ordersTl">
 
         <ImageView
             android:id="@+id/errorViewImgv"
@@ -166,7 +168,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tool_bar">
+        app:layout_constraintTop_toBottomOf="@id/ordersTl">
 
         <ImageView
             android:id="@+id/emptyViewImgv"
@@ -201,7 +203,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tool_bar">
+        app:layout_constraintTop_toBottomOf="@id/ordersTl">
 
         <ImageView
             android:id="@+id/noConnectionImgv"
