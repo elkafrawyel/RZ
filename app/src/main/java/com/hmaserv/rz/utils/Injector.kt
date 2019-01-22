@@ -125,6 +125,7 @@ object Injector {
     fun getRegisterUseCase() = RegisterUserUseCase(getLoggedInRepo())
     fun getVerifyPhoneUseCase() = VerifyPhoneUseCase(getLoggedInRepo())
     fun getForgetPasswordUseCase() = ForgetPasswordUseCase(getLoggedInRepo())
+    fun upgradeUserUseCase() = UpgradeUserUseCase(getLoggedInRepo())
     fun getLogOutUseCase() = LogOutUseCase(getLoggedInRepo())
     fun getLoggedInUserListenerUseCase() = LogInListenerUseCase(getLoggedInRepo())
 

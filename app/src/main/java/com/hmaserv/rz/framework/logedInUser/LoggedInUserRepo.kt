@@ -36,6 +36,10 @@ class LoggedInUserRepo(
         return loggedInUserRemoteSource.verifyPhone(token)
     }
 
+    override suspend fun upgrade(token: String, request: UpgradeUserRequest): DataResource<Boolean> {
+        return loggedInUserRemoteSource.upgrade(token, request)
+    }
+
     override suspend fun getLoggedInUser(): LoggedInUser {
         return loggedInUserLocalSource.getLoggedInUser()
     }

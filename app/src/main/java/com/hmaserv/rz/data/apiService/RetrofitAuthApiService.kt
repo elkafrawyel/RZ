@@ -32,6 +32,12 @@ interface RetrofitAuthApiService {
     @PUT("auth/activeUser")
     fun verifyPhone(@Header("Authorization") token: String): Deferred<ApiResponse<Boolean>>
 
+    @PUT("auth/upgradeRole")
+    fun upgrade(
+        @Header("Authorization") token: String,
+        @Body request: UpgradeUserRequest
+    ): Deferred<ApiResponse<Boolean>>
+
     @POST("ads/create")
     fun createProduct(
         @Header("Authorization") token: String,

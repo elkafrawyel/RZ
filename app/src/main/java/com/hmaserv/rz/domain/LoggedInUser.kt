@@ -35,3 +35,7 @@ data class RegisterUserRequest(
 data class ForgetPassword(
     @field:Json(name = "email") val email: String
 )
+
+data class UpgradeUserRequest(
+    @field:Json(name = "role_uuid") val fullName: String
+)

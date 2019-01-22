@@ -103,4 +103,24 @@ class LoggedInUserRemoteSource(
 
         return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_http_verifyPhone_api)))
     }
+
+    override suspend fun upgrade(token: String, request: UpgradeUserRequest): DataResource<Boolean> {
+        return safeApiCall(
+            call = { upgradeCall(token, request) },
+            errorMessage = Injector.getApplicationContext().getString(R.string.error_call_verifyPhone_api)
+        )
+    }
+
+    private suspend fun upgradeCall(token: String, request: UpgradeUserRequest) : DataResource<Boolean> {
+        val response = authApiService.upgrade(token, request).await()
+        if (response.success != null && response.success) {
+            return DataResource.Success(response.success)
+        }
+
+        if (response.message != null) {
+            return DataResource.Error(IOException(response.message))
+        }
+
+        return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_http_verifyPhone_api)))
+    }
 }

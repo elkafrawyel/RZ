@@ -19,6 +19,7 @@ import androidx.transition.TransitionManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.hmaserv.rz.R
@@ -37,7 +38,8 @@ import kotlin.concurrent.timerTask
 
 class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedListener {
 
-    private lateinit var mainViewModel: MainViewModel
+    private val mainViewModel by lazy { ViewModelProviders.of(requireActivity()).get(MainViewModel::class.java) }
+    private val homeViewModel by lazy { ViewModelProviders.of(this).get(HomeViewModel::class.java) }
 
     private var timer: Timer? = null
 
@@ -53,8 +55,6 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mainViewModel = ViewModelProviders.of(requireActivity()).get(MainViewModel::class.java)
-        val homeViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
 
         mainViewModel.logInLiveData.observe(this, Observer { onLogInState(it) })
         mainViewModel.logOutState.observeEvent(this) { onLogOutState(it) }
@@ -177,7 +177,12 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
                     .show()
             }
             is MainViewModel.LogInState.BuyerLoggedIn -> {
-                findNavController().navigate(R.id.action_homeFragment_to_createAdFragment)
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle("لا تمتلك تصريح لنشر اعلان")
+                    .setMessage("اذا كنت تريد نشر و ادارة خدماتك معنا يتوجب تقديم طلب لترقية حسابك لحساب مقدم خدمة.")
+                    .setPositiveButton("ارسال الطلب") { _,_ -> homeViewModel.sendUpgradeRequest() }
+                    .setNegativeButton("الغاء", null)
+                    .show()
             }
             is MainViewModel.LogInState.SellerLoggedIn -> {
                 findNavController().navigate(R.id.action_homeFragment_to_createAdFragment)

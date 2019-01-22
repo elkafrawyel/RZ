@@ -7,5 +7,6 @@ interface ILoggedInUserRemoteSource {
     suspend fun register(registerUserRequest: RegisterUserRequest): DataResource<LoggedInUser>
     suspend fun forgetPassword(forgetPassword: ForgetPassword): DataResource<Boolean>
     suspend fun verifyPhone(token: String): DataResource<Boolean>
+    suspend fun upgrade(token: String, request: UpgradeUserRequest): DataResource<Boolean>
 //    abstract suspend fun resendActivationCode()
 }

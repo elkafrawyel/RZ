@@ -11,6 +11,7 @@ interface ILoggedInUserRepo {
     suspend fun isLoggedIn() : Boolean
     suspend fun logoutUser() : DataResource<Boolean>
     suspend fun verifyPhone(token: String): DataResource<Boolean>
+    suspend fun upgrade(token: String, request: UpgradeUserRequest): DataResource<Boolean>
     fun getLogInListener(): ObjectBoxLiveData<LoggedInUser>
 //    abstract suspend fun resendActivationCode()
 }

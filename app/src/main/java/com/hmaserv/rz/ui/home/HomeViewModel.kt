@@ -14,8 +14,11 @@ const val DATA_PROMOTIONS_KEY = "promotions"
 
 class HomeViewModel : NewBaseViewModel() {
 
+    private var upgradeRequest: Job? = null
+
     private val getSliderUseCase = Injector.getSliderUseCase()
     private val getPromotionsUseCase = Injector.getPromotionsUseCase()
+    private val upgradeUserUseCase = Injector.upgradeUserUseCase()
 
     var isList = true
 
@@ -40,6 +43,22 @@ class HomeViewModel : NewBaseViewModel() {
                     showDataError()
                 }
             }
+        }
+    }
+
+    fun sendUpgradeRequest() {
+        if (upgradeRequest?.isActive == true) {
+            return
+        }
+
+        upgradeRequest = launchSendUpgradeRequest()
+    }
+
+    private fun launchSendUpgradeRequest() = scope.launch(dispatcherProvider.io) {
+        val result = upgradeUserUseCase.upgrade()
+        when(result) {
+            is DataResource.Success -> {}
+            is DataResource.Error -> {}
         }
     }
 
