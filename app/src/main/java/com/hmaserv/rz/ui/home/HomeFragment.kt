@@ -301,7 +301,7 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
         val sliders = dataMap[DATA_SLIDER_KEY] as List<Slider>
         val promotions = dataMap[DATA_PROMOTIONS_KEY] as List<MiniAd>
 
-        if (sliders.isEmpty() || promotions.isEmpty()) {
+        if (promotions.isEmpty()) {
             emptyViewCl.visibility = View.VISIBLE
             mainViewNsv.visibility = View.GONE
         } else {
@@ -330,6 +330,8 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
     }
 
     private fun setSliders(sliders: List<Slider>) {
+        if (sliders.isEmpty()) bannerSliderVp.visibility = View.GONE
+        else bannerSliderVp.visibility = View.VISIBLE
         imageSliderAdapter.submitList(sliders.mapNotNull { it.image })
     }
 

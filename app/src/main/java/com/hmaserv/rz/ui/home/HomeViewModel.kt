@@ -39,6 +39,8 @@ class HomeViewModel : NewBaseViewModel() {
             withContext(dispatcherProvider.main) {
                 if (sliderResult is DataResource.Success && promotionsResult is DataResource.Success) {
                     showDataSuccess(sliderResult.data, promotionsResult.data)
+                } else if (promotionsResult is DataResource.Success) {
+                    showDataSuccess(emptyList(), promotionsResult.data)
                 } else {
                     showDataError()
                 }
