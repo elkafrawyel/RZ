@@ -6,12 +6,15 @@ buildscript {
     repositories {
         google()
         jcenter()
+        maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.3.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "android.arch.navigation:navigation-safe-args-gradle-plugin:1.0.0-alpha09"
         classpath "io.objectbox:objectbox-gradle-plugin:$objectboxVersion"
+        classpath 'com.google.gms:google-services:4.2.0'
+        classpath 'io.fabric.tools:gradle:1.26.1'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -23,6 +26,7 @@ allprojects {
         google()
         jcenter()
         maven { url "https://jitpack.io" }
+        maven { url 'https://maven.google.com/' }
     }
 }
 
@@ -44,9 +48,12 @@ ext {
     retrofit_coroutines_version = '0.9.2'
     page_indicator_version = '1.0.2'
     coroutines_version = '1.1.0'
-    blanj_version = '1.22.10'
+    blankj_version = '1.22.10'
     okhttp_version = '3.12.1'
     timber_version = '4.7.1'
     easypermissions_version = '2.0.0'
     lottieVersion = '3.0.0-beta1'
+    firebaseCoreVersion = '16.0.6'
+    firebaseMessagingVersion = '17.3.4'
+    firebaseCrashlyticsVersion = '2.9.8'
 }

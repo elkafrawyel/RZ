@@ -8,6 +8,8 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: "androidx.navigation.safeargs"
 
+apply plugin: 'io.fabric'
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -79,12 +81,16 @@ dependencies {
     clientImplementation "io.objectbox:objectbox-android:$objectboxVersion"
     implementation "io.objectbox:objectbox-kotlin:$objectboxVersion"
 
-    implementation "com.blankj:utilcode:$blanj_version"
+    implementation "com.blankj:utilcode:$blankj_version"
 
     implementation "com.jakewharton.timber:timber:$timber_version"
     implementation "pub.devrel:easypermissions:$easypermissions_version"
 
     implementation "com.airbnb.android:lottie:$lottieVersion"
+
+    implementation "com.google.firebase:firebase-core:$firebaseCoreVersion"
+    implementation "com.google.firebase:firebase-messaging:$firebaseMessagingVersion"
+    implementation "com.crashlytics.sdk.android:crashlytics:$firebaseCrashlyticsVersion"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
@@ -92,3 +98,4 @@ dependencies {
 }
 
 apply plugin: 'io.objectbox'
+apply plugin: 'com.google.gms.google-services'
