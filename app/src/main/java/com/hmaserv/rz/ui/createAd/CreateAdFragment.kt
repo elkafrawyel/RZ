@@ -2,6 +2,7 @@ package com.hmaserv.rz.ui.createAd
 
 import android.Manifest
 import android.app.Activity.RESULT_OK
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.DatePicker
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -24,21 +26,31 @@ import kotlinx.android.synthetic.main.create_ad_fragment.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import timber.log.Timber
+import java.util.*
 
 const val RC_PERMISSION_STORAGE = 1
 const val RC_IMAGES = 2
 
-class CreateAdFragment : Fragment() {
+class CreateAdFragment : Fragment(), AttributesAdapter.AttributesCallback, DatePickerDialog.OnDateSetListener {
 
-    lateinit var viewModel: CreateAdViewModel
+    private val viewModel by lazy { ViewModelProviders.of(this).get(CreateAdViewModel::class.java) }
 
-    private lateinit var categoriesAdapter: ArrayAdapter<Category>
-    private lateinit var subCategoriesAdapter: ArrayAdapter<SubCategory>
-    private lateinit var imageAdapter: AdImagesAdapter
-    private lateinit var attributesAdapter: AttributesAdapter
+    private val categoriesAdapter: ArrayAdapter<Category> by lazy { ArrayAdapter(requireContext(), R.layout.spinner_item_view, viewModel.categories) }
+    private val subCategoriesAdapter: ArrayAdapter<SubCategory> by lazy { ArrayAdapter(requireContext(), R.layout.spinner_item_view, viewModel.subCategories) }
+    private val imageAdapter by lazy { AdImagesAdapter(viewModel.getSelectedImagesList()) }
+    private val attributesAdapter by lazy { AttributesAdapter(viewModel.attributes, this) }
 
     private var selectedCategory: Category? = null
     lateinit var selectedSubCategory: SubCategory
+    private val myCalendar = Calendar.getInstance()
+    private val datePicker by lazy {
+        DatePickerDialog(requireContext(),
+            this,
+            myCalendar.get(Calendar.YEAR),
+            myCalendar.get(Calendar.MONTH),
+            myCalendar.get(Calendar.DAY_OF_MONTH)
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,7 +61,11 @@ class CreateAdFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(CreateAdViewModel::class.java)
+
+        datePicker.datePicker.minDate = myCalendar.time.time
+        addDateMbtn.setOnClickListener {
+            datePicker.show()
+        }
 
         addImageMbtn.setOnClickListener {
             val intent = Intent(Intent.ACTION_GET_CONTENT)
@@ -65,7 +81,6 @@ class CreateAdFragment : Fragment() {
             }
         }
 
-        imageAdapter = AdImagesAdapter(viewModel.getSelectedImagesList())
         adImagesRv.adapter = imageAdapter
         adImagesRv.layoutManager = LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false)
         imageAdapter.setOnItemChildClickListener { _, clickedView, position ->
@@ -76,23 +91,12 @@ class CreateAdFragment : Fragment() {
             }
         }
 
-        attributesAdapter = AttributesAdapter(viewModel.attributes, object : AttributesAdapter.AttributesCallback {
-            override fun onAttributePriceChanged(position: Int, price: String) {
-                viewModel.attributes[position].t = viewModel.attributes[position].t.copy(price = price.toInt())
-            }
-
-            override fun onAttributeChecked(position: Int, isChecked: Boolean) {
-                viewModel.attributes[position].t = viewModel.attributes[position].t.copy(isChecked = isChecked)
-            }
-        })
         attributesRv.adapter = attributesAdapter
         attributesRv.layoutManager = LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false)
         viewModel.attributesUiState.observeEvent(this) { onAttributesStateChanged(it) }
 
-        categoriesAdapter = ArrayAdapter(view.context, R.layout.spinner_item_view, viewModel.categories)
         categoriesSpinner.adapter = categoriesAdapter
 
-        subCategoriesAdapter = ArrayAdapter(view.context, R.layout.spinner_item_view, viewModel.subCategories)
         subCategoriesSpinner.adapter = subCategoriesAdapter
 
         viewModel.categoriesUiState.observe(this, Observer { onCategoryResponse(it) })
@@ -129,6 +133,24 @@ class CreateAdFragment : Fragment() {
         }
 
         backBtn.setOnClickListener { findNavController().navigateUp() }
+
+        labelAttributesTv.setOnClickListener {
+            when (viewModel.attributesVisibility) {
+                View.GONE -> attributesRv.visibility = View.VISIBLE
+                View.VISIBLE -> attributesRv.visibility = View.GONE
+            }
+
+            viewModel.attributesVisibility = attributesRv.visibility
+        }
+
+        labelDateTv.setOnClickListener {
+            when (viewModel.datesVisibility) {
+                View.GONE -> datesRv.visibility = View.VISIBLE
+                View.VISIBLE -> datesRv.visibility = View.GONE
+            }
+
+            viewModel.datesVisibility = datesRv.visibility
+        }
     }
 
     private fun onAttributesStateChanged(state: CreateAdViewModel.AttributesUiState) {
@@ -165,6 +187,18 @@ class CreateAdFragment : Fragment() {
             CreateAdViewModel.AttributesUiState.EmptyView -> {
             }
         }
+    }
+
+    override fun onAttributePriceChanged(position: Int, price: String) {
+        viewModel.attributes[position].t = viewModel.attributes[position].t.copy(price = price.toInt())
+    }
+
+    override fun onAttributeChecked(position: Int, isChecked: Boolean) {
+        viewModel.attributes[position].t = viewModel.attributes[position].t.copy(isChecked = isChecked)
+    }
+
+    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        Toast.makeText(requireContext(), "$dayOfMonth/$month/$year", Toast.LENGTH_SHORT).show()
     }
 
     private fun onSubCategoryResponse(state: CreateAdViewModel.SubCategoriesUiState) {

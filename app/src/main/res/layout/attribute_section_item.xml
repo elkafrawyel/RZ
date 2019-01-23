@@ -18,10 +18,9 @@
         android:textAllCaps="true"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
-        app:layout_constraintBaseline_toBaselineOf="@id/attrEt"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/attrEt" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/halfGuideLine"
@@ -35,7 +34,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/attr_section_et_bg"
-        android:hint="السعر"
+        android:hint="@string/hint_price"
         android:inputType="number"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
