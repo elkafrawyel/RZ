@@ -15,6 +15,7 @@ buildscript {
         classpath "io.objectbox:objectbox-gradle-plugin:$objectboxVersion"
         classpath 'com.google.gms:google-services:4.2.0'
         classpath 'io.fabric.tools:gradle:1.26.1'
+        classpath 'com.google.firebase:firebase-plugins:1.1.5'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -56,4 +57,5 @@ ext {
     firebaseCoreVersion = '16.0.6'
     firebaseMessagingVersion = '17.3.4'
     firebaseCrashlyticsVersion = '2.9.8'
+    firebasePrefVersion = '16.2.3'
 }

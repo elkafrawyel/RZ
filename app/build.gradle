@@ -10,6 +10,8 @@ apply plugin: "androidx.navigation.safeargs"
 
 apply plugin: 'io.fabric'
 
+apply plugin: 'com.google.firebase.firebase-perf'
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -91,6 +93,7 @@ dependencies {
     implementation "com.google.firebase:firebase-core:$firebaseCoreVersion"
     implementation "com.google.firebase:firebase-messaging:$firebaseMessagingVersion"
     implementation "com.crashlytics.sdk.android:crashlytics:$firebaseCrashlyticsVersion"
+    implementation "com.google.firebase:firebase-perf:$firebasePrefVersion"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
