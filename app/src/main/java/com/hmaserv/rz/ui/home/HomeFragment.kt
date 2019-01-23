@@ -241,6 +241,7 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
         navigationView.getHeaderView(0).userNameTv.setOnClickListener { onSignInSignUpClicked() }
         navigationView.menu.findItem(R.id.nav_profile).isVisible = false
         navigationView.menu.findItem(R.id.nav_my_ads).isVisible = false
+        navigationView.menu.findItem(R.id.nav_my_orders).isVisible = false
         navigationView.menu.findItem(R.id.nav_orders_received).isVisible = false
         navigationView.menu.findItem(R.id.nav_log_out).isVisible = false
         notificationsImgv.isVisible = false
@@ -256,6 +257,7 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
         navigationView.getHeaderView(0).userNameTv.setOnClickListener { onUserNameClicked() }
         navigationView.menu.findItem(R.id.nav_profile).isVisible = true
         navigationView.menu.findItem(R.id.nav_my_ads).isVisible = false
+        navigationView.menu.findItem(R.id.nav_my_orders).isVisible = true
         navigationView.menu.findItem(R.id.nav_orders_received).isVisible = false
         navigationView.menu.findItem(R.id.nav_log_out).isVisible = true
         notificationsImgv.isVisible = true
@@ -271,6 +273,7 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
         navigationView.getHeaderView(0).userNameTv.setOnClickListener { onUserNameClicked() }
         navigationView.menu.findItem(R.id.nav_profile).isVisible = true
         navigationView.menu.findItem(R.id.nav_my_ads).isVisible = true
+        navigationView.menu.findItem(R.id.nav_my_orders).isVisible = true
         navigationView.menu.findItem(R.id.nav_orders_received).isVisible = true
         navigationView.menu.findItem(R.id.nav_log_out).isVisible = true
         notificationsImgv.isVisible = true
