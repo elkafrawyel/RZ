@@ -140,5 +140,6 @@
     <string name="success_edit_ad">Your Ad is edited successfully</string>
     <string name="error_edit_ad">Failed to edit your Ad</string>
     <string name="error_images_count">You can not add more than 10 images.</string>
+    <string name="error_select_image">You must select at least one image.</string>
 
 </resources>

@@ -221,7 +221,7 @@ class CreateAdFragment : Fragment() {
                 return false
             }
             viewModel.getSelectedImagesList().isEmpty() -> {
-                showMessage("You must select at least one image.")
+                showMessage(getString(R.string.error_select_image))
                 return false
             }
             else -> return true
@@ -277,7 +277,7 @@ class CreateAdFragment : Fragment() {
                                 addImageMbtn.isEnabled = false
                             }
                         } else {
-                            Toast.makeText(activity, "You can not add more than 10 images.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(activity, getString(R.string.error_images_count), Toast.LENGTH_SHORT).show()
                         }
                     } else if (uri != null) {
                         Timber.i(uri.toString())
@@ -288,11 +288,11 @@ class CreateAdFragment : Fragment() {
                                 addImageMbtn.isEnabled = false
                             }
                         } else {
-                            Toast.makeText(activity, "You can not add more than 10 images.", Toast.LENGTH_SHORT)
+                            Toast.makeText(activity, getString(R.string.error_images_count), Toast.LENGTH_SHORT)
                                 .show()
                         }
                     } else {
-                        Toast.makeText(activity, "Something went wrong.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(activity, getString(R.string.error_general), Toast.LENGTH_SHORT).show()
                     }
                 }
             }
