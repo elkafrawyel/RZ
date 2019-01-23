@@ -10,7 +10,6 @@ import androidx.core.app.JobIntentService
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.NavDeepLinkBuilder
-import androidx.navigation.Navigation
 import com.facebook.spectrum.SpectrumException
 import com.facebook.spectrum.EncodedImageSink
 import com.facebook.spectrum.EncodedImageSource
@@ -327,7 +326,7 @@ class CreateAdJobService : JobIntentService() {
             try {
                 contentResolver.openInputStream(Uri.parse(uri)).use { inputStream ->
                     val transcodeOptions = TranscodeOptions.Builder(EncodeRequirement(PNG, 80))
-                        .resize(ResizeRequirement.Mode.EXACT_OR_SMALLER, ImageSize(1080, 1080))
+                        .resize(ResizeRequirement.Mode.EXACT_OR_SMALLER, ImageSize(720, 720))
                         .build()
 
                     val imagePath = Injector.getNewResizedImagePath()
