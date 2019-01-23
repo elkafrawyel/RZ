@@ -141,9 +141,9 @@ class ProfileFragment : Fragment() {
     }
 
     private fun editLoggedInUser() {
-        if (viewModel.avatarUpdated &&
-            profileNameEt.text.toString() != viewModel.loggedInUser?.fullName &&
-            profileEmailEt.text.toString() != viewModel.loggedInUser?.email &&
+        if (viewModel.avatarUpdated ||
+            profileNameEt.text.toString() != viewModel.loggedInUser?.fullName ||
+            profileEmailEt.text.toString() != viewModel.loggedInUser?.email ||
             profilePhoneEt.text.toString() != viewModel.loggedInUser?.mobile.toString()
         ) {
             if (viewModel.avatarUpdated) {
