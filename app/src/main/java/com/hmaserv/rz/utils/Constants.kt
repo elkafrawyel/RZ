@@ -6,6 +6,8 @@ object Constants {
     const val LOGGED_IN_USER_ID = 1L
     const val AUTHORIZATION_START = "Bearer"
     const val RESIZED_IMAGES_OUTPUT_PATH = ""
+    const val NOTIFICATION_CREATE_AD_CHANNEL = "createAd"
+    const val NOTIFICATION_EDIT_AD_CHANNEL = "editAd"
 
     enum class Language(val value: String) {
         DEFAULT("ar"),

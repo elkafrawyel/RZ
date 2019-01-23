@@ -88,7 +88,7 @@ class CreateAdJobService : JobIntentService() {
         val images = intent.getStringArrayListExtra(AD_IMAGES)
 
         CREATE_NOTIFICATION_ID += 1
-        val mBuilder = NotificationCompat.Builder(this, "createAdId")
+        val mBuilder = NotificationCompat.Builder(this, Constants.NOTIFICATION_CREATE_AD_CHANNEL)
             .setSmallIcon(R.drawable.ic_fb_notification)
             .setContentTitle(getString(R.string.app_name))
             .setContentText(getString(R.string.status_create_ad))
@@ -206,9 +206,9 @@ class CreateAdJobService : JobIntentService() {
 
         MODIFY_NOTIFICATION_ID += 1
 
-        val mBuilder = NotificationCompat.Builder(this, "createAdId")
+        val mBuilder = NotificationCompat.Builder(this, Constants.NOTIFICATION_EDIT_AD_CHANNEL)
             .setSmallIcon(R.drawable.ic_fb_notification)
-            .setContentTitle("RZ")
+            .setContentTitle(getString(R.string.app_name))
             .setContentText(getString(R.string.status_edit_ad))
             .setProgress(0, 0, true)
             .setOngoing(true)

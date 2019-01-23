@@ -10,6 +10,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.hmaserv.rz.ui.MainActivity
 import com.hmaserv.rz.R
+import com.hmaserv.rz.utils.Constants.NOTIFICATION_CREATE_AD_CHANNEL
+import com.hmaserv.rz.utils.Constants.NOTIFICATION_EDIT_AD_CHANNEL
 import com.hmaserv.rz.utils.Injector
 import com.hmaserv.rz.utils.changeLanguage
 
@@ -28,16 +30,27 @@ class SplashActivity : AppCompatActivity() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = "Create Ad"
-            val descriptionText = "Progress of creating ad"
-            val importance = NotificationManager.IMPORTANCE_HIGH
-            val channel = NotificationChannel("createAdId", name, importance).apply {
-                description = descriptionText
-            }
+            val createAdChannelName = getString(R.string.create_ad_channel_name)
+            val createAdDescription = getString(R.string.create_ad_channel_desc)
+            val createAdImportance = NotificationManager.IMPORTANCE_HIGH
+            val createAdChannel =
+                NotificationChannel(NOTIFICATION_CREATE_AD_CHANNEL, createAdChannelName, createAdImportance).apply {
+                    description = createAdDescription
+                }
+
+            val editAdChannelName = getString(R.string.edit_ad_channel_name)
+            val editAdDescription = getString(R.string.edit_ad_channel_desc)
+            val editAdImportance = NotificationManager.IMPORTANCE_HIGH
+            val editAdChannel =
+                NotificationChannel(NOTIFICATION_EDIT_AD_CHANNEL, editAdChannelName, editAdImportance).apply {
+                    description = editAdDescription
+                }
+
             // Register the channel with the system
             val notificationManager: NotificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
+            notificationManager.createNotificationChannel(createAdChannel)
+            notificationManager.createNotificationChannel(editAdChannel)
         }
     }
 }

@@ -148,5 +148,9 @@
     <string name="error_edit_ad">فشل التعديل</string>
     <string name="error_images_count">عدد الصور المسموح لا يزيد 10 صور.</string>
     <string name="error_select_image">يجب اختيار صورة واحدة علي الاقل.</string>
+    <string name="create_ad_channel_name">Create Ad</string>
+    <string name="create_ad_channel_desc">Progress of creating ad</string>
+    <string name="edit_ad_channel_name">Edit Ad</string>
+    <string name="edit_ad_channel_desc">Progress of editing ad</string>
 
 </resources>
