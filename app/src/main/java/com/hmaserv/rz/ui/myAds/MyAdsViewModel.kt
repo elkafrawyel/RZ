@@ -27,6 +27,8 @@ class MyAdsViewModel : NewBaseViewModel() {
     val deleteState: LiveData<Event<DeleteUiState>>
         get() = _deleteState
 
+    var isList = true
+
     init {
         getData()
     }

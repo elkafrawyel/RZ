@@ -18,6 +18,8 @@ class AdsViewModel : NewBaseViewModel() {
 
     private var subCategoryUuid: String? = null
 
+    var isList = true
+
     fun setSubCategoryId(uuid: String) {
         if (this.subCategoryUuid == null) {
             this.subCategoryUuid = uuid
