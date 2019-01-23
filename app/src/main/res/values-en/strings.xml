@@ -148,6 +148,8 @@
     <string name="label_profile_title">My Profile</string>
     <string name="label_edit_profile_Info">Edit</string>
     <string name="label_profile_notification">Notifications</string>
+    <string name="label_cancel_profile_Info">Cancel</string>
+    <string name="label_save_profile_info">Save</string>
     <string name="label_date">الايام</string>
 
 </resources>

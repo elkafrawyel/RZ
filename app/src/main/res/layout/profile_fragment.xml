@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".ui.profile.ProfileFragment">
+    tools:context=".ui.profile.ProfileFragment"
+    android:paddingBottom="12dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="18dp">
+        android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolBar"
@@ -46,29 +46,58 @@
                     android:textColor="@color/colorOnPrimary"
                     app:layout_constrainedWidth="true"
                     app:layout_constraintBottom_toBottomOf="@id/backImgv"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/cancelProfileInfoMbtn"
                     app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toEndOf="@id/backImgv"
                     app:layout_constraintTop_toTopOf="@id/backImgv" />
 
-                <TextView
-                    android:id="@+id/editProfileInfoTv"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/editProfileInfoMbtn"
+                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="12dp"
+                    android:layout_marginEnd="8dp"
                     android:text="@string/label_edit_profile_Info"
-                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    android:minWidth="60dp"
+                    app:strokeColor="@color/colorWhite"
+                    app:strokeWidth="1dp"
+                    app:rippleColor="@color/colorWhite"
+                    android:textAppearance="?attr/textAppearanceBody2"
                     android:textColor="@color/colorWhite"
+                    android:insetLeft="0dp"
+                    android:insetRight="0dp"
                     app:layout_constrainedWidth="true"
+                    android:layout_marginTop="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1"
-                    app:layout_constraintTop_toTopOf="@id/profileTv" />
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/cancelProfileInfoMbtn"
+                    android:layout_width="0dp"
+                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/label_cancel_profile_Info"
+                    android:insetLeft="0dp"
+                    android:insetRight="0dp"
+                    android:minWidth="60dp"
+                    app:strokeColor="@color/colorWhite"
+                    app:strokeWidth="1dp"
+                    app:rippleColor="@color/colorWhite"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:textColor="@color/colorWhite"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintEnd_toStartOf="@id/editProfileInfoMbtn"
+                    app:layout_constraintHorizontal_bias="1"
+                    app:layout_constraintTop_toTopOf="@id/editProfileInfoMbtn" />
 
                 <ImageView
                     android:id="@+id/profileAvatarImgv"
                     android:layout_width="200dp"
                     android:layout_height="0dp"
-                    android:layout_margin="24dp"
+                    android:layout_marginTop="54dp"
+                    android:layout_marginBottom="16dp"
                     android:src="@drawable/image_user_default"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="16:9"
@@ -81,6 +110,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_edit_white"
+                    android:layout_marginEnd="18dp"
                     app:layout_constraintRight_toRightOf="@id/profileAvatarImgv"
                     app:layout_constraintTop_toTopOf="@id/profileAvatarImgv" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -88,7 +118,7 @@
         </androidx.appcompat.widget.Toolbar>
 
         <EditText
-            android:id="@+id/profileNameTv"
+            android:id="@+id/profileNameEt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -96,7 +126,7 @@
             android:background="@drawable/profile_fields_uneditable_bg"
             android:drawableStart="@drawable/ic_account"
             android:drawablePadding="8dp"
-            android:text="Mahmoud Ashraf"
+            tools:text="Mahmoud Ashraf"
             android:textAppearance="?attr/textAppearanceHeadline6"
             app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toEndOf="parent"
@@ -105,41 +135,42 @@
             app:layout_constraintTop_toBottomOf="@id/toolBar" />
 
         <EditText
-            android:id="@+id/profileEmailTv"
+            android:id="@+id/profileEmailEt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:background="@drawable/profile_fields_uneditable_bg"
             android:drawableStart="@drawable/ic_email_outline"
             android:drawablePadding="8dp"
-            android:text="mahmoud@gmail.com"
+            tools:text="mahmoud@gmail.com"
             android:textAppearance="?attr/textAppearanceHeadline6"
             app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toStartOf="@id/profileNameTv"
-            app:layout_constraintTop_toBottomOf="@id/profileNameTv" />
+            app:layout_constraintStart_toStartOf="@id/profileNameEt"
+            app:layout_constraintTop_toBottomOf="@id/profileNameEt" />
 
         <EditText
-            android:id="@+id/profilePhoneTv"
+            android:id="@+id/profilePhoneEt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:background="@drawable/profile_fields_uneditable_bg"
             android:drawableStart="@drawable/ic_phone"
             android:drawablePadding="8dp"
-            android:text="0100200300400"
+            tools:text="0100200300400"
             android:textAppearance="?attr/textAppearanceHeadline6"
             app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toStartOf="@id/profileNameTv"
-            app:layout_constraintTop_toBottomOf="@id/profileEmailTv" />
+            app:layout_constraintStart_toStartOf="@id/profileNameEt"
+            app:layout_constraintTop_toBottomOf="@id/profileEmailEt" />
 
         <Switch
             android:id="@+id/profileNotificationsSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:checked="true"
             android:drawablePadding="12dp"
             android:padding="8dp"
@@ -147,8 +178,8 @@
             android:drawableStart="@drawable/ic_notifications_primary"
             android:text="@string/label_profile_notification"
             android:textAppearance="?attr/textAppearanceHeadline6"
-            app:layout_constraintStart_toStartOf="@id/profileNameTv"
-            app:layout_constraintTop_toBottomOf="@id/profilePhoneTv" />
+            app:layout_constraintStart_toStartOf="@id/profileNameEt"
+            app:layout_constraintTop_toBottomOf="@id/profilePhoneEt" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

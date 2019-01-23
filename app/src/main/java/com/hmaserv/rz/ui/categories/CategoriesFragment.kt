@@ -32,7 +32,7 @@ class CategoriesFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener 
         viewModel = ViewModelProviders.of(this).get(CategoriesViewModel::class.java)
         viewModel.uiState.observe(this, Observer { onUiStateChanged(it) })
 
-        backBtn.setOnClickListener { findNavController().navigateUp() }
+        backImgv.setOnClickListener { findNavController().navigateUp() }
         searchMcv.setOnClickListener{openSearchFragment()}
         categoriesRv.adapter = adapter
         noConnectionCl.setOnClickListener { viewModel.refresh() }

@@ -156,5 +156,7 @@
     <string name="label_edit_profile_Info">تعديل</string>
     <string name="label_profile_notification">التنبيهات</string>
     <string name="label_date">الايام</string>
+    <string name="label_cancel_profile_Info">الغاء</string>
+    <string name="label_save_profile_info">حفظ</string>
 
 </resources>

@@ -20,7 +20,7 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/backBtn"
+                android:id="@+id/backImgv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
@@ -39,10 +39,10 @@
                 android:ellipsize="end"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintBottom_toBottomOf="@id/backBtn"
+                app:layout_constraintBottom_toBottomOf="@id/backImgv"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/backBtn"
-                app:layout_constraintTop_toTopOf="@id/backBtn" />
+                app:layout_constraintStart_toEndOf="@id/backImgv"
+                app:layout_constraintTop_toTopOf="@id/backImgv" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/searchMcv"
@@ -54,7 +54,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/backBtn">
+                app:layout_constraintTop_toBottomOf="@id/backImgv">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
