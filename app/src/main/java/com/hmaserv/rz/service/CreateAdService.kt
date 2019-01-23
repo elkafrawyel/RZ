@@ -161,6 +161,7 @@ class CreateAdJobService : JobIntentService() {
                         .setContentText(getString(R.string.success_create_ad))
                         .setContentIntent(pendingIntent)
                         .setOngoing(false)
+                        .setAutoCancel(true)
 
                     withContext(Injector.getCoroutinesDispatcherProvider().main) {
                         Toast.makeText(this@CreateAdJobService, getString(R.string.success_create_ad), Toast.LENGTH_LONG)
@@ -171,6 +172,7 @@ class CreateAdJobService : JobIntentService() {
                     mBuilder.setProgress(0, 0, false)
                         .setContentText(getString(R.string.error_create_ad))
                         .setOngoing(false)
+                        .setAutoCancel(true)
 
                     withContext(Injector.getCoroutinesDispatcherProvider().main) {
                         Toast.makeText(this@CreateAdJobService, getString(R.string.error_create_ad), Toast.LENGTH_LONG).show()
@@ -287,6 +289,7 @@ class CreateAdJobService : JobIntentService() {
                         .setContentText(getString(R.string.success_edit_ad))
                         .setContentIntent(pendingIntent)
                         .setOngoing(false)
+                        .setAutoCancel(true)
 
                     withContext(Injector.getCoroutinesDispatcherProvider().main) {
                         Toast.makeText(this@CreateAdJobService, getString(R.string.success_edit_ad), Toast.LENGTH_LONG)
@@ -297,6 +300,7 @@ class CreateAdJobService : JobIntentService() {
                     mBuilder.setProgress(0, 0, false)
                         .setContentText(getString(R.string.error_edit_ad))
                         .setOngoing(false)
+                        .setAutoCancel(true)
 
                     withContext(Injector.getCoroutinesDispatcherProvider().main) {
                         Toast.makeText(this@CreateAdJobService, getString(R.string.error_edit_ad), Toast.LENGTH_LONG).show()

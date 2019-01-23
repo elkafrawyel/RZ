@@ -64,7 +64,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -106,15 +106,16 @@
 
                 <TextView
                     android:id="@+id/productNameTv"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="2"
                     android:padding="16dp"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp"
+                    android:textAppearance="?attr/textAppearanceHeadline5"
                     android:transitionName="productName"
+                    app:layout_constrainedWidth="true"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="Camera canon model rzy555" />
@@ -165,6 +166,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
+                    android:textAppearance="?attr/textAppearanceCaption"
                     app:layout_constraintBottom_toBottomOf="@id/starOneImgv"
                     app:layout_constraintStart_toEndOf="@id/starFiveImgv"
                     app:layout_constraintTop_toTopOf="@id/starOneImgv"
@@ -172,17 +174,36 @@
 
                 <TextView
                     android:id="@+id/priceTv"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginBottom="16dp"
-                    android:padding="8dp"
-                    android:textColor="@android:color/black"
-                    android:textSize="16sp"
-                    app:layout_constraintEnd_toEndOf="@id/productNameTv"
-                    app:layout_constraintStart_toStartOf="@id/productNameTv"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/starOneImgv"
                     tools:text="5550 EGP" />
+
+                <TextView
+                    android:id="@+id/discountPriceTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5550 EGP"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:transitionName="productPrice"
+                    app:layout_constraintStart_toStartOf="@id/priceTv"
+                    app:layout_constraintTop_toBottomOf="@id/priceTv" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="1dp"
+                    android:background="@color/ic_launcher_background"
+                    android:rotation="4"
+                    app:layout_constraintBottom_toBottomOf="@id/discountPriceTv"
+                    app:layout_constraintEnd_toEndOf="@id/discountPriceTv"
+                    app:layout_constraintStart_toStartOf="@id/discountPriceTv"
+                    app:layout_constraintTop_toTopOf="@id/discountPriceTv" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/createOrderMbtn"
@@ -220,21 +241,25 @@
 
                 <TextView
                     android:id="@+id/sellerNameTv"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    app:layout_constrainedWidth="true"
                     app:layout_constraintBottom_toTopOf="@id/addedDateTv"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toEndOf="@id/sellerImgv"
                     app:layout_constraintTop_toTopOf="@id/sellerImgv"
+                    app:layout_constraintVertical_chainStyle="packed"
                     tools:text="Seller name" />
 
                 <TextView
                     android:id="@+id/addedDateTv"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceBody2"
                     app:layout_constraintBottom_toBottomOf="@id/sellerImgv"
-                    app:layout_constraintEnd_toEndOf="@id/sellerNameTv"
                     app:layout_constraintStart_toStartOf="@id/sellerNameTv"
                     app:layout_constraintTop_toBottomOf="@id/sellerNameTv"
                     tools:text="10/11/2022" />
@@ -253,25 +278,29 @@
 
                 <TextView
                     android:id="@+id/description_label"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:text="@string/label_product_description"
-                    android:textColor="@color/colorOnSurface"
-                    android:textSize="18sp"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    app:layout_constrainedWidth="true"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/productDescriptionTv"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    app:layout_constrainedWidth="true"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/description_label"
                     tools:text="@string/cat_bottomappbar_lorem_ipsum" />
@@ -322,18 +351,18 @@
         android:id="@+id/loadinLav"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:visibility="visible"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
-        app:lottie_rawRes="@raw/loading"
-        android:visibility="visible"
-        android:layout_gravity="center"
-        />
+        app:lottie_rawRes="@raw/loading" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/errorCl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">
+
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/errorLav"
             android:layout_width="100dp"
@@ -419,10 +448,10 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.4"
-            app:lottie_speed="1.7"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
-            app:lottie_rawRes="@raw/no_connection" />
+            app:lottie_rawRes="@raw/no_connection"
+            app:lottie_speed="1.7" />
 
         <TextView
             android:id="@+id/noConnectionTv"
