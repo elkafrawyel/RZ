@@ -43,14 +43,11 @@ class AdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         }
 
         backBtn.setOnClickListener { findNavController().navigateUp() }
-
         searchImgv.setOnClickListener { openSearchFragment() }
-
         sortImgv.setOnClickListener { openFilterDialog() }
-
         noConnectionCl.setOnClickListener { viewModel.refresh() }
-
         errorCl.setOnClickListener { viewModel.refresh() }
+        emptyViewCl.setOnClickListener { viewModel.refresh() }
 
         adsRv.adapter = adapter
 

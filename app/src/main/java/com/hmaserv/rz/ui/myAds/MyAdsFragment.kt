@@ -42,10 +42,9 @@ class MyAdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         adsRv.adapter = adapter
 
         backImgv.setOnClickListener { findNavController().navigateUp() }
-
         noConnectionCl.setOnClickListener { viewModel.refresh() }
-
         errorCl.setOnClickListener { viewModel.refresh() }
+        emptyViewCl.setOnClickListener { viewModel.refresh() }
 
         adapter.onItemClickListener =
                 BaseQuickAdapter.OnItemClickListener { _, _, position ->
