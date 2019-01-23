@@ -145,5 +145,8 @@
     <string name="create_ad_channel_desc">Progress of creating ad</string>
     <string name="edit_ad_channel_name">Edit Ad</string>
     <string name="edit_ad_channel_desc">Progress of editing ad</string>
+    <string name="label_profile_title">My Profile</string>
+    <string name="label_edit_profile_Info">Edit</string>
+    <string name="label_profile_notification">Notifications</string>
 
 </resources>
