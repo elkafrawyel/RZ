@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
-        changeLanguage(Constants.Language.ARABIC)
+        changeLanguage(Constants.Language.DEFAULT)
         ViewModelProviders.of(this).get(MainViewModel::class.java)
     }
 

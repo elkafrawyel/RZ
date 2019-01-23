@@ -23,7 +23,9 @@ import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.Attribute
 import com.hmaserv.rz.domain.DataResource
 import com.hmaserv.rz.ui.MainActivity
+import com.hmaserv.rz.utils.Constants
 import com.hmaserv.rz.utils.Injector
+import com.hmaserv.rz.utils.changeLanguage
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -58,6 +60,11 @@ class CreateAdJobService : JobIntentService() {
     private val deleteImageUseCase = Injector.deleteAdImageUseCase()
 
     private val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+
+    override fun onCreate() {
+        super.onCreate()
+        changeLanguage(Constants.Language.DEFAULT)
+    }
 
     override fun onHandleWork(intent: Intent) {
         val mode = intent.getIntExtra(MODE, Mode.CREATE.ordinal)
