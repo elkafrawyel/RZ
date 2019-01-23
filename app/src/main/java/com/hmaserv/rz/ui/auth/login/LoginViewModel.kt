@@ -20,6 +20,7 @@ class LoginViewModel : BaseViewModel() {
     private var loginJob: Job? = null
 
     private val loginUserUseCase = Injector.getLoginUseCase()
+    private val sendFirebaseTokenUseCase = Injector.sendFirebaseTokeUseCase()
 
     private val _uiState = MutableLiveData<Event<LoginUiState>>()
     val uiState: LiveData<Event<LoginUiState>>
@@ -34,14 +35,15 @@ class LoginViewModel : BaseViewModel() {
     }
 
     private fun launchLogin(phone: String, password: String): Job {
-        return scope.launch(dispatcherProvider.computation) {
+        return scope.launch(dispatcherProvider.io) {
             withContext(dispatcherProvider.main) { showLoading() }
             val result = loginUserUseCase.login(phone, password)
-            withContext(dispatcherProvider.main) {
-                when(result) {
-                    is DataResource.Success -> showSuccess(result.data)
-                    is DataResource.Error -> showError(result.exception.message)
+            when(result) {
+                is DataResource.Success -> {
+                    sendFirebaseTokenUseCase.send()
+                    withContext(dispatcherProvider.main) { showSuccess(result.data) }
                 }
+                is DataResource.Error -> withContext(dispatcherProvider.main) { showError(result.exception.message) }
             }
         }
     }

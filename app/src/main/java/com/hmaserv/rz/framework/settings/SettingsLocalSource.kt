@@ -34,4 +34,24 @@ class SettingsLocalSource(
         return true
     }
 
+    override suspend fun getFirebaseToken(): String? {
+        return settings?.firebaseToken
+    }
+
+    override suspend fun saveFirebaseToken(token: String): Boolean {
+        if (settings == null) generateDefaultSettings()
+        settings = settings.copy(firebaseToken = token)
+        settingsBox.put(settings)
+        return true
+    }
+
+    override suspend fun deleteFirebaseToken(): Boolean {
+        if (settings != null) {
+            settings = settings.copy(firebaseToken = null)
+            settingsBox.put(settings)
+        }
+
+        return true
+    }
+
 }

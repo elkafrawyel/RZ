@@ -110,9 +110,10 @@ object Injector {
 
     // Settings
     private fun getSettingsLocalSource() = SettingsLocalSource(getBoxStore())
-    private fun getSettingsRepo() = SettingsRepo(getSettingsLocalSource())
+    private fun getSettingsRepo() = SettingsRepo.getInstance(getSettingsLocalSource())
     fun getCurrentLanguageUseCase() = CurrentLanguageUseCase(getSettingsRepo())
     fun setChangeLanguageUseCase() = ChangeLanguageUseCase(getSettingsRepo())
+    fun saveFirebaseTokenUseCase() = SaveFirebaseTokenUseCase(getSettingsRepo())
 
     // LoggedIn repo
     private fun getLoggedInRemoteSource() = LoggedInUserRemoteSource(getApiService(), getAuthApiService())
@@ -130,6 +131,7 @@ object Injector {
     fun upgradeUserUseCase() = UpgradeUserUseCase(getLoggedInRepo())
     fun getLogOutUseCase() = LogOutUseCase(getLoggedInRepo())
     fun getLoggedInUserListenerUseCase() = LogInListenerUseCase(getLoggedInRepo())
+    fun sendFirebaseTokeUseCase() = SendFirebaseTokenUseCase(getSettingsRepo(), getLoggedInRepo())
 
     // Categories
     private fun getCategoriesLocalSource() = CategoriesLocalSource(getBoxStore())

@@ -123,4 +123,24 @@ class LoggedInUserRemoteSource(
 
         return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_http_verifyPhone_api)))
     }
+
+    override suspend fun sendFirebaseToken(token: String, request: FirebaseTokenRequest): DataResource<Boolean> {
+        return safeApiCall(
+            call = { sendFirebaseTokenCall(token, request) },
+            errorMessage = Injector.getApplicationContext().getString(R.string.error_general)
+        )
+    }
+
+    private suspend fun sendFirebaseTokenCall(token: String, request: FirebaseTokenRequest): DataResource<Boolean> {
+        val response = authApiService.sendFirebaseToken(token, request).await()
+        if (response.success != null && response.success) {
+            return DataResource.Success(response.success)
+        }
+
+        if (response.message != null) {
+            return DataResource.Error(IOException(response.message))
+        }
+
+        return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_general)))
+    }
 }

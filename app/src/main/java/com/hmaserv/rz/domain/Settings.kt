@@ -11,7 +11,8 @@ data class Settings(
     @Id(assignable = true)
     var id: Long = Constants.SETTINGS_ID,
     @Convert(converter = LanguageConverter::class, dbType = String::class)
-    val language: Constants.Language
+    val language: Constants.Language,
+    val firebaseToken: String? = null
 )
 
 class LanguageConverter : PropertyConverter<Constants.Language, String> {

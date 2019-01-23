@@ -40,6 +40,10 @@ class LoggedInUserRepo(
         return loggedInUserRemoteSource.upgrade(token, request)
     }
 
+    override suspend fun sendFirebaseToken(token: String, request: FirebaseTokenRequest): DataResource<Boolean> {
+        return loggedInUserRemoteSource.sendFirebaseToken(token, request)
+    }
+
     override suspend fun getLoggedInUser(): LoggedInUser {
         return loggedInUserLocalSource.getLoggedInUser()
     }

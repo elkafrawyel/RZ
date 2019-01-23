@@ -5,4 +5,7 @@ import com.hmaserv.rz.utils.Constants
 interface ISettingsLocalSource {
     suspend fun getCurrentLanguage(): Constants.Language
     suspend fun setCurrentLanguage(language: Constants.Language): Boolean
+    suspend fun getFirebaseToken() : String?
+    suspend fun saveFirebaseToken(token: String) : Boolean
+    suspend fun deleteFirebaseToken() : Boolean
 }

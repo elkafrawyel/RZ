@@ -8,5 +8,6 @@ interface ILoggedInUserRemoteSource {
     suspend fun forgetPassword(forgetPassword: ForgetPassword): DataResource<Boolean>
     suspend fun verifyPhone(token: String): DataResource<Boolean>
     suspend fun upgrade(token: String, request: UpgradeUserRequest): DataResource<Boolean>
+    suspend fun sendFirebaseToken(token: String, request: FirebaseTokenRequest): DataResource<Boolean>
 //    abstract suspend fun resendActivationCode()
 }

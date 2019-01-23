@@ -12,6 +12,21 @@ import retrofit2.http.*
 
 interface RetrofitAuthApiService {
 
+    @PUT("auth/activeUser")
+    fun verifyPhone(@Header("Authorization") token: String): Deferred<ApiResponse<Boolean>>
+
+    @PUT("auth/upgradeRole")
+    fun upgrade(
+        @Header("Authorization") token: String,
+        @Body request: UpgradeUserRequest
+    ): Deferred<ApiResponse<Boolean>>
+
+    @PUT("notification/putToken")
+    fun sendFirebaseToken(
+        @Header("Authorization") token: String,
+        @Body request: FirebaseTokenRequest
+    ): Deferred<ApiResponse<Boolean>>
+
     @Multipart
     @POST("ads/uploader")
     fun upload(
@@ -28,15 +43,6 @@ interface RetrofitAuthApiService {
         @Part("delete_file") imagePath: RequestBody,
         @Part("garbageCollector") flag: RequestBody
     ): Deferred<ApiResponse<String>>
-
-    @PUT("auth/activeUser")
-    fun verifyPhone(@Header("Authorization") token: String): Deferred<ApiResponse<Boolean>>
-
-    @PUT("auth/upgradeRole")
-    fun upgrade(
-        @Header("Authorization") token: String,
-        @Body request: UpgradeUserRequest
-    ): Deferred<ApiResponse<Boolean>>
 
     @POST("ads/create")
     fun createProduct(
