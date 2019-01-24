@@ -151,5 +151,12 @@
     <string name="label_cancel_profile_Info">Cancel</string>
     <string name="label_save_profile_info">Save</string>
     <string name="label_date">الايام</string>
+    <string name="label_reviews_title">Reviews</string>
+    <string name="label_order_details_title">Order Details</string>
+    <string name="label_pay_order_details">Pay</string>
+    <string name="label_my_orders_received_title">Received Orders</string>
+    <string name="label_received_order_details_title">Received Order Details</string>
+    <string name="label_complete">Complete</string>
+    <string name="label_receive_money">Receive</string>
 
 </resources>

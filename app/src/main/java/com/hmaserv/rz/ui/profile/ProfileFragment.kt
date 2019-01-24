@@ -1,14 +1,14 @@
 package com.hmaserv.rz.ui.profile
 
 
+import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.text.method.KeyListener
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -17,9 +17,13 @@ import com.bumptech.glide.request.RequestOptions
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.LoggedInUser
 import com.hmaserv.rz.ui.MainViewModel
+import com.hmaserv.rz.ui.createAd.RC_PERMISSION_STORAGE
 import kotlinx.android.synthetic.main.profile_fragment.*
+import pub.devrel.easypermissions.AfterPermissionGranted
+import pub.devrel.easypermissions.EasyPermissions
+import timber.log.Timber
 
-const val RC_AVATAR = 7
+const val RC_AVATAR = 18
 
 class ProfileFragment : Fragment() {
 
@@ -62,9 +66,9 @@ class ProfileFragment : Fragment() {
 
     private fun addProfileInfo(loggedInUser: LoggedInUser) {
         viewModel.loggedInUser = loggedInUser
-        profileNameEt.setText(loggedInUser.fullName.toString())
-        profileEmailEt.setText(loggedInUser.email.toString())
-        profilePhoneEt.setText(loggedInUser.mobile.toString())
+        profileNameTiet.setText(loggedInUser.fullName.toString())
+        profileEmailTiet.setText(loggedInUser.email.toString())
+        profilePhoneTiet.setText(loggedInUser.mobile.toString())
         Glide
             .with(requireActivity())
             .load(loggedInUser.avatar)
@@ -73,14 +77,40 @@ class ProfileFragment : Fragment() {
     }
 
     private fun chooseNewAvatar() {
-        //if new image selected run this
-        viewModel.avatarUpdated = true
-
         val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.type = "image/*"
-//        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         startActivityForResult(intent, RC_AVATAR)
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                RC_AVATAR -> {
+                    val uri = data?.data
+
+                    if (uri != null) {
+                        Timber.i(uri.toString())
+                        Timber.i(uri.path)
+                        viewModel.selectedAvatar = uri
+                        Glide
+                            .with(requireActivity())
+                            .load(uri)
+                            .apply(RequestOptions.circleCropTransform())
+                            .into(profileAvatarImgv)
+                    } else {
+                        Toast.makeText(activity, getString(R.string.error_general), Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
     }
 
     private fun editMode() {
@@ -90,13 +120,10 @@ class ProfileFragment : Fragment() {
         cancelProfileInfoMbtn.visibility = View.VISIBLE
         editAvatarImgv.visibility = View.VISIBLE
 
-        profileNameEt.background = ContextCompat.getDrawable(activity!!, R.drawable.profile_fiels_bg)
-        profileEmailEt.background = ContextCompat.getDrawable(activity!!, R.drawable.profile_fiels_bg)
-        profilePhoneEt.background = ContextCompat.getDrawable(activity!!, R.drawable.profile_fiels_bg)
+        profileNameTiet.isEnabled = true
+        profileEmailTiet.isEnabled = true
+        profilePhoneTiet.isEnabled = true
 
-        profileNameEt.keyListener = viewModel.nameKeyListener as KeyListener
-        profileEmailEt.keyListener = viewModel.emailKeyListener as KeyListener
-        profilePhoneEt.keyListener = viewModel.phoneKeyListener as KeyListener
     }
 
     private fun notEditMode() {
@@ -106,24 +133,21 @@ class ProfileFragment : Fragment() {
         cancelProfileInfoMbtn.visibility = View.GONE
         editAvatarImgv.visibility = View.GONE
 
-        profileNameEt.background = ContextCompat.getDrawable(activity!!, R.drawable.profile_fields_uneditable_bg)
-        profileEmailEt.background = ContextCompat.getDrawable(activity!!, R.drawable.profile_fields_uneditable_bg)
-        profilePhoneEt.background = ContextCompat.getDrawable(activity!!, R.drawable.profile_fields_uneditable_bg)
+        profileNameTiet.isEnabled = false
+        profileEmailTiet.isEnabled = false
+        profilePhoneTiet.isEnabled = false
 
-        viewModel.nameKeyListener = profileNameEt.keyListener
-        viewModel.emailKeyListener = profileEmailEt.keyListener
-        viewModel.phoneKeyListener = profilePhoneEt.keyListener
-
-        //setting keyListener to null make edittext uneditable ReadOnly
-        profileNameEt.keyListener = null
-        profileEmailEt.keyListener = null
-        profilePhoneEt.keyListener = null
+        profileNameTiet.clearFocus()
+        profileEmailTiet.clearFocus()
+        profilePhoneTiet.clearFocus()
     }
 
     private fun cancelClicked() {
         notEditMode()
         if (viewModel.loggedInUser != null)
             addProfileInfo(viewModel.loggedInUser!!)
+
+        viewModel.selectedAvatar = null
     }
 
     private fun editClicked() {
@@ -141,33 +165,51 @@ class ProfileFragment : Fragment() {
     }
 
     private fun editLoggedInUser() {
-        if (viewModel.avatarUpdated ||
-            profileNameEt.text.toString() != viewModel.loggedInUser?.fullName ||
-            profileEmailEt.text.toString() != viewModel.loggedInUser?.email ||
-            profilePhoneEt.text.toString() != viewModel.loggedInUser?.mobile.toString()
+        if (viewModel.selectedAvatar != null ||
+            profileNameTiet.text.toString() != viewModel.loggedInUser?.fullName ||
+            profileEmailTiet.text.toString() != viewModel.loggedInUser?.email ||
+            profilePhoneTiet.text.toString() != viewModel.loggedInUser?.mobile.toString()
         ) {
-            if (viewModel.avatarUpdated) {
-                //update user avatar
-                Toast.makeText(requireContext(), "update Avatar", Toast.LENGTH_LONG).show()
+            if (viewModel.selectedAvatar != null) {
+
             }
 
-            if (profileNameEt.text.toString() != viewModel.loggedInUser?.fullName &&
-                profileEmailEt.text.toString() != viewModel.loggedInUser?.email &&
-                profilePhoneEt.text.toString() != viewModel.loggedInUser?.mobile.toString()
+            if (profileNameTiet.text.toString() != viewModel.loggedInUser?.fullName ||
+                profileEmailTiet.text.toString() != viewModel.loggedInUser?.email ||
+                profilePhoneTiet.text.toString() != viewModel.loggedInUser?.mobile.toString()
             ) {
                 //fire service call
                 val user = viewModel.loggedInUser?.copy(
-                    email = profileEmailEt.text.toString(),
-                    fullName = profileNameEt.text.toString(),
-                    mobile = profilePhoneEt.text.toString()
+                    email = profileEmailTiet.text.toString(),
+                    fullName = profileNameTiet.text.toString(),
+                    mobile = profilePhoneTiet.text.toString()
                 )
                 viewModel.editUser(user!!)
                 Toast.makeText(requireContext(), "update Info", Toast.LENGTH_LONG).show()
             }
         } else {
             // no change as cancel
-//            cancelClicked()
+            cancelClicked()
             Toast.makeText(requireContext(), "No Changes", Toast.LENGTH_LONG).show()
         }
+    }
+
+    @AfterPermissionGranted(RC_PERMISSION_STORAGE)
+    private fun saveChangesWithImage() {
+        val perms = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (EasyPermissions.hasPermissions(requireActivity(), *perms)) {
+            //update user avatar
+            Toast.makeText(requireContext(), "update Avatar", Toast.LENGTH_LONG).show()
+        } else {
+            // Do not have permissions, request them now
+            EasyPermissions.requestPermissions(
+                this, "Requesting permission",
+                RC_PERMISSION_STORAGE, *perms
+            )
+        }
+    }
+
+    private fun saveChanges() {
+
     }
 }
