@@ -76,6 +76,18 @@ interface RetrofitAuthApiService {
         @Header("Authorization") token: String
     ): Deferred<ApiResponse<List<MiniOrderResponse>>>
 
+    @POST("order/history")
+    fun order(
+        @Header("Authorization") token: String,
+        @Body request: OrderRequest
+    ): Deferred<ApiResponse<List<OrderResponse>>>
+
+    @POST("order/action")
+    fun orderAction(
+        @Header("Authorization") token: String,
+        @Body request: OrderActionRequest
+    ): Deferred<ApiResponse<OrderActionResponse>>
+
     companion object {
         fun create(baseUrl: String, client: OkHttpClient): RetrofitAuthApiService {
             val retrofit = Retrofit.Builder()

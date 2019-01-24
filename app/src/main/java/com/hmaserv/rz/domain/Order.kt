@@ -2,79 +2,56 @@ package com.hmaserv.rz.domain
 
 import com.squareup.moshi.Json
 
-data class CreateOrderRequest(
-    @field:Json(name = "ad_uuid") val adUuid: String,
-    @field:Json(name = "contacts") val contact: OrderContact,
-    @field:Json(name = "characteristics") val attributes: List<Attribute.MainAttribute>,
-    @field:Json(name = "payment") val payment: String
+data class OrderResponse(
+    @field:Json(name = "status")
+    val status: String?,
+    @field:Json(name = "order_price")
+    val orderPrice: Int?,
+    @field:Json(name = "amount")
+    val amount: Int?,
+    @field:Json(name = "remaining")
+    val remaining: Int?,
+    @field:Json(name = "created_at")
+    val createdAt: String?,
+    @field:Json(name = "note")
+    val note: String?
 )
 
-data class OrderContactResponse(
-    @field:Json(name = "city") val city: String?,
-    @field:Json(name = "name") val name: String?,
-    @field:Json(name = "notes") val notes: String?,
-    @field:Json(name = "mobile") val mobile: String?,
-    @field:Json(name = "address") val address: String?
+data class OrderRequest(
+    @field:Json(name = "order_uuid") val orderUuid: String
 )
 
-data class MiniOrderResponse(
-    @field:Json(name = "order_uuid") val uuid: String?,
-    @field:Json(name = "contacts") val contact: OrderContactResponse?,
-    @field:Json(name = "status") val status: String?,
-    @field:Json(name = "ad") val miniAd: MiniAdResponse?
-)
-
-data class MiniOrder(
-    val uuid: String,
-    val contact: OrderContact,
+data class Order(
     val status: String,
-    val miniAd: MiniAdResponse
+    val price: Int,
+    val amount: Int,
+    val remaining: Int,
+    val createdAt: String,
+    val note: String
 )
 
-data class OrderContact(
-    val name: String,
-    val address: String,
-    val city: String,
-    val mobile: String,
-    val notes: String
-)
-
-enum class Payment(val value: String) {
-    CASH("cash"),
-    PAYPAL("paypal")
+sealed class OrderStatus(val name: String, val uuid: String) {
+    data class Pending(val nameValue: String, val uuidValue: String) : OrderStatus(nameValue, uuidValue)
+    data class Accepted(val nameValue: String, val uuidValue: String) : OrderStatus(nameValue, uuidValue)
+    data class Refused(val nameValue: String, val uuidValue: String) : OrderStatus(nameValue, uuidValue)
+    data class Deposit(val nameValue: String, val uuidValue: String) : OrderStatus(nameValue, uuidValue)
+    data class Completed(val nameValue: String, val uuidValue: String) : OrderStatus(nameValue, uuidValue)
 }
 
-fun MiniOrderResponse.toMiniOrder(): MiniOrder? {
-    val orderContact = contact?.toOrderContact()
-    if (uuid != null
-        && orderContact != null
-        && status != null
-        && miniAd != null
+fun OrderResponse.toOrder(): Order? {
+    if (status != null
+        && orderPrice != null
+        && amount != null
+        && remaining != null
+        && createdAt != null
     ) {
-        return MiniOrder(
-            uuid,
-            orderContact,
+        return Order(
             status,
-            miniAd
-        )
-    }
-
-    return null
-}
-
-fun OrderContactResponse.toOrderContact(): OrderContact? {
-    if (name != null
-        && address != null
-        && city != null
-        && mobile != null
-        && notes != null
-    ) {
-        return OrderContact(
-            name,
-            address,
-            city,
-            mobile,
-            notes
+            orderPrice,
+            amount,
+            remaining,
+            createdAt,
+            note ?: ""
         )
     }
 

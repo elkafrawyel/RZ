@@ -15,6 +15,9 @@ interface RetrofitApiService {
     @GET("lookups/cities")
     fun getCities(): Deferred<ApiResponse<List<CityResponse>>>
 
+    @GET("lookups/orderStatuses")
+    fun getOrderStatus(): Deferred<ApiResponse<List<OrderStatusResponse>>>
+
     @POST("auth/login")
     fun login(@Body logInUserRequest: LogInUserRequest): Deferred<ApiResponse<LoggedInUser>>
 

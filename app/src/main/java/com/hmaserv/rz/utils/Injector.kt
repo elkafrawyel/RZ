@@ -179,11 +179,14 @@ object Injector {
     fun deleteAdImageUseCase() = DeleteImageUseCase(getLoggedInRepo(), getUploaderRepo())
 
     // orders
-    private fun getOrdersRemoteSource() = OrdersRemoteSource(getAuthApiService())
+    private fun getOrdersRemoteSource() = OrdersRemoteSource(getApiService(), getAuthApiService())
     private fun getOrdersRepo() = OrdersRepo.getInstance(getOrdersRemoteSource())
 
     fun createOrderUseCase() = CreateOrderUseCase(getLoggedInRepo(), getOrdersRepo())
     fun getMyOrdersUseCase() = GetMyOrdersUseCase(getLoggedInRepo(), getOrdersRepo())
+    fun getOrderStatusUseCase() = GetOrderStatusUseCase(getOrdersRepo())
+    fun getOrderUseCase() = GetOrderUseCase(getLoggedInRepo(), getOrdersRepo())
+    fun orderActionUseCase() = OrderActionUseCase(getLoggedInRepo(), getOrdersRepo())
 
     // lookups
     private fun getLookUpsRemoteSource() = LookUpsRemoteSource(getApiService())
