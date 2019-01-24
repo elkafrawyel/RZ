@@ -41,6 +41,7 @@ class CreateAdViewModel : BaseViewModel() {
 
     private val selectedImagesList = ArrayList<Uri>(10)
     val attributes = ArrayList<AttributeSection>()
+    val dates = ArrayList<String>()
 
     var attributesVisibility = View.GONE
     var datesVisibility = View.GONE
@@ -222,6 +223,14 @@ class CreateAdViewModel : BaseViewModel() {
                     map[it.t.mainAttributeName] = arrayListOf(it.t)
                 }
             }
+        dates.forEach {
+            val value = map["date"]
+            if (value != null) {
+                value.add(Attribute.SubAttribute("date", it, 0, true))
+            } else {
+                map["date"] = arrayListOf(Attribute.SubAttribute("date", it, 0, true))
+            }
+        }
         return ArrayList(map.map { Attribute.MainAttribute(it.key, it.value) })
     }
 

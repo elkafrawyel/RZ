@@ -41,19 +41,21 @@ class EditAdViewModel : NewBaseViewModel() {
                     images.addAll(adResult.data.images)
 
                     val resultMap = mutableMapOf<String, ArrayList<Attribute.SubAttribute>>()
+                    var dateIndex = -1
                     attributesResult.data.forEach { main ->
                         resultMap[main.name] = ArrayList(main.attributes)
                     }
                     adResult.data.mainAttributes.forEach { main ->
-                        val allSubAttributes = resultMap[main.name]
-                        main.attributes.forEach { sub ->
-                            for (i in 0 until (allSubAttributes?.size ?: 0)) {
-                                if (allSubAttributes?.get(i)?.name.equals(sub.name)) {
-                                    allSubAttributes?.removeAt(i)
-                                    allSubAttributes?.add(i, sub.copy(isChecked = true))
+                        if (main.name == "date") dateIndex = adResult.data.mainAttributes.indexOf(main)
+                            val allSubAttributes = resultMap[main.name]
+                            main.attributes.forEach { sub ->
+                                for (i in 0 until (allSubAttributes?.size ?: 0)) {
+                                    if (allSubAttributes?.get(i)?.name.equals(sub.name)) {
+                                        allSubAttributes?.removeAt(i)
+                                        allSubAttributes?.add(i, sub.copy(isChecked = true))
+                                    }
                                 }
                             }
-                        }
                     }
 
                     for ((key, value) in resultMap) {
@@ -71,6 +73,23 @@ class EditAdViewModel : NewBaseViewModel() {
                             )
                         }
                     }
+
+                    if (dateIndex != -1) {
+                        attributes.add(
+                            AttributeSection(
+                                true,
+                                "date"
+                            )
+                        )
+                        adResult.data.mainAttributes[dateIndex].attributes.forEach { sub ->
+                            attributes.add(
+                                AttributeSection(
+                                    sub.copy(isChecked = true)
+                                )
+                            )
+                        }
+                    }
+
                     currentAd = adResult.data
                     withContext(dispatcherProvider.main) { showSuccess(adResult.data) }
                 } else {

@@ -12,12 +12,14 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.TransitionManager
 import com.google.android.material.snackbar.Snackbar
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.*
@@ -39,6 +41,7 @@ class CreateAdFragment : Fragment(), AttributesAdapter.AttributesCallback, DateP
     private val subCategoriesAdapter: ArrayAdapter<SubCategory> by lazy { ArrayAdapter(requireContext(), R.layout.spinner_item_view, viewModel.subCategories) }
     private val imageAdapter by lazy { AdImagesAdapter(viewModel.getSelectedImagesList()) }
     private val attributesAdapter by lazy { AttributesAdapter(viewModel.attributes, this) }
+    private val dateAdapter by lazy { DateAdapter(viewModel.dates) }
 
     private var selectedCategory: Category? = null
     lateinit var selectedSubCategory: SubCategory
@@ -95,12 +98,16 @@ class CreateAdFragment : Fragment(), AttributesAdapter.AttributesCallback, DateP
         attributesRv.layoutManager = LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false)
         viewModel.attributesUiState.observeEvent(this) { onAttributesStateChanged(it) }
 
-        categoriesSpinner.adapter = categoriesAdapter
+        datesRv.adapter = dateAdapter
+        dateAdapter.setOnItemChildClickListener { _, _, position ->
+            viewModel.dates.removeAt(position)
+            dateAdapter.notifyItemRemoved(position)
+        }
 
+        categoriesSpinner.adapter = categoriesAdapter
         subCategoriesSpinner.adapter = subCategoriesAdapter
 
         viewModel.categoriesUiState.observe(this, Observer { onCategoryResponse(it) })
-
         viewModel.subCategoriesUiState.observe(this, Observer { onSubCategoryResponse(it) })
 
         categoriesSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -134,7 +141,7 @@ class CreateAdFragment : Fragment(), AttributesAdapter.AttributesCallback, DateP
 
         backBtn.setOnClickListener { findNavController().navigateUp() }
 
-        labelAttributesTv.setOnClickListener {
+        attributesMbtn.setOnClickListener {
             when (viewModel.attributesVisibility) {
                 View.GONE -> attributesRv.visibility = View.VISIBLE
                 View.VISIBLE -> attributesRv.visibility = View.GONE
@@ -143,7 +150,7 @@ class CreateAdFragment : Fragment(), AttributesAdapter.AttributesCallback, DateP
             viewModel.attributesVisibility = attributesRv.visibility
         }
 
-        labelDateTv.setOnClickListener {
+        dateMbtn.setOnClickListener {
             when (viewModel.datesVisibility) {
                 View.GONE -> datesRv.visibility = View.VISIBLE
                 View.VISIBLE -> datesRv.visibility = View.GONE
@@ -156,6 +163,11 @@ class CreateAdFragment : Fragment(), AttributesAdapter.AttributesCallback, DateP
     private fun onAttributesStateChanged(state: CreateAdViewModel.AttributesUiState) {
         when (state) {
             CreateAdViewModel.AttributesUiState.Loading -> {
+                attributesRv.visibility = View.GONE
+                viewModel.attributesVisibility = View.GONE
+                attributesCl.visibility = View.VISIBLE
+                attributesMbtn.isEnabled = false
+                attributesPb.visibility = View.VISIBLE
             }
             is CreateAdViewModel.AttributesUiState.Success -> {
                 loadinLav.visibility = View.GONE
@@ -179,6 +191,13 @@ class CreateAdFragment : Fragment(), AttributesAdapter.AttributesCallback, DateP
                     }
                 )
                 attributesAdapter.notifyDataSetChanged()
+                if (state.attributes.isNotEmpty()) {
+                    attributesCl.visibility = View.VISIBLE
+                    attributesMbtn.isEnabled = true
+                    attributesPb.visibility = View.GONE
+                } else {
+                    attributesCl.visibility = View.GONE
+                }
             }
             is CreateAdViewModel.AttributesUiState.Error -> {
             }
@@ -198,7 +217,8 @@ class CreateAdFragment : Fragment(), AttributesAdapter.AttributesCallback, DateP
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        Toast.makeText(requireContext(), "$dayOfMonth/$month/$year", Toast.LENGTH_SHORT).show()
+        viewModel.dates.add("$dayOfMonth/${month + 1}/$year")
+        dateAdapter.notifyItemInserted(viewModel.dates.size - 1)
     }
 
     private fun onSubCategoryResponse(state: CreateAdViewModel.SubCategoriesUiState) {
@@ -218,7 +238,6 @@ class CreateAdFragment : Fragment(), AttributesAdapter.AttributesCallback, DateP
 
     private fun onCategoryResponse(state: CreateAdViewModel.CategoriesUiState) {
         when (state) {
-
             is CreateAdViewModel.CategoriesUiState.Loading -> showCategoryLoading()
             is CreateAdViewModel.CategoriesUiState.Success -> showCategorySuccess()
         }
@@ -226,6 +245,7 @@ class CreateAdFragment : Fragment(), AttributesAdapter.AttributesCallback, DateP
 
     private fun showCategorySuccess() {
         categoriesAdapter.notifyDataSetChanged()
+        subCategoriesSpinner.visibility = View.VISIBLE
     }
 
     private fun showCategoryLoading() {

@@ -94,6 +94,7 @@
         android:layout_height="0dp"
         android:fillViewport="true"
         android:visibility="invisible"
+        android:animateLayoutChanges="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -102,7 +103,6 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:animateLayoutChanges="true"
             android:padding="16dp">
 
             <androidx.recyclerview.widget.RecyclerView
@@ -175,6 +175,7 @@
                 android:hint="@string/hint_product_quantity"
                 android:inputType="numberSigned"
                 android:singleLine="true"
+                android:nestedScrollingEnabled="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/priceWithDiscountEt" />
@@ -206,7 +207,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:animateLayoutChanges="true"
                 app:layout_constraintVertical_chainStyle="packed"
                 app:layout_constraintVertical_bias="0"
                 android:background="@drawable/fields_bg"
@@ -215,28 +215,46 @@
                 app:layout_constraintTop_toBottomOf="@id/subCategoriesSpinner"
                 app:layout_constraintBottom_toTopOf="@+id/datesCl">
 
-                <TextView
-                    android:id="@+id/labelAttributesTv"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/attributesMbtn"
+                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:drawableEnd="@drawable/ic_arrow_down_black"
+                    android:minHeight="0dp"
+                    android:textAlignment="textStart"
+                    app:iconGravity="start"
+                    app:iconPadding="16dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:textColor="@color/colorBlack"
+                    android:textAppearance="?attr/textAppearanceBody1"
                     android:text="@string/label_attributes"
-                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    app:icon="@drawable/ic_arrow_down_black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <ProgressBar
+                    android:id="@+id/attributesPb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toTopOf="@id/attributesMbtn"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@id/attributesMbtn"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/attributesRv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:orientation="vertical"
+                    android:padding="8dp"
                     android:visibility="gone"
+                    android:nestedScrollingEnabled="true"
+                    android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/labelAttributesTv"
+                    app:layout_constraintTop_toBottomOf="@id/attributesMbtn"
                     tools:itemCount="5"
                     tools:listitem="@layout/attribute_section_item" />
 
@@ -248,35 +266,55 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:animateLayoutChanges="true"
                 android:background="@drawable/fields_bg"
+                android:animateLayoutChanges="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/attributesCl"
                 app:layout_constraintBottom_toBottomOf="parent">
 
-                <TextView
-                    android:id="@+id/labelDateTv"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/dateMbtn"
+                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:drawableEnd="@drawable/ic_arrow_down_black"
+                    android:minHeight="0dp"
+                    android:textAlignment="textStart"
+                    app:iconGravity="start"
+                    app:iconPadding="16dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:textColor="@color/colorBlack"
+                    android:textAppearance="?attr/textAppearanceBody1"
                     android:text="@string/label_date"
-                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    app:icon="@drawable/ic_arrow_down_black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <!--<TextView-->
+                    <!--android:id="@+id/labelDateTv"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:drawableEnd="@drawable/ic_arrow_down_black"-->
+                    <!--android:text="@string/label_date"-->
+                    <!--android:textAppearance="?attr/textAppearanceHeadline6"-->
+                    <!--app:layout_constraintEnd_toEndOf="parent"-->
+                    <!--app:layout_constraintStart_toStartOf="parent"-->
+                    <!--app:layout_constraintTop_toTopOf="parent" />-->
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/datesRv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
                     android:orientation="vertical"
                     android:visibility="gone"
+                    android:nestedScrollingEnabled="true"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/labelDateTv"
+                    app:layout_constraintTop_toBottomOf="@id/dateMbtn"
+                    app:reverseLayout="false"
                     tools:itemCount="5"
                     tools:listitem="@layout/attribute_section_item" />
 

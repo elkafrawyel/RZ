@@ -2,8 +2,10 @@ package com.hmaserv.rz.ui.createAd
 
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.ViewAnimator
 import com.chad.library.adapter.base.BaseSectionQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.hmaserv.rz.R
@@ -22,9 +24,18 @@ class AttributesAdapter(data: List<AttributeSection>, val callback: AttributesCa
 
     override fun convert(helper: BaseViewHolder, item: AttributeSection) {
         helper.setText(R.id.attrCb, item.t.name)
-        helper.getView<EditText>(R.id.attrEt).setText(item.t.price.toString())
-        helper.getView<CheckBox>(R.id.attrCb).isChecked = item.t.isChecked
+        if (item.t.mainAttributeName == "date") {
+            helper.getView<EditText>(R.id.attrEt).visibility = View.GONE
+        } else {
+            helper.getView<EditText>(R.id.attrEt).visibility = View.VISIBLE
+            if (item.t.price > 0) {
+                helper.getView<EditText>(R.id.attrEt).setText(item.t.price.toString())
+            } else {
+                helper.getView<EditText>(R.id.attrEt).setText("")
+            }
+        }
 
+        helper.getView<CheckBox>(R.id.attrCb).isChecked = item.t.isChecked
         helper.getView<CheckBox>(R.id.attrCb).setOnCheckedChangeListener { _, isChecked ->
             callback.onAttributeChecked(helper.adapterPosition, isChecked)
         }
