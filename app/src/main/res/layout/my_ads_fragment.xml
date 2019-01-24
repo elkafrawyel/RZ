@@ -108,12 +108,10 @@
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
                     app:layout_constraintVertical_bias="0"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/actionListMbtn"
-                    app:reverseLayout="false"
                     tools:listitem="@layout/ad_item_view" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
