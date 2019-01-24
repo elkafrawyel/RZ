@@ -9,20 +9,20 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.hmaserv.rz.R
+import com.hmaserv.rz.domain.Order
 import com.hmaserv.rz.ui.BaseFragment
 import kotlinx.android.synthetic.main.order_received_details_fragment.*
 
 class OrderReceivedDetailsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private var receivedOrderUuid: String? = null
-    private val viewModel by lazy { ViewModelProviders.of(requireActivity()).get(OrderReceivedViewModel::class.java) }
-    private val adapter by lazy { OrderReceivedDetailsAdapter(viewModel.dataList) }
+    private val viewModel by lazy { ViewModelProviders.of(this).get(OrderReceivedViewModel::class.java) }
+    private val adapter by lazy { OrderReceivedDetailsAdapter() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.order_received_details_fragment, container, false)
     }
 
@@ -56,8 +56,8 @@ class OrderReceivedDetailsFragment : BaseFragment(), SwipeRefreshLayout.OnRefres
     }
 
     override fun showSuccess(dataMap: Map<String, Any>) {
-        val categories = dataMap[DATA_RECEIVED_ORDER_DETAILS_KEY] as List<String>
-        if (categories.isEmpty()) {
+        val orders = dataMap[DATA_RECEIVED_ORDER_DETAILS_KEY] as List<Order>
+        if (orders.isEmpty()) {
             showStateEmptyView()
         } else {
             loadinLav.visibility = View.GONE
@@ -66,7 +66,8 @@ class OrderReceivedDetailsFragment : BaseFragment(), SwipeRefreshLayout.OnRefres
             emptyViewCl.visibility = View.GONE
             noConnectionCl.visibility = View.GONE
             errorCl.visibility = View.GONE
-            adapter.notifyDataSetChanged()
+
+            adapter.addData(orders)
         }
     }
 

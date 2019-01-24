@@ -165,5 +165,14 @@
     <string name="label_received_order_details_title">تفاصيل الطلب</string>
     <string name="label_complete">تم التسليم</string>
     <string name="label_receive_money">استلام دفعة</string>
+    <string name="label_date_order">التاريخ</string>
+    <string name="label_status_order">الحالة</string>
+    <string name="label_price_order">السعر الاساسي</string>
+    <string name="label_paid_order">القيمة المدفوعة</string>
+    <string name="label_remaining_order">القيمة المتبقية</string>
+    <string name="label_note_order">ملاحظات</string>
+    <string name="label_accept">قبول</string>
+    <string name="label_refuse">رفض</string>
+    <string name="label_pay_recived">استلام دفعة</string>
 
 </resources>

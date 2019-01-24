@@ -3,18 +3,22 @@ package com.hmaserv.rz.ui.orderReceivedDetails
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.hmaserv.rz.R
+import com.hmaserv.rz.domain.Order
 
-class OrderReceivedDetailsAdapter(
-    data: ArrayList<String>
-) :
-    BaseQuickAdapter<String, BaseViewHolder>(R.layout.order_details_item_view, data) {
-    override fun convert(helper: BaseViewHolder, item: String) {
+class OrderReceivedDetailsAdapter : BaseQuickAdapter<Order, BaseViewHolder>(R.layout.order_details_item_view, ArrayList<Order>()) {
 
-        helper.setText(R.id.orderDetailsTv, item)
+    override fun convert(helper: BaseViewHolder, item: Order) {
+        helper.setText(R.id.dateTv, item.createdAt)
+            .setText(R.id.statusTv, item.status)
+            .setText(R.id.priceTv, item.price.toString())
+            .setText(R.id.paidTv, item.amount.toString())
+            .setText(R.id.remainingTv, item.remaining.toString())
+            .setText(R.id.noteTv, item.note)
+
         if (helper.layoutPosition == mData.size - 1) {
-            helper.setBackgroundRes(R.id.orderDetailsTv, R.drawable.order_details_selected_bg)
+            helper.setBackgroundRes(R.id.rootCl, R.drawable.order_details_selected_bg)
         } else {
-            helper.setBackgroundRes(R.id.orderDetailsTv, R.drawable.order_details_un_selected_bg)
+            helper.setBackgroundRes(R.id.rootCl, R.drawable.order_details_un_selected_bg)
         }
     }
 }

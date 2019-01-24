@@ -57,12 +57,12 @@ class OrdersReceivedFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
 
         adapter.onItemClickListener =
                 BaseQuickAdapter.OnItemClickListener { _, _, position ->
-                    openReceivedOrderDetails(adapter.data[position].miniAd.uuid)
+                    openReceivedOrderDetails(adapter.data[position].uuid)
                 }
 
         adapter.onItemChildClickListener = BaseQuickAdapter.OnItemChildClickListener {
                 _, _, position ->
-            openReceivedOrderDetails(adapter.data[position].miniAd.uuid)
+            openReceivedOrderDetails(adapter.data[position].uuid)
         }
 
         errorCl.setOnClickListener { viewModel.refresh() }

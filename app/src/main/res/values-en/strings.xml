@@ -158,5 +158,14 @@
     <string name="label_received_order_details_title">Received Order Details</string>
     <string name="label_complete">Complete</string>
     <string name="label_receive_money">Receive</string>
+    <string name="label_date_order">Date</string>
+    <string name="label_status_order">Status</string>
+    <string name="label_price_order">Price</string>
+    <string name="label_paid_order">paid</string>
+    <string name="label_remaining_order">Remaining</string>
+    <string name="label_note_order">Note</string>
+    <string name="label_accept">قبول</string>
+    <string name="label_refuse">رفض</string>
+    <string name="label_pay_recived">استلام دفعة</string>
 
 </resources>
