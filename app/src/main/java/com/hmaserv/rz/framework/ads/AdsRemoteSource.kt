@@ -7,7 +7,6 @@ import com.hmaserv.rz.data.apiService.RetrofitAuthApiService
 import com.hmaserv.rz.domain.*
 import com.hmaserv.rz.utils.Injector
 import com.hmaserv.rz.utils.safeApiCall
-import timber.log.Timber
 import java.io.IOException
 
 class AdsRemoteSource(
@@ -213,4 +212,29 @@ class AdsRemoteSource(
         return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_http_create_ad_api)))
     }
 
+    override suspend fun reviews(request: ReviewsRequest): DataResource<List<ReviewResponse>> {
+        return safeApiCall(
+            call = { reviewsCall(request) },
+            errorMessage = Injector.getApplicationContext().getString(R.string.error_http_reviews_api)
+        )
+    }
+
+    private suspend fun reviewsCall(request: ReviewsRequest):
+            DataResource<List<ReviewResponse>> {
+        val response = apiService.getReviews(request).await()
+        if (response.success != null && response.success) {
+            val body = response.data
+            if (body != null) {
+                return DataResource.Success(body)
+            }
+        }
+
+        if (response.message != null) {
+            return DataResource.Error(IOException(response.message))
+        }
+
+        return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_http_reviews_api)))
+
+
+    }
 }

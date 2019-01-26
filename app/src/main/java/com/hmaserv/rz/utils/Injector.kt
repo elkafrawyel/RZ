@@ -7,14 +7,14 @@ import com.facebook.spectrum.logging.SpectrumLogcatLogger
 import com.hmaserv.rz.RzApplication
 import com.hmaserv.rz.data.apiService.RetrofitApiService
 import com.hmaserv.rz.data.apiService.RetrofitAuthApiService
+import com.hmaserv.rz.framework.ads.AdsRemoteSource
+import com.hmaserv.rz.framework.ads.AdsRepo
+import com.hmaserv.rz.framework.categories.CategoriesLocalSource
 import com.hmaserv.rz.framework.categories.CategoriesRemoteSource
 import com.hmaserv.rz.framework.categories.CategoriesRepo
 import com.hmaserv.rz.framework.logedInUser.LoggedInUserLocalSource
 import com.hmaserv.rz.framework.logedInUser.LoggedInUserRemoteSource
 import com.hmaserv.rz.framework.logedInUser.LoggedInUserRepo
-import com.hmaserv.rz.framework.ads.AdsRemoteSource
-import com.hmaserv.rz.framework.ads.AdsRepo
-import com.hmaserv.rz.framework.categories.CategoriesLocalSource
 import com.hmaserv.rz.framework.lookups.LookUpsRemoteSource
 import com.hmaserv.rz.framework.lookups.LookUpsRepo
 import com.hmaserv.rz.framework.orders.OrdersRemoteSource
@@ -51,7 +51,7 @@ object Injector {
             LoggedInUserRepo.resetRemoteSource(getLoggedInRemoteSource())
         }
 
-    private val mSpectrum : Spectrum = Spectrum.make(
+    private val mSpectrum: Spectrum = Spectrum.make(
         SpectrumLogcatLogger(Log.INFO),
         DefaultPlugins.get()
     )
@@ -69,6 +69,7 @@ object Injector {
             level = HttpLoggingInterceptor.Level.BODY
         }
     }
+
     private fun getApiServiceHeader(): Interceptor {
         return Interceptor { chain ->
             val request = chain.request()
@@ -79,6 +80,7 @@ object Injector {
             chain.proceed(request)
         }
     }
+
     private fun getOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(getApiServiceHeader())
@@ -97,11 +99,13 @@ object Injector {
         }
         return outputDir
     }
+
     private fun generateResizedImageName(): String {
         val calendar = Calendar.getInstance()
         val dateFormat = SimpleDateFormat("yyyyMMDD_HHmmss_SSS", Locale.ENGLISH)
         return dateFormat.format(calendar.time) ?: "resizeImage${Random.nextInt()}"
     }
+
     fun getNewResizedImagePath(): String? {
         val imageName = "${generateResizedImageName()}.png"
         val imageFile = File(getResizedImagesDir(), imageName)
@@ -110,6 +114,7 @@ object Injector {
 
     // Settings
     private fun getSettingsLocalSource() = SettingsLocalSource(getBoxStore())
+
     private fun getSettingsRepo() = SettingsRepo.getInstance(getSettingsLocalSource())
     fun getCurrentLanguageUseCase() = CurrentLanguageUseCase(getSettingsRepo())
     fun setChangeLanguageUseCase() = ChangeLanguageUseCase(getSettingsRepo())
@@ -117,6 +122,7 @@ object Injector {
 
     // LoggedIn repo
     private fun getLoggedInRemoteSource() = LoggedInUserRemoteSource(getApiService(), getAuthApiService())
+
     private fun getLoggedInLocalSource() = LoggedInUserLocalSource(getBoxStore())
     private fun getLoggedInRepo() = LoggedInUserRepo.getInstance(
         getLoggedInRemoteSource(),
@@ -125,6 +131,7 @@ object Injector {
 
     // LoggedIn use cases
     fun getLoginUseCase() = LoginUserUseCase(getLoggedInRepo())
+
     fun getRegisterUseCase() = RegisterUserUseCase(getLoggedInRepo())
     fun getVerifyPhoneUseCase() = VerifyPhoneUseCase(getLoggedInRepo())
     fun getForgetPasswordUseCase() = ForgetPasswordUseCase(getLoggedInRepo())
@@ -135,6 +142,7 @@ object Injector {
 
     // Categories
     private fun getCategoriesLocalSource() = CategoriesLocalSource(getBoxStore())
+
     private fun getCategoriesRemoteSource() = CategoriesRemoteSource(getApiService())
     private fun getCategoriesRepo() = CategoriesRepo.getInstance(
         getCategoriesRemoteSource(),
@@ -146,6 +154,7 @@ object Injector {
 
     // SubCategories
     private fun getSubCategoriesLocalSource() = SubCategoriesLocalSource(getBoxStore())
+
     private fun getSubCategoriesRemoteSource() = SubCategoriesRemoteSource(getApiService())
     private fun getSubCategoriesRepo() = SubCategoriesRepo.getInstance(
         getSubCategoriesLocalSource(),
@@ -158,6 +167,7 @@ object Injector {
 
     // Ads
     private fun getAdsRemoteSource() = AdsRemoteSource(getApiService(), getAuthApiService())
+
     private fun getAdsRepo() = AdsRepo.getInstance(
         getAdsRemoteSource()
     )
@@ -170,9 +180,11 @@ object Injector {
     fun getMyAdsUseCase() = GetMyAdsUseCase(getLoggedInRepo(), getAdsRepo())
     fun deleteAdUseCase() = DeleteAdUseCase(getLoggedInRepo(), getAdsRepo())
     fun updateAdUseCase() = UpdateAdUseCase(getLoggedInRepo(), getAdsRepo())
+    fun reviewsUseCase() = ReviewsUseCase(getAdsRepo())
 
     // uploader
     private fun getUploaderRemoteSource() = UploaderRemoteSource(getAuthApiService())
+
     private fun getUploaderRepo() = UploaderRepo.getInstance(getUploaderRemoteSource())
 
     fun getUploadAdImageUseCase() = UploadAdImage(getLoggedInRepo(), getUploaderRepo())
@@ -180,6 +192,7 @@ object Injector {
 
     // orders
     private fun getOrdersRemoteSource() = OrdersRemoteSource(getApiService(), getAuthApiService())
+
     private fun getOrdersRepo() = OrdersRepo.getInstance(getOrdersRemoteSource())
 
     fun createOrderUseCase() = CreateOrderUseCase(getLoggedInRepo(), getOrdersRepo())
@@ -191,6 +204,7 @@ object Injector {
 
     // lookups
     private fun getLookUpsRemoteSource() = LookUpsRemoteSource(getApiService())
+
     private fun getLookUpsRepo() = LookUpsRepo.getInstance(getLookUpsRemoteSource())
 
     fun getCitiesUseCase() = GetCitiesUseCase(getLookUpsRepo())

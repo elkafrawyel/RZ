@@ -6,7 +6,10 @@ import kotlinx.coroutines.Deferred
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.Headers
+import retrofit2.http.POST
 
 interface RetrofitApiService {
 
@@ -46,6 +49,9 @@ interface RetrofitApiService {
 
     @POST("ads/details")
     fun getAd(@Body adRequest: AdRequest): Deferred<ApiResponse<AdResponse>>
+
+    @POST("ads/review/list")
+    fun getReviews(@Body reviewsRequest: ReviewsRequest): Deferred<ApiResponse<List<ReviewResponse>>>
 
     companion object {
         fun create(baseUrl: String, client: OkHttpClient): RetrofitApiService {

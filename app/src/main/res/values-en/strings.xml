@@ -167,12 +167,13 @@
     <string name="label_accept">قبول</string>
     <string name="label_refuse">رفض</string>
     <string name="label_pay_recived">استلام دفعة</string>
-    <string name="label_show_reviews">Reviews</string>
     <string name="hint_deposit">الدفعة</string>
     <string name="hint_refuse_reason">سبب الرفض</string>
     <string name="error_empty_deposit">حقل الدفعة فارغ</string>
     <string name="error_deposit_more_than_remaining">قيمة الدفعة اكثر من المتبقي</string>
     <string name="success_action">تمت العملية بنجاح</string>
     <string name="error_actoion">فشل في العملية برجاء المحاولة مرة اخري.</string>
+    <string name="label_show_reviews">Reviews %1$s</string>
+    <string name="error_http_reviews_api">Error getting Reviews</string>
 
 </resources>

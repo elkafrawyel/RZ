@@ -161,16 +161,17 @@
                     app:layout_constraintStart_toEndOf="@id/starFourImgv"
                     app:layout_constraintTop_toTopOf="@id/starOneImgv" />
 
-                <TextView
-                    android:id="@+id/ratingTv"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/reviewsMbtn"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:textAppearance="?attr/textAppearanceCaption"
+                    android:insetLeft="0dp"
+                    android:insetRight="0dp"
                     app:layout_constraintBottom_toBottomOf="@id/starOneImgv"
                     app:layout_constraintStart_toEndOf="@id/starFiveImgv"
                     app:layout_constraintTop_toTopOf="@id/starOneImgv"
-                    tools:text="(18)" />
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:textAppearance="?attr/textAppearanceBody2" />
 
                 <TextView
                     android:id="@+id/priceTv"
@@ -205,19 +206,6 @@
                     app:layout_constraintStart_toStartOf="@id/discountPriceTv"
                     app:layout_constraintTop_toTopOf="@id/discountPriceTv" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/reviewsMbtn"
-                    android:minWidth="0dp"
-                    android:insetRight="0dp"
-                    android:insetLeft="0dp"
-                    app:layout_constraintTop_toBottomOf="@id/discountPriceTv"
-                    app:layout_constraintStart_toStartOf="@id/priceTv"
-                    android:layout_marginTop="8dp"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:text="@string/label_show_reviews"
-                    android:textAppearance="?attr/textAppearanceBody2" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/createOrderMbtn"

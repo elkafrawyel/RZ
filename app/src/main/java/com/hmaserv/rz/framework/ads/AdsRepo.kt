@@ -17,7 +17,7 @@ class AdsRepo(
 
     override suspend fun getPromotions(): DataResource<List<MiniAd>> {
         val result = adsRemoteSource.getPromotions()
-        return when(result) {
+        return when (result) {
             is DataResource.Success -> DataResource.Success(result.data.mapNotNull { it.toMiniProduct() })
             is DataResource.Error -> result
         }
@@ -39,15 +39,22 @@ class AdsRepo(
                 if (ad != null)
                     DataResource.Success(ad)
                 else
-                    DataResource.Error(IOException(Injector.getApplicationContext().getString(
-                        R.string.error_getting_ad
-                    )))
+                    DataResource.Error(
+                        IOException(
+                            Injector.getApplicationContext().getString(
+                                R.string.error_getting_ad
+                            )
+                        )
+                    )
             }
             is DataResource.Error -> result
         }
     }
 
-    override suspend fun createAd(token: String, createProductRequest: CreateProductRequest): DataResource<CreateProductResponse> {
+    override suspend fun createAd(
+        token: String,
+        createProductRequest: CreateProductRequest
+    ): DataResource<CreateProductResponse> {
         return adsRemoteSource.createAd(token, createProductRequest)
     }
 
@@ -68,6 +75,31 @@ class AdsRepo(
         request: UpdateAdRequest
     ): DataResource<CreateProductResponse> {
         return adsRemoteSource.updateAd(token, request)
+    }
+
+    override suspend fun reviews(request: ReviewsRequest): DataResource<List<Review>> {
+//        val result = adsRemoteSource.reviews(request)
+
+        val list = ArrayList<Review>()
+        for (i in 0 until 10) {
+            list.add(
+                Review(
+                    "f84ab016-2337-4463-bc9b-ed5ad06fcc99",
+                    "http://165.227.100.140//files//subCategory//sub-default.png",
+                    "Mahmoud",
+                    "5",
+                    "10/01/2019",
+                    "New Comment"
+                )
+            )
+        }
+
+        return DataResource.Success(list)
+
+//        return when (result) {
+//            is DataResource.Success -> DataResource.Success(result.data.mapNotNull { it.toReview() })
+//            is DataResource.Error -> result
+//        }
     }
 
     companion object {

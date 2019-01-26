@@ -153,6 +153,7 @@
         android:layout_height="100dp"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
+        android:visibility="gone"
         app:lottie_rawRes="@raw/loading"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

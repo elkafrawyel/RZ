@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.reviews_fragment.*
 class ReviewsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private var adUuid: String? = null
-    private val viewModel by lazy { ViewModelProviders.of(requireActivity()).get(ReviewsViewModel::class.java) }
+    private val viewModel by lazy { ViewModelProviders.of(this).get(ReviewsViewModel::class.java) }
     private val adapter by lazy { ReviewsAdapter(viewModel.reviews) }
 
     override fun onCreateView(

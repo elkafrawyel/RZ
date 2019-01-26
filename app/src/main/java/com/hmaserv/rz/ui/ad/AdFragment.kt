@@ -1,5 +1,6 @@
 package com.hmaserv.rz.ui.ad
 
+import android.graphics.Paint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -136,8 +137,8 @@ class AdFragment : BaseFragment(), AdapterAttributes.AttributesListener {
 
         toolbar_ProductNameTv.text = ad.title
 
-        ratingTv.text = getString(R.string.label_review_number, ad.reviewsNo.toString())
-
+        reviewsMbtn.text = getString(R.string.label_show_reviews, ad.reviewsNo.toString())
+        reviewsMbtn.paintFlags = Paint.UNDERLINE_TEXT_FLAG
         addedDateTv.text = ad.date
 
         productDescriptionTv.text = ad.description
