@@ -182,5 +182,7 @@
     <string name="error_actoion">فشل في العملية برجاء المحاولة مرة اخري.</string>
     <string name="label_show_reviews">%1$s تعليقات</string>
     <string name="error_http_reviews_api">خطأ في ارجاع التعليقات</string>
+    <string name="label_pay">ادفع</string>
+    <string name="error_empty_reason">حقل السبب فارغ</string>
 
 </resources>

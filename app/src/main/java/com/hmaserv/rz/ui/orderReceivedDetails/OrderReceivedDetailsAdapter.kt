@@ -37,11 +37,11 @@ class OrderReceivedDetailsAdapter : BaseQuickAdapter<Order, BaseViewHolder>(
                 .setGone(R.id.refuseMbtn, (lastOrderStatus is OrderStatus.Pending))
                 .setGone(
                     R.id.payReviviedMbtn,
-                    (lastOrderStatus is OrderStatus.Accepted || lastOrderStatus is OrderStatus.Deposit)
+                    ((lastOrderStatus is OrderStatus.Accepted || lastOrderStatus is OrderStatus.Deposit) && item.payment.ordinal == 0)
                 )
                 .setGone(
                     R.id.completedMbtn,
-                    (lastOrderStatus is OrderStatus.Accepted || lastOrderStatus is OrderStatus.Deposit)
+                    ((lastOrderStatus is OrderStatus.Accepted || lastOrderStatus is OrderStatus.Deposit) && item.payment.ordinal == 0)
                 )
 
         } else {

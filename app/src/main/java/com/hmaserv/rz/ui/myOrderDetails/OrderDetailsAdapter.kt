@@ -3,18 +3,46 @@ package com.hmaserv.rz.ui.myOrderDetails
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.hmaserv.rz.R
+import com.hmaserv.rz.domain.Order
+import com.hmaserv.rz.domain.OrderStatus
 
-class OrderDetailsAdapter(
-    data: ArrayList<String>
-) :
-    BaseQuickAdapter<String, BaseViewHolder>(R.layout.order_details_item_view, data) {
-    override fun convert(helper: BaseViewHolder, item: String) {
+class OrderDetailsAdapter : BaseQuickAdapter<Order, BaseViewHolder>(
+    R.layout.order_details_item_view, ArrayList<Order>()
+) {
 
-        helper.setText(R.id.orderDetailsTv, item)
+    private var orderStatus: Map<String, OrderStatus>? = null
+
+    override fun convert(helper: BaseViewHolder, item: Order) {
+
+        helper.setText(R.id.dateTv, item.createdAt)
+            .setText(R.id.statusTv, item.status)
+            .setText(R.id.paidTv, item.amount.toString())
+            .setText(R.id.remainingTv, item.remaining.toString())
+            .setText(R.id.noteTv, item.note)
+            .setGone(R.id.paidLabelTv, item.amount > 0)
+            .setGone(R.id.paidTv, item.amount > 0)
+            .setGone(R.id.remainingLabelTv, item.remaining > 0)
+            .setGone(R.id.remainingTv, item.remaining > 0)
+            .setGone(R.id.noteTv, item.note.isNotBlank())
+            .addOnClickListener(
+                R.id.refuseMbtn,
+                R.id.payMbtn
+            )
+
         if (helper.layoutPosition == mData.size - 1) {
-            helper.setBackgroundRes(R.id.orderDetailsTv, R.drawable.order_details_selected_bg)
+            val lastOrderStatus = orderStatus?.get(item.status)
+            helper.setGone(R.id.refuseMbtn, (lastOrderStatus is OrderStatus.Pending))
+                .setGone(R.id.payMbtn, (lastOrderStatus is OrderStatus.Accepted && item.payment.ordinal == 1))
+
         } else {
-            helper.setBackgroundRes(R.id.orderDetailsTv,  R.drawable.order_details_un_selected_bg)
+            helper.setGone(R.id.refuseMbtn, false)
+                .setGone(R.id.payMbtn, false)
         }
+
     }
+
+    fun setOrderStatus(orderStatus: Map<String, OrderStatus>) {
+        this.orderStatus = orderStatus
+    }
+
 }

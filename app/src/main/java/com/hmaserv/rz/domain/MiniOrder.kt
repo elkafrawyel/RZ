@@ -21,6 +21,8 @@ data class MiniOrderResponse(
     @field:Json(name = "order_uuid") val uuid: String?,
     @field:Json(name = "contacts") val contact: OrderContactResponse?,
     @field:Json(name = "status") val status: String?,
+    @field:Json(name = "endpoint_status") val statusEn: String?,
+    @field:Json(name = "payment") val paymentString: String?,
     @field:Json(name = "ad") val miniAd: MiniAdResponse?
 )
 
@@ -28,6 +30,8 @@ data class MiniOrder(
     val uuid: String,
     val contact: OrderContact,
     val status: String,
+    val statusEn: String,
+    val payment: Payment,
     val miniAd: MiniAdResponse
 )
 
@@ -46,15 +50,21 @@ enum class Payment(val value: String) {
 
 fun MiniOrderResponse.toMiniOrder(): MiniOrder? {
     val orderContact = contact?.toOrderContact()
-    if (uuid != null
+    val payment = paymentString?.toPayment()
+
+        if (uuid != null
         && orderContact != null
         && status != null
+        && statusEn != null
+        && payment != null
         && miniAd != null
     ) {
         return MiniOrder(
             uuid,
             orderContact,
             status,
+            statusEn,
+            payment,
             miniAd
         )
     }
@@ -79,4 +89,12 @@ fun OrderContactResponse.toOrderContact(): OrderContact? {
     }
 
     return null
+}
+
+fun String.toPayment(): Payment? {
+    return when(this) {
+        "cash" -> Payment.CASH
+        "paypal" -> Payment.PAYPAL
+        else -> null
+    }
 }

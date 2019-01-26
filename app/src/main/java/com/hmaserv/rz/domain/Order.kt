@@ -14,7 +14,9 @@ data class OrderResponse(
     @field:Json(name = "created_at")
     val createdAt: String?,
     @field:Json(name = "note")
-    val note: String?
+    val note: String?,
+    @field:Json(name = "payment")
+    val paymentString: String?
 )
 
 data class OrderRequest(
@@ -28,15 +30,19 @@ data class Order(
     val amount: Int,
     val remaining: Int,
     val createdAt: String,
-    val note: String
+    val note: String,
+    val payment: Payment
 )
 
 fun OrderResponse.toOrder(): Order? {
+    val payment = paymentString?.toPayment()
+
     if (status != null
         && orderPrice != null
         && amount != null
         && remaining != null
         && createdAt != null
+        && payment != null
     ) {
         return Order(
             status,
@@ -45,7 +51,8 @@ fun OrderResponse.toOrder(): Order? {
             amount,
             remaining,
             createdAt,
-            note ?: ""
+            note ?: "",
+            payment
         )
     }
 

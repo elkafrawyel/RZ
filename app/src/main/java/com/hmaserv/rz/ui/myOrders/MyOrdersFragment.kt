@@ -58,12 +58,12 @@ class MyOrdersFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
         ordersAdapter.onItemClickListener =
                 BaseQuickAdapter.OnItemClickListener { _, _, position ->
-                        openOrderDetails(ordersAdapter.data[position].miniAd.uuid)
+                        openOrderDetails(ordersAdapter.data[position].uuid)
                 }
 
         ordersAdapter.onItemChildClickListener = BaseQuickAdapter.OnItemChildClickListener {
                 _, _, position ->
-            openOrderDetails(ordersAdapter.data[position].miniAd.uuid)
+            openOrderDetails(ordersAdapter.data[position].uuid)
         }
 
         errorCl.setOnClickListener { viewModel.refresh() }

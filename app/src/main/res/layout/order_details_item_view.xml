@@ -121,21 +121,26 @@
             android:textAppearance="?attr/textAppearanceBody1"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/refuseMbtn"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/noteTv" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/refuseMbtn"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:text="@string/label_refuse"
             android:textAppearance="?attr/textAppearanceBody1"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toEndOf="@id/acceptMbtn"
-            app:layout_constraintTop_toTopOf="@id/acceptMbtn" />
+            app:layout_constraintTop_toBottomOf="@id/noteTv" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/payReviviedMbtn"
@@ -164,12 +169,26 @@
             app:layout_constraintStart_toEndOf="@id/payReviviedMbtn"
             app:layout_constraintTop_toTopOf="@id/payReviviedMbtn" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/payMbtn"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/label_pay"
+            android:textAppearance="?attr/textAppearanceHeadline6"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/noteTv" />
+
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/btnsBarrier"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="top"
-            app:constraint_referenced_ids="acceptMbtn, refuseMbtn, payReviviedMbtn, completedMbtn" />
+            app:constraint_referenced_ids="acceptMbtn, refuseMbtn, payReviviedMbtn, completedMbtn, payMbtn" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
