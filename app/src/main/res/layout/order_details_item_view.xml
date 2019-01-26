@@ -6,9 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="8dp"
+    android:layout_marginTop="4dp"
     android:layout_marginEnd="8dp"
     android:layout_marginBottom="4dp"
-    android:layout_marginTop="4dp"
     app:contentPaddingBottom="8dp"
     app:contentPaddingLeft="16dp"
     app:contentPaddingRight="16dp"
@@ -39,65 +39,61 @@
             tools:text="STATUS" />
 
         <TextView
-            android:id="@+id/priceLabelTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/label_price_order"
-            android:textAppearance="?attr/textAppearanceBody1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/statusTv" />
-
-        <TextView
-            android:id="@+id/priceTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/remainingLabelTv"
-            android:textAppearance="?attr/textAppearanceBody1"
-            app:layout_constraintStart_toStartOf="@id/priceLabelTv"
-            app:layout_constraintTop_toBottomOf="@id/priceLabelTv"
-            tools:text="1200" />
-
-        <TextView
-            android:id="@+id/paidLabelTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="@string/label_paid_order"
-            android:textAppearance="?attr/textAppearanceBody1"
-            app:layout_constraintStart_toEndOf="@id/halfGuideLine"
-            app:layout_constraintTop_toTopOf="@id/priceLabelTv" />
-
-        <TextView
-            android:id="@+id/paidTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?attr/textAppearanceBody1"
-            app:layout_constraintStart_toStartOf="@id/paidLabelTv"
-            app:layout_constraintTop_toBottomOf="@id/paidLabelTv"
-            tools:text="200" />
-
-        <TextView
             android:id="@+id/remainingLabelTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
             android:text="@string/label_remaining_order"
-            app:layout_constraintBottom_toTopOf="@+id/remainingTv"
             android:textAppearance="?attr/textAppearanceBody1"
+            android:textColor="@color/colorBlack70"
+            android:visibility="visible"
+            app:layout_constraintEnd_toStartOf="@+id/paidLabelTv"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/priceTv" />
-
+            app:layout_constraintTop_toBottomOf="@id/statusTv" />
 
         <TextView
             android:id="@+id/remainingTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/noteTv"
             android:textAppearance="?attr/textAppearanceBody1"
+            android:textColor="@color/colorBlack50"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@id/noteTv"
             app:layout_constraintStart_toStartOf="@id/remainingLabelTv"
             app:layout_constraintTop_toBottomOf="@id/remainingLabelTv"
+            app:layout_goneMarginBottom="8dp"
+            tools:text="200" />
+
+        <TextView
+            android:id="@+id/paidLabelTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_paid_order"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:textColor="@color/colorBlack70"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toEndOf="@id/remainingLabelTv"
+            app:layout_constraintTop_toTopOf="@id/remainingLabelTv" />
+
+
+        <TextView
+            android:id="@+id/paidTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:textColor="@color/colorBlack50"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@id/noteTv"
+            app:layout_constraintStart_toStartOf="@id/paidLabelTv"
+            app:layout_constraintTop_toBottomOf="@id/paidLabelTv"
             tools:text="100" />
 
         <TextView
@@ -106,19 +102,13 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:textAppearance="?attr/textAppearanceBody1"
+            android:textColor="@color/colorBlack50"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/btnsBarrier"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/remainingTv"
-            app:layout_constraintBottom_toTopOf="@+id/btnsBarrier"
             tools:text="note" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/halfGuideLine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.5" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/acceptMbtn"

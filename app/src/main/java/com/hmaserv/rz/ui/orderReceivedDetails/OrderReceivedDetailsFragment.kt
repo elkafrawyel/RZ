@@ -4,11 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputEditText
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.Order
 import com.hmaserv.rz.ui.BaseFragment
@@ -31,6 +35,7 @@ class OrderReceivedDetailsFragment : BaseFragment(), SwipeRefreshLayout.OnRefres
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.uiState.observe(this, Observer { onUiStateChanged(it) })
+        viewModel.actionState.observe(this, Observer { onActionStateChanged(it) })
 
         arguments?.let {
             receivedOrderUuid = OrderReceivedDetailsFragmentArgs.fromBundle(it).orderReceivedUuid
@@ -52,7 +57,7 @@ class OrderReceivedDetailsFragment : BaseFragment(), SwipeRefreshLayout.OnRefres
 
     override fun showLoading() {
         loadinLav.visibility = View.VISIBLE
-        dataCl.visibility = View.GONE
+        receivedOrderDetailsSwipe.visibility = View.GONE
         emptyViewCl.visibility = View.GONE
         noConnectionCl.visibility = View.GONE
         errorCl.visibility = View.GONE
@@ -65,11 +70,12 @@ class OrderReceivedDetailsFragment : BaseFragment(), SwipeRefreshLayout.OnRefres
         } else {
             loadinLav.visibility = View.GONE
             receivedOrderDetailsSwipe.isRefreshing = false
-            dataCl.visibility = View.VISIBLE
+            receivedOrderDetailsSwipe.visibility = View.VISIBLE
             emptyViewCl.visibility = View.GONE
             noConnectionCl.visibility = View.GONE
             errorCl.visibility = View.GONE
 
+            priceTv.text = orders[0].price.toString()
             ordersAdapter.setOrderStatus(viewModel.orderStatus)
             ordersAdapter.replaceData(orders)
         }
@@ -77,7 +83,7 @@ class OrderReceivedDetailsFragment : BaseFragment(), SwipeRefreshLayout.OnRefres
 
     override fun showError(message: String) {
         loadinLav.visibility = View.GONE
-        dataCl.visibility = View.GONE
+        receivedOrderDetailsSwipe.visibility = View.GONE
         emptyViewCl.visibility = View.GONE
         noConnectionCl.visibility = View.GONE
         errorCl.visibility = View.VISIBLE
@@ -85,7 +91,7 @@ class OrderReceivedDetailsFragment : BaseFragment(), SwipeRefreshLayout.OnRefres
 
     override fun showNoInternetConnection() {
         loadinLav.visibility = View.GONE
-        dataCl.visibility = View.GONE
+        receivedOrderDetailsSwipe.visibility = View.GONE
         emptyViewCl.visibility = View.GONE
         noConnectionCl.visibility = View.VISIBLE
         errorCl.visibility = View.GONE
@@ -93,7 +99,7 @@ class OrderReceivedDetailsFragment : BaseFragment(), SwipeRefreshLayout.OnRefres
 
     private fun showStateEmptyView() {
         loadinLav.visibility = View.GONE
-        dataCl.visibility = View.GONE
+        receivedOrderDetailsSwipe.visibility = View.GONE
         emptyViewCl.visibility = View.VISIBLE
         noConnectionCl.visibility = View.GONE
         errorCl.visibility = View.GONE
@@ -105,10 +111,77 @@ class OrderReceivedDetailsFragment : BaseFragment(), SwipeRefreshLayout.OnRefres
 
     override fun onItemChildClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
         when (view.id) {
-            R.id.acceptMbtn -> { viewModel.acceptOrder() }
-            R.id.refuseMbtn -> { viewModel.refuseOrder("test note") }
-            R.id.payReviviedMbtn -> { viewModel.paymentReceived(696) }
-            R.id.completedMbtn -> { viewModel.orderCompleted() }
+            R.id.acceptMbtn -> {
+                viewModel.acceptOrder()
+            }
+            R.id.refuseMbtn -> {
+                val refuseView = LayoutInflater.from(requireContext()).inflate(R.layout.refuse_dialog_view, null)
+                MaterialAlertDialogBuilder(requireContext())
+                    .setView(refuseView)
+                    .setNegativeButton(getString(android.R.string.cancel), null)
+                    .setPositiveButton(getString(android.R.string.ok)) { _, _ ->
+                        var reason = refuseView.findViewById<TextInputEditText>(R.id.reasonTiet).text.toString()
+                        if (reason.isBlank()) reason = "لا يوجد سبب"
+                        viewModel.refuseOrder(reason)
+                    }
+                    .show()
+            }
+            R.id.payReviviedMbtn -> {
+                val amountView =
+                    LayoutInflater.from(requireContext()).inflate(R.layout.payment_received_dialog_view, null)
+                val dialog = MaterialAlertDialogBuilder(requireContext())
+                    .setView(amountView)
+                    .setNegativeButton(getString(R.string.label_refuse), null)
+                    .setPositiveButton(getString(R.string.label_accept), null)
+                    .create()
+
+                dialog.setOnShowListener {
+                    val positiveBtn = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                    positiveBtn.setOnClickListener {
+                        val amount = amountView.findViewById<TextInputEditText>(R.id.amountTiet).text.toString()
+                        if (amount.isNotBlank()) {
+                            if (amount.toInt() <= ordersAdapter.data[position].remaining) {
+                                viewModel.paymentReceived(amount.toInt())
+                                dialog.dismiss()
+                            } else {
+                                Snackbar.make(
+                                    rootCl,
+                                    getString(R.string.error_deposit_more_than_remaining),
+                                    Snackbar.LENGTH_SHORT
+                                ).show()
+                            }
+                        } else {
+                            Snackbar.make(rootCl, getString(R.string.error_empty_deposit), Snackbar.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+
+                dialog.show()
+            }
+            R.id.completedMbtn -> {
+                viewModel.orderCompleted(ordersAdapter.data[position].remaining)
+            }
+        }
+    }
+
+    private fun onActionStateChanged(state: OrderReceivedViewModel.OrderActionState?) {
+        when(state) {
+            OrderReceivedViewModel.OrderActionState.NoInternetConnection -> {
+                Snackbar.make(rootCl, getString(R.string.label_no_internet_connection), Snackbar.LENGTH_SHORT).show()
+            }
+            OrderReceivedViewModel.OrderActionState.Loading -> {
+                loadingFl.visibility = View.VISIBLE
+            }
+            OrderReceivedViewModel.OrderActionState.Success -> {
+                loadingFl.visibility = View.GONE
+                viewModel.refresh()
+                Snackbar.make(rootCl, getString(R.string.success_action), Snackbar.LENGTH_SHORT).show()
+            }
+            OrderReceivedViewModel.OrderActionState.Error -> {
+                loadingFl.visibility = View.GONE
+                Snackbar.make(rootCl, getString(R.string.error_actoion), Snackbar.LENGTH_SHORT).show()
+            }
+            null -> {}
         }
     }
 

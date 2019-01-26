@@ -23,6 +23,7 @@ data class OrderRequest(
 
 data class Order(
     val status: String,
+    val orderStatus: OrderStatus,
     val price: Int,
     val amount: Int,
     val remaining: Int,
@@ -39,6 +40,7 @@ fun OrderResponse.toOrder(): Order? {
     ) {
         return Order(
             status,
+            OrderStatus.Unknown(),
             orderPrice,
             amount,
             remaining,

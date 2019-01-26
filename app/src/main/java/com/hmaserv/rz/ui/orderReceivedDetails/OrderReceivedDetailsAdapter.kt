@@ -16,14 +16,13 @@ class OrderReceivedDetailsAdapter : BaseQuickAdapter<Order, BaseViewHolder>(
 
         helper.setText(R.id.dateTv, item.createdAt)
             .setText(R.id.statusTv, item.status)
-            .setText(R.id.priceTv, item.price.toString())
             .setText(R.id.paidTv, item.amount.toString())
             .setText(R.id.remainingTv, item.remaining.toString())
             .setText(R.id.noteTv, item.note)
             .setGone(R.id.paidLabelTv, item.amount > 0)
             .setGone(R.id.paidTv, item.amount > 0)
-            .setGone(R.id.remainingLabelTv, item.amount > 0)
-            .setGone(R.id.remainingTv, item.amount > 0)
+            .setGone(R.id.remainingLabelTv, item.remaining > 0)
+            .setGone(R.id.remainingTv, item.remaining > 0)
             .setGone(R.id.noteTv, item.note.isNotBlank())
             .addOnClickListener(
                 R.id.acceptMbtn,

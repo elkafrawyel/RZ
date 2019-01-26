@@ -7,13 +7,14 @@ data class OrderStatusResponse(
     @field:Json(name = "title") val title: String?
 )
 
-sealed class OrderStatus(val name: String, val uuid: String) {
-    data class Pending(val nameValue: String, val uuidValue: String) : OrderStatus(nameValue, uuidValue)
-    data class Accepted(val nameValue: String, val uuidValue: String) : OrderStatus(nameValue, uuidValue)
-    data class Refused(val nameValue: String, val uuidValue: String) : OrderStatus(nameValue, uuidValue)
-    data class Deposit(val nameValue: String, val uuidValue: String) : OrderStatus(nameValue, uuidValue)
-    data class Canceled(val nameValue: String, val uuidValue: String) : OrderStatus(nameValue, uuidValue)
-    data class Completed(val nameValue: String, val uuidValue: String) : OrderStatus(nameValue, uuidValue)
+sealed class OrderStatus {
+    data class Unknown(val name: String = "UNKNOWN") : OrderStatus()
+    data class Pending(val name: String = "PENDING", val uuid: String) : OrderStatus()
+    data class Accepted(val name: String = "ACCEPT", val uuid: String) : OrderStatus()
+    data class Refused(val name: String = "REFUSED", val uuid: String) : OrderStatus()
+    data class Deposit(val name: String = "DEPOSIT", val uuid: String) : OrderStatus()
+    data class Canceled(val name: String = "CANCELED", val uuid: String) : OrderStatus()
+    data class Completed(val name: String = "COMPLETED", val uuid: String) : OrderStatus()
 }
 
 fun OrderStatusResponse.toOrderStatus(): OrderStatus? {
@@ -26,7 +27,7 @@ fun OrderStatusResponse.toOrderStatus(): OrderStatus? {
             OrderStatusValues.DEPOSIT.name -> OrderStatus.Deposit(title, uuid)
             OrderStatusValues.CANCELED.name -> OrderStatus.Canceled(title, uuid)
             OrderStatusValues.COMPLETED.name -> OrderStatus.Completed(title, uuid)
-            else -> null
+            else -> OrderStatus.Unknown()
         }
     }
 
