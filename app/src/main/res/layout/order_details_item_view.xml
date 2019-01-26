@@ -1,175 +1,186 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rootCl"
+    android:id="@+id/rootMcv"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:background="@drawable/order_details_un_selected_bg"
-    android:padding="16dp">
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="4dp"
+    android:layout_marginTop="4dp"
+    app:contentPaddingBottom="8dp"
+    app:contentPaddingLeft="16dp"
+    app:contentPaddingRight="16dp"
+    app:contentPaddingTop="16dp">
 
-    <TextView
-        android:id="@+id/dateLabelTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/label_date_order"
-        android:textAppearance="?attr/textAppearanceHeadline6"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rootCl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/dateTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?attr/textAppearanceBody1"
-        app:layout_constraintStart_toStartOf="@id/dateLabelTv"
-        app:layout_constraintTop_toBottomOf="@id/dateLabelTv"
-        tools:text="2019-01-23" />
+        <TextView
+            android:id="@+id/dateTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceOverline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="2019-01-23" />
 
-    <TextView
-        android:id="@+id/statusLabelTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/label_status_order"
-        android:textAppearance="?attr/textAppearanceHeadline6"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dateTv" />
+        <TextView
+            android:id="@+id/statusTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textAppearance="?attr/textAppearanceHeadline5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dateTv"
+            tools:text="STATUS" />
 
-    <TextView
-        android:id="@+id/statusTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?attr/textAppearanceBody1"
-        app:layout_constraintStart_toStartOf="@id/statusLabelTv"
-        app:layout_constraintTop_toBottomOf="@id/statusLabelTv"
-        tools:text="STATUS" />
+        <TextView
+            android:id="@+id/priceLabelTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/label_price_order"
+            android:textAppearance="?attr/textAppearanceBody1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/statusTv" />
 
-    <TextView
-        android:id="@+id/priceLabelTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/label_price_order"
-        android:textAppearance="?attr/textAppearanceHeadline6"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/statusTv" />
+        <TextView
+            android:id="@+id/priceTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/remainingLabelTv"
+            android:textAppearance="?attr/textAppearanceBody1"
+            app:layout_constraintStart_toStartOf="@id/priceLabelTv"
+            app:layout_constraintTop_toBottomOf="@id/priceLabelTv"
+            tools:text="1200" />
 
-    <TextView
-        android:id="@+id/priceTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?attr/textAppearanceBody1"
-        app:layout_constraintStart_toStartOf="@id/priceLabelTv"
-        app:layout_constraintTop_toBottomOf="@id/priceLabelTv"
-        tools:text="1200" />
+        <TextView
+            android:id="@+id/paidLabelTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/label_paid_order"
+            android:textAppearance="?attr/textAppearanceBody1"
+            app:layout_constraintStart_toEndOf="@id/halfGuideLine"
+            app:layout_constraintTop_toTopOf="@id/priceLabelTv" />
 
-    <TextView
-        android:id="@+id/paidLabelTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/label_paid_order"
-        android:textAppearance="?attr/textAppearanceHeadline6"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/priceTv" />
+        <TextView
+            android:id="@+id/paidTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceBody1"
+            app:layout_constraintStart_toStartOf="@id/paidLabelTv"
+            app:layout_constraintTop_toBottomOf="@id/paidLabelTv"
+            tools:text="200" />
 
-    <TextView
-        android:id="@+id/paidTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?attr/textAppearanceBody1"
-        app:layout_constraintStart_toStartOf="@id/dateTv"
-        app:layout_constraintTop_toBottomOf="@id/paidLabelTv"
-        tools:text="200" />
-
-    <TextView
-        android:id="@+id/remainingLabelTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/label_remaining_order"
-        android:textAppearance="?attr/textAppearanceHeadline6"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/paidTv" />
+        <TextView
+            android:id="@+id/remainingLabelTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_remaining_order"
+            app:layout_constraintBottom_toTopOf="@+id/remainingTv"
+            android:textAppearance="?attr/textAppearanceBody1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/priceTv" />
 
 
-    <TextView
-        android:id="@+id/remainingTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?attr/textAppearanceBody1"
-        app:layout_constraintStart_toStartOf="@id/remainingLabelTv"
-        app:layout_constraintTop_toBottomOf="@id/remainingLabelTv"
-        tools:text="100" />
+        <TextView
+            android:id="@+id/remainingTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/noteTv"
+            android:textAppearance="?attr/textAppearanceBody1"
+            app:layout_constraintStart_toStartOf="@id/remainingLabelTv"
+            app:layout_constraintTop_toBottomOf="@id/remainingLabelTv"
+            tools:text="100" />
 
-    <TextView
-        android:id="@+id/noteLabelTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/label_note_order"
-        android:textAppearance="?attr/textAppearanceHeadline6"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/remainingTv" />
+        <TextView
+            android:id="@+id/noteTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:textAppearance="?attr/textAppearanceBody1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/remainingTv"
+            app:layout_constraintBottom_toTopOf="@+id/btnsBarrier"
+            tools:text="note" />
 
-    <TextView
-        android:id="@+id/noteTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?attr/textAppearanceBody1"
-        app:layout_constraintStart_toStartOf="@id/noteLabelTv"
-        app:layout_constraintTop_toBottomOf="@id/noteLabelTv"
-        tools:text="note" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/halfGuideLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/acceptMbtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/label_accept"
-        android:visibility="gone"
-        android:textAppearance="?attr/textAppearanceHeadline6"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/noteTv"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/acceptMbtn"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/label_accept"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/noteTv" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/refuseMbtn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="@string/label_refuse"
-        android:visibility="gone"
-        android:textAppearance="?attr/textAppearanceHeadline6"
-        app:layout_constraintStart_toEndOf="@id/acceptMbtn"
-        app:layout_constraintTop_toTopOf="@id/acceptMbtn"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/refuseMbtn"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@string/label_refuse"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/acceptMbtn"
+            app:layout_constraintTop_toTopOf="@id/acceptMbtn" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/payReviviedMbtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/label_pay_recived"
-        android:visibility="gone"
-        android:textAppearance="?attr/textAppearanceHeadline6"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/noteTv" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/payReviviedMbtn"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/label_pay_recived"
+            android:textAppearance="?attr/textAppearanceHeadline6"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/noteTv" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/completedMbtn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="@string/label_complete"
-        android:visibility="gone"
-        android:textAppearance="?attr/textAppearanceHeadline6"
-        app:layout_constraintStart_toEndOf="@id/payReviviedMbtn"
-        app:layout_constraintTop_toTopOf="@id/payReviviedMbtn"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/completedMbtn"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@string/label_complete"
+            android:textAppearance="?attr/textAppearanceHeadline6"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/payReviviedMbtn"
+            app:layout_constraintTop_toTopOf="@id/payReviviedMbtn" />
 
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/btnsBarrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="top"
+            app:constraint_referenced_ids="acceptMbtn, refuseMbtn, payReviviedMbtn, completedMbtn" />
 
-    <!--<androidx.constraintlayout.widget.Barrier-->
-        <!--android:id="@+id/labelBarrier"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--app:barrierDirection="end"-->
-        <!--app:constraint_referenced_ids="dateLabelTv, statusLabelTv, priceLabelTv, paidLabelTv, remainingLabelTv, noteLabelTv" />-->
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

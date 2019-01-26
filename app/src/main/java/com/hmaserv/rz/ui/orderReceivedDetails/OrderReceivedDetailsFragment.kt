@@ -19,7 +19,7 @@ class OrderReceivedDetailsFragment : BaseFragment(), SwipeRefreshLayout.OnRefres
 
     private var receivedOrderUuid: String? = null
     private val viewModel by lazy { ViewModelProviders.of(this).get(OrderReceivedViewModel::class.java) }
-    private val adapter by lazy { OrderReceivedDetailsAdapter() }
+    private val ordersAdapter by lazy { OrderReceivedDetailsAdapter() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,10 +42,10 @@ class OrderReceivedDetailsFragment : BaseFragment(), SwipeRefreshLayout.OnRefres
         }
 
         backImgv.setOnClickListener { findNavController().navigateUp() }
-        receivedOrderDetailsRv.adapter = adapter
+        receivedOrderDetailsRv.adapter = ordersAdapter
         noConnectionCl.setOnClickListener { viewModel.refresh() }
         errorCl.setOnClickListener { viewModel.refresh() }
-        adapter.setOnItemChildClickListener(this)
+        ordersAdapter.onItemChildClickListener = this
 
         receivedOrderDetailsSwipe.setOnRefreshListener(this)
     }
@@ -70,8 +70,8 @@ class OrderReceivedDetailsFragment : BaseFragment(), SwipeRefreshLayout.OnRefres
             noConnectionCl.visibility = View.GONE
             errorCl.visibility = View.GONE
 
-            adapter.setOrderStatus(viewModel.orderStatus)
-            adapter.replaceData(orders)
+            ordersAdapter.setOrderStatus(viewModel.orderStatus)
+            ordersAdapter.replaceData(orders)
         }
     }
 
@@ -103,13 +103,13 @@ class OrderReceivedDetailsFragment : BaseFragment(), SwipeRefreshLayout.OnRefres
         viewModel.refresh()
     }
 
-    override fun onItemChildClick(adapter: BaseQuickAdapter<*, *>?, view: View?, position: Int) {
-//        when(view?.id) {
-//            R.id.acceptMbtn -> { viewModel.sendOrderAction() }
-//            R.id.refuseMbtn -> {}
-//            R.id.payReviviedMbtn -> {}
-//            R.id.completedMbtn -> {}
-//        }
+    override fun onItemChildClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
+        when (view.id) {
+            R.id.acceptMbtn -> { viewModel.acceptOrder() }
+            R.id.refuseMbtn -> { viewModel.refuseOrder("test note") }
+            R.id.payReviviedMbtn -> { viewModel.paymentReceived(696) }
+            R.id.completedMbtn -> { viewModel.orderCompleted() }
+        }
     }
 
 }

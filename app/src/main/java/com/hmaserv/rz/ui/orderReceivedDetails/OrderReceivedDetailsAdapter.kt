@@ -22,7 +22,8 @@ class OrderReceivedDetailsAdapter : BaseQuickAdapter<Order, BaseViewHolder>(
             .setText(R.id.noteTv, item.note)
             .setGone(R.id.paidLabelTv, item.amount > 0)
             .setGone(R.id.paidTv, item.amount > 0)
-            .setGone(R.id.noteLabelTv, item.note.isNotBlank())
+            .setGone(R.id.remainingLabelTv, item.amount > 0)
+            .setGone(R.id.remainingTv, item.amount > 0)
             .setGone(R.id.noteTv, item.note.isNotBlank())
             .addOnClickListener(
                 R.id.acceptMbtn,
@@ -33,21 +34,19 @@ class OrderReceivedDetailsAdapter : BaseQuickAdapter<Order, BaseViewHolder>(
 
         if (helper.layoutPosition == mData.size - 1) {
             val lastOrderStatus = orderStatus?.get(item.status)
-            helper.setBackgroundRes(R.id.rootCl, R.drawable.order_details_selected_bg)
-                .setGone(R.id.acceptMbtn, lastOrderStatus is OrderStatus.Pending)
-                .setGone(R.id.refuseMbtn, lastOrderStatus is OrderStatus.Pending)
+            helper.setGone(R.id.acceptMbtn, (lastOrderStatus is OrderStatus.Pending))
+                .setGone(R.id.refuseMbtn, (lastOrderStatus is OrderStatus.Pending))
                 .setGone(
                     R.id.payReviviedMbtn,
-                    lastOrderStatus is OrderStatus.Accepted || lastOrderStatus is OrderStatus.Deposit
+                    (lastOrderStatus is OrderStatus.Accepted || lastOrderStatus is OrderStatus.Deposit)
                 )
                 .setGone(
                     R.id.completedMbtn,
-                    lastOrderStatus is OrderStatus.Accepted || lastOrderStatus is OrderStatus.Deposit
+                    (lastOrderStatus is OrderStatus.Accepted || lastOrderStatus is OrderStatus.Deposit)
                 )
 
         } else {
-            helper.setBackgroundRes(R.id.rootCl, R.drawable.order_details_un_selected_bg)
-                .setGone(R.id.acceptMbtn, false)
+            helper.setGone(R.id.acceptMbtn, false)
                 .setGone(R.id.refuseMbtn, false)
                 .setGone(R.id.payReviviedMbtn, false)
                 .setGone(R.id.completedMbtn, false)

@@ -12,12 +12,12 @@ class OrderActionUseCase(
     private val ordersRepo: IOrdersRepo
 ) {
 
-    suspend fun action(orderUuid: String, orderStatus: OrderStatus, amount:Int = 0, note: String = ""): DataResource<Boolean> {
+    suspend fun action(orderUuid: String, orderStatus: OrderStatus, amount: Int, note: String?): DataResource<Boolean> {
         return ordersRepo.orderAction(
             "${Constants.AUTHORIZATION_START} ${loggedInUserRepo.getLoggedInUser().token}",
             OrderActionRequest(
                 orderUuid,
-                orderStatus.uuid,
+                orderStatus.name,
                 amount,
                 note
             )

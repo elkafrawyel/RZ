@@ -8,5 +8,5 @@ interface IOrdersRemoteSource {
     suspend fun myOrders(token: String): DataResource<List<MiniOrderResponse>>
     suspend fun receivedOrders(token: String): DataResource<List<MiniOrderResponse>>
     suspend fun order(token: String, request: OrderRequest): DataResource<List<OrderResponse>>
-    suspend fun orderAction(token: String, request: OrderActionRequest): DataResource<OrderActionResponse>
+    suspend fun orderAction(token: String, request: OrderActionRequest): DataResource<Boolean>
 }

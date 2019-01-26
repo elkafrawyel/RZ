@@ -91,7 +91,7 @@ interface RetrofitAuthApiService {
     fun orderAction(
         @Header("Authorization") token: String,
         @Body request: OrderActionRequest
-    ): Deferred<ApiResponse<OrderActionResponse>>
+    ): Deferred<ApiResponse<Boolean>>
 
     companion object {
         fun create(baseUrl: String, client: OkHttpClient): RetrofitAuthApiService {

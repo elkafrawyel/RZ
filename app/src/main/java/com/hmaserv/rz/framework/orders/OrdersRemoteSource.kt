@@ -129,14 +129,14 @@ class OrdersRemoteSource(
         return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_general)))
     }
 
-    override suspend fun orderAction(token: String, request: OrderActionRequest): DataResource<OrderActionResponse> {
+    override suspend fun orderAction(token: String, request: OrderActionRequest): DataResource<Boolean> {
         return safeApiCall(
             call = { orderActionCall(token, request) },
             errorMessage = Injector.getApplicationContext().getString(R.string.error_general)
         )
     }
 
-    private suspend fun orderActionCall(token: String, request: OrderActionRequest): DataResource<OrderActionResponse> {
+    private suspend fun orderActionCall(token: String, request: OrderActionRequest): DataResource<Boolean> {
         val response = authApiService.orderAction(token, request).await()
         if (response.success != null && response.success) {
             val body = response.data

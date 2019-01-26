@@ -30,14 +30,6 @@ data class Order(
     val note: String
 )
 
-sealed class OrderStatus(val name: String, val uuid: String) {
-    data class Pending(val nameValue: String, val uuidValue: String) : OrderStatus(nameValue, uuidValue)
-    data class Accepted(val nameValue: String, val uuidValue: String) : OrderStatus(nameValue, uuidValue)
-    data class Refused(val nameValue: String, val uuidValue: String) : OrderStatus(nameValue, uuidValue)
-    data class Deposit(val nameValue: String, val uuidValue: String) : OrderStatus(nameValue, uuidValue)
-    data class Completed(val nameValue: String, val uuidValue: String) : OrderStatus(nameValue, uuidValue)
-}
-
 fun OrderResponse.toOrder(): Order? {
     if (status != null
         && orderPrice != null
