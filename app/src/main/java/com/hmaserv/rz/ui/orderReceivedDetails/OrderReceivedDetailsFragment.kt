@@ -8,12 +8,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.chad.library.adapter.base.BaseQuickAdapter
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.Order
 import com.hmaserv.rz.ui.BaseFragment
 import kotlinx.android.synthetic.main.order_received_details_fragment.*
 
-class OrderReceivedDetailsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
+class OrderReceivedDetailsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener,
+    BaseQuickAdapter.OnItemChildClickListener {
 
     private var receivedOrderUuid: String? = null
     private val viewModel by lazy { ViewModelProviders.of(this).get(OrderReceivedViewModel::class.java) }
@@ -43,6 +45,7 @@ class OrderReceivedDetailsFragment : BaseFragment(), SwipeRefreshLayout.OnRefres
         receivedOrderDetailsRv.adapter = adapter
         noConnectionCl.setOnClickListener { viewModel.refresh() }
         errorCl.setOnClickListener { viewModel.refresh() }
+        adapter.setOnItemChildClickListener(this)
 
         receivedOrderDetailsSwipe.setOnRefreshListener(this)
     }
@@ -67,7 +70,8 @@ class OrderReceivedDetailsFragment : BaseFragment(), SwipeRefreshLayout.OnRefres
             noConnectionCl.visibility = View.GONE
             errorCl.visibility = View.GONE
 
-            adapter.addData(orders)
+            adapter.setOrderStatus(viewModel.orderStatus)
+            adapter.replaceData(orders)
         }
     }
 
@@ -99,5 +103,13 @@ class OrderReceivedDetailsFragment : BaseFragment(), SwipeRefreshLayout.OnRefres
         viewModel.refresh()
     }
 
+    override fun onItemChildClick(adapter: BaseQuickAdapter<*, *>?, view: View?, position: Int) {
+//        when(view?.id) {
+//            R.id.acceptMbtn -> { viewModel.sendOrderAction() }
+//            R.id.refuseMbtn -> {}
+//            R.id.payReviviedMbtn -> {}
+//            R.id.completedMbtn -> {}
+//        }
+    }
 
 }

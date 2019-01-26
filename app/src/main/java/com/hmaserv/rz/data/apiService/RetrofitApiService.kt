@@ -6,9 +6,7 @@ import kotlinx.coroutines.Deferred
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface RetrofitApiService {
 
@@ -16,6 +14,7 @@ interface RetrofitApiService {
     fun getCities(): Deferred<ApiResponse<List<CityResponse>>>
 
     @GET("lookups/orderStatuses")
+    @Headers("Accept-Language: en")
     fun getOrderStatus(): Deferred<ApiResponse<List<OrderStatusResponse>>>
 
     @POST("auth/login")

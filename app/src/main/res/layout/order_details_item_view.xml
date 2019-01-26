@@ -148,6 +148,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:text="@string/label_pay_recived"
+        android:visibility="gone"
         android:textAppearance="?attr/textAppearanceHeadline6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/noteTv" />
@@ -158,6 +159,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="@string/label_complete"
+        android:visibility="gone"
         android:textAppearance="?attr/textAppearanceHeadline6"
         app:layout_constraintStart_toEndOf="@id/payReviviedMbtn"
         app:layout_constraintTop_toTopOf="@id/payReviviedMbtn"/>

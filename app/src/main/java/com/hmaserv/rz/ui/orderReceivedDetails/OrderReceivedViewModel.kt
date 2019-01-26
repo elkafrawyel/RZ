@@ -2,6 +2,7 @@ package com.hmaserv.rz.ui.orderReceivedDetails
 
 import com.hmaserv.rz.domain.DataResource
 import com.hmaserv.rz.domain.Order
+import com.hmaserv.rz.domain.OrderStatus
 import com.hmaserv.rz.domain.UiState
 import com.hmaserv.rz.ui.NewBaseViewModel
 import com.hmaserv.rz.utils.Injector
@@ -19,6 +20,7 @@ class OrderReceivedViewModel : NewBaseViewModel() {
     private val orderActionUseCase = Injector.orderActionUseCase()
 
     private var orderUuid: String? = null
+    lateinit var orderStatus: Map<String, OrderStatus>
 
     fun setOrderId(orderUuid: String) {
         if (this.orderUuid == null) {
@@ -34,14 +36,11 @@ class OrderReceivedViewModel : NewBaseViewModel() {
             val orderResult = orderUseCase.get(orderUuid!!)
             val orderStatusResult = orderStatusUseCase.get()
 
-            withContext(dispatcherProvider.main) {
-                when(orderResult) {
-                    is DataResource.Success -> {
-                        showDataSuccess(orderResult.data)
-                    }
-
-                    is DataResource.Error -> showDataError()
-                }
+            if (orderResult is DataResource.Success && orderStatusResult is DataResource.Success) {
+                orderStatus = orderStatusResult.data.associateBy { it.name }
+                withContext(dispatcherProvider.main) { showDataSuccess(orderResult.data) }
+            } else {
+                withContext(dispatcherProvider.main) { showDataError() }
             }
         }
     }
