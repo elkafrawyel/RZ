@@ -76,6 +76,11 @@ interface RetrofitAuthApiService {
         @Header("Authorization") token: String
     ): Deferred<ApiResponse<List<MiniOrderResponse>>>
 
+    @GET("user/orders/incoming")
+    fun receivedOrders(
+        @Header("Authorization") token: String
+    ): Deferred<ApiResponse<List<MiniOrderResponse>>>
+
     @POST("order/history")
     fun order(
         @Header("Authorization") token: String,

@@ -40,7 +40,7 @@ class OrdersRemoteSource(
     override suspend fun myOrders(token: String): DataResource<List<MiniOrderResponse>> {
         return safeApiCall(
             call = { myOrdersCall(token) },
-            errorMessage = Injector.getApplicationContext().getString(R.string.error_http_categories_api)
+            errorMessage = Injector.getApplicationContext().getString(R.string.error_general)
         )
     }
 
@@ -57,7 +57,30 @@ class OrdersRemoteSource(
             return DataResource.Error(IOException(response.message))
         }
 
-        return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_http_categories_api)))
+        return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_general)))
+    }
+
+    override suspend fun receivedOrders(token: String): DataResource<List<MiniOrderResponse>> {
+        return safeApiCall(
+            call = { receivedOrdersCall(token) },
+            errorMessage = Injector.getApplicationContext().getString(R.string.error_general)
+        )
+    }
+
+    private suspend fun receivedOrdersCall(token: String): DataResource<List<MiniOrderResponse>> {
+        val response = authApiService.receivedOrders(token).await()
+        if (response.success != null && response.success) {
+            val body = response.data
+            if (body != null) {
+                return DataResource.Success(body)
+            }
+        }
+
+        if (response.message != null) {
+            return DataResource.Error(IOException(response.message))
+        }
+
+        return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_general)))
     }
 
     override suspend fun order(token: String, request: OrderRequest): DataResource<List<OrderResponse>> {

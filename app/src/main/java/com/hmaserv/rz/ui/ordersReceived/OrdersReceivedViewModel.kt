@@ -14,7 +14,7 @@ import kotlinx.coroutines.withContext
 const val DATA_MY_RECEIVED_ORDERS_KEY = "my_received_orders"
 
 class OrdersReceivedViewModel : NewBaseViewModel() {
-    private val getMyReceivedOrderUseCase = Injector.getMyOrdersUseCase()
+    private val getMyReceivedOrderUseCase = Injector.getReceivedOrdersUseCase()
 
     var miniOrders: ArrayList<MiniOrder> = ArrayList()
 

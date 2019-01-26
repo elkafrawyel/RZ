@@ -184,6 +184,7 @@ object Injector {
 
     fun createOrderUseCase() = CreateOrderUseCase(getLoggedInRepo(), getOrdersRepo())
     fun getMyOrdersUseCase() = GetMyOrdersUseCase(getLoggedInRepo(), getOrdersRepo())
+    fun getReceivedOrdersUseCase() = GetReceivedOrdersUseCase(getLoggedInRepo(), getOrdersRepo())
     fun getOrderStatusUseCase() = GetOrderStatusUseCase(getOrdersRepo())
     fun getOrderUseCase() = GetOrderUseCase(getLoggedInRepo(), getOrdersRepo())
     fun orderActionUseCase() = OrderActionUseCase(getLoggedInRepo(), getOrdersRepo())

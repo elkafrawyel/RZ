@@ -24,6 +24,17 @@ class OrdersRepo(
         }
     }
 
+    override suspend fun receivedOrders(token: String): DataResource<List<MiniOrder>> {
+        val result = orderRemoteSource.receivedOrders(token)
+        return when (result) {
+            is DataResource.Success -> {
+                val data = result.data.mapNotNull { it.toMiniOrder() }
+                DataResource.Success(data)
+            }
+            is DataResource.Error -> result
+        }
+    }
+
     override suspend fun order(token: String, request: OrderRequest): DataResource<List<Order>> {
         val result = orderRemoteSource.order(token, request)
         return when (result) {
