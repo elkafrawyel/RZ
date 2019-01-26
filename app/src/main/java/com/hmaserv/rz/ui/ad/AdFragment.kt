@@ -69,6 +69,8 @@ class AdFragment : BaseFragment(), AdapterAttributes.AttributesListener {
 
         errorCl.setOnClickListener { viewModel.refresh() }
 
+        reviewsMbtn.setOnClickListener { openReviews() }
+
         attributesRv.layoutManager = LinearLayoutManager(
             context,
             RecyclerView.VERTICAL,
@@ -77,6 +79,13 @@ class AdFragment : BaseFragment(), AdapterAttributes.AttributesListener {
 
         adapter = AdapterAttributes(viewModel.attributes, this)
         attributesRv.adapter = adapter
+    }
+
+    private fun openReviews() {
+        if (adUuid != null) {
+            val action = AdFragmentDirections.actionAdFragmentToReviewsFragment(adUuid!!)
+            findNavController().navigate(action)
+        }
     }
 
     override fun onResume() {

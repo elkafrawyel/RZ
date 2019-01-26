@@ -1,15 +1,17 @@
 package com.hmaserv.rz.ui.aboutUs
 
-
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import androidx.navigation.fragment.findNavController
 import com.hmaserv.rz.R
+import kotlinx.android.synthetic.main.about_us_fragment.*
 
 class AboutUsFragment : Fragment() {
+
+    private val aboutUsUrl = "https://r-z.store/about.php"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -18,5 +20,11 @@ class AboutUsFragment : Fragment() {
         return inflater.inflate(R.layout.about_us_fragment, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        backImgv.setOnClickListener { findNavController().navigateUp() }
+        aboutUsWv.loadUrl(aboutUsUrl)
+    }
 
 }

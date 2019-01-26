@@ -158,7 +158,7 @@
     <string name="label_date">الايام</string>
     <string name="label_cancel_profile_Info">الغاء</string>
     <string name="label_save_profile_info">حفظ</string>
-    <string name="label_reviews_title">الاراء</string>
+    <string name="label_reviews_title">التعليقات</string>
     <string name="label_order_details_title">تفاصيل الطلب</string>
     <string name="label_pay_order_details">ادفع</string>
     <string name="label_my_orders_received_title">الطلبات الواردة</string>
@@ -174,5 +174,6 @@
     <string name="label_accept">قبول</string>
     <string name="label_refuse">رفض</string>
     <string name="label_pay_recived">استلام دفعة</string>
+    <string name="label_show_reviews">تعليقات</string>
 
 </resources>

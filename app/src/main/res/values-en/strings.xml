@@ -167,5 +167,6 @@
     <string name="label_accept">قبول</string>
     <string name="label_refuse">رفض</string>
     <string name="label_pay_recived">استلام دفعة</string>
+    <string name="label_show_reviews">Reviews</string>
 
 </resources>
