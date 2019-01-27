@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.navigation.fragment.findNavController
 import com.hmaserv.rz.R
 import kotlinx.android.synthetic.main.about_us_fragment.*
@@ -23,8 +25,17 @@ class AboutUsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         backImgv.setOnClickListener { findNavController().navigateUp() }
         aboutUsWv.loadUrl(aboutUsUrl)
+
+        aboutUsWv.webViewClient = object : WebViewClient() {
+
+            override fun onPageFinished(view: WebView, url: String) {
+                loadinLav.visibility = View.GONE
+
+            }
+        };
     }
 
 }

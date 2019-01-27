@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/rootViewCl"
     tools:context=".ui.reviews.writeReview.WriteReviewFragment">
 
     <androidx.appcompat.widget.Toolbar
@@ -31,13 +32,15 @@
 
             <TextView
                 android:id="@+id/addReviewTv"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/label_add_review"
                 android:textColor="@color/colorOnPrimary"
                 android:textSize="18sp"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintBottom_toBottomOf="@id/backBtn"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/shareProductImgv"
                 app:layout_constraintStart_toEndOf="@id/backBtn"
                 app:layout_constraintTop_toTopOf="@id/backBtn" />
 
@@ -53,75 +56,24 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.appcompat.widget.Toolbar>
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatRatingBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:padding="8dp"
-        android:text="@string/label_your_rate"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/starThreeImgv"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageView
-        android:id="@+id/starOneImgv"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:src="@drawable/ic_star_rate"
-        android:transitionName="starOne"
         app:layout_constraintBottom_toTopOf="@id/reviewTil"
-        app:layout_constraintEnd_toStartOf="@id/starTwoImgv" />
-
-    <ImageView
-        android:id="@+id/starTwoImgv"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="16dp"
-        android:src="@drawable/ic_star_rate"
-        android:transitionName="starTwo"
-        app:layout_constraintEnd_toStartOf="@id/starThreeImgv"
-        app:layout_constraintTop_toTopOf="@id/starThreeImgv" />
-
-    <ImageView
-        android:id="@+id/starThreeImgv"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/ic_star_rate"
-        android:transitionName="starThree"
-        app:layout_constraintBottom_toTopOf="@id/reviewTil"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageView
-        android:id="@+id/starFourImgv"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="16dp"
-        android:src="@drawable/ic_star_rate"
-        android:transitionName="starFour"
-        app:layout_constraintStart_toEndOf="@id/starThreeImgv"
-        app:layout_constraintTop_toTopOf="@id/starThreeImgv" />
-
-    <ImageView
-        android:id="@+id/starFiveImgv"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="16dp"
-        android:src="@drawable/ic_star_rate"
-        android:transitionName="starFive"
-        app:layout_constraintStart_toEndOf="@id/starFourImgv"
-        app:layout_constraintTop_toTopOf="@id/starThreeImgv" />
-
+        android:stepSize="1"
+        android:id="@+id/rateBar"
+        android:numStars="5"
+        />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/reviewTil"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:hint="@string/hint_leave_review"
         app:boxStrokeColor="@color/colorPrimary"
         app:boxStrokeWidth="2dp"
@@ -138,7 +90,6 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/confirmBtn"
         android:layout_width="wrap_content"
@@ -148,5 +99,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/reviewTil" />
+
+
+    <FrameLayout
+        android:id="@+id/loadingFl"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/colorScrim"
+        android:elevation="2dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:cardCornerRadius="16dp"
+            app:contentPadding="8dp">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.card.MaterialCardView>
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

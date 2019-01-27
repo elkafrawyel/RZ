@@ -184,5 +184,9 @@
     <string name="error_http_reviews_api">خطأ في ارجاع التعليقات</string>
     <string name="label_pay">ادفع</string>
     <string name="error_empty_reason">حقل السبب فارغ</string>
+    <string name="label_write_review_message">من فضلك اكتب تعليقك اولا.</string>
+    <string name="error_star_count_zero">اختر تقييمك من 1 الي 5</string>
+    <string name="error_http_write_reviews_api">فشل في ارسال تعليقك</string>
+    <string name="success_send_review">تم ارسال تعليقك بنجاح</string>
 
 </resources>

@@ -102,6 +102,11 @@ class AdsRepo(
 //        }
     }
 
+    override suspend fun writeReviews(token: String,request: WriteReviewRequest): DataResource<WriteReviewResponse> {
+        return adsRemoteSource.writeReviews(token,request)
+    }
+
+
     companion object {
         @Volatile
         private var INSTANCE: AdsRepo? = null

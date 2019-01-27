@@ -177,5 +177,9 @@
     <string name="error_http_reviews_api">Error getting Reviews</string>
     <string name="label_pay">ادفع</string>
     <string name="error_empty_reason">حقل السبب فارغ</string>
+    <string name="label_write_review_message">please write your review first.</string>
+    <string name="error_star_count_zero">define your rate from 1 to 5</string>
+    <string name="error_http_write_reviews_api">Failed To Send Your Review</string>
+    <string name="success_send_review">Your Review Sent Successfully.</string>
 
 </resources>

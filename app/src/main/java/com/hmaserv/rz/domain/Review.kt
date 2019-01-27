@@ -30,3 +30,16 @@ fun ReviewResponse.toReview(): Review? {
         "new Comment"
     )
 }
+
+data class WriteReviewResponse(
+    val sent: Boolean
+)
+
+data class WriteReviewRequest(
+    @field:Json(name = "ad_uuid")
+    val adUuid: String,
+    @field:Json(name = "rate")
+    val rate: Int,
+    @field:Json(name = "comment")
+    val comment: String
+)

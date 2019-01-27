@@ -14,6 +14,7 @@ class AdsRemoteSource(
     private val authApiService: RetrofitAuthApiService
 ) : IAdsRemoteSource {
 
+
     override suspend fun getSlider(): DataResource<List<Slider>> {
         return safeApiCall(
             call = { getSliderCall() },
@@ -234,7 +235,29 @@ class AdsRemoteSource(
         }
 
         return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_http_reviews_api)))
+    }
 
+    override suspend fun writeReviews(token: String, request: WriteReviewRequest): DataResource<WriteReviewResponse> {
+        return safeApiCall(
+            call = { writeReviewCall(token, request) },
+            errorMessage = Injector.getApplicationContext().getString(R.string.error_http_write_reviews_api)
+        )
+    }
+
+    private suspend fun writeReviewCall(token: String, request: WriteReviewRequest): DataResource<WriteReviewResponse> {
+        val response = authApiService.writeReview(token, request).await()
+        if (response.success != null && response.success) {
+            val body = response.data
+            if (body != null) {
+                return DataResource.Success(response.data)
+            }
+        }
+
+        if (response.message != null) {
+            return DataResource.Error(IOException(response.message))
+        }
+
+        return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_http_write_reviews_api)))
 
     }
 }

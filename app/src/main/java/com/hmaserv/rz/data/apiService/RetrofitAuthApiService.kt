@@ -93,6 +93,12 @@ interface RetrofitAuthApiService {
         @Body request: OrderActionRequest
     ): Deferred<ApiResponse<Boolean>>
 
+    @POST("ads/review")
+    fun writeReview(
+        @Header("Authorization") token: String,
+        @Body request: WriteReviewRequest
+        ):Deferred<ApiResponse<WriteReviewResponse>>
+
     companion object {
         fun create(baseUrl: String, client: OkHttpClient): RetrofitAuthApiService {
             val retrofit = Retrofit.Builder()

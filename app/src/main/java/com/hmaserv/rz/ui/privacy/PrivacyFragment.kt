@@ -9,6 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.hmaserv.rz.R
 import kotlinx.android.synthetic.main.privacy_fragment.*
+import android.webkit.WebView
+import android.webkit.WebViewClient
+
 
 class PrivacyFragment : Fragment() {
 
@@ -26,6 +29,13 @@ class PrivacyFragment : Fragment() {
         backImgv.setOnClickListener { findNavController().navigateUp() }
 
         privacyWv.loadUrl(privacyUrl)
+
+        privacyWv.webViewClient = object : WebViewClient() {
+
+            override fun onPageFinished(view: WebView, url: String) {
+                loadinLav.visibility = View.GONE
+            }
+        };
     }
 
 }
