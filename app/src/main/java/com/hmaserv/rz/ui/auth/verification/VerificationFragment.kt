@@ -176,7 +176,7 @@ class VerificationFragment : Fragment() {
 
     private fun showStateSuccess() {
         showMessage("success")
-        val action = VerificationFragmentDirections.ActionVerificationFragmentToLoginFragment(
+        val action = VerificationFragmentDirections.actionVerificationFragmentToLoginFragment(
             phoneNumber,
             password
         )
