@@ -105,7 +105,7 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
                 actionListMbtn.setIconResource(R.drawable.ic_reorder_black)
                 actionGridMbtn.setIconResource(R.drawable.ic_apps_black50)
                 promotionsRv.post {
-                    TransitionManager.beginDelayedTransition(promotionsRv)
+//                    TransitionManager.beginDelayedTransition(promotionsRv)
                     (promotionsRv.layoutManager as GridLayoutManager).spanCount = 1
                     promotionsRv.removeItemDecoration(spacesItemDecoration)
                 }
@@ -118,7 +118,7 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
                 actionListMbtn.setIconResource(R.drawable.ic_reorder_black50)
                 actionGridMbtn.setIconResource(R.drawable.ic_apps_black)
                 promotionsRv.post {
-                    TransitionManager.beginDelayedTransition(promotionsRv)
+//                    TransitionManager.beginDelayedTransition(promotionsRv)
                     (promotionsRv.layoutManager as GridLayoutManager).spanCount = 2
                     promotionsRv.addItemDecoration(spacesItemDecoration)
                 }

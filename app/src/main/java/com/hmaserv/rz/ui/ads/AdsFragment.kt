@@ -86,7 +86,7 @@ class AdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 actionListMbtn.setIconResource(R.drawable.ic_reorder_black)
                 actionGridMbtn.setIconResource(R.drawable.ic_apps_black50)
                 adsRv.post {
-                    TransitionManager.beginDelayedTransition(adsRv)
+//                    TransitionManager.beginDelayedTransition(adsRv)
                     (adsRv.layoutManager as GridLayoutManager).spanCount = 1
                     adsRv.removeItemDecoration(spacesItemDecoration)
                 }
@@ -99,7 +99,7 @@ class AdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 actionListMbtn.setIconResource(R.drawable.ic_reorder_black50)
                 actionGridMbtn.setIconResource(R.drawable.ic_apps_black)
                 adsRv.post {
-                    TransitionManager.beginDelayedTransition(adsRv)
+//                    TransitionManager.beginDelayedTransition(adsRv)
                     (adsRv.layoutManager as GridLayoutManager).spanCount = 2
                     adsRv.addItemDecoration(spacesItemDecoration)
                 }
