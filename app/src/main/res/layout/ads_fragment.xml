@@ -7,7 +7,7 @@
     tools:context=".ui.ads.AdsFragment">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tool_bar"
+        android:id="@+id/toolBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
@@ -50,6 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
+                android:visibility="gone"
                 android:src="@drawable/ic_search"
                 app:layout_constraintEnd_toStartOf="@id/filterImgv"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -69,6 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
+                android:visibility="gone"
                 android:src="@drawable/ic_sort"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -81,11 +83,11 @@
         android:id="@+id/dataSrl"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tool_bar">
+        app:layout_constraintTop_toBottomOf="@id/toolBar">
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/mainNsv"
@@ -169,7 +171,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/toolBar">
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/errorLav"
@@ -215,7 +217,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/toolBar">
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/emptyLav"
@@ -252,7 +254,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/toolBar">
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/noConnectionLav"

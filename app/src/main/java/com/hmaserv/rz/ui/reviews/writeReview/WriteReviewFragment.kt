@@ -52,6 +52,8 @@ class WriteReviewFragment : Fragment() {
             is WriteReviewViewModel.WriteUiState.Success -> {
                 loadingFl.visibility = View.GONE
                 showMessage(getString(R.string.success_send_review))
+
+                findNavController().navigateUp()
             }
             is WriteReviewViewModel.WriteUiState.Error -> {
                 loadingFl.visibility = View.GONE

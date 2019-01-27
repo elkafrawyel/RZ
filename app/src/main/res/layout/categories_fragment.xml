@@ -6,7 +6,7 @@
     tools:context=".ui.categories.CategoriesFragment">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tool_bar"
+        android:id="@+id/toolBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
@@ -97,7 +97,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tool_bar">
+        app:layout_constraintTop_toBottomOf="@id/toolBar">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/categoriesSwipe"
@@ -142,7 +142,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/toolBar">
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/errorLav"
@@ -187,7 +187,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/toolBar">
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/emptyLav"
@@ -224,7 +224,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/toolBar">
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/noConnectionLav"

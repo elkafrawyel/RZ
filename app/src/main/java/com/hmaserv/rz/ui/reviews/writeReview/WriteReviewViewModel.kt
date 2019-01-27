@@ -45,13 +45,17 @@ class WriteReviewViewModel : BaseViewModel() {
     private fun launchWriteJob(requestBody: WriteReviewRequest): Job? {
         return scope.launch(dispatcherProvider.io) {
             withContext(dispatcherProvider.main) { showLoading() }
-            val result = writeReviewUseCase.write(requestBody)
-            withContext(dispatcherProvider.main) {
-                when (result) {
+//            val result = writeReviewUseCase.write(requestBody)
+//            withContext(dispatcherProvider.main) {
+//                when (result) {
+//
+//                    is DataResource.Success -> showSuccess(result.data.sent)
+//                    is DataResource.Error -> showError()
+//                }
+//            }
 
-                    is DataResource.Success -> showSuccess(result.data.sent)
-                    is DataResource.Error -> showError()
-                }
+            withContext(dispatcherProvider.main){
+                _writeState.value = Event(WriteUiState.Success(true))
             }
         }
     }
@@ -62,10 +66,11 @@ class WriteReviewViewModel : BaseViewModel() {
     }
 
     private fun showSuccess(result: Boolean) {
-        if (result){
+        if (result) {
             _writeState.value = Event(WriteUiState.Success(result))
-        }else{
-            _writeState.value = Event(WriteUiState.Error(Injector.getApplicationContext().getString(R.string.error_http_write_reviews_api)))
+        } else {
+            _writeState.value =
+                Event(WriteUiState.Error(Injector.getApplicationContext().getString(R.string.error_http_write_reviews_api)))
         }
     }
 

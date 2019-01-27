@@ -34,7 +34,6 @@ class ReviewsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             adUuid = ReviewsFragmentArgs.fromBundle(it).adUuid
 
             if (adUuid != null) {
-                Toast.makeText(requireContext(), adUuid, Toast.LENGTH_LONG).show()
                 viewModel.setAdUuid(adUuid!!)
             } else {
                 findNavController().navigateUp()

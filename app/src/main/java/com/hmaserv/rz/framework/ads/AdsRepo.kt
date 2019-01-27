@@ -81,18 +81,18 @@ class AdsRepo(
 //        val result = adsRemoteSource.reviews(request)
 
         val list = ArrayList<Review>()
-        for (i in 0 until 10) {
-            list.add(
-                Review(
-                    "f84ab016-2337-4463-bc9b-ed5ad06fcc99",
-                    "http://165.227.100.140//files//subCategory//sub-default.png",
-                    "Mahmoud",
-                    "5",
-                    "10/01/2019",
-                    "New Comment"
-                )
-            )
-        }
+//        for (i in 0 until 10) {
+//            list.add(
+//                Review(
+//                    "f84ab016-2337-4463-bc9b-ed5ad06fcc99",
+//                    "http://165.227.100.140//files//subCategory//sub-default.png",
+//                    "Mahmoud",
+//                    "5",
+//                    "10/01/2019",
+//                    "New Comment"
+//                )
+//            )
+//        }
 
         return DataResource.Success(list)
 

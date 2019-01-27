@@ -9,6 +9,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.Category
 import com.hmaserv.rz.domain.SubCategory
@@ -80,6 +81,20 @@ class SearchFragment : Fragment() {
 
             }
         }
+
+        searchMbtn.setOnClickListener { search() }
+    }
+
+    private fun search() {
+        val action = SearchFragmentDirections.actionSearchFragmentToAdsFragment(
+            "6baf5d06-bf47-4244-8b1c-d5e75b14a9de",
+            "نتائج البحث",
+            null,
+            null,
+            null,
+            null
+            )
+        findNavController().navigate(action)
     }
 
     private fun onSubCategoryResponse(state: SearchViewModel.SubCategoriesUiState) {
