@@ -16,16 +16,21 @@ const val DATA_MY_RECEIVED_ORDERS_KEY = "my_received_orders"
 class OrdersReceivedViewModel : NewBaseViewModel() {
     private val getMyReceivedOrderUseCase = Injector.getReceivedOrdersUseCase()
 
+    var allMiniOrders: ArrayList<MiniOrder> = ArrayList()
     var miniOrders: ArrayList<MiniOrder> = ArrayList()
 
-    var paymentMethod: Payment = Payment.PAYPAL
+    var paymentMethod: Payment = Payment.CASH
         set(value) {
-            field = value
-            getData()
+            if (field != value) {
+                field = value
+                miniOrders.clear()
+                miniOrders.addAll(
+                    allMiniOrders.filter { it.payment == value }
+                )
+            }
         }
 
     init {
-        paymentMethod = Payment.PAYPAL
         getData()
     }
 
@@ -36,8 +41,11 @@ class OrdersReceivedViewModel : NewBaseViewModel() {
                 val result = getMyReceivedOrderUseCase.get()
                 when (result) {
                     is DataResource.Success -> {
+                        allMiniOrders.clear()
                         miniOrders.clear()
-                        miniOrders.addAll(result.data)
+
+                        allMiniOrders.addAll(result.data)
+                        miniOrders.addAll(result.data.filter { it.payment == paymentMethod })
                         withContext(dispatcherProvider.main) { showDataSuccess(result.data) }
                     }
                     is DataResource.Error -> withContext(dispatcherProvider.main) { showDataError() }

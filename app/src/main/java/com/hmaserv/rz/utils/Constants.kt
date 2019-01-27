@@ -2,6 +2,7 @@ package com.hmaserv.rz.utils
 
 object Constants {
     const val BASE_URL = "http://165.227.100.140/api/v1/"
+    const val PAYPAL_URL = "https://r-z.store/paynow.php"
     const val SETTINGS_ID = 1L
     const val LOGGED_IN_USER_ID = 1L
     const val AUTHORIZATION_START = "Bearer"

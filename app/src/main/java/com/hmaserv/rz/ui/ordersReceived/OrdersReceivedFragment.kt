@@ -32,6 +32,7 @@ class OrdersReceivedFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
         super.onViewCreated(view, savedInstanceState)
         viewModel.uiState.observe(this, Observer { onUiStateChanged(it) })
         myReceivedOrdersRv.adapter = adapter
+        receivedOrdersTl.getTabAt(viewModel.paymentMethod.ordinal)?.select()
 
         backBtn.setOnClickListener { findNavController().navigateUp() }
         myReceivedOrdersSwipe.setOnRefreshListener(this)
@@ -42,16 +43,9 @@ class OrdersReceivedFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
             override fun onTabUnselected(tab: TabLayout.Tab?) {
             }
 
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                when (tab?.position) {
-                    0 -> {
-                        viewModel.paymentMethod = Payment.PAYPAL
-                    }
-
-                    1 -> {
-                        viewModel.paymentMethod = Payment.CASH
-                    }
-                }
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                viewModel.paymentMethod = Payment.values()[tab.position]
+                adapter.notifyDataSetChanged()
             }
         })
 

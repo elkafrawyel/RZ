@@ -58,4 +58,5 @@ ext {
     firebaseMessagingVersion = '17.3.4'
     firebaseCrashlyticsVersion = '2.9.8'
     firebasePrefVersion = '16.2.3'
+    browser_version = '1.0.0'
 }

@@ -188,5 +188,6 @@
     <string name="error_star_count_zero">اختر تقييمك من 1 الي 5</string>
     <string name="error_http_write_reviews_api">فشل في ارسال تعليقك</string>
     <string name="success_send_review">تم ارسال تعليقك بنجاح</string>
+    <string name="label_pay_now">ادفع الان</string>
 
 </resources>

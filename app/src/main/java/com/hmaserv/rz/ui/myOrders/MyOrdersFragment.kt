@@ -15,6 +15,7 @@ import com.hmaserv.rz.domain.MiniOrder
 import com.hmaserv.rz.domain.Payment
 import com.hmaserv.rz.ui.BaseFragment
 import kotlinx.android.synthetic.main.my_orders_fragment.*
+import com.hmaserv.rz.utils.openPaypalLink
 
 class MyOrdersFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
@@ -33,6 +34,7 @@ class MyOrdersFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
         viewModel.uiState.observe(this, Observer { onUiStateChanged(it) })
         myOrdersRv.adapter = ordersAdapter
+        ordersTl.getTabAt(viewModel.paymentMethod.ordinal)?.select()
 
         backBtn.setOnClickListener { findNavController().navigateUp() }
         myOrdersSwipe.setOnRefreshListener(this)
@@ -43,26 +45,27 @@ class MyOrdersFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             override fun onTabUnselected(tab: TabLayout.Tab?) {
             }
 
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                when (tab?.position) {
-                    0 -> {
-                        viewModel.paymentMethod = Payment.PAYPAL
-                    }
-
-                    1 -> {
-                        viewModel.paymentMethod = Payment.CASH
-                    }
-                }
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                viewModel.paymentMethod = Payment.values()[tab.position]
+                ordersAdapter.notifyDataSetChanged()
+                payNowMbtn.visibility =
+                    if (viewModel.paymentMethod == Payment.PAYPAL && viewModel.miniOrders.isNotEmpty())
+                        View.VISIBLE
+                    else
+                        View.GONE
             }
         })
 
-        ordersAdapter.onItemClickListener =
-                BaseQuickAdapter.OnItemClickListener { _, _, position ->
-                        openOrderDetails(ordersAdapter.data[position].uuid)
-                }
+        payNowMbtn.setOnClickListener {
+            requireContext().openPaypalLink()
+        }
 
-        ordersAdapter.onItemChildClickListener = BaseQuickAdapter.OnItemChildClickListener {
-                _, _, position ->
+        ordersAdapter.onItemClickListener =
+            BaseQuickAdapter.OnItemClickListener { _, _, position ->
+                openOrderDetails(ordersAdapter.data[position].uuid)
+            }
+
+        ordersAdapter.onItemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { _, _, position ->
             openOrderDetails(ordersAdapter.data[position].uuid)
         }
 
@@ -94,6 +97,7 @@ class MyOrdersFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             emptyViewCl.visibility = View.GONE
             noConnectionCl.visibility = View.GONE
             errorCl.visibility = View.GONE
+
             ordersAdapter.notifyDataSetChanged()
         }
     }

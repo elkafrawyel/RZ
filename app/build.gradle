@@ -90,6 +90,8 @@ dependencies {
 
     implementation "com.airbnb.android:lottie:$lottieVersion"
 
+    implementation "androidx.browser:browser:$browser_version"
+
     implementation "com.google.firebase:firebase-core:$firebaseCoreVersion"
     implementation "com.google.firebase:firebase-messaging:$firebaseMessagingVersion"
     implementation "com.crashlytics.sdk.android:crashlytics:$firebaseCrashlyticsVersion"
