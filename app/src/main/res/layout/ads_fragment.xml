@@ -81,7 +81,7 @@
         android:id="@+id/dataSrl"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -96,8 +96,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/mainCl"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="visible">
+                android:layout_height="wrap_content">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/actionListMbtn"
@@ -127,15 +126,14 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/adsRv"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:clipToPadding="false"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
-                    app:layout_constraintVertical_bias="0"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:nestedScrollingEnabled="true"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/actionListMbtn"
@@ -159,7 +157,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/errorCl"
@@ -292,4 +289,5 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
