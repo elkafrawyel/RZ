@@ -31,7 +31,6 @@ class SearchFragment : Fragment() {
     lateinit var selectedCategory: Category
     lateinit var selectedSubCategory: SubCategory
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -58,7 +57,7 @@ class SearchFragment : Fragment() {
             onSubCategoryResponse(it)
         }
 
-        categoriesSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+        categoriesSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {
 
             }
@@ -71,12 +70,12 @@ class SearchFragment : Fragment() {
             }
         }
 
-        subCategoriesSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+        subCategoriesSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {
 
             }
 
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long){
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
                 selectedSubCategory = subCategories.get(position)
 
             }
@@ -86,15 +85,19 @@ class SearchFragment : Fragment() {
     }
 
     private fun search() {
-        val action = SearchFragmentDirections.actionSearchFragmentToAdsFragment(
-            "6baf5d06-bf47-4244-8b1c-d5e75b14a9de",
-            "نتائج البحث",
-            null,
-            null,
-            null,
-            null
+        if (searchEt.text.isBlank()){
+            searchEt.error = getString(R.string.error_required_search_text)
+        }else{
+            val action = SearchFragmentDirections.actionSearchFragmentToAdsFragment(
+                selectedSubCategory.uuid,
+                getString(R.string.label_search_result),
+                searchEt.text.toString(),
+                selectedCategory.uuid,
+                "0",
+                "0"
             )
-        findNavController().navigate(action)
+            findNavController().navigate(action)
+        }
     }
 
     private fun onSubCategoryResponse(state: SearchViewModel.SubCategoriesUiState) {

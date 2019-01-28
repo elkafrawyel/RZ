@@ -189,5 +189,7 @@
     <string name="error_http_write_reviews_api">فشل في ارسال تعليقك</string>
     <string name="success_send_review">تم ارسال تعليقك بنجاح في انتظار المراجعة</string>
     <string name="label_pay_now">ادفع الان</string>
+    <string name="label_search_result">نتائج البحث</string>
+    <string name="error_required_search_text">كلمات البحث مطلوبة</string>
 
 </resources>

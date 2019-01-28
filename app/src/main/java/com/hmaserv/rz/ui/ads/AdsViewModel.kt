@@ -14,25 +14,19 @@ const val DATA_PRODUCTS_KEY = "products"
 
 class AdsViewModel : NewBaseViewModel() {
 
-    private val getMiniAdsUseCase = Injector.getMiniAdsUseCase()
+    private val getSearchUseCase = Injector.searchUseCase()
 
     private var subCategoryUuid: String? = null
+    private var searchText: String? = null
 
     var isList = true
-
-    fun setSubCategoryId(uuid: String) {
-        if (this.subCategoryUuid == null) {
-            this.subCategoryUuid = uuid
-            getData()
-        }
-    }
 
     override fun launchDataJob(): Job {
         return scope.launch(dispatcherProvider.computation) {
             if (NetworkUtils.isConnected()) {
                 withContext(dispatcherProvider.main) { showDataLoading() }
                 if (subCategoryUuid != null) {
-                    val result = getMiniAdsUseCase.get(subCategoryUuid!!)
+                    val result = getSearchUseCase.search(subCategoryUuid!!,searchText!!)
                     withContext(dispatcherProvider.main) {
                         when (result) {
                             is DataResource.Success -> showSuccess(result.data)
@@ -53,6 +47,14 @@ class AdsViewModel : NewBaseViewModel() {
 
     private fun showSuccess(data: List<MiniAd>) {
         _uiState.value = UiState.Success(mapOf(Pair(DATA_PRODUCTS_KEY, data)))
+    }
+
+    fun search(subUuid: String, searchText: String?) {
+        if (subCategoryUuid == null){
+            this.subCategoryUuid = subUuid
+            this.searchText = searchText
+            getData()
+        }
     }
 
 }

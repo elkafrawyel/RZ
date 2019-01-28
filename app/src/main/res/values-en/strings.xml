@@ -182,5 +182,7 @@
     <string name="error_http_write_reviews_api">Failed To Send Your Review</string>
     <string name="success_send_review">Your Review Sent Successfully.</string>
     <string name="label_pay_now">ادفع الان</string>
+    <string name="label_search_result">Search Result</string>
+    <string name="error_required_search_text">search text is required</string>
 
 </resources>

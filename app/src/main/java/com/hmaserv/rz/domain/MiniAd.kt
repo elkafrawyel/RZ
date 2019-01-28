@@ -34,7 +34,7 @@ data class MiniAd(
     val images: List<String>
 )
 
-fun MiniAdResponse.toMiniProduct(): MiniAd? {
+fun MiniAdResponse.toMiniAd(): MiniAd? {
     if (this.uuid != null
         && this.title != null
         && this.price != null

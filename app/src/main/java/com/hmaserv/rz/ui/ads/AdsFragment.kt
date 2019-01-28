@@ -10,7 +10,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.transition.TransitionManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.MiniAd
@@ -38,8 +37,10 @@ class AdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             headerNameTv.text = AdsFragmentArgs.fromBundle(it).headerName
             val subCategoryUuid = AdsFragmentArgs.fromBundle(it).subCategoryUuid
             subCategoryUuid?.let { uuid ->
-                    viewModel.setSubCategoryId(uuid)
+                val searchText = AdsFragmentArgs.fromBundle(it).searchText
+                viewModel.search(uuid,searchText)
             }
+
         }
 
         backBtn.setOnClickListener { findNavController().navigateUp() }
@@ -52,9 +53,9 @@ class AdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         adsRv.adapter = adapter
 
         adapter.onItemClickListener =
-                BaseQuickAdapter.OnItemClickListener { _, _, position ->
-                    openProductDetails(this.adapter.data[position])
-                }
+            BaseQuickAdapter.OnItemClickListener { _, _, position ->
+                openProductDetails(this.adapter.data[position])
+            }
 
         dataSrl.setOnRefreshListener(this)
 
@@ -86,7 +87,7 @@ class AdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 actionListMbtn.setIconResource(R.drawable.ic_reorder_black)
                 actionGridMbtn.setIconResource(R.drawable.ic_apps_black50)
                 adsRv.post {
-//                    TransitionManager.beginDelayedTransition(adsRv)
+                    //                    TransitionManager.beginDelayedTransition(adsRv)
                     (adsRv.layoutManager as GridLayoutManager).spanCount = 1
                     adsRv.removeItemDecoration(spacesItemDecoration)
                 }
@@ -99,7 +100,7 @@ class AdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 actionListMbtn.setIconResource(R.drawable.ic_reorder_black50)
                 actionGridMbtn.setIconResource(R.drawable.ic_apps_black)
                 adsRv.post {
-//                    TransitionManager.beginDelayedTransition(adsRv)
+                    //                    TransitionManager.beginDelayedTransition(adsRv)
                     (adsRv.layoutManager as GridLayoutManager).spanCount = 2
                     adsRv.addItemDecoration(spacesItemDecoration)
                 }

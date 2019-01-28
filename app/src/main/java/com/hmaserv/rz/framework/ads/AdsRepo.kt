@@ -11,6 +11,7 @@ class AdsRepo(
     private var adsRemoteSource: IAdsRemoteSource
 ) : IAdsRepo {
 
+
     override suspend fun getSlider(): DataResource<List<Slider>> {
         return adsRemoteSource.getSlider()
     }
@@ -18,7 +19,7 @@ class AdsRepo(
     override suspend fun getPromotions(): DataResource<List<MiniAd>> {
         val result = adsRemoteSource.getPromotions()
         return when (result) {
-            is DataResource.Success -> DataResource.Success(result.data.mapNotNull { it.toMiniProduct() })
+            is DataResource.Success -> DataResource.Success(result.data.mapNotNull { it.toMiniAd() })
             is DataResource.Error -> result
         }
     }
@@ -26,7 +27,7 @@ class AdsRepo(
     override suspend fun getMiniAds(miniAdRequest: MiniAdRequest): DataResource<List<MiniAd>> {
         val result = adsRemoteSource.getMiniAds(miniAdRequest)
         return when (result) {
-            is DataResource.Success -> DataResource.Success(result.data.mapNotNull { it.toMiniProduct() })
+            is DataResource.Success -> DataResource.Success(result.data.mapNotNull { it.toMiniAd() })
             is DataResource.Error -> result
         }
     }
@@ -61,7 +62,7 @@ class AdsRepo(
     override suspend fun myAds(token: String): DataResource<List<MiniAd>> {
         val result = adsRemoteSource.myAds(token)
         return when (result) {
-            is DataResource.Success -> DataResource.Success(result.data.mapNotNull { it.toMiniProduct() })
+            is DataResource.Success -> DataResource.Success(result.data.mapNotNull { it.toMiniAd() })
             is DataResource.Error -> result
         }
     }
@@ -89,6 +90,14 @@ class AdsRepo(
         return adsRemoteSource.writeReviews(token,request)
     }
 
+    override suspend fun search(request: SearchRequest): DataResource<List<MiniAd>> {
+        val result = adsRemoteSource.search(request)
+        return when(result){
+
+            is DataResource.Success -> DataResource.Success(result.data.mapNotNull { it.toMiniAd() })
+            is DataResource.Error -> result
+        }
+    }
 
     companion object {
         @Volatile

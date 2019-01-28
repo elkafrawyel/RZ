@@ -51,6 +51,13 @@ data class AdRequest(
     val adUuid: String
 )
 
+data class SearchRequest(
+    @field:Json(name = "search_keyword")
+    val searchText: String,
+    @field:Json(name = "sub_cat_uuid")
+    val subCategoryUuid: String
+)
+
 data class Ad(
     val uuid: String,
     val mainAttributes: List<Attribute.MainAttribute>,

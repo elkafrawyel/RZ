@@ -53,6 +53,9 @@ interface RetrofitApiService {
     @POST("ads/review/list")
     fun getReviews(@Body reviewsRequest: ReviewsRequest): Deferred<ApiResponse<List<ReviewResponse>>>
 
+    @POST("ads/search")
+    fun search(@Body searchRequest: SearchRequest): Deferred<ApiResponse<List<MiniAdResponse>>>
+
     companion object {
         fun create(baseUrl: String, client: OkHttpClient): RetrofitApiService {
             val retrofit = Retrofit.Builder()

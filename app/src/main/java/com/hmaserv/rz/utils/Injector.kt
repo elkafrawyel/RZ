@@ -182,6 +182,8 @@ object Injector {
     fun updateAdUseCase() = UpdateAdUseCase(getLoggedInRepo(), getAdsRepo())
     fun reviewsUseCase() = ReviewsUseCase(getAdsRepo())
     fun writeReviewUseCase() = WriteReviewUseCase(getLoggedInRepo(), getAdsRepo())
+    fun searchUseCase() = SearchUseCase(getAdsRepo())
+
     // uploader
     private fun getUploaderRemoteSource() = UploaderRemoteSource(getAuthApiService())
 

@@ -14,7 +14,6 @@ class AdsRemoteSource(
     private val authApiService: RetrofitAuthApiService
 ) : IAdsRemoteSource {
 
-
     override suspend fun getSlider(): DataResource<List<Slider>> {
         return safeApiCall(
             call = { getSliderCall() },
@@ -256,5 +255,28 @@ class AdsRemoteSource(
 
         return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_http_write_reviews_api)))
 
+    }
+
+    override suspend fun search(request: SearchRequest): DataResource<List<MiniAdResponse>> {
+        return safeApiCall(
+            call = { searchCall(request) },
+            errorMessage = Injector.getApplicationContext().getString(R.string.error_call_miniAds_api)
+        )
+    }
+
+    private suspend fun searchCall(request: SearchRequest):DataResource<List<MiniAdResponse>>{
+        val response = apiService.search(request).await()
+        if (response.success != null && response.success) {
+            val body = response.data
+            if (body != null) {
+                return DataResource.Success(body)
+            }
+        }
+
+        if (response.message != null) {
+            return DataResource.Error(IOException(response.message))
+        }
+
+        return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_http_miniAds_api)))
     }
 }
