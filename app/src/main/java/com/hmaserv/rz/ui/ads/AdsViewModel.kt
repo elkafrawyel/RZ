@@ -1,19 +1,18 @@
 package com.hmaserv.rz.ui.ads
 
+import android.view.View
 import com.blankj.utilcode.util.NetworkUtils
-import com.hmaserv.rz.domain.DataResource
-import com.hmaserv.rz.domain.MiniAd
-import com.hmaserv.rz.domain.UiState
-import com.hmaserv.rz.ui.NewBaseViewModel
+import com.hmaserv.rz.R
+import com.hmaserv.rz.domain.*
+import com.hmaserv.rz.ui.TestViewModel
 import com.hmaserv.rz.utils.Injector
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-const val DATA_PRODUCTS_KEY = "products"
+class AdsViewModel : TestViewModel<State.AdsState, String>() {
 
-class AdsViewModel : NewBaseViewModel() {
-
+    private var adsJob: Job? = null
     private val getSearchUseCase = Injector.searchUseCase()
 
     private var subCategoryUuid: String? = null
@@ -21,39 +20,70 @@ class AdsViewModel : NewBaseViewModel() {
 
     var isList = true
 
-    override fun launchDataJob(): Job {
-        return scope.launch(dispatcherProvider.computation) {
-            if (NetworkUtils.isConnected()) {
-                withContext(dispatcherProvider.main) { showDataLoading() }
-                if (subCategoryUuid != null) {
-                    val result = getSearchUseCase.search(subCategoryUuid!!,searchText!!)
-                    withContext(dispatcherProvider.main) {
-                        when (result) {
-                            is DataResource.Success -> showSuccess(result.data)
-                            is DataResource.Error -> showDataError()
-                        }
-                    }
-                } else {
-                    showDataError()
-                }
-
-            } else {
-                withContext(dispatcherProvider.main) {
-                    showNoInternetConnection()
-                }
-            }
-        }
-    }
-
-    private fun showSuccess(data: List<MiniAd>) {
-        _uiState.value = UiState.Success(mapOf(Pair(DATA_PRODUCTS_KEY, data)))
-    }
-
     fun search(subUuid: String, searchText: String?) {
         if (subCategoryUuid == null){
             this.subCategoryUuid = subUuid
             this.searchText = searchText
-            getData()
+            sendAction(Action.Started)
+        }
+    }
+
+    override fun actOnAction(action: Action) {
+        when (action) {
+            Action.Started -> {
+                refreshData(false)
+            }
+            Action.Refresh -> {
+                refreshData(true)
+            }
+            else -> {
+            }
+        }
+    }
+
+    private fun refreshData(isRefreshed: Boolean) {
+        if (NetworkUtils.isConnected()) {
+            if (adsJob?.isActive == true) {
+                return
+            }
+
+            adsJob = launchAdsJob(isRefreshed)
+        } else {
+            if (isRefreshed) {
+                sendMessage(Injector.getApplicationContext().getString(R.string.label_no_internet_connection))
+                sendState(State.AdsState(
+                    isRefreshing = false,
+                    dataVisibility = View.VISIBLE,
+                    ads = state.value?.ads ?: emptyList()
+                ))
+
+            } else {
+                sendState(State.AdsState(noConnectionVisibility = View.VISIBLE))
+            }
+        }
+    }
+
+    private fun launchAdsJob(isRefreshed: Boolean): Job {
+        return launch(dispatcherProvider.io) {
+            withContext(dispatcherProvider.main) {
+                if (isRefreshed) {
+                    sendState(State.AdsState(isRefreshing = true))
+                } else {
+                    sendState(State.AdsState(loadingVisibility = View.VISIBLE))
+                }
+            }
+            val result = getSearchUseCase.search(subCategoryUuid!!, searchText!!)
+            withContext(dispatcherProvider.main) {
+                when (result) {
+                    is DataResource.Success -> sendState(
+                        State.AdsState(
+                            dataVisibility = View.VISIBLE,
+                            ads = result.data
+                        )
+                    )
+                    is DataResource.Error -> sendState(State.AdsState(errorVisibility = View.VISIBLE))
+                }
+            }
         }
     }
 

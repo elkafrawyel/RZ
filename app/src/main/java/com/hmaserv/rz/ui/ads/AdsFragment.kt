@@ -12,14 +12,18 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.hmaserv.rz.R
+import com.hmaserv.rz.domain.Action
 import com.hmaserv.rz.domain.MiniAd
+import com.hmaserv.rz.domain.State
 import com.hmaserv.rz.ui.BaseFragment
+import com.hmaserv.rz.ui.TestBaseFragment
 import com.hmaserv.rz.utils.SpacesItemDecoration
 import kotlinx.android.synthetic.main.ads_fragment.*
 
-class AdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
+class AdsFragment :
+    TestBaseFragment<State.AdsState, String, AdsViewModel>(AdsViewModel::class.java),
+    SwipeRefreshLayout.OnRefreshListener {
 
-    private val viewModel by lazy { ViewModelProviders.of(this).get(AdsViewModel::class.java) }
     private val adapter = AdsAdapter()
 
     override fun onCreateView(
@@ -31,8 +35,6 @@ class AdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.uiState.observe(this, Observer { onUiStateChanged(it) })
-
         arguments?.let {
             headerNameTv.text = AdsFragmentArgs.fromBundle(it).headerName
             val subCategoryUuid = AdsFragmentArgs.fromBundle(it).subCategoryUuid
@@ -46,9 +48,9 @@ class AdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         backBtn.setOnClickListener { findNavController().navigateUp() }
         searchImgv.setOnClickListener { openSearchFragment() }
         sortImgv.setOnClickListener { openFilterDialog() }
-        noConnectionCl.setOnClickListener { viewModel.refresh() }
-        errorCl.setOnClickListener { viewModel.refresh() }
-        emptyViewCl.setOnClickListener { viewModel.refresh() }
+        noConnectionCl.setOnClickListener { sendAction(Action.Started) }
+        errorCl.setOnClickListener { sendAction(Action.Started) }
+        emptyViewCl.setOnClickListener { sendAction(Action.Started) }
 
         adsRv.adapter = adapter
 
@@ -117,58 +119,6 @@ class AdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         findNavController().navigate(R.id.action_adsFragment_to_searchFragment)
     }
 
-    override fun showLoading() {
-        dataSrl.isRefreshing = false
-        loadinLav.visibility = View.VISIBLE
-        dataSrl.visibility = View.GONE
-        emptyViewCl.visibility = View.GONE
-        noConnectionCl.visibility = View.GONE
-        errorCl.visibility = View.GONE
-    }
-
-    override fun showSuccess(dataMap: Map<String, Any>) {
-        val products = dataMap[DATA_PRODUCTS_KEY] as List<MiniAd>
-        loadinLav.visibility = View.GONE
-
-        if (products.isEmpty()) {
-            showEmptyViewState()
-        } else {
-            dataSrl.isRefreshing = false
-            dataSrl.visibility = View.VISIBLE
-            emptyViewCl.visibility = View.GONE
-            noConnectionCl.visibility = View.GONE
-            errorCl.visibility = View.GONE
-            adapter.submitList(products)
-        }
-    }
-
-    override fun showError(message: String) {
-        loadinLav.visibility = View.GONE
-        dataSrl.isRefreshing = false
-        dataSrl.visibility = View.GONE
-        emptyViewCl.visibility = View.GONE
-        noConnectionCl.visibility = View.GONE
-        errorCl.visibility = View.VISIBLE
-    }
-
-    override fun showNoInternetConnection() {
-        loadinLav.visibility = View.GONE
-        dataSrl.isRefreshing = false
-        dataSrl.visibility = View.GONE
-        emptyViewCl.visibility = View.GONE
-        noConnectionCl.visibility = View.VISIBLE
-        errorCl.visibility = View.GONE
-    }
-
-    private fun showEmptyViewState() {
-        loadinLav.visibility = View.GONE
-        dataSrl.isRefreshing = false
-        dataSrl.visibility = View.GONE
-        emptyViewCl.visibility = View.VISIBLE
-        noConnectionCl.visibility = View.GONE
-        errorCl.visibility = View.GONE
-    }
-
     private fun openProductDetails(ad: MiniAd) {
         ad.uuid.let { uuid ->
             val action = AdsFragmentDirections
@@ -181,7 +131,17 @@ class AdsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         }
     }
 
+    override fun renderState(state: State.AdsState) {
+        dataSrl.isRefreshing = state.isRefreshing
+        loadinLav.visibility = state.loadingVisibility
+        emptyViewCl.visibility = state.emptyVisibility
+        noConnectionCl.visibility = state.noConnectionVisibility
+        errorCl.visibility = state.errorVisibility
+        dataSrl.visibility = state.dataVisibility
+        adapter.replaceData(state.ads)
+    }
+
     override fun onRefresh() {
-        viewModel.refresh()
+        sendAction(Action.Refresh)
     }
 }

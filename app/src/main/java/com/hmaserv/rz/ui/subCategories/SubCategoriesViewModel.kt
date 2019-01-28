@@ -47,7 +47,11 @@ class SubCategoriesViewModel : TestViewModel<State.SubCategoriesState, String>()
         } else {
             if (isRefreshed) {
                 sendMessage(Injector.getApplicationContext().getString(R.string.label_no_internet_connection))
-                sendState(State.SubCategoriesState(isRefreshing = false,dataVisibility = View.VISIBLE))
+                sendState(State.SubCategoriesState(
+                    isRefreshing = false,
+                    dataVisibility = View.VISIBLE,
+                    subCategories = state.value?.subCategories ?: emptyList()
+                ))
 
             } else {
                 sendState(State.SubCategoriesState(noConnectionVisibility = View.VISIBLE))

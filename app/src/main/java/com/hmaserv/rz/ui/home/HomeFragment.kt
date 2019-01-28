@@ -32,7 +32,7 @@ import java.util.*
 import kotlin.concurrent.timerTask
 
 class HomeFragment :
-    TestBaseFragment<State.HomeState, String, TestHomeViewModel>(TestHomeViewModel::class.java),
+    TestBaseFragment<State.HomeState, String, HomeViewModel>(HomeViewModel::class.java),
     NavigationView.OnNavigationItemSelectedListener {
 
     private val mainViewModel by lazy { ViewModelProviders.of(requireActivity()).get(MainViewModel::class.java) }

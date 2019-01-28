@@ -8,7 +8,7 @@ import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.MiniAd
 
 class AdsAdapter(
-    val actionMode: Boolean = false
+    private val actionMode: Boolean = false
 ) : BaseQuickAdapter<MiniAd, BaseViewHolder>(R.layout.ad_item_view, ArrayList<MiniAd>()) {
 
     override fun convert(helper: BaseViewHolder, item: MiniAd) {

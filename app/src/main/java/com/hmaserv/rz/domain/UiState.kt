@@ -46,10 +46,35 @@ sealed class State {
         val dataVisibility: Int = View.GONE,
         val subCategories: List<SubCategory> = emptyList()
     ) : State()
+
+    data class AdsState(
+        val loadingVisibility: Int = View.GONE,
+        val isRefreshing: Boolean = false,
+        val errorVisibility: Int = View.GONE,
+        val errorProgress: Float = 0F,
+        val errorPlayAnimation: Boolean = false,
+        val emptyVisibility: Int = View.GONE,
+        val noConnectionVisibility: Int = View.GONE,
+        val dataVisibility: Int = View.GONE,
+        val ads: List<MiniAd> = emptyList()
+    ) : State()
+
+    data class MyAdsState(
+        val loadingVisibility: Int = View.GONE,
+        val isRefreshing: Boolean = false,
+        val errorVisibility: Int = View.GONE,
+        val errorProgress: Float = 0F,
+        val errorPlayAnimation: Boolean = false,
+        val emptyVisibility: Int = View.GONE,
+        val noConnectionVisibility: Int = View.GONE,
+        val dataVisibility: Int = View.GONE,
+        val myAds: List<MiniAd> = emptyList()
+    ) : State()
 }
 
 sealed class Action {
     object Started : Action()
     object Refresh : Action()
     object UpgradeRequest : Action()
+    data class DeleteAd(val position: Int) : Action()
 }

@@ -1,107 +1,132 @@
 package com.hmaserv.rz.ui.myAds
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.view.View
 import com.blankj.utilcode.util.NetworkUtils
 import com.hmaserv.rz.R
-import com.hmaserv.rz.domain.DataResource
-import com.hmaserv.rz.domain.Event
-import com.hmaserv.rz.domain.MiniAd
-import com.hmaserv.rz.domain.UiState
-import com.hmaserv.rz.ui.NewBaseViewModel
+import com.hmaserv.rz.domain.*
+import com.hmaserv.rz.ui.TestViewModel
 import com.hmaserv.rz.utils.Injector
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-const val DATA_MY_ADS_KEY = "my_ads"
+class MyAdsViewModel :
+    TestViewModel<State.MyAdsState, String>() {
 
-class MyAdsViewModel : NewBaseViewModel() {
-
+    private var myAdsJob: Job? = null
     private var deleteJob: Job? = null
 
     private val myAdsUseCase = Injector.getMyAdsUseCase()
     private val deleteAdUseCase = Injector.deleteAdUseCase()
 
-    protected val _deleteState = MutableLiveData<Event<DeleteUiState>>()
-    val deleteState: LiveData<Event<DeleteUiState>>
-        get() = _deleteState
-
     var isList = true
 
     init {
-        getData()
+        sendAction(Action.Started)
     }
 
-    override fun launchDataJob(): Job {
-        return scope.launch(dispatcherProvider.io) {
-            withContext(dispatcherProvider.main) { showDataLoading() }
+    override fun actOnAction(action: Action) {
+        when (action) {
+            Action.Started -> {
+                refreshData(false)
+            }
+            Action.Refresh -> {
+                refreshData(true)
+            }
+            is Action.DeleteAd -> {
+                deleteAd(action.position)
+            }
+            else -> {
+
+            }
+        }
+    }
+
+    private fun refreshData(isRefreshed: Boolean) {
+        if (NetworkUtils.isConnected()) {
+            if (myAdsJob?.isActive == true) {
+                return
+            }
+
+            myAdsJob = launchAdsJob(isRefreshed)
+        } else {
+            if (isRefreshed) {
+                sendMessage(Injector.getApplicationContext().getString(R.string.label_no_internet_connection))
+                sendState(State.MyAdsState(
+                    isRefreshing = false,
+                    dataVisibility = View.VISIBLE,
+                    myAds = state.value?.myAds ?: emptyList()
+                ))
+
+            } else {
+                sendState(State.MyAdsState(noConnectionVisibility = View.VISIBLE))
+            }
+        }
+    }
+
+    private fun launchAdsJob(isRefreshed: Boolean): Job {
+        return launch(dispatcherProvider.io) {
+            withContext(dispatcherProvider.main) {
+                if (isRefreshed) {
+                    sendState(State.MyAdsState(isRefreshing = true))
+                } else {
+                    sendState(State.MyAdsState(loadingVisibility = View.VISIBLE))
+                }
+            }
             val result = myAdsUseCase.get()
             withContext(dispatcherProvider.main) {
                 when (result) {
+                    is DataResource.Success -> {
+                        if (isRefreshed) {
 
-                    is DataResource.Success -> showDataSuccess(result.data)
-                    is DataResource.Error -> showDataError()
+                        }
+                        sendState(
+                            State.MyAdsState(
+                                dataVisibility = View.VISIBLE,
+                                myAds = result.data
+                            )
+                        )
+                    }
+                    is DataResource.Error -> sendState(State.MyAdsState(errorVisibility = View.VISIBLE))
                 }
             }
         }
     }
 
-    private fun showDataSuccess(data: List<MiniAd>) {
-        _uiState.value = UiState.Success(mapOf(Pair(DATA_MY_ADS_KEY, data)))
-    }
-
-    fun deleteAd(adUuid: String) {
-        deleteAdJob(adUuid)
-    }
-
-    private fun deleteAdJob(adUuid: String) {
+    private fun deleteAd(position: Int) {
         if (NetworkUtils.isConnected()) {
             if (deleteJob?.isActive == true) {
                 return
             }
 
-            deleteJob = launchDeleteJob(adUuid)
+            val state = state.value ?: return
+            deleteJob = launchDeleteAdJob(state, position)
         } else {
-            showDeleteNoInternetConnection()
+            sendMessage(Injector.getApplicationContext().getString(R.string.label_no_internet_connection))
         }
     }
 
 
-    private fun launchDeleteJob(adUuid: String): Job? {
-        return scope.launch(dispatcherProvider.io) {
-            withContext(dispatcherProvider.main) { showDeleteLoading() }
-            val result = deleteAdUseCase.delete(adUuid)
+    private fun launchDeleteAdJob(oldState: State.MyAdsState, position: Int): Job? {
+        return launch(dispatcherProvider.io) {
+            val result = deleteAdUseCase.delete(oldState.myAds[position].uuid)
             withContext(dispatcherProvider.main) {
                 when (result) {
-
-                    is DataResource.Success -> showDeleteSuccess(result)
-                    is DataResource.Error -> showDeleteError()
+                    is DataResource.Success -> {
+                        val myAds = oldState.myAds.filterIndexed { index, _ -> index == position }
+                        if (myAds.isEmpty()) {
+                            sendState(State.MyAdsState(emptyVisibility = View.VISIBLE))
+                        } else {
+                            sendState(State.MyAdsState(myAds = myAds))
+                        }
+                        sendMessage(Injector.getApplicationContext().getString(R.string.success_delete_ad))
+                    }
+                    is DataResource.Error -> sendMessage(
+                        Injector.getApplicationContext().getString(R.string.error_delete_ad)
+                    )
                 }
             }
         }
     }
 
-    private fun showDeleteError() {
-        _deleteState.value = Event(DeleteUiState.Error(Injector.getApplicationContext().getString(R.string.error_general)))
-    }
-
-    private fun showDeleteSuccess(result: DataResource.Success<Boolean>) {
-        _deleteState.value = Event(DeleteUiState.Success(result.data))
-    }
-
-    private fun showDeleteLoading() {
-        _deleteState.value = Event(DeleteUiState.Loading)
-    }
-
-    private fun showDeleteNoInternetConnection() {
-        _deleteState.value = Event(DeleteUiState.NoInternetConnection)
-    }
-
-    sealed class DeleteUiState {
-        object Loading : DeleteUiState()
-        data class Success(val ifDeleted: Boolean) : DeleteUiState()
-        data class Error(val message: String) : DeleteUiState()
-        object NoInternetConnection : DeleteUiState()
-    }
 }
