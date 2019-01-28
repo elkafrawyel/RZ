@@ -237,20 +237,17 @@ class AdsRemoteSource(
         return DataResource.Error(IOException(Injector.getApplicationContext().getString(R.string.error_http_reviews_api)))
     }
 
-    override suspend fun writeReviews(token: String, request: WriteReviewRequest): DataResource<WriteReviewResponse> {
+    override suspend fun writeReviews(token: String, request: WriteReviewRequest): DataResource<Boolean> {
         return safeApiCall(
             call = { writeReviewCall(token, request) },
             errorMessage = Injector.getApplicationContext().getString(R.string.error_http_write_reviews_api)
         )
     }
 
-    private suspend fun writeReviewCall(token: String, request: WriteReviewRequest): DataResource<WriteReviewResponse> {
+    private suspend fun writeReviewCall(token: String, request: WriteReviewRequest): DataResource<Boolean> {
         val response = authApiService.writeReview(token, request).await()
         if (response.success != null && response.success) {
-            val body = response.data
-            if (body != null) {
-                return DataResource.Success(response.data)
-            }
+            return DataResource.Success(response.success)
         }
 
         if (response.message != null) {

@@ -90,8 +90,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="24dp"
         app:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/ic_write_review"
-        />
+        android:src="@drawable/ic_write_review" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/loadinLav"

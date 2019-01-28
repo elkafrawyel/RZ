@@ -27,7 +27,12 @@ class AdsAdapter(
         }
 
         helper.setText(R.id.nameTv, item.title)
-//            .setText(R.id.discountPriceTv, item)
+
+        val discountPrice = mContext.getString(R.string.label_product_currency,item.discountPrice.toString())
+        helper.setText(R.id.discountPriceTv, discountPrice)
+
+        val price = mContext.getString(R.string.label_product_currency,item.price.toString())
+        helper.setText(R.id.price, price)
 
         val rate = item.rate
         when (rate) {
@@ -67,9 +72,6 @@ class AdsAdapter(
                 helper.setImageResource(R.id.starFiveImgv, R.drawable.ic_star_fill_rate)
             }
         }
-
-        val price = item.price.toString() + " ر.س "
-        helper.setText(R.id.price, price)
     }
 
     fun submitList(categories: List<MiniAd>) {

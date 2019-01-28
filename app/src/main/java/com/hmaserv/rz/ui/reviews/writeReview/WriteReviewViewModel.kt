@@ -45,17 +45,12 @@ class WriteReviewViewModel : BaseViewModel() {
     private fun launchWriteJob(requestBody: WriteReviewRequest): Job? {
         return scope.launch(dispatcherProvider.io) {
             withContext(dispatcherProvider.main) { showLoading() }
-//            val result = writeReviewUseCase.write(requestBody)
-//            withContext(dispatcherProvider.main) {
-//                when (result) {
-//
-//                    is DataResource.Success -> showSuccess(result.data.sent)
-//                    is DataResource.Error -> showError()
-//                }
-//            }
-
-            withContext(dispatcherProvider.main){
-                _writeState.value = Event(WriteUiState.Success(true))
+            val result = writeReviewUseCase.write(requestBody)
+            withContext(dispatcherProvider.main) {
+                when (result) {
+                    is DataResource.Success -> showSuccess(result.data)
+                    is DataResource.Error -> showError()
+                }
             }
         }
     }

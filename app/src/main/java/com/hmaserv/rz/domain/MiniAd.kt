@@ -10,7 +10,9 @@ data class MiniAdResponse(
     @field:Json(name = "price")
     val price: Int?,
     @field:Json(name = "rate")
-    val rate: Int?,
+    val rate: Float?,
+    @field:Json(name = "discount_price")
+    val discountPrice: Int?,
     @field:Json(name = "sub_category")
     val subCategory: String?,
     @field:Json(name = "title")
@@ -26,6 +28,7 @@ data class MiniAd(
     val uuid: String,
     val title: String,
     val price: Int,
+    val discountPrice: Int?,
     val rate: Int,
     val subCategory: String,
     val images: List<String>
@@ -35,6 +38,7 @@ fun MiniAdResponse.toMiniProduct(): MiniAd? {
     if (this.uuid != null
         && this.title != null
         && this.price != null
+        && this.discountPrice != null
         && this.rate != null
         && this.subCategory != null
         && this.images != null
@@ -43,7 +47,8 @@ fun MiniAdResponse.toMiniProduct(): MiniAd? {
             this.uuid,
             this.title,
             this.price,
-            this.rate,
+            this.discountPrice,
+            this.rate.toInt(),
             this.subCategory,
             this.images.filterNotNull()
         )

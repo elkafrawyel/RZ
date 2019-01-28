@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -32,15 +31,13 @@ class ReviewsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         viewModel.uiState.observe(this, Observer { onUiStateChanged(it) })
         arguments?.let {
             adUuid = ReviewsFragmentArgs.fromBundle(it).adUuid
-
-            if (adUuid != null) {
-                viewModel.setAdUuid(adUuid!!)
-            } else {
-                findNavController().navigateUp()
-            }
+            viewModel.setAdUuid(adUuid!!)
         }
 
         reviewsRv.adapter = adapter
+
+        noConnectionCl.setOnClickListener { viewModel.refresh() }
+        errorCl.setOnClickListener { viewModel.refresh() }
 
         reviewsSwipe.setOnRefreshListener(this)
 
@@ -48,7 +45,8 @@ class ReviewsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun openWriteReview() {
-        findNavController().navigate(R.id.action_reviewsFragment_to_writeReviewFragment)
+        val action = ReviewsFragmentDirections.actionReviewsFragmentToWriteReviewFragment(adUuid!!)
+        findNavController().navigate(action)
     }
 
     override fun showLoading() {

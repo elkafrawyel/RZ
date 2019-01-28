@@ -97,7 +97,7 @@ interface RetrofitAuthApiService {
     fun writeReview(
         @Header("Authorization") token: String,
         @Body request: WriteReviewRequest
-        ):Deferred<ApiResponse<WriteReviewResponse>>
+        ):Deferred<ApiResponse<Boolean>>
 
     companion object {
         fun create(baseUrl: String, client: OkHttpClient): RetrofitAuthApiService {

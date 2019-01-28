@@ -73,9 +73,11 @@ class WriteReviewFragment : Fragment() {
             if (viewModel.count == 0) {
                 showMessage(getString(R.string.error_star_count_zero))
             } else {
+                if (adUuid == null)
+                    findNavController().navigateUp()
                 viewModel.writeReview(
-//                    adUuid!!,
-                    "25ef9be5-cad6-4980-a360-16b442dbb478",
+                    adUuid!!,
+//                    "25ef9be5-cad6-4980-a360-16b442dbb478",
                     viewModel.count,
                     writeReviewTiEt.text.toString()
                 )

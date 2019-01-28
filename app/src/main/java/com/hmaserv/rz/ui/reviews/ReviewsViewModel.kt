@@ -19,8 +19,10 @@ class ReviewsViewModel : NewBaseViewModel() {
     private var adUuid: String? = null
 
     fun setAdUuid(adUuid: String) {
-        this.adUuid = adUuid
-        getData()
+        if (this.adUuid == null) {
+            this.adUuid = adUuid
+            getData()
+        }
     }
 
     override fun launchDataJob(): Job {

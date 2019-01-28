@@ -15,13 +15,13 @@ class ReviewsAdapter(
 
         Glide
             .with(mContext)
-            .load(item.avatar)
+            .load(item.owner.image)
             .apply(RequestOptions.circleCropTransform())
             .into(helper.getView(R.id.avatarImgv))
 
-        helper.setText(R.id.nameTv, item.name)
-        helper.setText(R.id.dateTv, item.date)
-        helper.setText(R.id.reviewTv, item.content)
-        helper.setText(R.id.rateTv, item.rate)
+        helper.setText(R.id.nameTv, item.owner.fullName)
+        helper.setText(R.id.dateTv, item.created_at)
+        helper.setText(R.id.reviewTv, item.comment)
+        helper.setText(R.id.rateTv, item.rate.toString())
     }
 }

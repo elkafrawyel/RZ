@@ -117,12 +117,12 @@ class AdFragment : BaseFragment(), AdapterAttributes.AttributesListener {
 
     override fun onAttributeSelected(mainAttributePosition: Int, subAttributePosition: Int) {
         viewModel.selectedAttributes[mainAttributePosition] =
-                viewModel.attributes[mainAttributePosition]
-                    .copy(
-                        attributes = listOf(
-                            viewModel.attributes[mainAttributePosition].attributes[subAttributePosition]
-                        )
+            viewModel.attributes[mainAttributePosition]
+                .copy(
+                    attributes = listOf(
+                        viewModel.attributes[mainAttributePosition].attributes[subAttributePosition]
                     )
+                )
 
         viewModel.getAttributesPrice()
         val price = adPrice + viewModel.getAttributesPrice()
@@ -147,6 +147,9 @@ class AdFragment : BaseFragment(), AdapterAttributes.AttributesListener {
         adPrice = ad.price
         val price = adPrice + viewModel.getAttributesPrice()
         priceTv.text = getString(R.string.label_product_currency, price.toString())
+
+        val discountPrice = getString(R.string.label_product_currency, ad.discountPrice.toString())
+        discountPriceTv.text = discountPrice
 
         val rate = ad.rate
         addAdRate(rate)

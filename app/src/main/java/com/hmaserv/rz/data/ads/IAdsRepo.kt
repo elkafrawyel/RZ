@@ -12,6 +12,6 @@ interface IAdsRepo {
     suspend fun deleteAd(token: String, request: AdRequest): DataResource<Boolean>
     suspend fun updateAd(token: String, request: UpdateAdRequest) : DataResource<CreateProductResponse>
     suspend fun reviews(request: ReviewsRequest):DataResource<List<Review>>
-    suspend fun writeReviews(token: String,request: WriteReviewRequest):DataResource<WriteReviewResponse>
+    suspend fun writeReviews(token: String,request: WriteReviewRequest):DataResource<Boolean>
 
 }

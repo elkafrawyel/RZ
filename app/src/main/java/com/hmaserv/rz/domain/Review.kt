@@ -3,37 +3,42 @@ package com.hmaserv.rz.domain
 import com.squareup.moshi.Json
 
 data class ReviewResponse(
-    @field:Json(name = "adUuid") val adUuid: String?
+    @field:Json(name = "rate")
+    val rate: Float?,
+    @field:Json(name = "comment")
+    val comment: String?,
+    @field:Json(name = "owner")
+    val owner: OwnerResponse?,
+    @field:Json(name = "created_at")
+    val created_at: String?
 )
 
 data class ReviewsRequest(
-    @field:Json(name = "adUuid")
+    @field:Json(name = "ad_uuid")
     val adUuid: String
 )
 
 data class Review(
-    val adUuid: String,
-    val avatar: String,
-    val name: String,
-    val rate: String,
-    val date: String,
-    val content: String
+    val rate: Int,
+    val owner: Owner,
+    val comment: String,
+    val created_at: String
 )
 
 fun ReviewResponse.toReview(): Review? {
-    return Review(
-        adUuid!!,
-        "",
-        "mahmoud",
-        "5",
-        "10/01/2019",
-        "new Comment"
-    )
+    if (rate != null
+        && comment != null
+        && created_at != null
+        && owner != null
+    ) {
+        return Review(
+            rate.toInt(),
+            owner.toOwner(),
+            comment,
+            created_at)
+    }
+    return null
 }
-
-data class WriteReviewResponse(
-    val sent: Boolean
-)
 
 data class WriteReviewRequest(
     @field:Json(name = "ad_uuid")

@@ -16,7 +16,7 @@ data class AdResponse(
     @field:Json(name = "quantity")
     val quantity: Int?,
     @field:Json(name = "rate")
-    val rate: Int?,
+    val rate: Float?,
     @field:Json(name = "reviews")
     val reviews: Int?,
     @field:Json(name = "created_at")
@@ -107,7 +107,7 @@ fun AdResponse.toAd(): Ad? {
             files.filterNotNull().toImages(),
             owner.toOwner(),
             price,
-            rate,
+            rate.toInt(),
             reviews,
             category,
             subCategoryUuid,
