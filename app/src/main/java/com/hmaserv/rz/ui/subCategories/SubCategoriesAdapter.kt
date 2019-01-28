@@ -9,7 +9,7 @@ import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.SubCategory
 
 class SubCategoriesAdapter :
-    BaseQuickAdapter<SubCategory, BaseViewHolder>(R.layout.category_item_view, emptyList()) {
+    BaseQuickAdapter<SubCategory, BaseViewHolder>(R.layout.category_item_view, ArrayList<SubCategory>()) {
     override fun convert(helper: BaseViewHolder?, item: SubCategory?) {
 
         (helper?.getView(R.id.section_image) as ImageView).let {

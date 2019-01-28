@@ -9,7 +9,7 @@ import com.hmaserv.rz.domain.MiniAd
 
 class AdsAdapter(
     val actionMode: Boolean = false
-) : BaseQuickAdapter<MiniAd, BaseViewHolder>(R.layout.ad_item_view, emptyList()) {
+) : BaseQuickAdapter<MiniAd, BaseViewHolder>(R.layout.ad_item_view, ArrayList<MiniAd>()) {
 
     override fun convert(helper: BaseViewHolder, item: MiniAd) {
 
@@ -28,10 +28,10 @@ class AdsAdapter(
 
         helper.setText(R.id.nameTv, item.title)
 
-        val discountPrice = mContext.getString(R.string.label_product_currency,item.discountPrice.toString())
+        val discountPrice = mContext.getString(R.string.label_product_currency,item.price.toString())
         helper.setText(R.id.discountPriceTv, discountPrice)
 
-        val price = mContext.getString(R.string.label_product_currency,item.price.toString())
+        val price = mContext.getString(R.string.label_product_currency,item.discountPrice.toString())
         helper.setText(R.id.price, price)
 
         val rate = item.rate

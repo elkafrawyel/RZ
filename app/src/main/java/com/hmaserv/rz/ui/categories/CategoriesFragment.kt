@@ -4,20 +4,25 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.hmaserv.rz.R
+import com.hmaserv.rz.domain.Action
 import com.hmaserv.rz.domain.Category
+import com.hmaserv.rz.domain.State
 import com.hmaserv.rz.ui.BaseFragment
+import com.hmaserv.rz.ui.TestBaseFragment
 import kotlinx.android.synthetic.main.categories_fragment.*
 
-class CategoriesFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
+class CategoriesFragment :
+    TestBaseFragment<State.CategoriesState, String, CategoriesViewModel>(CategoriesViewModel::class.java),
+    SwipeRefreshLayout.OnRefreshListener {
 
     private val adapter = CategoriesAdapter()
-    lateinit var viewModel: CategoriesViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,66 +34,16 @@ class CategoriesFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this).get(CategoriesViewModel::class.java)
-        viewModel.uiState.observe(this, Observer { onUiStateChanged(it) })
-
         backImgv.setOnClickListener { findNavController().navigateUp() }
         searchMcv.setOnClickListener{openSearchFragment()}
         categoriesRv.adapter = adapter
-        noConnectionCl.setOnClickListener { viewModel.refresh() }
-        errorCl.setOnClickListener { viewModel.refresh() }
+        noConnectionCl.setOnClickListener { sendAction(Action.Started) }
+        errorCl.setOnClickListener { sendAction(Action.Started)  }
         adapter.onItemClickListener =
                 BaseQuickAdapter.OnItemClickListener { _, _, position ->
                     openSubCategories(adapter.data[position])
                 }
         categoriesSwipe.setOnRefreshListener(this)
-    }
-
-    override fun showLoading() {
-        loadinLav.visibility = View.VISIBLE
-        dataCl.visibility = View.GONE
-        emptyViewCl.visibility = View.GONE
-        noConnectionCl.visibility = View.GONE
-        errorCl.visibility = View.GONE
-    }
-
-    override fun showSuccess(dataMap: Map<String, Any>) {
-        val categories = dataMap[DATA_CATEGORIES_KEY] as List<Category>
-        if (categories.isEmpty()) {
-            showStateEmptyView()
-        } else {
-            loadinLav.visibility = View.GONE
-            categoriesSwipe.isRefreshing = false
-            dataCl.visibility = View.VISIBLE
-            emptyViewCl.visibility = View.GONE
-            noConnectionCl.visibility = View.GONE
-            errorCl.visibility = View.GONE
-            adapter.submitList(categories)
-        }
-    }
-
-    override fun showError(message: String) {
-        loadinLav.visibility = View.GONE
-        dataCl.visibility = View.GONE
-        emptyViewCl.visibility = View.GONE
-        noConnectionCl.visibility = View.GONE
-        errorCl.visibility = View.VISIBLE
-    }
-
-    override fun showNoInternetConnection() {
-        loadinLav.visibility = View.GONE
-        dataCl.visibility = View.GONE
-        emptyViewCl.visibility = View.GONE
-        noConnectionCl.visibility = View.VISIBLE
-        errorCl.visibility = View.GONE
-    }
-
-    private fun showStateEmptyView () {
-        loadinLav.visibility = View.GONE
-        dataCl.visibility = View.GONE
-        emptyViewCl.visibility = View.VISIBLE
-        noConnectionCl.visibility = View.GONE
-        errorCl.visibility = View.GONE
     }
 
     private fun openSearchFragment() {
@@ -105,8 +60,18 @@ class CategoriesFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener 
         findNavController().navigate(action)
     }
 
+    override fun renderState(state: State.CategoriesState) {
+        loadinLav.visibility = state.loadingVisibility
+        categoriesSwipe.isRefreshing = state.isRefreshing
+        dataCl.visibility = state.dataVisibility
+        emptyViewCl.visibility = state.emptyVisibility
+        noConnectionCl.visibility = state.noConnectionVisibility
+        errorCl.visibility = state.errorVisibility
+        adapter.replaceData(state.categories)
+    }
+
     override fun onRefresh() {
-        viewModel.refresh()
+        sendAction(Action.Refresh)
     }
 
 }

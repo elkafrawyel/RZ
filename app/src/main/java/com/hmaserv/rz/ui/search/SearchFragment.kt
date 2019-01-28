@@ -81,6 +81,7 @@ class SearchFragment : Fragment() {
             }
         }
 
+        backBtn.setOnClickListener { findNavController().navigateUp() }
         searchMbtn.setOnClickListener { search() }
     }
 

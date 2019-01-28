@@ -28,7 +28,7 @@ data class MiniAd(
     val uuid: String,
     val title: String,
     val price: Int,
-    val discountPrice: Int?,
+    val discountPrice: Int,
     val rate: Int,
     val subCategory: String,
     val images: List<String>

@@ -13,9 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.TransitionManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -23,12 +21,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.hmaserv.rz.R
-import com.hmaserv.rz.domain.LoggedInUser
-import com.hmaserv.rz.domain.MiniAd
-import com.hmaserv.rz.domain.Slider
-import com.hmaserv.rz.domain.observeEvent
-import com.hmaserv.rz.ui.BaseFragment
+import com.hmaserv.rz.domain.*
 import com.hmaserv.rz.ui.MainViewModel
+import com.hmaserv.rz.ui.TestBaseFragment
 import com.hmaserv.rz.ui.ads.AdsAdapter
 import com.hmaserv.rz.utils.SpacesItemDecoration
 import kotlinx.android.synthetic.main.home_fragment.*
@@ -36,13 +31,13 @@ import kotlinx.android.synthetic.main.home_nav_header.view.*
 import java.util.*
 import kotlin.concurrent.timerTask
 
-class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedListener {
+class HomeFragment :
+    TestBaseFragment<State.HomeState, String, TestHomeViewModel>(TestHomeViewModel::class.java),
+    NavigationView.OnNavigationItemSelectedListener {
 
     private val mainViewModel by lazy { ViewModelProviders.of(requireActivity()).get(MainViewModel::class.java) }
-    private val homeViewModel by lazy { ViewModelProviders.of(this).get(HomeViewModel::class.java) }
 
     private var timer: Timer? = null
-
     private val imageSliderAdapter = ImageSliderAdapter()
     private val productsAdapter = AdsAdapter()
 
@@ -55,19 +50,17 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         mainViewModel.logInLiveData.observe(this, Observer { onLogInState(it) })
         mainViewModel.logOutState.observeEvent(this) { onLogOutState(it) }
-        homeViewModel.uiState.observe(this, Observer { onUiStateChanged(it) })
 
         navigationView.setNavigationItemSelectedListener(this)
         bottomAppBar.setNavigationOnClickListener { rootViewDl.openDrawer(GravityCompat.START) }
         searchImgv.setOnClickListener { onSearchClicked() }
         categoriesImgv.setOnClickListener { onCategoriesClicked() }
         notificationsImgv.setOnClickListener { onNotificationsClicked() }
-        noConnectionCl.setOnClickListener { homeViewModel.refresh() }
-        errorCl.setOnClickListener { homeViewModel.refresh() }
-        emptyViewCl.setOnClickListener { homeViewModel.refresh() }
+        noConnectionCl.setOnClickListener { sendAction(Action.Refresh) }
+        errorCl.setOnClickListener { sendAction(Action.Refresh) }
+        emptyViewCl.setOnClickListener { sendAction(Action.Refresh) }
 
         bannerSliderVp.adapter = imageSliderAdapter
         promotionsRv.adapter = productsAdapter
@@ -79,7 +72,7 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
 
         val spacesItemDecoration = SpacesItemDecoration(resources.getDimensionPixelSize(R.dimen.list_space))
 
-        if (homeViewModel.isList) {
+        if (viewModel.isList) {
             actionListMbtn.setIconResource(R.drawable.ic_reorder_black)
             actionGridMbtn.setIconResource(R.drawable.ic_apps_black50)
             promotionsRv.layoutManager = GridLayoutManager(
@@ -101,7 +94,7 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
         }
 
         actionListMbtn.setOnClickListener {
-            if (!homeViewModel.isList) {
+            if (!viewModel.isList) {
                 actionListMbtn.setIconResource(R.drawable.ic_reorder_black)
                 actionGridMbtn.setIconResource(R.drawable.ic_apps_black50)
                 promotionsRv.post {
@@ -109,12 +102,12 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
                     (promotionsRv.layoutManager as GridLayoutManager).spanCount = 1
                     promotionsRv.removeItemDecoration(spacesItemDecoration)
                 }
-                homeViewModel.isList = true
+                viewModel.isList = true
             }
         }
 
         actionGridMbtn.setOnClickListener {
-            if (homeViewModel.isList) {
+            if (viewModel.isList) {
                 actionListMbtn.setIconResource(R.drawable.ic_reorder_black50)
                 actionGridMbtn.setIconResource(R.drawable.ic_apps_black)
                 promotionsRv.post {
@@ -122,7 +115,7 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
                     (promotionsRv.layoutManager as GridLayoutManager).spanCount = 2
                     promotionsRv.addItemDecoration(spacesItemDecoration)
                 }
-                homeViewModel.isList = false
+                viewModel.isList = false
             }
         }
 
@@ -181,7 +174,7 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
                 MaterialAlertDialogBuilder(requireContext())
                     .setTitle("لا تمتلك تصريح لنشر اعلان")
                     .setMessage("اذا كنت تريد نشر و ادارة خدماتك معنا يتوجب تقديم طلب لترقية حسابك لحساب مقدم خدمة.")
-                    .setPositiveButton("ارسال الطلب") { _,_ -> homeViewModel.sendUpgradeRequest() }
+                    .setPositiveButton("ارسال الطلب") { _,_ -> sendAction(Action.UpgradeRequest) }
                     .setNegativeButton("الغاء", null)
                     .show()
             }
@@ -286,61 +279,16 @@ class HomeFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedList
         }
     }
 
-    override fun showLoading() {
-        loadinLav.visibility = View.VISIBLE
-        errorCl.visibility = View.GONE
-        noConnectionCl.visibility = View.GONE
-        emptyViewCl.visibility = View.GONE
-        mainViewNsv.visibility = View.GONE
-    }
-
-    override fun showSuccess(dataMap: Map<String, Any>) {
-        loadinLav.visibility = View.GONE
-        errorCl.visibility = View.GONE
-        noConnectionCl.visibility = View.GONE
-        emptyViewCl.visibility = View.GONE
-        mainViewNsv.visibility = View.GONE
-
-        val sliders = dataMap[DATA_SLIDER_KEY] as List<Slider>
-        val promotions = dataMap[DATA_PROMOTIONS_KEY] as List<MiniAd>
-
-        if (promotions.isEmpty()) {
-            emptyViewCl.visibility = View.VISIBLE
-            mainViewNsv.visibility = View.GONE
-        } else {
-            emptyViewCl.visibility = View.GONE
-            mainViewNsv.visibility = View.VISIBLE
-
-            setSliders(sliders)
-            setPromotions(promotions)
-        }
-    }
-
-    override fun showError(message: String) {
-        errorLav.progress = 0F
-        errorLav.playAnimation()
-        loadinLav.visibility = View.GONE
-        errorCl.visibility = View.VISIBLE
-        noConnectionCl.visibility = View.GONE
-        emptyViewCl.visibility = View.GONE
-        mainViewNsv.visibility = View.GONE
-    }
-
-    override fun showNoInternetConnection() {
-        loadinLav.visibility = View.GONE
-        errorCl.visibility = View.GONE
-        noConnectionCl.visibility = View.VISIBLE
-        emptyViewCl.visibility = View.GONE
-        mainViewNsv.visibility = View.GONE
-    }
-
-    private fun setSliders(sliders: List<Slider>) {
-        if (sliders.isEmpty()) bannerSliderVp.visibility = View.GONE
-        else bannerSliderVp.visibility = View.VISIBLE
-        imageSliderAdapter.submitList(sliders.mapNotNull { it.image })
-    }
-
-    private fun setPromotions(promotions: List<MiniAd>) {
-        productsAdapter.submitList(promotions)
+    override fun renderState(state: State.HomeState) {
+        loadinLav.visibility = state.loadingVisibility
+        errorCl.visibility = state.errorVisibility
+        errorLav.progress = state.errorProgress
+        if (state.errorPlayAnimation) errorLav.playAnimation()
+        noConnectionCl.visibility = state.noConnectionVisibility
+        emptyViewCl.visibility = state.emptyVisibility
+        mainViewNsv.visibility = state.dataVisibility
+        bannerSliderVp.visibility = state.bannersVisibility
+        imageSliderAdapter.submitList(state.banners)
+        productsAdapter.replaceData(state.promotions)
     }
 }

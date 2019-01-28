@@ -1,8 +1,55 @@
 package com.hmaserv.rz.domain
 
+import android.view.View
+
 sealed class UiState {
     object Loading : UiState()
     data class Success(val dataMap: Map<String, Any>) : UiState()
     data class Error(val message: String) : UiState()
     object NoInternetConnection : UiState()
+}
+
+sealed class State {
+    data class HomeState(
+        val loadingVisibility: Int = View.GONE,
+        val errorVisibility: Int = View.GONE,
+        val errorProgress: Float = 0F,
+        val errorPlayAnimation: Boolean = false,
+        val emptyVisibility: Int = View.GONE,
+        val noConnectionVisibility: Int = View.GONE,
+        val dataVisibility: Int = View.GONE,
+        val bannersVisibility: Int = View.GONE,
+        val banners: List<String> = emptyList(),
+        val promotions: List<MiniAd> = emptyList()
+    ) : State()
+
+    data class CategoriesState(
+        val loadingVisibility: Int = View.GONE,
+        val isRefreshing: Boolean = false,
+        val errorVisibility: Int = View.GONE,
+        val errorProgress: Float = 0F,
+        val errorPlayAnimation: Boolean = false,
+        val emptyVisibility: Int = View.GONE,
+        val noConnectionVisibility: Int = View.GONE,
+        val dataVisibility: Int = View.GONE,
+        val categories: List<Category> = emptyList()
+    ) : State()
+
+    data class SubCategoriesState(
+        val loadingVisibility: Int = View.GONE,
+        val isRefreshing: Boolean = false,
+        val errorVisibility: Int = View.GONE,
+        val errorProgress: Float = 0F,
+        val errorPlayAnimation: Boolean = false,
+        val emptyVisibility: Int = View.GONE,
+        val noConnectionVisibility: Int = View.GONE,
+        val dataVisibility: Int = View.GONE,
+        val subCategories: List<SubCategory> = emptyList()
+    ) : State()
+}
+
+sealed class Action {
+    object Started : Action()
+    object Refresh : Action()
+    object UpgradeRequest : Action()
 }
