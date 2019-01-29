@@ -4,13 +4,13 @@ import android.view.View
 import com.blankj.utilcode.util.NetworkUtils
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.*
-import com.hmaserv.rz.ui.TestViewModel
+import com.hmaserv.rz.ui.RzBaseViewModel
 import com.hmaserv.rz.utils.Injector
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class CategoriesViewModel : TestViewModel<State.CategoriesState, String>() {
+class CategoriesViewModel : RzBaseViewModel<State.CategoriesState, String>() {
 
     private var categoriesJob: Job? = null
     private val getCategoriesUseCase = Injector.getCategoriesUseCase()

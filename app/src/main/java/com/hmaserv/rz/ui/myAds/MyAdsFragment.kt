@@ -8,18 +8,17 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.transition.TransitionManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.Action
 import com.hmaserv.rz.domain.State
-import com.hmaserv.rz.ui.TestBaseFragment
+import com.hmaserv.rz.ui.RzBaseFragment
 import com.hmaserv.rz.ui.ads.AdsAdapter
 import com.hmaserv.rz.utils.SpacesItemDecoration
 import kotlinx.android.synthetic.main.my_ads_fragment.*
 
 class MyAdsFragment :
-    TestBaseFragment<State.MyAdsState, String, MyAdsViewModel>(MyAdsViewModel::class.java),
+    RzBaseFragment<State.MyAdsState, String, MyAdsViewModel>(MyAdsViewModel::class.java),
     SwipeRefreshLayout.OnRefreshListener {
 
     private var adapter = AdsAdapter(true)

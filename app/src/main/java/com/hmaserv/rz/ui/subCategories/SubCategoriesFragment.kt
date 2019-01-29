@@ -4,23 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.Action
 import com.hmaserv.rz.domain.State
 import com.hmaserv.rz.domain.SubCategory
-import com.hmaserv.rz.ui.BaseFragment
-import com.hmaserv.rz.ui.TestBaseFragment
+import com.hmaserv.rz.ui.RzBaseFragment
 import kotlinx.android.synthetic.main.sub_categories_fragment.*
 
 class SubCategoriesFragment :
-    TestBaseFragment<State.SubCategoriesState, String, SubCategoriesViewModel>(SubCategoriesViewModel::class.java),
+    RzBaseFragment<State.SubCategoriesState, String, SubCategoriesViewModel>(SubCategoriesViewModel::class.java),
     SwipeRefreshLayout.OnRefreshListener {
 
     private var categoryId: String? = null
@@ -48,6 +43,7 @@ class SubCategoriesFragment :
 
         backBtn.setOnClickListener { findNavController().navigateUp() }
         searchMcv.setOnClickListener { openSearchFragment() }
+        emptyViewCl.setOnClickListener { sendAction(Action.Started) }
         noConnectionCl.setOnClickListener { sendAction(Action.Started) }
         errorCl.setOnClickListener { sendAction(Action.Started) }
         subCategoriesRv.adapter = adapter

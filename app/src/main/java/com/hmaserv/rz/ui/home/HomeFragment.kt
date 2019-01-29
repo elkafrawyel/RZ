@@ -23,7 +23,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.*
 import com.hmaserv.rz.ui.MainViewModel
-import com.hmaserv.rz.ui.TestBaseFragment
+import com.hmaserv.rz.ui.RzBaseFragment
 import com.hmaserv.rz.ui.ads.AdsAdapter
 import com.hmaserv.rz.utils.SpacesItemDecoration
 import kotlinx.android.synthetic.main.home_fragment.*
@@ -32,7 +32,7 @@ import java.util.*
 import kotlin.concurrent.timerTask
 
 class HomeFragment :
-    TestBaseFragment<State.HomeState, String, HomeViewModel>(HomeViewModel::class.java),
+    RzBaseFragment<State.HomeState, String, HomeViewModel>(HomeViewModel::class.java),
     NavigationView.OnNavigationItemSelectedListener {
 
     private val mainViewModel by lazy { ViewModelProviders.of(requireActivity()).get(MainViewModel::class.java) }

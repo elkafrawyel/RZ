@@ -10,7 +10,7 @@ import com.hmaserv.rz.domain.Action
 import com.hmaserv.rz.domain.State
 import com.hmaserv.rz.domain.observeEvent
 
-abstract class TestBaseFragment<T : State, M, VM : TestViewModel<T, M>>(modelClassName: Class<VM>) : Fragment() {
+abstract class RzBaseFragment<T : State, M, VM : RzBaseViewModel<T, M>>(modelClassName: Class<VM>) : Fragment() {
 
     protected val viewModel : VM by lazy { ViewModelProviders.of(this).get(modelClassName) }
 

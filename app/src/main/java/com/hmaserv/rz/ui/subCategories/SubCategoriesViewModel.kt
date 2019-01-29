@@ -1,16 +1,14 @@
 package com.hmaserv.rz.ui.subCategories
 
 import android.view.View
-import com.blankj.utilcode.util.NetworkUtils
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.*
-import com.hmaserv.rz.ui.TestViewModel
+import com.hmaserv.rz.ui.RzBaseViewModel
 import com.hmaserv.rz.utils.Injector
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
-class SubCategoriesViewModel : TestViewModel<State.SubCategoriesState, String>() {
+class SubCategoriesViewModel : RzBaseViewModel<State.SubCategoriesState, String>() {
 
     private var subCategoriesJob: Job? = null
     private val getSubCategoriesUseCase = Injector.getSubCategoriesUseCase()
@@ -38,47 +36,55 @@ class SubCategoriesViewModel : TestViewModel<State.SubCategoriesState, String>()
     }
 
     private fun refreshData(isRefreshed: Boolean) {
-        if (NetworkUtils.isConnected()) {
-            if (subCategoriesJob?.isActive == true) {
-                return
-            }
+        checkNetwork(
+            job = subCategoriesJob,
+            success = { subCategoriesJob = launchSubCategoriesJob(isRefreshed) },
+            error = {
+                if (isRefreshed) {
+                    sendMessage(Injector.getApplicationContext().getString(R.string.label_no_internet_connection))
+                    sendState(
+                        State.SubCategoriesState(
+                            isRefreshing = false,
+                            dataVisibility = View.VISIBLE,
+                            subCategories = state.value?.subCategories ?: emptyList()
+                        )
+                    )
 
-            subCategoriesJob = launchSubCategoriesJob(isRefreshed)
-        } else {
-            if (isRefreshed) {
-                sendMessage(Injector.getApplicationContext().getString(R.string.label_no_internet_connection))
-                sendState(State.SubCategoriesState(
-                    isRefreshing = false,
-                    dataVisibility = View.VISIBLE,
-                    subCategories = state.value?.subCategories ?: emptyList()
-                ))
-
-            } else {
-                sendState(State.SubCategoriesState(noConnectionVisibility = View.VISIBLE))
+                } else {
+                    sendState(State.SubCategoriesState(noConnectionVisibility = View.VISIBLE))
+                }
             }
-        }
+        )
     }
 
     private fun launchSubCategoriesJob(isRefreshed: Boolean): Job {
         return launch(dispatcherProvider.io) {
-            withContext(dispatcherProvider.main) {
+            sendStateOnMain {
                 if (isRefreshed) {
-                    sendState(State.SubCategoriesState(isRefreshing = true))
+                    State.SubCategoriesState(
+                        isRefreshing = true,
+                        dataVisibility = View.VISIBLE,
+                        subCategories = state.value?.subCategories ?: emptyList()
+                    )
                 } else {
-                    sendState(State.SubCategoriesState(loadingVisibility = View.VISIBLE))
+                    State.SubCategoriesState(loadingVisibility = View.VISIBLE)
                 }
             }
             val result = getSubCategoriesUseCase.get(categoryUuid!!)
-            withContext(dispatcherProvider.main) {
-                when (result) {
-                    is DataResource.Success -> sendState(
-                        State.SubCategoriesState(
-                            dataVisibility = View.VISIBLE,
-                            subCategories = result.data
-                        )
-                    )
-                    is DataResource.Error -> sendState(State.SubCategoriesState(errorVisibility = View.VISIBLE))
+            when (result) {
+                is DataResource.Success -> {
+                    if (result.data.isEmpty()) {
+                        sendStateOnMain { State.SubCategoriesState(emptyVisibility = View.VISIBLE) }
+                    } else {
+                        sendStateOnMain {
+                            State.SubCategoriesState(
+                                dataVisibility = View.VISIBLE,
+                                subCategories = result.data
+                            )
+                        }
+                    }
                 }
+                is DataResource.Error -> sendStateOnMain { State.SubCategoriesState(errorVisibility = View.VISIBLE) }
             }
         }
     }

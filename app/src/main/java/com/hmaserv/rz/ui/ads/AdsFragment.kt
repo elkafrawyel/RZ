@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,13 +13,12 @@ import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.Action
 import com.hmaserv.rz.domain.MiniAd
 import com.hmaserv.rz.domain.State
-import com.hmaserv.rz.ui.BaseFragment
-import com.hmaserv.rz.ui.TestBaseFragment
+import com.hmaserv.rz.ui.RzBaseFragment
 import com.hmaserv.rz.utils.SpacesItemDecoration
 import kotlinx.android.synthetic.main.ads_fragment.*
 
 class AdsFragment :
-    TestBaseFragment<State.AdsState, String, AdsViewModel>(AdsViewModel::class.java),
+    RzBaseFragment<State.AdsState, String, AdsViewModel>(AdsViewModel::class.java),
     SwipeRefreshLayout.OnRefreshListener {
 
     private val adapter = AdsAdapter()

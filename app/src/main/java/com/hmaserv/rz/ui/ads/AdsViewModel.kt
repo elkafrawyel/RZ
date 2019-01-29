@@ -4,13 +4,13 @@ import android.view.View
 import com.blankj.utilcode.util.NetworkUtils
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.*
-import com.hmaserv.rz.ui.TestViewModel
+import com.hmaserv.rz.ui.RzBaseViewModel
 import com.hmaserv.rz.utils.Injector
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class AdsViewModel : TestViewModel<State.AdsState, String>() {
+class AdsViewModel : RzBaseViewModel<State.AdsState, String>() {
 
     private var adsJob: Job? = null
     private val getSearchUseCase = Injector.searchUseCase()

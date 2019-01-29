@@ -4,14 +4,14 @@ import android.view.View
 import com.blankj.utilcode.util.NetworkUtils
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.*
-import com.hmaserv.rz.ui.TestViewModel
+import com.hmaserv.rz.ui.RzBaseViewModel
 import com.hmaserv.rz.utils.Injector
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MyAdsViewModel :
-    TestViewModel<State.MyAdsState, String>() {
+    RzBaseViewModel<State.MyAdsState, String>() {
 
     private var myAdsJob: Job? = null
     private var deleteJob: Job? = null

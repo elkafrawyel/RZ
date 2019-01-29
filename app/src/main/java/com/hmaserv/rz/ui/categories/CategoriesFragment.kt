@@ -4,9 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -14,12 +11,11 @@ import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.Action
 import com.hmaserv.rz.domain.Category
 import com.hmaserv.rz.domain.State
-import com.hmaserv.rz.ui.BaseFragment
-import com.hmaserv.rz.ui.TestBaseFragment
+import com.hmaserv.rz.ui.RzBaseFragment
 import kotlinx.android.synthetic.main.categories_fragment.*
 
 class CategoriesFragment :
-    TestBaseFragment<State.CategoriesState, String, CategoriesViewModel>(CategoriesViewModel::class.java),
+    RzBaseFragment<State.CategoriesState, String, CategoriesViewModel>(CategoriesViewModel::class.java),
     SwipeRefreshLayout.OnRefreshListener {
 
     private val adapter = CategoriesAdapter()
