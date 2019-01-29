@@ -59,4 +59,5 @@ ext {
     firebaseCrashlyticsVersion = '2.9.8'
     firebasePrefVersion = '16.2.3'
     browser_version = '1.0.0'
+    butterknife_version = '10.0.0'
 }

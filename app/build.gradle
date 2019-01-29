@@ -33,12 +33,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
     splits {
         abi {
             enable true
         }
     }
-
     androidExtensions {
         experimental = true
     }
@@ -91,6 +94,9 @@ dependencies {
     implementation "com.airbnb.android:lottie:$lottieVersion"
 
     implementation "androidx.browser:browser:$browser_version"
+
+    implementation "com.jakewharton:butterknife:$butterknife_version"
+    kapt "com.jakewharton:butterknife-compiler:$butterknife_version"
 
     implementation "com.google.firebase:firebase-core:$firebaseCoreVersion"
     implementation "com.google.firebase:firebase-messaging:$firebaseMessagingVersion"
