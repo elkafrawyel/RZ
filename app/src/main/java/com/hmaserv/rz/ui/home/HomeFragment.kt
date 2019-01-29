@@ -189,7 +189,7 @@ class HomeFragment :
             R.id.nav_about_us -> findNavController().navigate(R.id.action_homeFragment_to_aboutUsFragment)
             R.id.nav_contact_us -> findNavController().navigate(R.id.action_homeFragment_to_contactUsFragment)
             R.id.nav_privacy -> findNavController().navigate(R.id.action_homeFragment_to_privacyFragment)
-            R.id.nav_terms -> findNavController().navigate(R.id.action_homeFragment_to_termsConditionsFragment)
+//            R.id.nav_terms -> findNavController().navigate(R.id.action_homeFragment_to_termsConditionsFragment)
             R.id.nav_log_out -> mainViewModel.logOut()
         }
 

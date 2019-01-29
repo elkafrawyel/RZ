@@ -37,10 +37,10 @@
         android:id="@+id/nav_privacy"
         android:icon="@drawable/ic_privacy"
         android:title="@string/label_privacy_policy" />
-    <item
-        android:id="@+id/nav_terms"
-        android:icon="@drawable/ic_terms"
-        android:title="@string/label_terms_amp_conditions" />
+    <!--<item-->
+        <!--android:id="@+id/nav_terms"-->
+        <!--android:icon="@drawable/ic_terms"-->
+        <!--android:title="@string/label_terms_amp_conditions" />-->
     <item
         android:id="@+id/nav_log_out"
         android:icon="@drawable/ic_logout"
