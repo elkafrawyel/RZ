@@ -149,6 +149,9 @@
         <action
             android:id="@+id/action_adFragment_to_createOrderFragment"
             app:destination="@id/createOrderFragment" />
+        <action
+            android:id="@+id/action_adFragment_to_authGraph"
+            app:destination="@id/authGraph" />
     </fragment>
     <fragment
         android:id="@+id/privacyFragment"

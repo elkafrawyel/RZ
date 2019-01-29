@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.snackbar.Snackbar
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.Ad
 import com.hmaserv.rz.domain.Owner
@@ -41,6 +43,7 @@ class AdFragment : BaseFragment(), AdapterAttributes.AttributesListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mainViewModel.logInLiveData.observe(this, Observer { })
         viewModel = ViewModelProviders.of(this).get(AdViewModel::class.java)
 
         viewModel.uiState.observe(this, Observer { onUiStateChanged(it) })
@@ -144,11 +147,11 @@ class AdFragment : BaseFragment(), AdapterAttributes.AttributesListener {
         productDescriptionTv.text = ad.description
 
         viewModel.getAttributesPrice()
-        adPrice = ad.price
+        adPrice = ad.discountPrice
         val price = adPrice + viewModel.getAttributesPrice()
         priceTv.text = getString(R.string.label_product_currency, price.toString())
 
-        val discountPrice = getString(R.string.label_product_currency, ad.discountPrice.toString())
+        val discountPrice = getString(R.string.label_product_currency, ad.price.toString())
         discountPriceTv.text = discountPrice
 
         val rate = ad.rate
@@ -245,10 +248,23 @@ class AdFragment : BaseFragment(), AdapterAttributes.AttributesListener {
     }
 
     private fun createOrder() {
-        mainViewModel.orderSelectedAttributes.clear()
-        mainViewModel.orderSelectedAttributes.addAll(viewModel.selectedAttributes)
-        val action = AdFragmentDirections.actionAdFragmentToCreateOrderFragment(adUuid!!)
-        findNavController().navigate(action)
+        when(mainViewModel.logInLiveData.value) {
+            MainViewModel.LogInState.NoLogIn -> {
+                Snackbar.make(rootView, getString(R.string.error_sign_in_first), Snackbar.LENGTH_SHORT)
+                    .setAction(getString(R.string.label_sign_in)) {
+                        findNavController().navigate(R.id.action_adFragment_to_authGraph)
+                    }
+                    .setActionTextColor(ContextCompat.getColor(requireContext(), R.color.colorSecondaryVariant))
+                    .show()
+            }
+            is MainViewModel.LogInState.BuyerLoggedIn,
+            is MainViewModel.LogInState.SellerLoggedIn -> {
+                mainViewModel.orderSelectedAttributes.clear()
+                mainViewModel.orderSelectedAttributes.addAll(viewModel.selectedAttributes)
+                val action = AdFragmentDirections.actionAdFragmentToCreateOrderFragment(adUuid!!)
+                findNavController().navigate(action)
+            }
+        }
     }
 
     private fun shareProduct() {
