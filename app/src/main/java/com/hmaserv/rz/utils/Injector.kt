@@ -119,6 +119,8 @@ object Injector {
     fun getCurrentLanguageUseCase() = CurrentLanguageUseCase(getSettingsRepo())
     fun setChangeLanguageUseCase() = ChangeLanguageUseCase(getSettingsRepo())
     fun saveFirebaseTokenUseCase() = SaveFirebaseTokenUseCase(getSettingsRepo())
+    fun setAcceptedContractUseCase() = SetAcceptedContractUseCase(getSettingsRepo())
+    fun isAcceptedContractUseCase() = IsAcceptedContractUseCase(getSettingsRepo())
 
     // LoggedIn repo
     private fun getLoggedInRemoteSource() = LoggedInUserRemoteSource(getApiService(), getAuthApiService())
@@ -130,13 +132,13 @@ object Injector {
     )
 
     // LoggedIn use cases
-    fun getLoginUseCase() = LoginUserUseCase(getLoggedInRepo())
+    fun getLoginUseCase() = LoginUserUseCase(getSettingsRepo(), getLoggedInRepo())
 
     fun getRegisterUseCase() = RegisterUserUseCase(getLoggedInRepo())
     fun getVerifyPhoneUseCase() = VerifyPhoneUseCase(getLoggedInRepo())
     fun getForgetPasswordUseCase() = ForgetPasswordUseCase(getLoggedInRepo())
     fun upgradeUserUseCase() = UpgradeUserUseCase(getLoggedInRepo())
-    fun getLogOutUseCase() = LogOutUseCase(getLoggedInRepo())
+    fun getLogOutUseCase() = LogOutUseCase(getSettingsRepo(), getLoggedInRepo())
     fun getLoggedInUserListenerUseCase() = LogInListenerUseCase(getLoggedInRepo())
     fun sendFirebaseTokeUseCase() = SendFirebaseTokenUseCase(getSettingsRepo(), getLoggedInRepo())
 

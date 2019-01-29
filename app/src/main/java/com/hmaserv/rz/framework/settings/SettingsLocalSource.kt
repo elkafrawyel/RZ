@@ -54,4 +54,15 @@ class SettingsLocalSource(
         return true
     }
 
+    override suspend fun setAcceptedContract(isAccepted: Boolean): Boolean {
+        if (settings == null) generateDefaultSettings()
+        settings = settings.copy(isAcceptedContract = isAccepted)
+        settingsBox.put(settings)
+        return true
+    }
+
+    override suspend fun isAcceptedContract(): Boolean {
+        return settings?.isAcceptedContract ?: false
+    }
+
 }

@@ -12,12 +12,21 @@ class LoggedInUserRepo(
     private val loggedInUserLocalSource: ILoggedInUserLocalSource
 ) : ILoggedInUserRepo {
 
-    override suspend fun logInUser(logInUserRequest: LogInUserRequest): DataResource<LoggedInUser> {
+    override suspend fun logInUser(
+        logInUserRequest: LogInUserRequest,
+        isAccepted: Boolean
+    ): DataResource<LoggedInUser> {
         val response = loggedInUserRemoteSource.login(logInUserRequest)
-        when(response) {
+        when (response) {
             is DataResource.Success -> {
                 if (response.data.statusId == Constants.Status.ACTIVE.value) {
-                    loggedInUserLocalSource.saveLoggedInUser(response.data)
+                    if (response.data.roleId?.equals(Constants.Role.SELLER.value) != false) {
+                        if (isAccepted) {
+                            loggedInUserLocalSource.saveLoggedInUser(response.data)
+                        }
+                    } else {
+                        loggedInUserLocalSource.saveLoggedInUser(response.data)
+                    }
                 }
             }
         }
@@ -57,7 +66,7 @@ class LoggedInUserRepo(
     }
 
     override suspend fun logoutUser(): DataResource<Boolean> {
-        return when(loggedInUserLocalSource.deleteLoggedInUser()) {
+        return when (loggedInUserLocalSource.deleteLoggedInUser()) {
             true -> DataResource.Success(true)
             false -> DataResource.Success(false)
         }

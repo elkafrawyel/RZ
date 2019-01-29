@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
@@ -17,6 +16,10 @@ import com.hmaserv.rz.domain.LoggedInUser
 import com.hmaserv.rz.domain.observeEvent
 import kotlinx.android.synthetic.main.login_fragment.*
 import kotlinx.android.synthetic.main.login_fragment.view.*
+import android.webkit.WebView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.hmaserv.rz.utils.Constants
+
 
 class LoginFragment : Fragment() {
 
@@ -69,6 +72,7 @@ class LoginFragment : Fragment() {
             is LoginViewModel.LoginUiState.Success -> showStateSuccess()
             is LoginViewModel.LoginUiState.Inactive -> showStateInactive(state.loggedInUser)
             is LoginViewModel.LoginUiState.Error -> showStateError(state.message)
+            is LoginViewModel.LoginUiState.AcceptSellerContract -> showAcceptContract(state.loggedInUser)
         }
 
     }
@@ -100,10 +104,25 @@ class LoginFragment : Fragment() {
         showMessage(message)
     }
 
+    private fun showAcceptContract(loggedInUser: LoggedInUser) {
+
+        loadingFl.visibility = View.GONE
+        val webView = WebView(requireContext())
+        webView.loadUrl(Constants.CONTRACT_URL)
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("شروط القبول")
+            .setView(webView)
+            .setPositiveButton(com.hmaserv.rz.R.string.label_accept) { _, _ ->
+                viewModel.acceptTerms()
+            }
+            .show()
+    }
+
     private fun showMessage(message: String){
         val snack_bar = Snackbar.make(rootViewSv,message,Snackbar.LENGTH_LONG)
         val view = snack_bar.view
-        val textView = view.findViewById<View>(R.id.snackbar_text)
+        val textView = view.findViewById<View>(com.hmaserv.rz.R.id.snackbar_text)
         textView.textAlignment = View.TEXT_ALIGNMENT_CENTER
         snack_bar.show()
     }

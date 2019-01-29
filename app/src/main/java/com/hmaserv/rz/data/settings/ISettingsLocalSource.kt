@@ -8,4 +8,6 @@ interface ISettingsLocalSource {
     suspend fun getFirebaseToken() : String?
     suspend fun saveFirebaseToken(token: String) : Boolean
     suspend fun deleteFirebaseToken() : Boolean
+    suspend fun setAcceptedContract(isAccepted: Boolean) : Boolean
+    suspend fun isAcceptedContract() : Boolean
 }

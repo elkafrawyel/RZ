@@ -28,6 +28,14 @@ class SettingsRepo(
         return settingsLocalSource.deleteFirebaseToken()
     }
 
+    override suspend fun setAcceptedContract(isAccepted: Boolean): Boolean {
+        return settingsLocalSource.setAcceptedContract(isAccepted)
+    }
+
+    override suspend fun isAcceptedContract(): Boolean {
+        return settingsLocalSource.isAcceptedContract()
+    }
+
     companion object {
         @Volatile
         private var INSTANCE: SettingsRepo? = null
