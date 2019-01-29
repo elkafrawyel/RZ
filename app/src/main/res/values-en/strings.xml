@@ -184,5 +184,9 @@
     <string name="label_pay_now">ادفع الان</string>
     <string name="label_search_result">Search Result</string>
     <string name="error_required_search_text">search text is required</string>
+    <string name="my_orders_channel_name">My Orders</string>
+    <string name="my_orders_channel_desc">The orders you made</string>
+    <string name="orders_received_channel_name">Orders Received</string>
+    <string name="orders_received_channel_desc">The received orders for your ads</string>
 
 </resources>

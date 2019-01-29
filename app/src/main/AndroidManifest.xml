@@ -27,7 +27,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.MainActivity"/>
+        <activity android:name=".ui.MainActivity" />
         <service android:name=".service.CreateAdJobService"
             android:permission="android.permission.BIND_JOB_SERVICE"
             android:exported="false"/>

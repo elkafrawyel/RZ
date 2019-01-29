@@ -25,6 +25,7 @@ import com.hmaserv.rz.domain.*
 import com.hmaserv.rz.ui.MainViewModel
 import com.hmaserv.rz.ui.RzBaseFragment
 import com.hmaserv.rz.ui.ads.AdsAdapter
+import com.hmaserv.rz.utils.Constants
 import com.hmaserv.rz.utils.SpacesItemDecoration
 import kotlinx.android.synthetic.main.home_fragment.*
 import kotlinx.android.synthetic.main.home_nav_header.view.*
@@ -57,7 +58,7 @@ class HomeFragment :
         bottomAppBar.setNavigationOnClickListener { rootViewDl.openDrawer(GravityCompat.START) }
         searchImgv.setOnClickListener { onSearchClicked() }
         categoriesImgv.setOnClickListener { onCategoriesClicked() }
-        notificationsImgv.setOnClickListener { onNotificationsClicked() }
+//        notificationsImgv.setOnClickListener { onNotificationsClicked() }
         noConnectionCl.setOnClickListener { sendAction(Action.Refresh) }
         errorCl.setOnClickListener { sendAction(Action.Refresh) }
         emptyViewCl.setOnClickListener { sendAction(Action.Refresh) }
@@ -66,9 +67,9 @@ class HomeFragment :
         promotionsRv.adapter = productsAdapter
 
         productsAdapter.onItemClickListener =
-                BaseQuickAdapter.OnItemClickListener { _, _, position ->
-                    onProductClicked(productsAdapter.data[position])
-                }
+            BaseQuickAdapter.OnItemClickListener { _, _, position ->
+                onProductClicked(productsAdapter.data[position])
+            }
 
         val spacesItemDecoration = SpacesItemDecoration(resources.getDimensionPixelSize(R.dimen.list_space))
 
@@ -98,7 +99,7 @@ class HomeFragment :
                 actionListMbtn.setIconResource(R.drawable.ic_reorder_black)
                 actionGridMbtn.setIconResource(R.drawable.ic_apps_black50)
                 promotionsRv.post {
-//                    TransitionManager.beginDelayedTransition(promotionsRv)
+                    //                    TransitionManager.beginDelayedTransition(promotionsRv)
                     (promotionsRv.layoutManager as GridLayoutManager).spanCount = 1
                     promotionsRv.removeItemDecoration(spacesItemDecoration)
                 }
@@ -111,7 +112,7 @@ class HomeFragment :
                 actionListMbtn.setIconResource(R.drawable.ic_reorder_black50)
                 actionGridMbtn.setIconResource(R.drawable.ic_apps_black)
                 promotionsRv.post {
-//                    TransitionManager.beginDelayedTransition(promotionsRv)
+                    //                    TransitionManager.beginDelayedTransition(promotionsRv)
                     (promotionsRv.layoutManager as GridLayoutManager).spanCount = 2
                     promotionsRv.addItemDecoration(spacesItemDecoration)
                 }
@@ -119,6 +120,42 @@ class HomeFragment :
             }
         }
 
+        requireActivity().intent?.getStringExtra((Constants.NOTIFICATION_TARGET))?.let {launchType ->
+            when (launchType) {
+                Constants.LaunchType.MY_ORDERS.name -> {
+                    if (isLoggedIn()) {
+                        findNavController().navigate(R.id.action_homeFragment_to_myOrdersFragment)
+                    }
+                }
+                Constants.LaunchType.ORDERS_RECEIVED.name-> {
+                    if (isLoggedIn()) {
+                        findNavController().navigate(R.id.action_homeFragment_to_ordersReceivedFragment)
+                    }
+                }
+
+            }
+        }
+    }
+
+    private fun isLoggedIn(): Boolean {
+        when (mainViewModel.logInLiveData.value) {
+            MainViewModel.LogInState.NoLogIn -> {
+                Snackbar.make(rootViewDl, getString(R.string.error_sign_in_first), Snackbar.LENGTH_SHORT)
+                    .setAction(getString(R.string.label_sign_in)) {
+                        findNavController().navigate(R.id.action_homeFragment_to_authGraph)
+                    }
+                    .setActionTextColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.colorSecondaryVariant
+                        )
+                    )
+                    .show()
+                return false
+            }
+        }
+
+        return true
     }
 
     override fun onResume() {
@@ -174,7 +211,7 @@ class HomeFragment :
                 MaterialAlertDialogBuilder(requireContext())
                     .setTitle("لا تمتلك تصريح لنشر اعلان")
                     .setMessage("اذا كنت تريد نشر و ادارة خدماتك معنا يتوجب تقديم طلب لترقية حسابك لحساب مقدم خدمة.")
-                    .setPositiveButton("ارسال الطلب") { _,_ -> sendAction(Action.UpgradeRequest) }
+                    .setPositiveButton("ارسال الطلب") { _, _ -> sendAction(Action.UpgradeRequest) }
                     .setNegativeButton("الغاء", null)
                     .show()
             }
@@ -237,7 +274,7 @@ class HomeFragment :
         navigationView.menu.findItem(R.id.nav_my_orders).isVisible = false
         navigationView.menu.findItem(R.id.nav_orders_received).isVisible = false
         navigationView.menu.findItem(R.id.nav_log_out).isVisible = false
-        notificationsImgv.isVisible = false
+//        notificationsImgv.isVisible = false
     }
 
     private fun stateBuyerLoggedIn(loggedInUser: LoggedInUser) {
@@ -253,7 +290,7 @@ class HomeFragment :
         navigationView.menu.findItem(R.id.nav_my_orders).isVisible = true
         navigationView.menu.findItem(R.id.nav_orders_received).isVisible = false
         navigationView.menu.findItem(R.id.nav_log_out).isVisible = true
-        notificationsImgv.isVisible = true
+//        notificationsImgv.isVisible = true
     }
 
     private fun stateSellerLoggedIn(loggedInUser: LoggedInUser) {
@@ -269,7 +306,7 @@ class HomeFragment :
         navigationView.menu.findItem(R.id.nav_my_orders).isVisible = true
         navigationView.menu.findItem(R.id.nav_orders_received).isVisible = true
         navigationView.menu.findItem(R.id.nav_log_out).isVisible = true
-        notificationsImgv.isVisible = true
+//        notificationsImgv.isVisible = true
     }
 
     private fun onLogOutState(state: Boolean) {

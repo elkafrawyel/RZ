@@ -3,17 +3,26 @@ package com.hmaserv.rz.utils
 object Constants {
     const val BASE_URL = "http://165.227.100.140/api/v1/"
     const val PAYPAL_URL = "https://r-z.store/paynow.php"
+    const val NOTIFICATION_TARGET = "target"
     const val SETTINGS_ID = 1L
     const val LOGGED_IN_USER_ID = 1L
     const val AUTHORIZATION_START = "Bearer"
     const val RESIZED_IMAGES_OUTPUT_PATH = ""
     const val NOTIFICATION_CREATE_AD_CHANNEL = "createAd"
     const val NOTIFICATION_EDIT_AD_CHANNEL = "editAd"
+    const val NOTIFICATION_MY_ORDERS_CHANNEL = "myOrders"
+    const val NOTIFICATION_ORDERS_RECEIVED_CHANNEL = "ordersReceived"
 
     enum class Language(val value: String) {
         DEFAULT("ar"),
         ARABIC("ar"),
         ENGLISH("en")
+    }
+
+    enum class LaunchType(val value: String) {
+        NORMAL("0"),
+        MY_ORDERS("1"),
+        ORDERS_RECEIVED("2")
     }
 
     enum class Role(val value: Int) {

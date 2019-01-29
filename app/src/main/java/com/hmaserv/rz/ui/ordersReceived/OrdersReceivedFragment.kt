@@ -14,6 +14,7 @@ import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.MiniOrder
 import com.hmaserv.rz.domain.Payment
 import com.hmaserv.rz.ui.BaseFragment
+import com.hmaserv.rz.utils.Constants
 import kotlinx.android.synthetic.main.orders_received_fragment.*
 
 class OrdersReceivedFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
@@ -30,6 +31,8 @@ class OrdersReceivedFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        requireActivity().intent.putExtra(Constants.NOTIFICATION_TARGET, Constants.LaunchType.NORMAL.name)
+
         viewModel.uiState.observe(this, Observer { onUiStateChanged(it) })
         myReceivedOrdersRv.adapter = adapter
         receivedOrdersTl.getTabAt(viewModel.paymentMethod.ordinal)?.select()

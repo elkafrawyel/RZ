@@ -14,6 +14,7 @@ import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.MiniOrder
 import com.hmaserv.rz.domain.Payment
 import com.hmaserv.rz.ui.BaseFragment
+import com.hmaserv.rz.utils.Constants
 import kotlinx.android.synthetic.main.my_orders_fragment.*
 import com.hmaserv.rz.utils.openPaypalLink
 
@@ -31,6 +32,7 @@ class MyOrdersFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        requireActivity().intent.putExtra(Constants.NOTIFICATION_TARGET, Constants.LaunchType.NORMAL.name)
 
         viewModel.uiState.observe(this, Observer { onUiStateChanged(it) })
         myOrdersRv.adapter = ordersAdapter
