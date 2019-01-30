@@ -2,17 +2,27 @@ package com.hmaserv.rz.ui.editAd
 
 import android.content.ClipData
 import android.net.Uri
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.blankj.utilcode.util.NetworkUtils
+import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.*
-import com.hmaserv.rz.ui.NewBaseViewModel
+import com.hmaserv.rz.ui.RzBaseViewModel
 import com.hmaserv.rz.utils.Injector
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 const val DATA_AD_KEY = "ad"
 
-class EditAdViewModel : NewBaseViewModel() {
+class EditAdViewModel :
+    RzBaseViewModel<State.EditAdState, String>() {
+
+    private var dataJob: Job? = null
+
+    protected val _uiState = MutableLiveData<UiState>()
+    val uiState : LiveData<UiState>
+        get() = _uiState
 
     private val getAdUseCase = Injector.getAdUseCase()
     private val getAttributesUseCase = Injector.getAttributesUseCase()
@@ -24,6 +34,10 @@ class EditAdViewModel : NewBaseViewModel() {
 
     lateinit var currentAd: Ad
 
+    override fun actOnAction(action: Action) {
+
+    }
+
     fun setAdUuid(adUuid: String) {
         if (this.adUuid == null) {
             this.adUuid = adUuid
@@ -31,8 +45,20 @@ class EditAdViewModel : NewBaseViewModel() {
         }
     }
 
-    override fun launchDataJob(): Job {
-        return scope.launch(dispatcherProvider.io) {
+    protected fun getData() {
+        if (NetworkUtils.isConnected()) {
+            if (dataJob?.isActive == true) {
+                return
+            }
+
+            dataJob = launchDataJob()
+        } else {
+            showNoInternetConnection()
+        }
+    }
+
+    fun launchDataJob(): Job {
+        return launch(dispatcherProvider.io) {
             withContext(dispatcherProvider.main) { showDataLoading() }
             if (adUuid != null) {
                 val adResult = getAdUseCase.getAd(adUuid!!)
@@ -103,6 +129,22 @@ class EditAdViewModel : NewBaseViewModel() {
 
     private fun showSuccess(data: Ad) {
         _uiState.value = UiState.Success(mapOf(Pair(DATA_AD_KEY, data)))
+    }
+
+    private fun showDataLoading() {
+        _uiState.value = UiState.Loading
+    }
+
+    private fun showDataError() {
+        _uiState.value = UiState.Error(Injector.getApplicationContext().getString(R.string.error_general))
+    }
+
+    private fun showNoInternetConnection() {
+        _uiState.value = UiState.NoInternetConnection
+    }
+
+    fun refresh() {
+        getData()
     }
 
     fun addSelectedImage(uri: Uri): Boolean {

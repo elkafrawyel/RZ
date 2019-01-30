@@ -9,13 +9,15 @@ import com.blankj.utilcode.util.NetworkUtils
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.*
 import com.hmaserv.rz.ui.BaseViewModel
+import com.hmaserv.rz.ui.RzBaseViewModel
 import com.hmaserv.rz.utils.Injector
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class CreateAdViewModel : BaseViewModel() {
+class CreateAdViewModel : RzBaseViewModel<State.CreateAdState, String>() {
 
+//    private var dataJob: Job? = null
     private var getSavedCategoriesJob: Job? = null
     private var getSavedSubCategoriesJob: Job? = null
     private var getAttributesJob: Job? = null
@@ -48,7 +50,64 @@ class CreateAdViewModel : BaseViewModel() {
 
     init {
         getSavedCategories()
+//        sendAction(Action.Started)
     }
+
+    override fun actOnAction(action: Action) {
+//        when (action) {
+//            Action.Started -> getData()
+//            else -> {
+//            }
+//        }
+    }
+
+//    private fun getData() {
+//        if (dataJob?.isActive == true) {
+//            return
+//        }
+//
+//        dataJob = launchDataJob()
+//    }
+//
+//    private fun launchDataJob(): Job {
+//        return launch {
+//            sendStateOnMain { State.CreateAdState(loadingVisibility = View.VISIBLE) }
+//            val categoriesResult = getSavedCategoriesUseCase.get()
+//            val subCategoriesMap = HashMap<String, List<SubCategory>>()
+//            val attributesMap = HashMap<String, List<AttributeSection>>()
+//            categoriesResult.forEach { category ->
+//                subCategoriesMap[category.uuid] = getSavedSubCategoriesUseCase.get(category.uuid)
+//            }
+//            subCategoriesMap.values.forEach { subCategoriesList ->
+//                subCategoriesList.forEach { subCategory ->
+//                    val attributesResult = getAttributesUseCase.get(subCategory.uuid)
+//                    when (attributesResult) {
+//                        is DataResource.Success -> {
+//                            val attributesSections = ArrayList<AttributeSection>()
+//                            attributesResult.data.map { mainAttribute ->
+//                                attributesSections.add(AttributeSection(true, mainAttribute.name))
+//                                attributesSections.addAll(mainAttribute.attributes
+//                                    .map { subAttribute -> AttributeSection(subAttribute) }
+//                                )
+//                            }
+//
+//                            attributesMap[subCategory.uuid] = attributesSections
+//                        }
+//                        is DataResource.Error -> {}
+//                    }
+//                }
+//            }
+//
+//            sendStateOnMain {
+//                State.CreateAdState(
+//                    dataVisibility = View.VISIBLE,
+//                    categories = categoriesResult,
+//                    subCategoriesMap = subCategoriesMap,
+//                    attributesMap = attributesMap
+//                )
+//            }
+//        }
+//    }
 
     private fun getSavedCategories() {
         if (getSavedCategoriesJob?.isActive == true) {
@@ -59,7 +118,7 @@ class CreateAdViewModel : BaseViewModel() {
     }
 
     private fun launchGetSavedCategoriesJob(): Job? {
-        return scope.launch(dispatcherProvider.computation) {
+        return launch(dispatcherProvider.io) {
             withContext(dispatcherProvider.main) { showCategoryLoading() }
             val data = getSavedCategoriesUseCase.get()
             withContext(dispatcherProvider.main) {
@@ -77,7 +136,7 @@ class CreateAdViewModel : BaseViewModel() {
     }
 
     private fun launchSubCategoriesJob(categoryUuid: String): Job? {
-        return scope.launch(dispatcherProvider.computation) {
+        return launch(dispatcherProvider.io) {
             withContext(dispatcherProvider.main) { showSubCategoryLoading() }
             val data = getSavedSubCategoriesUseCase.get(categoryUuid)
             withContext(dispatcherProvider.main) {
@@ -94,13 +153,13 @@ class CreateAdViewModel : BaseViewModel() {
     }
 
     private fun launchGetAttributesJob(subCategoryUuid: String): Job {
-        return scope.launch(dispatcherProvider.io) {
+        return launch(dispatcherProvider.io) {
             withContext(dispatcherProvider.main) { showAttributesLoading() }
             if (NetworkUtils.isConnected()) {
                 val result = getAttributesUseCase.get(subCategoryUuid)
                 val attributesResult = ArrayList<Attribute>()
                 withContext(dispatcherProvider.computation) {
-                    when(result) {
+                    when (result) {
                         is DataResource.Success -> {
                             val attributes = result.data
                             attributes.forEach { main ->
@@ -167,6 +226,7 @@ class CreateAdViewModel : BaseViewModel() {
             )
         )
     }
+
     private fun showAttributesEmptyView() {
         _attributesUiState.value = Event(AttributesUiState.EmptyView)
     }

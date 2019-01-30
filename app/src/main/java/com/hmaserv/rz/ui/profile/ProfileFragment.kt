@@ -1,6 +1,5 @@
 package com.hmaserv.rz.ui.profile
 
-
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
@@ -17,7 +16,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.LoggedInUser
 import com.hmaserv.rz.ui.MainViewModel
-import com.hmaserv.rz.ui.createAd.RC_PERMISSION_STORAGE
+import com.hmaserv.rz.ui.RC_PERMISSION_STORAGE
 import kotlinx.android.synthetic.main.profile_fragment.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions

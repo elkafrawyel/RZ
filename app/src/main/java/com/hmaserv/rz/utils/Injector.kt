@@ -105,7 +105,6 @@ object Injector {
         val dateFormat = SimpleDateFormat("yyyyMMDD_HHmmss_SSS", Locale.ENGLISH)
         return dateFormat.format(calendar.time) ?: "resizeImage${Random.nextInt()}"
     }
-
     fun getNewResizedImagePath(): String? {
         val imageName = "${generateResizedImageName()}.png"
         val imageFile = File(getResizedImagesDir(), imageName)

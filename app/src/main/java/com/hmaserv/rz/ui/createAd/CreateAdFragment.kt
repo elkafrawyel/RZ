@@ -1,9 +1,9 @@
 package com.hmaserv.rz.ui.createAd
 
 import android.Manifest
-import android.app.Activity.RESULT_OK
 import android.app.DatePickerDialog
-import android.content.Intent
+import android.content.ClipData
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,30 +12,23 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintSet
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.TransitionManager
-import com.google.android.material.snackbar.Snackbar
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.*
 import com.hmaserv.rz.service.CreateAdJobService
+import com.hmaserv.rz.ui.RC_PERMISSION_STORAGE
+import com.hmaserv.rz.ui.RzBaseFragment
 import kotlinx.android.synthetic.main.create_ad_fragment.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
-import timber.log.Timber
 import java.util.*
 
-const val RC_PERMISSION_STORAGE = 1
-const val RC_IMAGES = 2
-
-class CreateAdFragment : Fragment(), AttributesAdapter.AttributesCallback, DatePickerDialog.OnDateSetListener {
-
-    private val viewModel by lazy { ViewModelProviders.of(this).get(CreateAdViewModel::class.java) }
+class CreateAdFragment :
+    RzBaseFragment<State.CreateAdState, String, CreateAdViewModel>(CreateAdViewModel::class.java),
+    AttributesAdapter.AttributesCallback,
+    DatePickerDialog.OnDateSetListener {
 
     private val categoriesAdapter: ArrayAdapter<Category> by lazy { ArrayAdapter(requireContext(), R.layout.spinner_item_view, viewModel.categories) }
     private val subCategoriesAdapter: ArrayAdapter<SubCategory> by lazy { ArrayAdapter(requireContext(), R.layout.spinner_item_view, viewModel.subCategories) }
@@ -70,13 +63,7 @@ class CreateAdFragment : Fragment(), AttributesAdapter.AttributesCallback, DateP
             datePicker.show()
         }
 
-        addImageMbtn.setOnClickListener {
-            val intent = Intent(Intent.ACTION_GET_CONTENT)
-            intent.type = "image/*"
-            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-            intent.addCategory(Intent.CATEGORY_OPENABLE)
-            startActivityForResult(intent, RC_IMAGES)
-        }
+        addImageMbtn.setOnClickListener { openImagesBottomSheet() }
 
         saveMbtn.setOnClickListener {
             if (validateViews()) {
@@ -107,8 +94,8 @@ class CreateAdFragment : Fragment(), AttributesAdapter.AttributesCallback, DateP
         categoriesSpinner.adapter = categoriesAdapter
         subCategoriesSpinner.adapter = subCategoriesAdapter
 
-        viewModel.categoriesUiState.observe(this, Observer { onCategoryResponse(it) })
-        viewModel.subCategoriesUiState.observe(this, Observer { onSubCategoryResponse(it) })
+        viewModel.categoriesUiState.observe(this, androidx.lifecycle.Observer { onCategoryResponse(it) })
+        viewModel.subCategoriesUiState.observe(this, androidx.lifecycle.Observer { onSubCategoryResponse(it) })
 
         categoriesSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -158,6 +145,10 @@ class CreateAdFragment : Fragment(), AttributesAdapter.AttributesCallback, DateP
 
             viewModel.datesVisibility = datesRv.visibility
         }
+    }
+
+    override fun renderState(state: State.CreateAdState) {
+
     }
 
     private fun onAttributesStateChanged(state: CreateAdViewModel.AttributesUiState) {
@@ -283,15 +274,15 @@ class CreateAdFragment : Fragment(), AttributesAdapter.AttributesCallback, DateP
 
     }
 
-    private fun showMessage(message: String) {
-        Snackbar.make(rootViewCl, message, Snackbar.LENGTH_LONG).show()
-    }
+//    private fun showMessage(message: String) {
+//        Snackbar.make(rootViewCl, message, Snackbar.LENGTH_LONG).show()
+//    }
 
     @AfterPermissionGranted(RC_PERMISSION_STORAGE)
     fun createAd() {
         val perms = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         if (EasyPermissions.hasPermissions(requireActivity(), *perms)) {
-            // Already have permission, do the thing
+//             Already have permission, do the thing
             CreateAdJobService.enqueueWork(
                 requireActivity(),
                 title = titleEt.text.toString(),
@@ -304,9 +295,9 @@ class CreateAdFragment : Fragment(), AttributesAdapter.AttributesCallback, DateP
                 images = viewModel.getSelectedImagesStringList()
             )
 
-            findNavController().navigateUp()
+            requireActivity().onBackPressed()
         } else {
-            // Do not have permissions, request them now
+//             Do not have permissions, request them now
             EasyPermissions.requestPermissions(
                 this, "Requesting permission",
                 RC_PERMISSION_STORAGE, *perms
@@ -314,47 +305,73 @@ class CreateAdFragment : Fragment(), AttributesAdapter.AttributesCallback, DateP
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK) {
-            when (requestCode) {
-                RC_IMAGES -> {
-                    val result = data?.clipData
-                    val uri = data?.data
-                    if (result != null) {
-                        if (viewModel.addSelectedImages(result)) {
-                            imageAdapter.notifyItemRangeInserted(
-                                viewModel.getSelectedImagesSize() - 1,
-                                data.clipData!!.itemCount
-                            )
-                            if (viewModel.getSelectedImagesSize() > 9) {
-                                addImageMbtn.isEnabled = false
-                            }
-                        } else {
-                            Toast.makeText(activity, getString(R.string.error_images_count), Toast.LENGTH_SHORT).show()
-                        }
-                    } else if (uri != null) {
-                        Timber.i(uri.toString())
-                        Timber.i(uri.path)
-                        if (viewModel.addSelectedImage(uri)) {
-                            imageAdapter.notifyItemInserted(viewModel.getSelectedImagesSize() - 1)
-                            if (viewModel.getSelectedImagesSize() > 9) {
-                                addImageMbtn.isEnabled = false
-                            }
-                        } else {
-                            Toast.makeText(activity, getString(R.string.error_images_count), Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                    } else {
-                        Toast.makeText(activity, getString(R.string.error_general), Toast.LENGTH_SHORT).show()
-                    }
-                }
+    override fun onImageSelected(imageUri: Uri) {
+        if (viewModel.addSelectedImage(imageUri)) {
+            imageAdapter.notifyItemInserted(viewModel.getSelectedImagesSize() - 1)
+            if (viewModel.getSelectedImagesSize() > 9) {
+                addImageMbtn.isEnabled = false
             }
+        } else {
+            Toast.makeText(activity, getString(R.string.error_images_count), Toast.LENGTH_SHORT)
+                .show()
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    override fun onMultiImageSelected(result: ClipData) {
+        if (viewModel.addSelectedImages(result)) {
+            imageAdapter.notifyItemRangeInserted(
+                viewModel.getSelectedImagesSize() - 1,
+                result.itemCount
+            )
+            if (viewModel.getSelectedImagesSize() > 9) {
+                addImageMbtn.isEnabled = false
+            }
+        } else {
+            Toast.makeText(activity, getString(R.string.error_images_count), Toast.LENGTH_SHORT).show()
+        }
     }
+
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        if (resultCode == RESULT_OK) {
+//            when (requestCode) {
+//                RC_IMAGES -> {
+//                    val result = data?.clipData
+//                    val uri = data?.data
+//                    if (result != null) {
+//                        if (viewModel.addSelectedImages(result)) {
+//                            imageAdapter.notifyItemRangeInserted(
+//                                viewModel.getSelectedImagesSize() - 1,
+//                                data.clipData!!.itemCount
+//                            )
+//                            if (viewModel.getSelectedImagesSize() > 9) {
+//                                addImageMbtn.isEnabled = false
+//                            }
+//                        } else {
+//                            Toast.makeText(activity, getString(R.string.error_images_count), Toast.LENGTH_SHORT).show()
+//                        }
+//                    } else if (uri != null) {
+//                        Timber.i(uri.toString())
+//                        Timber.i(uri.path)
+//                        if (viewModel.addSelectedImage(uri)) {
+//                            imageAdapter.notifyItemInserted(viewModel.getSelectedImagesSize() - 1)
+//                            if (viewModel.getSelectedImagesSize() > 9) {
+//                                addImageMbtn.isEnabled = false
+//                            }
+//                        } else {
+//                            Toast.makeText(activity, getString(R.string.error_images_count), Toast.LENGTH_SHORT)
+//                                .show()
+//                        }
+//                    } else {
+//                        Toast.makeText(activity, getString(R.string.error_general), Toast.LENGTH_SHORT).show()
+//                    }
+//                }
+//            }
+//        }
+//    }
+//
+//    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+//        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+//    }
 }

@@ -2,7 +2,9 @@ package com.hmaserv.rz.ui.editAd
 
 import android.Manifest
 import android.app.Activity
+import android.content.ClipData
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,20 +16,25 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.Ad
+import com.hmaserv.rz.domain.State
+import com.hmaserv.rz.domain.UiState
 import com.hmaserv.rz.service.CreateAdJobService
 import com.hmaserv.rz.service.Mode
 import com.hmaserv.rz.ui.BaseFragment
+import com.hmaserv.rz.ui.RC_PERMISSION_STORAGE
+import com.hmaserv.rz.ui.RzBaseFragment
 import com.hmaserv.rz.ui.createAd.AttributesAdapter
-import com.hmaserv.rz.ui.createAd.RC_IMAGES
-import com.hmaserv.rz.ui.createAd.RC_PERMISSION_STORAGE
+import com.hmaserv.rz.utils.RC_IMAGES
 import kotlinx.android.synthetic.main.edit_ad_fragment.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import timber.log.Timber
 
-class EditAdFragment : BaseFragment(), AttributesAdapter.AttributesCallback {
+class EditAdFragment :
+    RzBaseFragment<State.EditAdState, String, EditAdViewModel>(EditAdViewModel::class.java),
+    AttributesAdapter.AttributesCallback {
 
-    private val viewModel by lazy { ViewModelProviders.of(this).get(EditAdViewModel::class.java) }
+    //    private val viewModel by lazy { ViewModelProviders.of(this).get(EditAdViewModel::class.java) }
     private val imageAdapter by lazy { AdImagesAdapter(viewModel.images) }
     private val attributesAdapter by lazy { AttributesAdapter(viewModel.attributes, this) }
 
@@ -57,7 +64,8 @@ class EditAdFragment : BaseFragment(), AttributesAdapter.AttributesCallback {
                 }
             }
 
-            addImageMbtn.setOnClickListener { onAddImageClicked() }
+            backBtn.setOnClickListener { findNavController().navigateUp() }
+            addImageMbtn.setOnClickListener { openImagesBottomSheet() }
             saveMbtn.setOnClickListener {
                 if (validateViews()) {
                     editAd()
@@ -69,12 +77,18 @@ class EditAdFragment : BaseFragment(), AttributesAdapter.AttributesCallback {
         }
     }
 
-    private fun onAddImageClicked() {
-        val intent = Intent(Intent.ACTION_GET_CONTENT)
-        intent.type = "image/*"
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-        intent.addCategory(Intent.CATEGORY_OPENABLE)
-        startActivityForResult(intent, RC_IMAGES)
+    override fun renderState(state: State.EditAdState) {
+
+    }
+
+    fun onUiStateChanged(state: UiState?) {
+        when(state) {
+            UiState.Loading -> showLoading()
+            is UiState.Success -> showSuccess(state.dataMap)
+            is UiState.Error -> showError(state.message)
+            UiState.NoInternetConnection -> showNoInternetConnection()
+            null -> {}
+        }
     }
 
     private fun validateViews(): Boolean {
@@ -108,9 +122,9 @@ class EditAdFragment : BaseFragment(), AttributesAdapter.AttributesCallback {
 
     }
 
-    private fun showMessage(message: String){
-        Snackbar.make(rootViewCl,message,Snackbar.LENGTH_LONG).show()
-    }
+//    private fun showMessage(message: String){
+//        Snackbar.make(rootViewCl,message,Snackbar.LENGTH_LONG).show()
+//    }
 
     @AfterPermissionGranted(RC_PERMISSION_STORAGE)
     fun editAd() {
@@ -141,22 +155,22 @@ class EditAdFragment : BaseFragment(), AttributesAdapter.AttributesCallback {
         }
     }
 
-    override fun showLoading() {
+    fun showLoading() {
         containerNsv.visibility = View.GONE
         loadinLav.visibility = View.VISIBLE
     }
 
-    override fun showSuccess(dataMap: Map<String, Any>) {
+    fun showSuccess(dataMap: Map<String, Any>) {
         containerNsv.visibility = View.VISIBLE
         loadinLav.visibility = View.GONE
         val ad = dataMap[DATA_AD_KEY] as Ad
         loadAd(ad)
     }
 
-    override fun showError(message: String) {
+    fun showError(message: String) {
     }
 
-    override fun showNoInternetConnection() {
+    fun showNoInternetConnection() {
     }
 
     private fun loadAd(ad: Ad) {
@@ -193,47 +207,29 @@ class EditAdFragment : BaseFragment(), AttributesAdapter.AttributesCallback {
         viewModel.attributes[position].t = viewModel.attributes[position].t.copy(isChecked = isChecked)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
-            when (requestCode) {
-                RC_IMAGES -> {
-                    val result = data?.clipData
-                    val uri = data?.data
-                    if (result != null) {
-                        if (viewModel.addSelectedImages(result)) {
-                            imageAdapter.notifyItemRangeInserted(
-                                viewModel.images.size - 1,
-                                data.clipData!!.itemCount
-                            )
-                            if (viewModel.images.size > 9) {
-                                addImageMbtn.isEnabled = false
-                            }
-                        } else {
-                            Toast.makeText(activity, getString(R.string.error_images_count), Toast.LENGTH_SHORT).show()
-                        }
-                    } else if (uri != null) {
-                        Timber.i(uri.toString())
-                        Timber.i(uri.path)
-                        if (viewModel.addSelectedImage(uri)) {
-                            imageAdapter.notifyItemInserted(viewModel.images.size - 1)
-                            if (viewModel.images.size > 9) {
-                                addImageMbtn.isEnabled = false
-                            }
-                        } else {
-                            Toast.makeText(activity, getString(R.string.error_images_count), Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                    } else {
-                        Toast.makeText(activity, getString(R.string.error_general), Toast.LENGTH_SHORT).show()
-                    }
-                }
+    override fun onImageSelected(imageUri: Uri) {
+        if (viewModel.addSelectedImage(imageUri)) {
+            imageAdapter.notifyItemInserted(viewModel.images.size - 1)
+            if (viewModel.images.size > 9) {
+                addImageMbtn.isEnabled = false
             }
+        } else {
+            Toast.makeText(activity, getString(R.string.error_images_count), Toast.LENGTH_SHORT)
+                .show()
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    override fun onMultiImageSelected(result: ClipData) {
+        if (viewModel.addSelectedImages(result)) {
+            imageAdapter.notifyItemRangeInserted(
+                viewModel.images.size - 1,
+                result.itemCount
+            )
+            if (viewModel.images.size > 9) {
+                addImageMbtn.isEnabled = false
+            }
+        } else {
+            Toast.makeText(activity, getString(R.string.error_images_count), Toast.LENGTH_SHORT).show()
+        }
     }
 }

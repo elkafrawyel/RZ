@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/cameraMbtn"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:text="@string/take_a_picture"
+        android:textAlignment="textStart"
+        android:textColor="@color/colorBlack"
+        app:cornerRadius="0dp"
+        app:icon="@drawable/ic_camera_enhance_black"
+        app:iconPadding="16dp"
+        android:textAppearance="?attr/textAppearanceSubtitle1"
+        app:iconTint="@color/colorBlack70"
+        app:rippleColor="@color/colorPrimaryLight" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/galleryMbtn"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:text="@string/open_gallery"
+        android:textAppearance="?attr/textAppearanceSubtitle1"
+        android:textAlignment="textStart"
+        android:textColor="@color/colorBlack"
+        app:cornerRadius="0dp"
+        app:icon="@drawable/ic_photo_black"
+        app:iconPadding="16dp"
+        app:iconTint="@color/colorBlack70"
+        app:rippleColor="@color/colorPrimaryLight" />
+
+</LinearLayout>

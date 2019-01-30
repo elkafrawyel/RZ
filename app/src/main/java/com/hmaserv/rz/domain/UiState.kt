@@ -70,6 +70,22 @@ sealed class State {
         val dataVisibility: Int = View.GONE,
         val myAds: List<MiniAd> = emptyList()
     ) : State()
+
+    data class CreateAdState(
+        val loadingVisibility: Int = View.GONE,
+        val isRefreshing: Boolean = false,
+        val errorVisibility: Int = View.GONE,
+        val errorProgress: Float = 0F,
+        val errorPlayAnimation: Boolean = false,
+        val emptyVisibility: Int = View.GONE,
+        val noConnectionVisibility: Int = View.GONE,
+        val dataVisibility: Int = View.GONE,
+        val categories: List<Category> = emptyList(),
+        val subCategoriesMap : Map<String, List<SubCategory>> = emptyMap(),
+        val attributesMap : Map<String, List<AttributeSection>> = emptyMap()
+    ) : State()
+
+    object EditAdState : State()
 }
 
 sealed class Action {
