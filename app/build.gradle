@@ -18,6 +18,7 @@ android {
         applicationId "com.hmaserv.rz"
         minSdkVersion 21
         targetSdkVersion 28
+        flavorDimensions "versionCode"
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -31,6 +32,13 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    productFlavors {
+        production {
+
+        }
+        development {
         }
     }
     compileOptions {
