@@ -1,7 +1,7 @@
 package com.hmaserv.rz.utils
 
 object Constants {
-    const val BASE_URL = "http://165.227.100.140/api/v1/"
+    const val BASE_URL = "http://r-z.store/api/v1/"
     const val PAYPAL_URL = "https://r-z.store/paynow.php"
     const val CONTRACT_URL = "https://r-z.store/contract.php"
     const val NOTIFICATION_TARGET = "target"

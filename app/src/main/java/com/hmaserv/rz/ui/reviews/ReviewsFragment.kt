@@ -4,17 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.snackbar.Snackbar
 import com.hmaserv.rz.R
 import com.hmaserv.rz.ui.BaseFragment
+import com.hmaserv.rz.ui.MainViewModel
 import kotlinx.android.synthetic.main.reviews_fragment.*
 
 class ReviewsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private var adUuid: String? = null
+    private val mainViewModel by lazy { ViewModelProviders.of(requireActivity()).get(MainViewModel::class.java) }
     private val viewModel by lazy { ViewModelProviders.of(this).get(ReviewsViewModel::class.java) }
     private val adapter by lazy { ReviewsAdapter(viewModel.reviews) }
 
@@ -27,7 +31,7 @@ class ReviewsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        mainViewModel.logInLiveData.observe(this, Observer { })
         viewModel.uiState.observe(this, Observer { onUiStateChanged(it) })
         arguments?.let {
             adUuid = ReviewsFragmentArgs.fromBundle(it).adUuid
@@ -45,8 +49,21 @@ class ReviewsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun openWriteReview() {
-        val action = ReviewsFragmentDirections.actionReviewsFragmentToWriteReviewFragment(adUuid!!)
-        findNavController().navigate(action)
+        when(mainViewModel.logInLiveData.value) {
+            MainViewModel.LogInState.NoLogIn -> {
+                Snackbar.make(rootViewCl, getString(R.string.error_sign_in_first), Snackbar.LENGTH_SHORT)
+                    .setAction(getString(R.string.label_sign_in)) {
+                        findNavController().navigate(R.id.action_reviewsFragment_to_authGraph)
+                    }
+                    .setActionTextColor(ContextCompat.getColor(requireContext(), R.color.colorSecondaryVariant))
+                    .show()
+            }
+            is MainViewModel.LogInState.BuyerLoggedIn,
+            is MainViewModel.LogInState.SellerLoggedIn -> {
+                val action = ReviewsFragmentDirections.actionReviewsFragmentToWriteReviewFragment(adUuid!!)
+                findNavController().navigate(action)
+            }
+        }
     }
 
     override fun showLoading() {

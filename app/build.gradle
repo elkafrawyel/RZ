@@ -22,6 +22,16 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        signingConfigs {
+            release {
+                storeFile file("rz_keystore.jks")
+                storePassword "hmaserv123"
+                keyAlias "rzkey"
+                keyPassword "hmaserv123"
+            }
+        }
+
     }
     buildTypes {
         client {
@@ -45,11 +55,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    splits {
-        abi {
-            enable true
-        }
-    }
+//    splits {
+//        abi {
+//            enable true
+//        }
+//    }
     androidExtensions {
         experimental = true
     }

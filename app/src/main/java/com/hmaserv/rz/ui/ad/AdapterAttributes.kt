@@ -48,14 +48,16 @@ class AdapterAttributes(data: List<Attribute.MainAttribute>, private val callBac
             }
 
             val view = chipGroup.getChildAt(0)
-            chipGroup.check(view.id)
-            view.isClickable = false
-            chipGroup.setOnCheckedChangeListener { group, checkedId ->
-                for (i in 0 until group.childCount) {
-                    val chip = group.getChildAt(i) as Chip
-                    chip.isClickable = (chip.id != checkedId)
-                    if (chip.id == checkedId) {
-                        callBack.onAttributeSelected(helper.adapterPosition, i)
+            view?.let {
+                chipGroup.check(view.id)
+                view.isClickable = false
+                chipGroup.setOnCheckedChangeListener { group, checkedId ->
+                    for (i in 0 until group.childCount) {
+                        val chip = group.getChildAt(i) as Chip
+                        chip.isClickable = (chip.id != checkedId)
+                        if (chip.id == checkedId) {
+                            callBack.onAttributeSelected(helper.adapterPosition, i)
+                        }
                     }
                 }
             }
