@@ -21,18 +21,18 @@ class VerficationViewModel : BaseViewModel() {
     val uiState: LiveData<Event<VerifyUiState>>
         get() = _uiState
 
-    fun verify(token: String) {
+    fun verify(token: String, code: String) {
         if (verifyPhoneJob?.isActive == true) {
             return
         }
 
-        verifyPhoneJob = launchVerification(token)
+        verifyPhoneJob = launchVerification(token, code)
     }
 
-    private fun launchVerification(token: String): Job {
+    private fun launchVerification(token: String, code: String): Job {
         return scope.launch(dispatcherProvider.computation) {
             withContext(dispatcherProvider.main) { showLoading() }
-            val result = verifyPhoneUseCase.verify(token)
+            val result = verifyPhoneUseCase.verify(token, code)
             withContext(dispatcherProvider.main) {
                 when(result) {
                     is DataResource.Success -> showSuccess(result.data)

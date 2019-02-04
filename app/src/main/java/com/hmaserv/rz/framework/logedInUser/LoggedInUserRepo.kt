@@ -41,8 +41,8 @@ class LoggedInUserRepo(
         return loggedInUserRemoteSource.forgetPassword(forgetPassword)
     }
 
-    override suspend fun verifyPhone(token: String): DataResource<Boolean> {
-        return loggedInUserRemoteSource.verifyPhone(token)
+    override suspend fun verifyPhone(token: String, request: VerifyUserRequest): DataResource<Boolean> {
+        return loggedInUserRemoteSource.verifyPhone(token, request)
     }
 
     override suspend fun upgrade(token: String, request: UpgradeUserRequest): DataResource<Boolean> {

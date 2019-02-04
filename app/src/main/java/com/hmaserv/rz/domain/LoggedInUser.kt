@@ -32,6 +32,10 @@ data class RegisterUserRequest(
     @field:Json(name = "password") val password: String
 )
 
+data class VerifyUserRequest(
+    @field:Json(name = "code") val code: String
+)
+
 data class ForgetPassword(
     @field:Json(name = "email") val email: String
 )

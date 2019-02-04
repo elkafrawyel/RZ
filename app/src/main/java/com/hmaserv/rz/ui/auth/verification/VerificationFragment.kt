@@ -8,6 +8,7 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -37,7 +38,24 @@ class VerificationFragment : Fragment() {
             phoneNumber = VerificationFragmentArgs.fromBundle(arguments!!).phoneNumber
             password = VerificationFragmentArgs.fromBundle(arguments!!).password
             verificationInfoTv.text = getString(R.string.label_phone_verification_info, phoneNumber)
-            verifyMbtn.setOnClickListener { viewModel.verify(token) }
+            verifyMbtn.setOnClickListener {
+                if (codeOneEt.text.isBlank()
+                    || codeTwoEt.text.isBlank()
+                    || codeThreeEt.text.isBlank()
+                    || codeFourEt.text.isBlank()
+                    || codeFiveEt.text.isBlank()
+                ) {
+                    Toast.makeText(requireContext(), getString(R.string.label_phone_verification_info, phoneNumber), Toast.LENGTH_SHORT).show()
+                } else {
+                    val code = codeOneEt.text.toString() +
+                            codeTwoEt.text.toString() +
+                            codeThreeEt.text.toString() +
+                            codeFourEt.text.toString() +
+                            codeFiveEt.text.toString()
+
+                    viewModel.verify(token, code)
+                }
+            }
         }
 
         codeTwoEt.setOnKeyListener { _, keyCode, event ->

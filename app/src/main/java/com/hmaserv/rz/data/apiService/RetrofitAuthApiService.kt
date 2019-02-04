@@ -13,7 +13,10 @@ import retrofit2.http.*
 interface RetrofitAuthApiService {
 
     @PUT("auth/activeUser")
-    fun verifyPhone(@Header("Authorization") token: String): Deferred<ApiResponse<Boolean>>
+    fun verifyPhone(
+        @Header("Authorization") token: String,
+        @Body request: VerifyUserRequest
+    ): Deferred<ApiResponse<Boolean>>
 
     @PUT("auth/upgradeRole")
     fun upgrade(
