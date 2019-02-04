@@ -30,7 +30,8 @@ sealed class Attribute : Parcelable {
     data class MainAttribute(
         val name: String,
         @field:Json(name = "values")
-        val attributes: List<SubAttribute>
+        val attributes: List<SubAttribute>,
+        @Transient var selectedAttribute: Int = 0
     ) : Attribute()
 
     @Parcelize
@@ -50,11 +51,15 @@ class AttributeSection : SectionEntity<Attribute.SubAttribute> {
 fun MainAttributeResponse.toMainAttribute(): Attribute.MainAttribute? {
     if (name != null
         && attributes != null
+        && attributes.isNotEmpty()
     ) {
-        return Attribute.MainAttribute(
-            name,
-            attributes.filterNotNull().mapNotNull { it.toSubAttribute(name) }
-        )
+        val subAttributes = attributes.filterNotNull().mapNotNull { it.toSubAttribute(name) }
+        if (subAttributes.isNotEmpty()) {
+            return Attribute.MainAttribute(
+                name,
+                subAttributes
+            )
+        }
     }
 
     return null

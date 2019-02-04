@@ -2,9 +2,9 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/rootView"
     tools:context=".ui.ad.AdFragment">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -65,7 +65,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:visibility="gone"
+        android:paddingBottom="16dp"
+        android:clipToPadding="false"
+        android:visibility="visible"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -121,58 +123,27 @@
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="Camera canon model rzy555" />
 
-                <ImageView
-                    android:id="@+id/starOneImgv"
+                <RatingBar
+                    android:id="@+id/ratingBar"
+                    style="?android:attr/ratingBarStyleIndicator"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:src="@drawable/ic_star_rate"
+                    android:numStars="5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/productNameTv" />
 
-                <ImageView
-                    android:id="@+id/starTwoImgv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_star_rate"
-                    app:layout_constraintStart_toEndOf="@id/starOneImgv"
-                    app:layout_constraintTop_toTopOf="@id/starOneImgv" />
-
-                <ImageView
-                    android:id="@+id/starThreeImgv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_star_rate"
-                    app:layout_constraintStart_toEndOf="@id/starTwoImgv"
-                    app:layout_constraintTop_toTopOf="@id/starOneImgv" />
-
-                <ImageView
-                    android:id="@+id/starFourImgv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_star_rate"
-                    app:layout_constraintStart_toEndOf="@id/starThreeImgv"
-                    app:layout_constraintTop_toTopOf="@id/starOneImgv" />
-
-                <ImageView
-                    android:id="@+id/starFiveImgv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_star_rate"
-                    app:layout_constraintStart_toEndOf="@id/starFourImgv"
-                    app:layout_constraintTop_toTopOf="@id/starOneImgv" />
-
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/reviewsMbtn"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:insetLeft="0dp"
                     android:insetRight="0dp"
-                    app:layout_constraintBottom_toBottomOf="@id/starOneImgv"
-                    app:layout_constraintStart_toEndOf="@id/starFiveImgv"
-                    app:layout_constraintTop_toTopOf="@id/starOneImgv"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:textAppearance="?attr/textAppearanceBody2" />
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    app:layout_constraintBottom_toBottomOf="@id/ratingBar"
+                    app:layout_constraintStart_toEndOf="@id/ratingBar"
+                    app:layout_constraintTop_toTopOf="@id/ratingBar" />
 
                 <TextView
                     android:id="@+id/priceTv"
@@ -183,7 +154,7 @@
                     android:layout_marginBottom="16dp"
                     android:textAppearance="?attr/textAppearanceHeadline6"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/starOneImgv"
+                    app:layout_constraintTop_toBottomOf="@id/ratingBar"
                     tools:text="5550 EGP" />
 
                 <TextView
@@ -197,11 +168,11 @@
                     app:layout_constraintTop_toBottomOf="@id/priceTv" />
 
                 <View
+                    android:id="@+id/view"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
                     android:layout_marginTop="1dp"
                     android:background="@color/ic_launcher_background"
-                    android:rotation="4"
                     app:layout_constraintBottom_toBottomOf="@id/discountPriceTv"
                     app:layout_constraintEnd_toEndOf="@id/discountPriceTv"
                     app:layout_constraintStart_toStartOf="@id/discountPriceTv"
@@ -399,6 +370,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/errorViewTv" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -406,7 +378,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">
-
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/emptyLav"
@@ -432,7 +403,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/emptyLav" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -479,6 +449,5 @@
             app:layout_constraintTop_toBottomOf="@id/noConnectionTv" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

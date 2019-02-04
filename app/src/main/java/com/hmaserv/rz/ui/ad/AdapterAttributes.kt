@@ -9,9 +9,9 @@ import com.google.android.material.chip.ChipGroup
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.Attribute
 
-class AdapterAttributes(data: List<Attribute.MainAttribute>, private val callBack: AttributesListener)
+class AdapterAttributes(private val callBack: AttributesListener)
     : BaseQuickAdapter<Attribute.MainAttribute, BaseViewHolder>
-    (R.layout.attribute_item_view, data) {
+    (R.layout.attribute_item_view, ArrayList<Attribute.MainAttribute>()) {
 
     override fun convert(helper: BaseViewHolder, item: Attribute.MainAttribute) {
         helper.setText(R.id.attrNameTv, item.name)
@@ -19,6 +19,8 @@ class AdapterAttributes(data: List<Attribute.MainAttribute>, private val callBac
         val chipGroup = helper.getView<ChipGroup>(R.id.chip_group)
 
         if (chipGroup != null) {
+            chipGroup.removeAllViews()
+            chipGroup.setOnCheckedChangeListener(null)
             for (i in 0 until item.attributes.size) {
                 val attribute = item.attributes[i]
                 val chip = Chip(chipGroup.context, null, R.style.Widget_MaterialComponents_Chip_Choice)
@@ -47,17 +49,18 @@ class AdapterAttributes(data: List<Attribute.MainAttribute>, private val callBac
                 chipGroup.addView(chip)
             }
 
-            val view = chipGroup.getChildAt(0)
+            val view = chipGroup.getChildAt(item.selectedAttribute)
             view?.let {
                 chipGroup.check(view.id)
                 view.isClickable = false
-                chipGroup.setOnCheckedChangeListener { group, checkedId ->
-                    for (i in 0 until group.childCount) {
-                        val chip = group.getChildAt(i) as Chip
-                        chip.isClickable = (chip.id != checkedId)
-                        if (chip.id == checkedId) {
-                            callBack.onAttributeSelected(helper.adapterPosition, i)
-                        }
+            }
+
+            chipGroup.setOnCheckedChangeListener { group, checkedId ->
+                for (i in 0 until group.childCount) {
+                    val chip = group.getChildAt(i) as Chip
+                    chip.isClickable = (chip.id != checkedId)
+                    if (chip.id == checkedId) {
+                        callBack.onAttributeSelected(helper.adapterPosition, i)
                     }
                 }
             }

@@ -20,10 +20,8 @@ import com.hmaserv.rz.domain.Action
 import com.hmaserv.rz.domain.State
 import com.hmaserv.rz.domain.observeEvent
 import com.hmaserv.rz.utils.*
-import kotlinx.android.synthetic.main.create_ad_fragment.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
-import timber.log.Timber
 
 const val RC_PERMISSION_STORAGE_CAMERA = 100
 const val RC_PERMISSION_STORAGE = 101

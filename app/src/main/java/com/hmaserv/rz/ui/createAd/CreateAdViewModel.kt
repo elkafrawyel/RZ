@@ -8,7 +8,6 @@ import androidx.lifecycle.MutableLiveData
 import com.blankj.utilcode.util.NetworkUtils
 import com.hmaserv.rz.R
 import com.hmaserv.rz.domain.*
-import com.hmaserv.rz.ui.BaseViewModel
 import com.hmaserv.rz.ui.RzBaseViewModel
 import com.hmaserv.rz.utils.Injector
 import kotlinx.coroutines.Job

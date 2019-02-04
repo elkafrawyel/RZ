@@ -59,6 +59,21 @@ sealed class State {
         val ads: List<MiniAd> = emptyList()
     ) : State()
 
+    data class AdState(
+        val loadingVisibility: Int = View.GONE,
+        val isRefreshing: Boolean = false,
+        val errorVisibility: Int = View.GONE,
+        val errorProgress: Float = 0F,
+        val errorPlayAnimation: Boolean = false,
+        val emptyVisibility: Int = View.GONE,
+        val noConnectionVisibility: Int = View.GONE,
+        val dataVisibility: Int = View.GONE,
+        val updateAttribute: Boolean = false,
+        val ad: Ad? = null,
+        val totalPrice: Int = 0,
+        val attributes: List<Attribute.MainAttribute> = emptyList()
+    ) : State()
+
     data class MyAdsState(
         val loadingVisibility: Int = View.GONE,
         val isRefreshing: Boolean = false,
@@ -81,8 +96,8 @@ sealed class State {
         val noConnectionVisibility: Int = View.GONE,
         val dataVisibility: Int = View.GONE,
         val categories: List<Category> = emptyList(),
-        val subCategoriesMap : Map<String, List<SubCategory>> = emptyMap(),
-        val attributesMap : Map<String, List<AttributeSection>> = emptyMap()
+        val subCategoriesMap: Map<String, List<SubCategory>> = emptyMap(),
+        val attributesMap: Map<String, List<AttributeSection>> = emptyMap()
     ) : State()
 
     object EditAdState : State()
@@ -93,4 +108,5 @@ sealed class Action {
     object Refresh : Action()
     object UpgradeRequest : Action()
     data class DeleteAd(val position: Int) : Action()
+    data class SelectAttribute(val mainAttributePosition: Int, val subAttributePosition: Int) : Action()
 }
