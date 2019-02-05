@@ -18,6 +18,7 @@ class CreateOrderUseCase(
         mobile: String,
         notes: String,
         attributes: List<Attribute.MainAttribute>,
+        attributesPrice: Int,
         payment: Payment
     ): DataResource<Boolean> {
         return ordersRepo.createOrder(
@@ -32,6 +33,7 @@ class CreateOrderUseCase(
                     notes
                 ),
                 attributes,
+                attributesPrice,
                 payment.value
             )
         )

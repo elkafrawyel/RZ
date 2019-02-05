@@ -6,6 +6,7 @@ data class CreateOrderRequest(
     @field:Json(name = "ad_uuid") val adUuid: String,
     @field:Json(name = "contacts") val contact: OrderContact,
     @field:Json(name = "characteristics") val attributes: List<Attribute.MainAttribute>,
+    @field:Json(name = "total_char") val attributesPrice: Int,
     @field:Json(name = "payment") val payment: String
 )
 

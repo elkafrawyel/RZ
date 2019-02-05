@@ -97,6 +97,11 @@ class CreateOrderViewModel : BaseViewModel() {
     ): Job {
         return scope.launch(dispatcherProvider.io) {
             withContext(dispatcherProvider.main) { showDataLoading() }
+            val attributesPrice = attributes.map { main ->
+                main.attributes.map {
+                    it.price
+                }.sum()
+            }.sum()
             val result = getCreateOrderUseCase.create(
                 adUuid,
                 name,
@@ -105,6 +110,7 @@ class CreateOrderViewModel : BaseViewModel() {
                 mobile,
                 notes,
                 attributes,
+                attributesPrice,
                 payment
             )
             withContext(dispatcherProvider.main) {
