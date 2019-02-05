@@ -1,51 +1,92 @@
 package store.rz.app.ui.reviews
 
-import store.rz.app.domain.DataResource
-import store.rz.app.domain.Review
-import store.rz.app.domain.UiState
-import store.rz.app.ui.NewBaseViewModel
+import android.view.View
 import store.rz.app.utils.Injector
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import store.rz.app.R
+import store.rz.app.domain.*
+import store.rz.app.ui.RzBaseViewModel
 
-const val DATA_REVIEWS_KEY = "reviews"
+class ReviewsViewModel :
+    RzBaseViewModel<State.ReviewsState, String>() {
 
-class ReviewsViewModel : NewBaseViewModel() {
-
+    private var reviewsJob: Job? = null
     private val reviewsUseCase = Injector.reviewsUseCase()
 
-    var reviews = ArrayList<Review>()
     private var adUuid: String? = null
 
     fun setAdUuid(adUuid: String) {
         if (this.adUuid == null) {
             this.adUuid = adUuid
-            getData()
+            sendAction(Action.Started)
         }
     }
 
-    override fun launchDataJob(): Job {
-        return scope.launch(dispatcherProvider.io) {
-            withContext(dispatcherProvider.main) {
-                showDataLoading()
+    override fun actOnAction(action: Action) {
+        when (action) {
+            Action.Started -> {
+                refreshData(false)
             }
-            val result = reviewsUseCase.get(adUuid!!)
-            withContext(dispatcherProvider.main) {
-                when (result) {
-                    is DataResource.Success -> {
-                        reviews.clear()
-                        reviews.addAll(result.data as ArrayList<Review>)
-                        showDataSuccess(reviews)
-                    }
-                    is DataResource.Error -> showDataError()
+            Action.Refresh -> {
+                refreshData(true)
+            }
+            else -> {
+            }
+        }
+    }
+
+    private fun refreshData(isRefreshed: Boolean) {
+        checkNetwork(
+            job = reviewsJob,
+            success = { reviewsJob = launchReviewsJob(isRefreshed) },
+            error = {
+                if (isRefreshed) {
+                    sendMessage(Injector.getApplicationContext().getString(R.string.label_no_internet_connection))
+                    sendState(
+                        State.ReviewsState(
+                            isRefreshing = false,
+                            dataVisibility = View.VISIBLE,
+                            reviews = state.value?.reviews ?: emptyList()
+                        )
+                    )
+                } else {
+                    sendState(State.ReviewsState(noConnectionVisibility = View.VISIBLE))
                 }
             }
-        }
+        )
     }
 
-    private fun showDataSuccess(reviews: ArrayList<Review>) {
-        _uiState.value = UiState.Success(mapOf(Pair(DATA_REVIEWS_KEY, reviews)))
+    private fun launchReviewsJob(isRefreshed: Boolean): Job {
+        return launch(dispatcherProvider.io) {
+            sendStateOnMain {
+                if (isRefreshed) {
+                    State.ReviewsState(
+                        isRefreshing = true,
+                        dataVisibility = View.VISIBLE,
+                        reviews = state.value?.reviews ?: emptyList()
+                    )
+                } else {
+                    State.ReviewsState(loadingVisibility = View.VISIBLE)
+                }
+            }
+            val result = reviewsUseCase.get(adUuid!!)
+            when (result) {
+                is DataResource.Success -> {
+                    if (result.data.isEmpty()) {
+                        sendStateOnMain { State.ReviewsState(emptyVisibility = View.VISIBLE) }
+                    } else {
+                        sendStateOnMain {
+                            State.ReviewsState(
+                                dataVisibility = View.VISIBLE,
+                                reviews = result.data
+                            )
+                        }
+                    }
+                }
+                is DataResource.Error -> sendStateOnMain { State.ReviewsState(errorVisibility = View.VISIBLE) }
+            }
+        }
     }
 
 }

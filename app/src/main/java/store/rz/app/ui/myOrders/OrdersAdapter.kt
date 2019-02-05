@@ -19,7 +19,7 @@ class OrdersAdapter :
         }
 
         helper.setText(R.id.orderTitleTv, item.miniAd.title)
-            .setText(R.id.orderPriceTv, item.miniAd.price.toString())
+            .setText(R.id.orderPriceTv, item.miniAd.discountPrice.toString())
             .setText(R.id.orderStatusTv, item.status)
             .addOnClickListener(R.id.moreMbtn)
     }

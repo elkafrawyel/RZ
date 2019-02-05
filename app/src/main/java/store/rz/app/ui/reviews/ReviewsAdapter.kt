@@ -7,10 +7,9 @@ import com.chad.library.adapter.base.BaseViewHolder
 import store.rz.app.R
 import store.rz.app.domain.Review
 
-class ReviewsAdapter(
-    reviews: List<Review>?
-) :
-    BaseQuickAdapter<Review, BaseViewHolder>(R.layout.review_item_view, reviews) {
+class ReviewsAdapter :
+    BaseQuickAdapter<Review, BaseViewHolder>(R.layout.review_item_view, ArrayList<Review>()) {
+
     override fun convert(helper: BaseViewHolder, item: Review) {
 
         Glide

@@ -129,6 +129,18 @@ sealed class State {
         val order: List<Order> = emptyList()
     ) : State()
 
+    data class ReviewsState(
+        val loadingVisibility: Int = View.GONE,
+        val isRefreshing: Boolean = false,
+        val errorVisibility: Int = View.GONE,
+        val errorProgress: Float = 0F,
+        val errorPlayAnimation: Boolean = false,
+        val emptyVisibility: Int = View.GONE,
+        val noConnectionVisibility: Int = View.GONE,
+        val dataVisibility: Int = View.GONE,
+        val reviews: List<Review> = emptyList()
+    ) : State()
+
 }
 
 sealed class Action {

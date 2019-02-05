@@ -11,16 +11,19 @@ import androidx.navigation.fragment.findNavController
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.snackbar.Snackbar
 import store.rz.app.R
-import store.rz.app.ui.BaseFragment
 import store.rz.app.ui.MainViewModel
 import kotlinx.android.synthetic.main.reviews_fragment.*
+import store.rz.app.domain.Action
+import store.rz.app.domain.State
+import store.rz.app.ui.RzBaseFragment
 
-class ReviewsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
+class ReviewsFragment :
+    RzBaseFragment<State.ReviewsState, String, ReviewsViewModel>(ReviewsViewModel::class.java),
+    SwipeRefreshLayout.OnRefreshListener {
 
     private var adUuid: String? = null
     private val mainViewModel by lazy { ViewModelProviders.of(requireActivity()).get(MainViewModel::class.java) }
-    private val viewModel by lazy { ViewModelProviders.of(this).get(ReviewsViewModel::class.java) }
-    private val adapter by lazy { ReviewsAdapter(viewModel.reviews) }
+    private val adapter = ReviewsAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,7 +35,6 @@ class ReviewsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mainViewModel.logInLiveData.observe(this, Observer { })
-        viewModel.uiState.observe(this, Observer { onUiStateChanged(it) })
         arguments?.let {
             adUuid = ReviewsFragmentArgs.fromBundle(it).adUuid
             viewModel.setAdUuid(adUuid!!)
@@ -40,16 +42,14 @@ class ReviewsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
         reviewsRv.adapter = adapter
 
-        noConnectionCl.setOnClickListener { viewModel.refresh() }
-        errorCl.setOnClickListener { viewModel.refresh() }
-
+        noConnectionCl.setOnClickListener { sendAction(Action.Started) }
+        errorCl.setOnClickListener { sendAction(Action.Started) }
         reviewsSwipe.setOnRefreshListener(this)
-
         writeReviewFab.setOnClickListener { openWriteReview() }
     }
 
     private fun openWriteReview() {
-        when(mainViewModel.logInLiveData.value) {
+        when (mainViewModel.logInLiveData.value) {
             MainViewModel.LogInState.NoLogIn -> {
                 Snackbar.make(rootViewCl, getString(R.string.error_sign_in_first), Snackbar.LENGTH_SHORT)
                     .setAction(getString(R.string.label_sign_in)) {
@@ -66,55 +66,18 @@ class ReviewsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         }
     }
 
-    override fun showLoading() {
-        loadinLav.visibility = View.VISIBLE
-        dataCl.visibility = View.GONE
-        emptyViewCl.visibility = View.GONE
-        noConnectionCl.visibility = View.GONE
-        errorCl.visibility = View.GONE
-    }
-
-    override fun showSuccess(dataMap: Map<String, Any>) {
-        val reviews = dataMap[DATA_REVIEWS_KEY] as List<String>
-        if (reviews.isEmpty()) {
-            showStateEmptyView()
-        } else {
-            loadinLav.visibility = View.GONE
-            reviewsSwipe.isRefreshing = false
-            dataCl.visibility = View.VISIBLE
-            emptyViewCl.visibility = View.GONE
-            noConnectionCl.visibility = View.GONE
-            errorCl.visibility = View.GONE
-            adapter.notifyDataSetChanged()
-        }
-    }
-
-    override fun showError(message: String) {
-        loadinLav.visibility = View.GONE
-        dataCl.visibility = View.GONE
-        emptyViewCl.visibility = View.VISIBLE
-        noConnectionCl.visibility = View.GONE
-        errorCl.visibility = View.GONE
-    }
-
-    override fun showNoInternetConnection() {
-        loadinLav.visibility = View.GONE
-        dataCl.visibility = View.GONE
-        emptyViewCl.visibility = View.GONE
-        noConnectionCl.visibility = View.VISIBLE
-        errorCl.visibility = View.GONE
-    }
-
-    private fun showStateEmptyView() {
-        loadinLav.visibility = View.GONE
-        dataCl.visibility = View.GONE
-        emptyViewCl.visibility = View.VISIBLE
-        noConnectionCl.visibility = View.GONE
-        errorCl.visibility = View.GONE
+    override fun renderState(state: State.ReviewsState) {
+        loadinLav.visibility = state.loadingVisibility
+        reviewsSwipe.isRefreshing = state.isRefreshing
+        emptyViewCl.visibility = state.emptyVisibility
+        noConnectionCl.visibility = state.noConnectionVisibility
+        errorCl.visibility = state.errorVisibility
+        dataCl.visibility = state.dataVisibility
+        adapter.replaceData(state.reviews)
     }
 
     override fun onRefresh() {
-        viewModel.refresh()
+        sendAction(Action.Refresh)
     }
 
 }
