@@ -4,7 +4,7 @@ object Constants {
     const val BASE_URL = "http://r-z.store/api/v1/"
     const val PAYPAL_URL = "https://r-z.store/paynow.php"
     const val CONTRACT_URL = "https://r-z.store/contract.php"
-    const val NOTIFICATION_TARGET = "target"
+    const val NOTIFICATION_TARGET = "data"
     const val SETTINGS_ID = 1L
     const val LOGGED_IN_USER_ID = 1L
     const val AUTHORIZATION_START = "Bearer"
@@ -20,10 +20,10 @@ object Constants {
         ENGLISH("en")
     }
 
-    enum class LaunchType(val value: String) {
-        NORMAL("0"),
-        MY_ORDERS("1"),
-        ORDERS_RECEIVED("2")
+    enum class LaunchType(val value: Char) {
+        NORMAL('2'),
+        MY_ORDERS('0'),
+        ORDERS_RECEIVED('1')
     }
 
     enum class Role(val value: Int) {

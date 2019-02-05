@@ -22,9 +22,9 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         Timber.i(intent.toString())
-        val target = intent?.getStringExtra(Constants.NOTIFICATION_TARGET)
+        val target = intent?.getStringExtra(Constants.NOTIFICATION_TARGET)?.substringAfterLast(":")?.get(0) ?: '2'
         var launchType = Constants.LaunchType.NORMAL
-        when(target) {
+        when (target) {
             Constants.LaunchType.MY_ORDERS.value -> launchType = Constants.LaunchType.MY_ORDERS
             Constants.LaunchType.ORDERS_RECEIVED.value -> launchType = Constants.LaunchType.ORDERS_RECEIVED
         }
@@ -66,7 +66,11 @@ class SplashActivity : AppCompatActivity() {
             val ordersReceivedDescription = getString(R.string.orders_received_channel_desc)
             val ordersReceivedImportance = NotificationManager.IMPORTANCE_HIGH
             val ordersReceivedChannel =
-                NotificationChannel(NOTIFICATION_ORDERS_RECEIVED_CHANNEL, ordersReceivedChannelName, ordersReceivedImportance).apply {
+                NotificationChannel(
+                    NOTIFICATION_ORDERS_RECEIVED_CHANNEL,
+                    ordersReceivedChannelName,
+                    ordersReceivedImportance
+                ).apply {
                     description = ordersReceivedDescription
                 }
 

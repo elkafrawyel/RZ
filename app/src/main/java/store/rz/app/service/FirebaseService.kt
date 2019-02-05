@@ -31,7 +31,8 @@ class FirebaseService : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         if (remoteMessage.data.isNotEmpty()) {
             Timber.d("Message data payload: %s", remoteMessage.data)
-            when (remoteMessage.data[Constants.NOTIFICATION_TARGET]) {
+            val target = remoteMessage.data.values.first().substringAfterLast(":")[0]
+            when (target) {
                 Constants.LaunchType.MY_ORDERS.value -> {
                     createNotification(Constants.LaunchType.MY_ORDERS, remoteMessage.notification)
                 }
