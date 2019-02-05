@@ -110,6 +110,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun showSubCategorySuccess(subCategoriesList: List<SubCategory>) {
+        subCategories.clear()
         subCategories.addAll(subCategoriesList)
         subCategoriesAdapter.notifyDataSetChanged()
     }
