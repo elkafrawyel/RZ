@@ -7,10 +7,9 @@ import com.chad.library.adapter.base.BaseViewHolder
 import store.rz.app.R
 import store.rz.app.domain.MiniOrder
 
-class OrdersReceivedAdapter (
-    myOrders:List<MiniOrder>?
-):
-    BaseQuickAdapter<MiniOrder, BaseViewHolder>(R.layout.order_item_view, myOrders) {
+class OrdersReceivedAdapter :
+    BaseQuickAdapter<MiniOrder, BaseViewHolder>(R.layout.order_item_view, ArrayList<MiniOrder>())
+{
     override fun convert(helper: BaseViewHolder, item: MiniOrder) {
 
         (helper.getView(R.id.orderImgv) as ImageView).let {
