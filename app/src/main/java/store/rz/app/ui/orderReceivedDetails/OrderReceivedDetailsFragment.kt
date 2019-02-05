@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -14,16 +12,18 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import store.rz.app.R
-import store.rz.app.domain.Order
-import store.rz.app.ui.BaseFragment
 import kotlinx.android.synthetic.main.order_received_details_fragment.*
+import store.rz.app.domain.Action
+import store.rz.app.domain.State
+import store.rz.app.ui.RzBaseFragment
 
-class OrderReceivedDetailsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener,
+class OrderReceivedDetailsFragment :
+    RzBaseFragment<State.OrderState, String, OrderReceivedDetailsViewModel>(OrderReceivedDetailsViewModel::class.java),
+    SwipeRefreshLayout.OnRefreshListener,
     BaseQuickAdapter.OnItemChildClickListener {
 
     private var receivedOrderUuid: String? = null
-    private val viewModel by lazy { ViewModelProviders.of(this).get(OrderReceivedViewModel::class.java) }
-    private val ordersAdapter by lazy { OrderReceivedDetailsAdapter() }
+    private val ordersAdapter = OrderReceivedDetailsAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,9 +34,6 @@ class OrderReceivedDetailsFragment : BaseFragment(), SwipeRefreshLayout.OnRefres
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.uiState.observe(this, Observer { onUiStateChanged(it) })
-        viewModel.actionState.observe(this, Observer { onActionStateChanged(it) })
-
         arguments?.let {
             receivedOrderUuid = OrderReceivedDetailsFragmentArgs.fromBundle(it).orderReceivedUuid
             if (receivedOrderUuid == null) {
@@ -48,71 +45,33 @@ class OrderReceivedDetailsFragment : BaseFragment(), SwipeRefreshLayout.OnRefres
 
         backImgv.setOnClickListener { findNavController().navigateUp() }
         receivedOrderDetailsRv.adapter = ordersAdapter
-        noConnectionCl.setOnClickListener { viewModel.refresh() }
-        errorCl.setOnClickListener { viewModel.refresh() }
+        noConnectionCl.setOnClickListener { sendAction(Action.Started) }
+        errorCl.setOnClickListener { sendAction(Action.Started) }
         ordersAdapter.onItemChildClickListener = this
 
         receivedOrderDetailsSwipe.setOnRefreshListener(this)
     }
 
-    override fun showLoading() {
-        loadinLav.visibility = View.VISIBLE
-        receivedOrderDetailsSwipe.visibility = View.GONE
-        emptyViewCl.visibility = View.GONE
-        noConnectionCl.visibility = View.GONE
-        errorCl.visibility = View.GONE
-    }
-
-    override fun showSuccess(dataMap: Map<String, Any>) {
-        val orders = dataMap[DATA_RECEIVED_ORDER_DETAILS_KEY] as List<Order>
-        if (orders.isEmpty()) {
-            showStateEmptyView()
-        } else {
-            loadinLav.visibility = View.GONE
-            receivedOrderDetailsSwipe.isRefreshing = false
-            receivedOrderDetailsSwipe.visibility = View.VISIBLE
-            emptyViewCl.visibility = View.GONE
-            noConnectionCl.visibility = View.GONE
-            errorCl.visibility = View.GONE
-
-            priceTv.text = orders[0].price.toString()
-            ordersAdapter.setOrderStatus(viewModel.orderStatus)
-            ordersAdapter.replaceData(orders)
-        }
-    }
-
-    override fun showError(message: String) {
-        loadinLav.visibility = View.GONE
-        receivedOrderDetailsSwipe.visibility = View.GONE
-        emptyViewCl.visibility = View.GONE
-        noConnectionCl.visibility = View.GONE
-        errorCl.visibility = View.VISIBLE
-    }
-
-    override fun showNoInternetConnection() {
-        loadinLav.visibility = View.GONE
-        receivedOrderDetailsSwipe.visibility = View.GONE
-        emptyViewCl.visibility = View.GONE
-        noConnectionCl.visibility = View.VISIBLE
-        errorCl.visibility = View.GONE
-    }
-
-    private fun showStateEmptyView() {
-        loadinLav.visibility = View.GONE
-        receivedOrderDetailsSwipe.visibility = View.GONE
-        emptyViewCl.visibility = View.VISIBLE
-        noConnectionCl.visibility = View.GONE
-        errorCl.visibility = View.GONE
+    override fun renderState(state: State.OrderState) {
+        loadinLav.visibility = state.loadingVisibility
+        emptyViewCl.visibility = state.emptyVisibility
+        noConnectionCl.visibility = state.noConnectionVisibility
+        errorCl.visibility = state.errorVisibility
+        receivedOrderDetailsSwipe.isRefreshing = state.isRefreshing
+        receivedOrderDetailsSwipe.visibility = state.dataVisibility
+        priceTv.text = state.order.getOrNull(0)?.price.toString()
+        ordersAdapter.setOrderStatus(viewModel.orderStatus)
+        ordersAdapter.replaceData(state.order)
     }
 
     override fun onRefresh() {
-        viewModel.refresh()
+        sendAction(Action.Refresh)
     }
 
     override fun onItemChildClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
         when (view.id) {
             R.id.acceptMbtn -> {
-                viewModel.acceptOrder()
+                sendAction(Action.AcceptOrder)
             }
             R.id.refuseMbtn -> {
                 val refuseView = LayoutInflater.from(requireContext()).inflate(R.layout.refuse_dialog_view, null)
@@ -122,7 +81,7 @@ class OrderReceivedDetailsFragment : BaseFragment(), SwipeRefreshLayout.OnRefres
                     .setPositiveButton(getString(android.R.string.ok)) { _, _ ->
                         var reason = refuseView.findViewById<TextInputEditText>(R.id.reasonTiet).text.toString()
                         if (reason.isBlank()) reason = "لا يوجد سبب"
-                        viewModel.refuseOrder(reason)
+                        sendAction(Action.RefuseOrder(reason))
                     }
                     .show()
             }
@@ -141,7 +100,7 @@ class OrderReceivedDetailsFragment : BaseFragment(), SwipeRefreshLayout.OnRefres
                         val amount = amountView.findViewById<TextInputEditText>(R.id.amountTiet).text.toString()
                         if (amount.isNotBlank()) {
                             if (amount.toInt() <= ordersAdapter.data[position].remaining) {
-                                viewModel.paymentReceived(amount.toInt())
+                                sendAction(Action.PaymentReceived(amount))
                                 dialog.dismiss()
                             } else {
                                 Snackbar.make(
@@ -159,29 +118,8 @@ class OrderReceivedDetailsFragment : BaseFragment(), SwipeRefreshLayout.OnRefres
                 dialog.show()
             }
             R.id.completedMbtn -> {
-                viewModel.orderCompleted(ordersAdapter.data[position].remaining)
+                sendAction(Action.CompleteOrder)
             }
-        }
-    }
-
-    private fun onActionStateChanged(state: OrderReceivedViewModel.OrderActionState?) {
-        when(state) {
-            OrderReceivedViewModel.OrderActionState.NoInternetConnection -> {
-                Snackbar.make(rootCl, getString(R.string.label_no_internet_connection), Snackbar.LENGTH_SHORT).show()
-            }
-            OrderReceivedViewModel.OrderActionState.Loading -> {
-                loadingFl.visibility = View.VISIBLE
-            }
-            OrderReceivedViewModel.OrderActionState.Success -> {
-                loadingFl.visibility = View.GONE
-                viewModel.refresh()
-                Snackbar.make(rootCl, getString(R.string.success_action), Snackbar.LENGTH_SHORT).show()
-            }
-            OrderReceivedViewModel.OrderActionState.Error -> {
-                loadingFl.visibility = View.GONE
-                Snackbar.make(rootCl, getString(R.string.error_actoion), Snackbar.LENGTH_SHORT).show()
-            }
-            null -> {}
         }
     }
 

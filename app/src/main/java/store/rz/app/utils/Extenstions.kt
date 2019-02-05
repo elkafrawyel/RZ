@@ -3,12 +3,14 @@ package store.rz.app.utils
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.provider.MediaStore
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import store.rz.app.RzApplication
 import io.objectbox.BoxStore
+import store.rz.app.R
 import java.util.*
 
 const val RC_CAPTURE_IMAGE = 1000
@@ -38,10 +40,13 @@ fun Context.openPaypalLink() {
 }
 
 fun Fragment.openGallery(allowMultiple: Boolean) {
-    val intent = Intent(Intent.ACTION_GET_CONTENT)
-    intent.type = "image/*"
+    val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
     intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, allowMultiple)
-    intent.addCategory(Intent.CATEGORY_OPENABLE)
+    intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
+    intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true)
+    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+    intent.type = "image/*"
+//    startActivityForResult(Intent.createChooser(intent, "اختر صورة"), RC_IMAGES)
     startActivityForResult(intent, RC_IMAGES)
 }
 
