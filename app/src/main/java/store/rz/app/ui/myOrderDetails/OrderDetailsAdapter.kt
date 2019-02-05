@@ -6,9 +6,8 @@ import store.rz.app.R
 import store.rz.app.domain.Order
 import store.rz.app.domain.OrderStatus
 
-class OrderDetailsAdapter : BaseQuickAdapter<Order, BaseViewHolder>(
-    R.layout.order_details_item_view, ArrayList<Order>()
-) {
+class OrderDetailsAdapter :
+    BaseQuickAdapter<Order, BaseViewHolder>(R.layout.order_details_item_view, ArrayList<Order>()) {
 
     private var orderStatus: Map<String, OrderStatus>? = null
 
