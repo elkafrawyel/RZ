@@ -16,12 +16,16 @@ import store.rz.app.domain.Payment
 import store.rz.app.ui.BaseFragment
 import store.rz.app.utils.Constants
 import kotlinx.android.synthetic.main.my_orders_fragment.*
+import store.rz.app.domain.Action
+import store.rz.app.domain.State
+import store.rz.app.ui.RzBaseFragment
 import store.rz.app.utils.openPaypalLink
 
-class MyOrdersFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
+class MyOrdersFragment :
+    RzBaseFragment<State.MyOrdersState, String, MyOrdersViewModel>(MyOrdersViewModel::class.java),
+    SwipeRefreshLayout.OnRefreshListener {
 
-    private val viewModel by lazy { ViewModelProviders.of(this).get(MyOrdersViewModel::class.java) }
-    private val ordersAdapter by lazy { OrdersAdapter(viewModel.miniOrders) }
+    private val ordersAdapter = OrdersAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,9 +38,7 @@ class MyOrdersFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         super.onViewCreated(view, savedInstanceState)
         requireActivity().intent.putExtra(Constants.NOTIFICATION_TARGET, Constants.LaunchType.NORMAL.name)
 
-        viewModel.uiState.observe(this, Observer { onUiStateChanged(it) })
         myOrdersRv.adapter = ordersAdapter
-        ordersTl.getTabAt(viewModel.paymentMethod.ordinal)?.select()
 
         backBtn.setOnClickListener { findNavController().navigateUp() }
         myOrdersSwipe.setOnRefreshListener(this)
@@ -48,19 +50,10 @@ class MyOrdersFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             }
 
             override fun onTabSelected(tab: TabLayout.Tab) {
-                viewModel.paymentMethod = Payment.values()[tab.position]
-                ordersAdapter.notifyDataSetChanged()
-                payNowMbtn.visibility =
-                    if (viewModel.paymentMethod == Payment.PAYPAL && viewModel.miniOrders.isNotEmpty())
-                        View.VISIBLE
-                    else
-                        View.GONE
+                sendAction(Action.PaymentTabSelected(Payment.values()[tab.position]))
             }
         })
 
-        payNowMbtn.setOnClickListener {
-            requireContext().openPaypalLink()
-        }
 
         ordersAdapter.onItemClickListener =
             BaseQuickAdapter.OnItemClickListener { _, _, position ->
@@ -71,8 +64,24 @@ class MyOrdersFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             openOrderDetails(ordersAdapter.data[position].uuid)
         }
 
-        errorCl.setOnClickListener { viewModel.refresh() }
-        noConnectionCl.setOnClickListener { viewModel.refresh() }
+        payNowMbtn.setOnClickListener { requireContext().openPaypalLink() }
+        errorCl.setOnClickListener { sendAction(Action.Started) }
+        noConnectionCl.setOnClickListener { sendAction(Action.Started) }
+    }
+
+    override fun renderState(state: State.MyOrdersState) {
+        loadinLav.visibility = state.loadingVisibility
+        myOrdersSwipe.isRefreshing = state.isRefreshing
+        emptyViewCl.visibility = state.emptyVisibility
+        noConnectionCl.visibility = state.noConnectionVisibility
+        errorCl.visibility = state.errorVisibility
+        dataCl.visibility = state.dataVisibility
+        ordersTl.getTabAt(state.selectedPayment.ordinal)?.select()
+        payNowMbtn.visibility = state.payNowBtnVisibility
+        when(state.selectedPayment) {
+            Payment.CASH -> ordersAdapter.replaceData(state.myCashOrders)
+            Payment.PAYPAL -> ordersAdapter.replaceData(state.myPaypalOrders)
+        }
     }
 
     private fun openOrderDetails(uuid: String?) {
@@ -80,55 +89,7 @@ class MyOrdersFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         findNavController().navigate(action)
     }
 
-    override fun showLoading() {
-        loadinLav.visibility = View.VISIBLE
-        dataCl.visibility = View.GONE
-        emptyViewCl.visibility = View.GONE
-        noConnectionCl.visibility = View.GONE
-        errorCl.visibility = View.GONE
-    }
-
-    override fun showSuccess(dataMap: Map<String, Any>) {
-        val myOrders = dataMap[DATA_MY_ORDERS_KEY] as List<MiniOrder>
-        if (myOrders.isEmpty()) {
-            showStateEmptyView()
-        } else {
-            loadinLav.visibility = View.GONE
-            myOrdersSwipe.isRefreshing = false
-            dataCl.visibility = View.VISIBLE
-            emptyViewCl.visibility = View.GONE
-            noConnectionCl.visibility = View.GONE
-            errorCl.visibility = View.GONE
-
-            ordersAdapter.notifyDataSetChanged()
-        }
-    }
-
-    private fun showStateEmptyView() {
-        loadinLav.visibility = View.GONE
-        dataCl.visibility = View.GONE
-        emptyViewCl.visibility = View.VISIBLE
-        noConnectionCl.visibility = View.GONE
-        errorCl.visibility = View.GONE
-    }
-
-    override fun showError(message: String) {
-        loadinLav.visibility = View.GONE
-        dataCl.visibility = View.GONE
-        emptyViewCl.visibility = View.GONE
-        noConnectionCl.visibility = View.GONE
-        errorCl.visibility = View.VISIBLE
-    }
-
-    override fun showNoInternetConnection() {
-        loadinLav.visibility = View.GONE
-        dataCl.visibility = View.GONE
-        emptyViewCl.visibility = View.GONE
-        noConnectionCl.visibility = View.VISIBLE
-        errorCl.visibility = View.GONE
-    }
-
     override fun onRefresh() {
-        viewModel.refresh()
+        sendAction(Action.Refresh)
     }
 }

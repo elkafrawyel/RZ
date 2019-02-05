@@ -100,6 +100,21 @@ sealed class State {
         val attributesMap: Map<String, List<AttributeSection>> = emptyMap()
     ) : State()
 
+    data class MyOrdersState(
+        val loadingVisibility: Int = View.GONE,
+        val isRefreshing: Boolean = false,
+        val errorVisibility: Int = View.GONE,
+        val errorProgress: Float = 0F,
+        val errorPlayAnimation: Boolean = false,
+        val emptyVisibility: Int = View.GONE,
+        val noConnectionVisibility: Int = View.GONE,
+        val dataVisibility: Int = View.GONE,
+        val payNowBtnVisibility: Int = View.GONE,
+        val selectedPayment: Payment = Payment.CASH,
+        val myCashOrders: List<MiniOrder> = emptyList(),
+        val myPaypalOrders: List<MiniOrder> = emptyList()
+    ) : State()
+
     object EditAdState : State()
 }
 
@@ -109,4 +124,5 @@ sealed class Action {
     object UpgradeRequest : Action()
     data class DeleteAd(val position: Int) : Action()
     data class SelectAttribute(val mainAttributePosition: Int, val subAttributePosition: Int) : Action()
+    data class PaymentTabSelected(val payment: Payment) : Action()
 }
