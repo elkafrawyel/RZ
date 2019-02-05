@@ -12,7 +12,7 @@ class VerifyPhoneUseCase(
     suspend fun verify(token: String, code: String): DataResource<Boolean> {
         return loggedInUserRepo.verifyPhone(
             "${Constants.AUTHORIZATION_START} $token",
-            VerifyUserRequest(code)
+            VerifyUserRequest(code.toInt())
         )
     }
 
