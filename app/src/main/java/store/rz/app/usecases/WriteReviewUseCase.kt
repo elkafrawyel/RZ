@@ -10,10 +10,10 @@ class WriteReviewUseCase(
     private val loggedInUserRepo: LoggedInUserRepo,
     private val adsRepo: IAdsRepo
 ) {
-    suspend fun write(request: WriteReviewRequest): DataResource<Boolean> {
+    suspend fun write(adUuid: String, rate: Int, comment: String): DataResource<Boolean> {
        return adsRepo.writeReviews(
-            "${Constants.AUTHORIZATION_START} ${loggedInUserRepo.getLoggedInUser().token}"
-            , request
+            "${Constants.AUTHORIZATION_START} ${loggedInUserRepo.getLoggedInUser().token}",
+           WriteReviewRequest(adUuid, rate, comment)
         )
     }
 }

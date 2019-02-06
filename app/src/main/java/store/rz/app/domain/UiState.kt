@@ -141,6 +141,11 @@ sealed class State {
         val reviews: List<Review> = emptyList()
     ) : State()
 
+    data class WriteReviewState(
+        val onViewLoadingVisibility: Int = View.GONE,
+        val goBack: Boolean = false
+    ) : State()
+
 }
 
 sealed class Action {
@@ -154,4 +159,5 @@ sealed class Action {
     data class RefuseOrder(val note: String) : Action()
     data class PaymentReceived(val amount: String) : Action()
     object CompleteOrder : Action()
+    data class WriteReview(val rate: Int, val review: String) : Action()
 }

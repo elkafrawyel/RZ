@@ -4,16 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.google.android.material.tabs.TabLayout
 import store.rz.app.R
-import store.rz.app.domain.MiniOrder
 import store.rz.app.domain.Payment
-import store.rz.app.ui.BaseFragment
 import store.rz.app.utils.Constants
 import kotlinx.android.synthetic.main.my_orders_fragment.*
 import store.rz.app.domain.Action
