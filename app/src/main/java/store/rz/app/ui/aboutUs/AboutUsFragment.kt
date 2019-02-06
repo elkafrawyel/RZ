@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.about_us_fragment.*
 
 class AboutUsFragment : Fragment() {
 
-    private val aboutUsUrl = "https://r-z.store/about.php"
+    private val aboutUsUrl = "http://r-z.store/about.php"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

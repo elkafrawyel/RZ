@@ -15,7 +15,7 @@ import android.webkit.WebViewClient
 
 class PrivacyFragment : Fragment() {
 
-    private val privacyUrl = "https://r-z.store/privacyar.php"
+    private val privacyUrl = "http://r-z.store/privacyar.php"
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
