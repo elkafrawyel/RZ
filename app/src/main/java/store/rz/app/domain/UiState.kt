@@ -146,6 +146,19 @@ sealed class State {
         val goBack: Boolean = false
     ) : State()
 
+    data class SearchState(
+        val loadingVisibility: Int = View.GONE,
+        val errorVisibility: Int = View.GONE,
+        val errorProgress: Float = 0F,
+        val errorPlayAnimation: Boolean = false,
+        val subCategoriesLoading: Int = View.GONE,
+        val dataVisibility: Int = View.GONE,
+        val selectedCategory: Int = 0,
+        val selectedSubCategory: Int = 0,
+        val categories: List<Category> = emptyList(),
+        val subCategories: List<SubCategory> = emptyList()
+    ) : State()
+
 }
 
 sealed class Action {
@@ -160,4 +173,6 @@ sealed class Action {
     data class PaymentReceived(val amount: String) : Action()
     object CompleteOrder : Action()
     data class WriteReview(val rate: Int, val review: String) : Action()
+    data class CategorySelected(val position: Int) : Action()
+    data class SubCategorySelected(val position: Int) : Action()
 }

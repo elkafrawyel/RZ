@@ -1,7 +1,10 @@
 package store.rz.app.ui
 
 import androidx.annotation.MainThread
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.blankj.utilcode.util.NetworkUtils
 import store.rz.app.domain.Action
 import store.rz.app.domain.Event
@@ -15,9 +18,8 @@ import kotlin.coroutines.CoroutineContext
 abstract class RzBaseViewModel<T : State, M> : ViewModel(), CoroutineScope {
 
     protected val dispatcherProvider = Injector.getCoroutinesDispatcherProvider()
-    private val parentJob = Job()
     override val coroutineContext: CoroutineContext
-        get() = dispatcherProvider.main + parentJob
+        get() = viewModelScope.coroutineContext
 
     private val actionLiveData = MutableLiveData<Action>()
 
@@ -73,7 +75,6 @@ abstract class RzBaseViewModel<T : State, M> : ViewModel(), CoroutineScope {
 
     override fun onCleared() {
         super.onCleared()
-        parentJob.cancel()
         actionLiveData.removeObserver(::onActionChanged)
     }
 }

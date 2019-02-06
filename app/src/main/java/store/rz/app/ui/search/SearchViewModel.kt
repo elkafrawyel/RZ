@@ -1,94 +1,78 @@
 package store.rz.app.ui.search
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import store.rz.app.domain.Category
-import store.rz.app.domain.Event
-import store.rz.app.domain.SubCategory
-import store.rz.app.ui.BaseViewModel
+import android.view.View
+import kotlinx.coroutines.*
 import store.rz.app.utils.Injector
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import store.rz.app.domain.*
+import store.rz.app.ui.RzBaseViewModel
 
-class SearchViewModel : BaseViewModel() {
-    private var getSavedCategoriesJob: Job? = null
-    private var getSavedSubCategoriesJob: Job? = null
+class SearchViewModel :
+    RzBaseViewModel<State.SearchState, String>() {
 
-    private val getSavedCategoriesUseCase = Injector.getSavedCategoriesUseCase()
-    private val getSavedSubCategoriesUseCase = Injector.getSavedSubCategoriesUseCase()
+    private var searchJob: Job? = null
+    private var subCategoriesJob: Job? = null
 
-    private val _categoriesUiState = MutableLiveData<Event<CategoriesUiState>>()
-    val categoriesUiState: LiveData<Event<CategoriesUiState>>
-        get() = _categoriesUiState
-
-    private val _subCategoriesUiState = MutableLiveData<Event<SubCategoriesUiState>>()
-    val subCategoriesUiState: LiveData<Event<SubCategoriesUiState>>
-        get() = _subCategoriesUiState
+    private val savedCategoriesUseCase = Injector.getSavedCategoriesUseCase()
+    private val savedSubCategoriesUseCase = Injector.getSavedSubCategoriesUseCase()
 
     init {
-        getSavedCategories()
+        sendAction(Action.Started)
     }
 
-    private fun getSavedCategories() {
-        if (getSavedCategoriesJob?.isActive == true) {
-            return
-        }
-
-        getSavedCategoriesJob = launchGetSavedCategoriesJob()
-    }
-
-    private fun launchGetSavedCategoriesJob(): Job? {
-        return scope.launch(dispatcherProvider.computation) {
-            withContext(dispatcherProvider.main) { showCategoryLoading() }
-            val data = getSavedCategoriesUseCase.get()
-            withContext(dispatcherProvider.main) {
-                showCategorySuccess(data)
+    override fun actOnAction(action: Action) {
+        when (action) {
+            Action.Started -> {
+                getData()
+            }
+            is Action.CategorySelected -> {
+                getSubCategories(action.position)
+            }
+            is Action.SubCategorySelected -> {
+                state.value?.let {
+                    sendState(it.copy(selectedSubCategory = action.position))
+                }
+            }
+            else -> {
             }
         }
     }
 
-    fun getSavedSubCategories(categoryUuid: String) {
-        if (getSavedCategoriesJob?.isActive == true) {
+    private fun getData() {
+        if (searchJob?.isActive == true) {
             return
         }
 
-        getSavedSubCategoriesJob = launchGetSavedCategoriesJob(categoryUuid)
+        searchJob = launchDataJob()
     }
 
-    private fun launchGetSavedCategoriesJob(categoryUuid: String): Job? {
-        return scope.launch(dispatcherProvider.computation) {
-            withContext(dispatcherProvider.main) { showSubCategoryLoading() }
-            val data = getSavedSubCategoriesUseCase.get(categoryUuid)
-            withContext(dispatcherProvider.main) {
-                showSubCategorySuccess(data)
+    private fun launchDataJob(): Job {
+        return launch(dispatcherProvider.computation) {
+            sendStateOnMain { State.SearchState(loadingVisibility = View.VISIBLE) }
+            val categories = savedCategoriesUseCase.get()
+            if (categories.isNotEmpty()) {
+                sendStateOnMain { State.SearchState(dataVisibility = View.VISIBLE, categories = categories) }
+            } else {
+                sendStateOnMain { State.SearchState(errorVisibility = View.VISIBLE) }
             }
         }
     }
 
-    private fun showCategoryLoading() {
-        _categoriesUiState.value = Event(CategoriesUiState.Loading)
+    private fun getSubCategories(position: Int) {
+        state.value?.categories?.get(position)?.let {
+            subCategoriesJob?.cancel()
+            subCategoriesJob = launchSubCategoriesJob(it.uuid)
+        }
     }
 
-    private fun showCategorySuccess(data: List<Category>) {
-        _categoriesUiState.value = Event(CategoriesUiState.Success(data))
+    private fun launchSubCategoriesJob(uuid: String): Job {
+        return launch(dispatcherProvider.computation) {
+            val subCategories = savedSubCategoriesUseCase.get(uuid)
+            sendStateOnMain { State.SearchState(
+                dataVisibility = View.VISIBLE,
+                categories = state.value?.categories ?: emptyList(),
+                subCategories = subCategories
+            ) }
+        }
     }
 
-    sealed class CategoriesUiState {
-        object Loading : CategoriesUiState()
-        data class Success(val categories: List<Category>) : CategoriesUiState()
-    }
-
-    private fun showSubCategoryLoading() {
-        _subCategoriesUiState.value = Event(SubCategoriesUiState.Loading)
-    }
-
-    private fun showSubCategorySuccess(data: List<SubCategory>) {
-        _subCategoriesUiState.value = Event(SubCategoriesUiState.Success(data))
-    }
-
-    sealed class SubCategoriesUiState {
-        object Loading : SubCategoriesUiState()
-        data class Success(val subCategories: List<SubCategory>) : SubCategoriesUiState()
-    }
 }
