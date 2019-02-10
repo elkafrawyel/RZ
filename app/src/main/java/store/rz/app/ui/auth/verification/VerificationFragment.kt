@@ -32,7 +32,7 @@ class VerificationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (arguments != null) {
-            val viewModel = ViewModelProviders.of(this).get(VerficationViewModel::class.java)
+            val viewModel = ViewModelProviders.of(this).get(VerificationViewModel::class.java)
             viewModel.uiState.observeEvent(this) { onUiStateChanged(it) }
             val token = VerificationFragmentArgs.fromBundle(arguments!!).token
             phoneNumber = VerificationFragmentArgs.fromBundle(arguments!!).phoneNumber
@@ -180,11 +180,11 @@ class VerificationFragment : Fragment() {
         })
     }
 
-    private fun onUiStateChanged(state: VerficationViewModel.VerifyUiState) {
+    private fun onUiStateChanged(state: VerificationViewModel.VerifyUiState) {
         when (state) {
-            VerficationViewModel.VerifyUiState.Loading -> showStateLoading()
-            VerficationViewModel.VerifyUiState.Success -> showStateSuccess()
-            is VerficationViewModel.VerifyUiState.Error -> showStateError()
+            VerificationViewModel.VerifyUiState.Loading -> showStateLoading()
+            VerificationViewModel.VerifyUiState.Success -> showStateSuccess()
+            is VerificationViewModel.VerifyUiState.Error -> showStateError()
         }
     }
 

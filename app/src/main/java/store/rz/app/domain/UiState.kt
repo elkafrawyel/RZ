@@ -159,6 +159,13 @@ sealed class State {
         val subCategories: List<SubCategory> = emptyList()
     ) : State()
 
+    object CreateOrderState : State()
+    object ForgetPassword : State()
+    object Login : State()
+    object Register : State()
+    object Verification : State()
+    object Main : State()
+
 }
 
 sealed class Action {

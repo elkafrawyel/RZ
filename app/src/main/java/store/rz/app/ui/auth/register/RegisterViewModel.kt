@@ -3,16 +3,14 @@ package store.rz.app.ui.auth.register
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import store.rz.app.R
-import store.rz.app.domain.DataResource
-import store.rz.app.domain.Event
-import store.rz.app.domain.LoggedInUser
-import store.rz.app.ui.BaseViewModel
 import store.rz.app.utils.Injector
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import store.rz.app.domain.*
+import store.rz.app.ui.RzBaseViewModel
 
-class RegisterViewModel : BaseViewModel() {
+class RegisterViewModel : RzBaseViewModel<State.Register, String>() {
 
     private var registerJob: Job? = null
 
@@ -21,6 +19,10 @@ class RegisterViewModel : BaseViewModel() {
     private val _uiState = MutableLiveData<Event<RegisterUiState>>()
     val uiState: LiveData<Event<RegisterUiState>>
         get() = _uiState
+
+    override fun actOnAction(action: Action) {
+
+    }
 
     fun register(
         fullName: String,
@@ -49,7 +51,7 @@ class RegisterViewModel : BaseViewModel() {
         password: String,
         passwordConfirmation: String
     ): Job {
-        return scope.launch(dispatcherProvider.computation) {
+        return launch(dispatcherProvider.computation) {
             withContext(dispatcherProvider.main) { showLoading() }
             val result = registerUserUseCase.register(
                 fullName,

@@ -3,17 +3,15 @@ package store.rz.app.ui.auth.login
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import store.rz.app.R
-import store.rz.app.domain.DataResource
-import store.rz.app.domain.Event
-import store.rz.app.domain.LoggedInUser
-import store.rz.app.ui.BaseViewModel
 import store.rz.app.utils.Constants
 import store.rz.app.utils.Injector
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import store.rz.app.domain.*
+import store.rz.app.ui.RzBaseViewModel
 
-class LoginViewModel : BaseViewModel() {
+class LoginViewModel : RzBaseViewModel<State.Login, String>() {
 
     private var loginJob: Job? = null
     private var setAcceptedJob: Job? = null
@@ -27,6 +25,10 @@ class LoginViewModel : BaseViewModel() {
     val uiState: LiveData<Event<LoginUiState>>
         get() = _uiState
 
+    override fun actOnAction(action: Action) {
+
+    }
+
     fun login(phone: String, password: String) {
         if (loginJob?.isActive == true) {
             return
@@ -36,7 +38,7 @@ class LoginViewModel : BaseViewModel() {
     }
 
     private fun launchLogin(phone: String, password: String): Job {
-        return scope.launch(dispatcherProvider.io) {
+        return launch(dispatcherProvider.io) {
             withContext(dispatcherProvider.main) { showLoading() }
             val result = loginUserUseCase.login(phone, password)
             when(result) {
@@ -91,7 +93,7 @@ class LoginViewModel : BaseViewModel() {
     }
 
     private fun launchSetAccepted(): Job {
-        return scope.launch {
+        return launch {
             setAcceptedContractUseCase.save(true)
         }
     }

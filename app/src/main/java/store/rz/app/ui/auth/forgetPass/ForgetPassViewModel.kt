@@ -6,13 +6,15 @@ import com.blankj.utilcode.util.NetworkUtils
 import store.rz.app.R
 import store.rz.app.domain.DataResource
 import store.rz.app.domain.Event
-import store.rz.app.ui.BaseViewModel
 import store.rz.app.utils.Injector
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import store.rz.app.domain.Action
+import store.rz.app.domain.State
+import store.rz.app.ui.RzBaseViewModel
 
-class ForgetPassViewModel : BaseViewModel() {
+class ForgetPassViewModel : RzBaseViewModel<State.ForgetPassword, String>() {
 
     private var forgetPasswordJob: Job? = null
 
@@ -21,6 +23,10 @@ class ForgetPassViewModel : BaseViewModel() {
     private val _uiState = MutableLiveData<Event<ForgetPasswordUiState>>()
     val uiState: LiveData<Event<ForgetPasswordUiState>>
         get() = _uiState
+
+    override fun actOnAction(action: Action) {
+
+    }
 
 
     fun resetPassword(phoneNumber: String) {
@@ -32,7 +38,7 @@ class ForgetPassViewModel : BaseViewModel() {
     }
 
     private fun launchResetPasswordJob(phoneNumber: String): Job {
-        return scope.launch(dispatcherProvider.computation) {
+        return launch(dispatcherProvider.computation) {
             withContext(dispatcherProvider.main) { showLoading() }
             if (NetworkUtils.isConnected()) {
                 val result = getForgetPasswordUseCase.resetPassword(phoneNumber)

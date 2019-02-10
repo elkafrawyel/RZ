@@ -3,16 +3,13 @@ package store.rz.app.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import store.rz.app.domain.Attribute
-import store.rz.app.domain.DataResource
-import store.rz.app.domain.Event
-import store.rz.app.domain.LoggedInUser
 import store.rz.app.utils.Injector
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import store.rz.app.domain.*
 
-class MainViewModel : BaseViewModel() {
+class MainViewModel : RzBaseViewModel<State.Main, String>() {
 
     private var logOutJob: Job? = null
     private var getDataJob: Job? = null
@@ -46,6 +43,10 @@ class MainViewModel : BaseViewModel() {
         getData()
     }
 
+    override fun actOnAction(action: Action) {
+
+    }
+
     private fun getData() {
         if (getDataJob?.isActive == true) {
             return
@@ -55,7 +56,7 @@ class MainViewModel : BaseViewModel() {
     }
 
     private fun launchGetData(): Job {
-        return scope.launch(dispatcherProvider.io) {
+        return launch(dispatcherProvider.io) {
             val result = getCategoriesUseCase.get()
             when (result) {
                 is DataResource.Success -> result.data.forEach { getSubCategoriesUseCase.get(it.uuid) }
@@ -72,7 +73,7 @@ class MainViewModel : BaseViewModel() {
     }
 
     private fun launchLogOut(): Job {
-        return scope.launch(dispatcherProvider.computation) {
+        return launch(dispatcherProvider.computation) {
             val result = logOutUseCase.logOut()
             withContext(dispatcherProvider.main) {
                 when (result) {

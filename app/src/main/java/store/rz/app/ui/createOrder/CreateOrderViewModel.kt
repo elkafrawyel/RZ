@@ -4,17 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.blankj.utilcode.util.NetworkUtils
 import store.rz.app.R
-import store.rz.app.domain.Attribute
-import store.rz.app.domain.City
-import store.rz.app.domain.DataResource
-import store.rz.app.domain.Payment
-import store.rz.app.ui.BaseViewModel
 import store.rz.app.utils.Injector
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import store.rz.app.domain.*
+import store.rz.app.ui.RzBaseViewModel
 
-class CreateOrderViewModel : BaseViewModel() {
+class CreateOrderViewModel : RzBaseViewModel<State.CreateOrderState, String>() {
 
     private var dataJob: Job? = null
     private var createOrderJob: Job? = null
@@ -34,6 +31,10 @@ class CreateOrderViewModel : BaseViewModel() {
         getData()
     }
 
+    override fun actOnAction(action: Action) {
+
+    }
+
     fun getData() {
         if (NetworkUtils.isConnected()) {
             if (dataJob?.isActive == true) {
@@ -46,7 +47,7 @@ class CreateOrderViewModel : BaseViewModel() {
         }
     }
 
-    private fun launchGetData() = scope.launch(dispatcherProvider.io) {
+    private fun launchGetData() = launch(dispatcherProvider.io) {
         withContext(dispatcherProvider.main) { _dataState.value = DataState.Loading }
         val dataResult = getCitiesUseCase.getCities()
         when(dataResult) {
@@ -95,7 +96,7 @@ class CreateOrderViewModel : BaseViewModel() {
         attributes: List<Attribute.MainAttribute>,
         payment: Payment
     ): Job {
-        return scope.launch(dispatcherProvider.io) {
+        return launch(dispatcherProvider.io) {
             withContext(dispatcherProvider.main) { showDataLoading() }
             val attributesPrice = attributes.map { main ->
                 main.attributes.map {

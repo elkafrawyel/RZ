@@ -5,13 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import store.rz.app.R
 import store.rz.app.domain.DataResource
 import store.rz.app.domain.Event
-import store.rz.app.ui.BaseViewModel
 import store.rz.app.utils.Injector
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import store.rz.app.domain.Action
+import store.rz.app.domain.State
+import store.rz.app.ui.RzBaseViewModel
 
-class VerficationViewModel : BaseViewModel() {
+class VerificationViewModel : RzBaseViewModel<State.Verification, String>() {
 
     private var verifyPhoneJob: Job? = null
 
@@ -20,6 +22,10 @@ class VerficationViewModel : BaseViewModel() {
     private val _uiState = MutableLiveData<Event<VerifyUiState>>()
     val uiState: LiveData<Event<VerifyUiState>>
         get() = _uiState
+
+    override fun actOnAction(action: Action) {
+
+    }
 
     fun verify(token: String, code: String) {
         if (verifyPhoneJob?.isActive == true) {
@@ -30,7 +36,7 @@ class VerficationViewModel : BaseViewModel() {
     }
 
     private fun launchVerification(token: String, code: String): Job {
-        return scope.launch(dispatcherProvider.computation) {
+        return launch(dispatcherProvider.computation) {
             withContext(dispatcherProvider.main) { showLoading() }
             val result = verifyPhoneUseCase.verify(token, code)
             withContext(dispatcherProvider.main) {
