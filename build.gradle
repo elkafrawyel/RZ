@@ -9,7 +9,7 @@ buildscript {
         maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.0'
+        classpath 'com.android.tools.build:gradle:3.3.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "android.arch.navigation:navigation-safe-args-gradle-plugin:1.0.0-beta01"
         classpath "io.objectbox:objectbox-gradle-plugin:$objectboxVersion"
@@ -37,7 +37,7 @@ task clean(type: Delete) {
 
 ext {
     kotlinKtxVersion = '1.1.0-alpha04'
-    appCompatVersion = '1.1.0-alpha01'
+    appCompatVersion = '1.1.0-alpha02'
     recyclerViewVersion = '1.1.0-alpha02'
     constraintLayoutVersion = '2.0.0-alpha3'
     lifecycle_version = '2.1.0-alpha02'
@@ -55,9 +55,9 @@ ext {
     timber_version = '4.7.1'
     easypermissions_version = '3.0.0'
     lottieVersion = '3.0.0-beta1'
-    firebaseCoreVersion = '16.0.6'
+    firebaseCoreVersion = '16.0.7'
     firebaseMessagingVersion = '17.3.4'
-    firebaseCrashlyticsVersion = '2.9.8'
+    firebaseCrashlyticsVersion = '2.9.9'
     firebasePrefVersion = '16.2.3'
     browser_version = '1.0.0'
     butterknife_version = '10.0.0'
