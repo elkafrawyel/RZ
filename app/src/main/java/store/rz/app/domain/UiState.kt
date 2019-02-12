@@ -100,7 +100,6 @@ sealed class State {
         val attributesMap: Map<String, List<AttributeSection>> = emptyMap()
     ) : State()
 
-    object EditAdState : State()
 
     data class MyOrdersState(
         val loadingVisibility: Int = View.GONE,
@@ -159,6 +158,7 @@ sealed class State {
         val subCategories: List<SubCategory> = emptyList()
     ) : State()
 
+    object EditAdState : State()
     object CreateOrderState : State()
     object ForgetPassword : State()
     object Login : State()

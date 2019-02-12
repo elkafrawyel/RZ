@@ -5,6 +5,10 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.annotation.LayoutRes
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
@@ -27,6 +31,22 @@ fun Context.changeLanguage(lang: Constants.Language) {
     config.setLocale(locale)
     this.createConfigurationContext(config)
     this.resources.updateConfiguration(config, this.resources.displayMetrics)
+}
+
+fun View.gone() {
+    this.visibility = View.GONE
+}
+
+fun View.show() {
+    this.visibility = View.VISIBLE
+}
+
+fun View.invisible() {
+    this.visibility = View.INVISIBLE
+}
+
+fun View.toggle() {
+    this.visibility = if(this.visibility == View.GONE) View.VISIBLE else View.GONE
 }
 
 fun Context.openPaypalLink() {

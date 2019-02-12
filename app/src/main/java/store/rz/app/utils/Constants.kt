@@ -1,9 +1,9 @@
 package store.rz.app.utils
 
 object Constants {
-    const val BASE_URL = "https://r-z.store/api/v1/"
-    const val PAYPAL_URL = "https://r-z.store/paynow.php"
-    const val CONTRACT_URL = "https://r-z.store/contract.php"
+    const val BASE_URL = "https://appawe.r-z.store/api/v1/"
+    const val PAYPAL_URL = "https://appawe.r-z.store/paynow.php"
+    const val CONTRACT_URL = "https://appawe.r-z.store/contract.php"
     const val NOTIFICATION_TARGET = "data"
     const val SETTINGS_ID = 1L
     const val LOGGED_IN_USER_ID = 1L

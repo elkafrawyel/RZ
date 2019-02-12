@@ -48,6 +48,7 @@ object Injector {
 
     var language = Language.DEFAULT
         set(value) {
+            field = value
             LoggedInUserRepo.resetRemoteSource(getLoggedInRemoteSource())
         }
 
@@ -74,10 +75,16 @@ object Injector {
         return Interceptor { chain ->
             val request = chain.request()
                 .newBuilder()
-                .addHeader("Accept-Language", language.value)
                 .addHeader("Accept", "application/json")
-                .build()
-            chain.proceed(request)
+
+            if (chain.request().header("Accept-Language") == null) {
+                request.addHeader(
+                    "Accept-Language",
+                    chain.request().header("Accept-Language") ?: language.value
+                )
+            }
+
+            chain.proceed(request.build())
         }
     }
 
@@ -105,6 +112,7 @@ object Injector {
         val dateFormat = SimpleDateFormat("yyyyMMDD_HHmmss_SSS", Locale.ENGLISH)
         return dateFormat.format(calendar.time) ?: "resizeImage${Random.nextInt()}"
     }
+
     fun getNewResizedImagePath(): String? {
         val imageName = "${generateResizedImageName()}.png"
         val imageFile = File(getResizedImagesDir(), imageName)

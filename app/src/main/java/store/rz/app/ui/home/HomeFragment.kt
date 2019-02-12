@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.chad.library.adapter.base.BaseQuickAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -23,11 +22,11 @@ import store.rz.app.R
 import store.rz.app.domain.*
 import store.rz.app.ui.MainViewModel
 import store.rz.app.ui.RzBaseFragment
-import store.rz.app.ui.ads.AdsAdapter
 import store.rz.app.utils.Constants
 import store.rz.app.utils.SpacesItemDecoration
 import kotlinx.android.synthetic.main.home_fragment.*
 import kotlinx.android.synthetic.main.home_nav_header.view.*
+import store.rz.app.ui.ads.AdsAdapter
 import java.util.*
 import kotlin.concurrent.timerTask
 
@@ -39,7 +38,8 @@ class HomeFragment :
 
     private var timer: Timer? = null
     private val imageSliderAdapter = ImageSliderAdapter()
-    private val productsAdapter = AdsAdapter()
+    private val onAdClickListener = { miniAd: MiniAd -> onProductClicked(miniAd) }
+    private val productsAdapter = AdsAdapter(adClickListener = onAdClickListener)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,11 +64,6 @@ class HomeFragment :
 
         bannerSliderVp.adapter = imageSliderAdapter
         promotionsRv.adapter = productsAdapter
-
-        productsAdapter.onItemClickListener =
-            BaseQuickAdapter.OnItemClickListener { _, _, position ->
-                onProductClicked(productsAdapter.data[position])
-            }
 
         val spacesItemDecoration = SpacesItemDecoration(resources.getDimensionPixelSize(R.dimen.list_space))
 
@@ -325,6 +320,6 @@ class HomeFragment :
         mainViewNsv.visibility = state.dataVisibility
         bannerSliderVp.visibility = state.bannersVisibility
         imageSliderAdapter.submitList(state.banners)
-        productsAdapter.replaceData(state.promotions)
+        productsAdapter.submitList(state.promotions)
     }
 }

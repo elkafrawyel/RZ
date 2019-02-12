@@ -41,51 +41,61 @@
             app:layout_constraintTop_toBottomOf="@id/adImgv"
             tools:text="test" />
 
-        <ImageView
-            android:id="@+id/starOneImgv"
+        <RatingBar
+            android:id="@+id/ratingBar"
+            style="?android:attr/ratingBarStyleIndicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:src="@drawable/ic_star_rate"
-            android:transitionName="starOne"
+            android:numStars="5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/nameTv" />
 
-        <ImageView
-            android:id="@+id/starTwoImgv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_star_rate"
-            android:transitionName="starTwo"
-            app:layout_constraintStart_toEndOf="@id/starOneImgv"
-            app:layout_constraintTop_toTopOf="@id/starOneImgv" />
+        <!--<ImageView-->
+            <!--android:id="@+id/starOneImgv"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginStart="16dp"-->
+            <!--android:src="@drawable/ic_star_rate"-->
+            <!--android:transitionName="starOne"-->
+            <!--app:layout_constraintStart_toStartOf="parent"-->
+            <!--app:layout_constraintTop_toBottomOf="@id/nameTv" />-->
 
-        <ImageView
-            android:id="@+id/starThreeImgv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_star_rate"
-            android:transitionName="starThree"
-            app:layout_constraintStart_toEndOf="@id/starTwoImgv"
-            app:layout_constraintTop_toTopOf="@id/starOneImgv" />
+        <!--<ImageView-->
+            <!--android:id="@+id/starTwoImgv"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@drawable/ic_star_rate"-->
+            <!--android:transitionName="starTwo"-->
+            <!--app:layout_constraintStart_toEndOf="@id/starOneImgv"-->
+            <!--app:layout_constraintTop_toTopOf="@id/starOneImgv" />-->
 
-        <ImageView
-            android:id="@+id/starFourImgv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_star_rate"
-            android:transitionName="starFour"
-            app:layout_constraintStart_toEndOf="@id/starThreeImgv"
-            app:layout_constraintTop_toTopOf="@id/starOneImgv" />
+        <!--<ImageView-->
+            <!--android:id="@+id/starThreeImgv"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@drawable/ic_star_rate"-->
+            <!--android:transitionName="starThree"-->
+            <!--app:layout_constraintStart_toEndOf="@id/starTwoImgv"-->
+            <!--app:layout_constraintTop_toTopOf="@id/starOneImgv" />-->
 
-        <ImageView
-            android:id="@+id/starFiveImgv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_star_rate"
-            android:transitionName="starFive"
-            app:layout_constraintStart_toEndOf="@id/starFourImgv"
-            app:layout_constraintTop_toTopOf="@id/starOneImgv" />
+        <!--<ImageView-->
+            <!--android:id="@+id/starFourImgv"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@drawable/ic_star_rate"-->
+            <!--android:transitionName="starFour"-->
+            <!--app:layout_constraintStart_toEndOf="@id/starThreeImgv"-->
+            <!--app:layout_constraintTop_toTopOf="@id/starOneImgv" />-->
+
+        <!--<ImageView-->
+            <!--android:id="@+id/starFiveImgv"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@drawable/ic_star_rate"-->
+            <!--android:transitionName="starFive"-->
+            <!--app:layout_constraintStart_toEndOf="@id/starFourImgv"-->
+            <!--app:layout_constraintTop_toTopOf="@id/starOneImgv" />-->
 
         <TextView
             android:id="@+id/rating"
@@ -94,9 +104,9 @@
             android:layout_marginStart="8dp"
             android:textAppearance="?attr/textAppearanceCaption"
             android:transitionName="productReviewsNo"
-            app:layout_constraintBottom_toBottomOf="@id/starOneImgv"
-            app:layout_constraintStart_toEndOf="@id/starFiveImgv"
-            app:layout_constraintTop_toTopOf="@id/starOneImgv"
+            app:layout_constraintBottom_toBottomOf="@id/ratingBar"
+            app:layout_constraintStart_toEndOf="@id/ratingBar"
+            app:layout_constraintTop_toTopOf="@id/ratingBar"
             tools:text="(18)" />
 
         <TextView
@@ -110,7 +120,7 @@
             app:layout_constraintBottom_toTopOf="@id/discountPriceTv"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/starOneImgv"
+            app:layout_constraintTop_toBottomOf="@id/ratingBar"
             tools:text="5550 EGP" />
 
         <TextView
@@ -129,7 +139,6 @@
             android:layout_height="1dp"
             android:layout_marginTop="1dp"
             android:background="@color/ic_launcher_background"
-            android:rotation="4"
             app:layout_constraintBottom_toBottomOf="@id/discountPriceTv"
             app:layout_constraintEnd_toEndOf="@id/discountPriceTv"
             app:layout_constraintStart_toStartOf="@id/discountPriceTv"

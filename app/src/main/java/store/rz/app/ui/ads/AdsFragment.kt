@@ -8,7 +8,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.chad.library.adapter.base.BaseQuickAdapter
 import store.rz.app.R
 import store.rz.app.domain.Action
 import store.rz.app.domain.MiniAd
@@ -21,7 +20,8 @@ class AdsFragment :
     RzBaseFragment<State.AdsState, String, AdsViewModel>(AdsViewModel::class.java),
     SwipeRefreshLayout.OnRefreshListener {
 
-    private val adapter = AdsAdapter()
+    private val onAdClickListener = { miniAd: MiniAd -> openProductDetails(miniAd) }
+    private val adapter = AdsAdapter(adClickListener = onAdClickListener)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,11 +50,6 @@ class AdsFragment :
         emptyViewCl.setOnClickListener { sendAction(Action.Started) }
 
         adsRv.adapter = adapter
-
-        adapter.onItemClickListener =
-            BaseQuickAdapter.OnItemClickListener { _, _, position ->
-                openProductDetails(this.adapter.data[position])
-            }
 
         dataSrl.setOnRefreshListener(this)
 
@@ -135,7 +130,7 @@ class AdsFragment :
         noConnectionCl.visibility = state.noConnectionVisibility
         errorCl.visibility = state.errorVisibility
         dataSrl.visibility = state.dataVisibility
-        adapter.replaceData(state.ads)
+        adapter.submitList(state.ads)
     }
 
     override fun onRefresh() {

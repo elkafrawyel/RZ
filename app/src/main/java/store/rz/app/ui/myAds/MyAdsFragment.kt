@@ -8,20 +8,23 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.chad.library.adapter.base.BaseQuickAdapter
 import store.rz.app.R
 import store.rz.app.domain.Action
 import store.rz.app.domain.State
 import store.rz.app.ui.RzBaseFragment
-import store.rz.app.ui.ads.AdsAdapter
 import store.rz.app.utils.SpacesItemDecoration
 import kotlinx.android.synthetic.main.my_ads_fragment.*
+import store.rz.app.domain.MiniAd
+import store.rz.app.ui.ads.AdsAdapter
 
 class MyAdsFragment :
     RzBaseFragment<State.MyAdsState, String, MyAdsViewModel>(MyAdsViewModel::class.java),
     SwipeRefreshLayout.OnRefreshListener {
 
-    private var adapter = AdsAdapter(true)
+    private val adClickListener = { miniAd: MiniAd -> onOpenAdClicked(miniAd.uuid, miniAd.title) }
+    private val adEditClickListener = { miniAd: MiniAd -> onEditAdClicked(miniAd.uuid) }
+    private val adDeleteClickListener = { position: Int -> sendAction(Action.DeleteAd(position)) }
+    private val adapter = AdsAdapter(true, adClickListener, adEditClickListener, adDeleteClickListener)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,22 +42,22 @@ class MyAdsFragment :
         errorCl.setOnClickListener { sendAction(Action.Started) }
         emptyViewCl.setOnClickListener { sendAction(Action.Started) }
 
-        adapter.onItemClickListener =
-                BaseQuickAdapter.OnItemClickListener { _, _, position ->
-                    onOpenAdClicked(adapter.data[position].uuid, adapter.data[position].title)
-                }
-
-        adapter.onItemChildClickListener =
-                BaseQuickAdapter.OnItemChildClickListener { _, view, position ->
-                    when (view.id) {
-                        R.id.adDeleteMbtn -> {
-                            sendAction(Action.DeleteAd(position))
-                        }
-                        R.id.adEditMbtn -> {
-                            onEditAdClicked(adapter.data[position].uuid)
-                        }
-                    }
-                }
+//        adapter.onItemClickListener =
+//                BaseQuickAdapter.OnItemClickListener { _, _, position ->
+//                    onOpenAdClicked(adapter.data[position].uuid, adapter.data[position].title)
+//                }
+//
+//        adapter.onItemChildClickListener =
+//                BaseQuickAdapter.OnItemChildClickListener { _, view, position ->
+//                    when (view.id) {
+//                        R.id.adDeleteMbtn -> {
+//                            sendAction(Action.DeleteAd(position))
+//                        }
+//                        R.id.adEditMbtn -> {
+//                            onEditAdClicked(adapter.data[position].uuid)
+//                        }
+//                    }
+//                }
 
         dataSrl.setOnRefreshListener(this)
 
@@ -122,10 +125,11 @@ class MyAdsFragment :
         emptyViewCl.visibility = state.emptyVisibility
         noConnectionCl.visibility = state.noConnectionVisibility
         errorCl.visibility = state.errorVisibility
-        adapter.replaceData(state.myAds)
         dataSrl.isRefreshing = state.isRefreshing
         loadinLav.visibility = state.loadingVisibility
         dataSrl.visibility = state.dataVisibility
+
+        adapter.submitList(state.myAds)
     }
 
     override fun onRefresh() {
