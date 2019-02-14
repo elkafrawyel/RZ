@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import butterknife.OnClick
+import com.bumptech.glide.Glide
 import store.rz.app.R
 import store.rz.app.domain.Action
 import store.rz.app.domain.State
@@ -19,7 +20,7 @@ class CategoriesFragment :
     SwipeRefreshLayout.OnRefreshListener {
 
     private val categoryClickListener = { category: Category -> onCategoryClicked(category) }
-    private val categoriesAdapter = CategoriesAdapter(categoryClickListener)
+    private val categoriesAdapter by lazy { CategoriesAdapter(Glide.with(this), categoryClickListener) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

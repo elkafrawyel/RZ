@@ -6,12 +6,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import kotlinx.android.synthetic.main.category_item_view.view.*
 import store.rz.app.R
 import store.rz.app.domain.SubCategory
 import store.rz.app.utils.inflate
 
 class SubCategoriesAdapter(
+    private val glide: RequestManager,
     private val subCategoryClickListener: (SubCategory) -> Unit
 ) : ListAdapter<SubCategory, SubCategoriesVH>(DiffCallback()) {
 
@@ -20,7 +22,7 @@ class SubCategoriesAdapter(
     }
 
     override fun onBindViewHolder(holder: SubCategoriesVH, position: Int) {
-        holder.bindTo(getItem(position), subCategoryClickListener)
+        holder.bindTo(getItem(position), glide, subCategoryClickListener)
     }
 
 }
@@ -44,10 +46,10 @@ class SubCategoriesVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bindTo(
         subCategory: SubCategory,
+        glide: RequestManager,
         subCategoryClickListener: (SubCategory) -> Unit
     ) {
-        Glide.with(image.context)
-            .load(subCategory.image)
+        glide.load(subCategory.image)
             .into(image)
 
         title.text = subCategory.title

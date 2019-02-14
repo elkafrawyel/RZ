@@ -6,12 +6,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import kotlinx.android.synthetic.main.category_item_view.view.*
 import store.rz.app.R
 import store.rz.app.domain.Category
 import store.rz.app.utils.inflate
 
 class CategoriesAdapter(
+    private val glide: RequestManager,
     private val categoryClickListener: (Category) -> Unit
 ) : ListAdapter<Category, CategoriesVH>(DiffCallback()) {
 
@@ -20,7 +22,7 @@ class CategoriesAdapter(
     }
 
     override fun onBindViewHolder(holder: CategoriesVH, position: Int) {
-        holder.bindTo(getItem(position), categoryClickListener)
+        holder.bindTo(getItem(position), glide, categoryClickListener)
     }
 
 }
@@ -45,6 +47,7 @@ class CategoriesVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bindTo(
         category: Category,
+        glide: RequestManager,
         categoryClickListener: (Category) -> Unit
     ) {
         Glide.with(image.context)

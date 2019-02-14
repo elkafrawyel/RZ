@@ -8,6 +8,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.bumptech.glide.Glide
 import store.rz.app.R
 import store.rz.app.domain.Action
 import store.rz.app.domain.State
@@ -24,7 +25,7 @@ class MyAdsFragment :
     private val adClickListener = { miniAd: MiniAd -> onOpenAdClicked(miniAd.uuid, miniAd.title) }
     private val adEditClickListener = { miniAd: MiniAd -> onEditAdClicked(miniAd.uuid) }
     private val adDeleteClickListener = { position: Int -> sendAction(Action.DeleteAd(position)) }
-    private val adapter = AdsAdapter(true, adClickListener, adEditClickListener, adDeleteClickListener)
+    private val adapter by lazy { AdsAdapter(true, Glide.with(this), adClickListener, adEditClickListener, adDeleteClickListener) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -39,7 +39,7 @@ class HomeFragment :
     private var timer: Timer? = null
     private val imageSliderAdapter = ImageSliderAdapter()
     private val onAdClickListener = { miniAd: MiniAd -> onProductClicked(miniAd) }
-    private val productsAdapter = AdsAdapter(adClickListener = onAdClickListener)
+    private val productsAdapter by lazy { AdsAdapter(glide =  Glide.with(this), adClickListener = onAdClickListener) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import kotlinx.android.synthetic.main.ad_item_view.view.*
 import store.rz.app.R
 import store.rz.app.domain.MiniAd
@@ -15,6 +15,7 @@ import store.rz.app.utils.show
 
 class AdsAdapter(
     private val actionMode: Boolean = false,
+    private val glide: RequestManager,
     private val adClickListener: (MiniAd) -> Unit,
     private val adEditClickListener: (MiniAd) -> Unit = {},
     private val adDeleteClickListener: (Int) -> Unit = {}
@@ -25,7 +26,7 @@ class AdsAdapter(
     }
 
     override fun onBindViewHolder(holder: AdsVH, position: Int) {
-        holder.bindTo(getItem(position), actionMode, adClickListener, adEditClickListener, adDeleteClickListener)
+        holder.bindTo(getItem(position), actionMode, glide, adClickListener, adEditClickListener, adDeleteClickListener)
     }
 
 }
@@ -56,6 +57,7 @@ class AdsVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bindTo(
         miniAd: MiniAd,
         actionMode: Boolean,
+        glide: RequestManager,
         adClickListener: (MiniAd) -> Unit,
         adEditClickListener: (MiniAd) -> Unit,
         adDeleteClickListener: (Int) -> Unit
@@ -70,11 +72,10 @@ class AdsVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
             deleteBtn.gone()
         }
 
-        miniAd.images.firstOrNull()?.let {
-            Glide.with(adImg.context)
-                .load(it)
-                .into(adImg)
-        }
+
+
+        glide.load(miniAd.images[0])
+            .into(adImg)
 
         name.text = miniAd.title
         ratingBar.rating = miniAd.rate.toFloat()

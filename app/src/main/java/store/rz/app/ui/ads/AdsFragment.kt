@@ -8,6 +8,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.bumptech.glide.Glide
 import store.rz.app.R
 import store.rz.app.domain.Action
 import store.rz.app.domain.MiniAd
@@ -21,7 +22,7 @@ class AdsFragment :
     SwipeRefreshLayout.OnRefreshListener {
 
     private val onAdClickListener = { miniAd: MiniAd -> openProductDetails(miniAd) }
-    private val adapter = AdsAdapter(adClickListener = onAdClickListener)
+    private val adapter by lazy { AdsAdapter(glide =  Glide.with(this), adClickListener = onAdClickListener) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
