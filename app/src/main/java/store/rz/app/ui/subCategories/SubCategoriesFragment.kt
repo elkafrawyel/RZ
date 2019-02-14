@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.chad.library.adapter.base.BaseQuickAdapter
 import store.rz.app.R
 import store.rz.app.domain.Action
 import store.rz.app.domain.State
@@ -19,7 +18,8 @@ class SubCategoriesFragment :
     SwipeRefreshLayout.OnRefreshListener {
 
     private var categoryId: String? = null
-    private val adapter = SubCategoriesAdapter()
+    private val subCategoryClickListener = { subCategory: SubCategory -> onSubCategoryClicked(subCategory) }
+    private val adapter = SubCategoriesAdapter(subCategoryClickListener)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,11 +48,6 @@ class SubCategoriesFragment :
         errorCl.setOnClickListener { sendAction(Action.Started) }
         subCategoriesRv.adapter = adapter
 
-        adapter.onItemClickListener =
-            BaseQuickAdapter.OnItemClickListener { _, _, position ->
-                openProducts(this.adapter.data[position])
-            }
-
         subCategoriesSwipe.setOnRefreshListener(this)
     }
 
@@ -60,7 +55,7 @@ class SubCategoriesFragment :
         findNavController().navigate(R.id.action_subCategoriesFragment_to_searchFragment)
     }
 
-    private fun openProducts(subCategory: SubCategory) {
+    private fun onSubCategoryClicked(subCategory: SubCategory) {
         val action = SubCategoriesFragmentDirections
             .actionSubCategoriesFragmentToAdsFragment(
                 subCategory.uuid,
@@ -80,7 +75,7 @@ class SubCategoriesFragment :
         emptyViewCl.visibility = state.emptyVisibility
         noConnectionCl.visibility = state.noConnectionVisibility
         errorCl.visibility = state.errorVisibility
-        adapter.replaceData(state.subCategories)
+        adapter.submitList(state.subCategories)
     }
 
     override fun onRefresh() {

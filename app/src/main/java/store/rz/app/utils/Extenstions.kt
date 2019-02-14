@@ -49,6 +49,11 @@ fun View.toggle() {
     this.visibility = if(this.visibility == View.GONE) View.VISIBLE else View.GONE
 }
 
+fun ViewGroup.inflate(
+    @LayoutRes layoutRes: Int,
+    attachToRoot: Boolean = false
+): View = LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
+
 fun Context.openPaypalLink() {
     // Use a CustomTabsIntent.Builder to configure CustomTabsIntent.
     val builder = CustomTabsIntent.Builder()

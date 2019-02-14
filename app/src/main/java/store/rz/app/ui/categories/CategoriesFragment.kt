@@ -7,19 +7,19 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import butterknife.OnClick
-import com.chad.library.adapter.base.BaseQuickAdapter
 import store.rz.app.R
 import store.rz.app.domain.Action
 import store.rz.app.domain.State
 import store.rz.app.ui.RzBaseFragment
 import kotlinx.android.synthetic.main.categories_fragment.*
+import store.rz.app.domain.Category
 
 class CategoriesFragment :
     RzBaseFragment<State.CategoriesState, String, CategoriesViewModel>(CategoriesViewModel::class.java),
-    SwipeRefreshLayout.OnRefreshListener,
-    BaseQuickAdapter.OnItemClickListener {
+    SwipeRefreshLayout.OnRefreshListener {
 
-    private val categoriesAdapter = CategoriesAdapter()
+    private val categoryClickListener = { category: Category -> onCategoryClicked(category) }
+    private val categoriesAdapter = CategoriesAdapter(categoryClickListener)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,7 +31,6 @@ class CategoriesFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         categoriesRv.adapter = categoriesAdapter
-        categoriesAdapter.onItemClickListener = this
         categoriesSwipe.setOnRefreshListener(this)
     }
 
@@ -42,7 +41,7 @@ class CategoriesFragment :
         emptyViewCl.visibility = state.emptyVisibility
         noConnectionCl.visibility = state.noConnectionVisibility
         errorCl.visibility = state.errorVisibility
-        categoriesAdapter.replaceData(state.categories)
+        categoriesAdapter.submitList(state.categories)
     }
 
     @OnClick(R.id.backImgv)
@@ -64,8 +63,7 @@ class CategoriesFragment :
         sendAction(Action.Refresh)
     }
 
-    override fun onItemClick(adapter: BaseQuickAdapter<*, *>?, view: View?, position: Int) {
-        val category = categoriesAdapter.data[position]
+    private fun onCategoryClicked(category: Category) {
         val action = CategoriesFragmentDirections
             .actionCategoriesFragmentToSubCategoriesFragment(
                 category.uuid,

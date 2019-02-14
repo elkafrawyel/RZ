@@ -48,7 +48,7 @@ class CategoriesViewModel : RzBaseViewModel<State.CategoriesState, String>() {
         return launch(dispatcherProvider.io) {
             withContext(dispatcherProvider.main) {
                 if (isRefreshed) {
-                    sendState(State.CategoriesState(isRefreshing = true))
+                    sendState(State.CategoriesState(isRefreshing = true, dataVisibility = View.VISIBLE, categories = state.value?.categories ?: emptyList()))
                 } else {
                     sendState(State.CategoriesState(loadingVisibility = View.VISIBLE))
                 }

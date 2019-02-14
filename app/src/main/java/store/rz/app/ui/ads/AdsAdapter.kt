@@ -1,9 +1,7 @@
 package store.rz.app.ui.ads
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -12,6 +10,7 @@ import kotlinx.android.synthetic.main.ad_item_view.view.*
 import store.rz.app.R
 import store.rz.app.domain.MiniAd
 import store.rz.app.utils.gone
+import store.rz.app.utils.inflate
 import store.rz.app.utils.show
 
 class AdsAdapter(
@@ -85,8 +84,3 @@ class AdsVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         itemView.setOnClickListener { adClickListener.invoke(miniAd) }
     }
 }
-
-private fun ViewGroup.inflate(
-    @LayoutRes layoutRes: Int,
-    attachToRoot: Boolean = false
-): View = LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
