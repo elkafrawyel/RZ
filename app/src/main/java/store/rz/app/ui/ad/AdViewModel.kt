@@ -12,6 +12,7 @@ class AdViewModel : RzBaseViewModel<State.AdState, String>() {
     var adUuid: String? = null
     private var adJob: Job? = null
     private var updateAttributeJob: Job? = null
+    private var updateDateJob: Job? = null
     private val getAdUseCase = Injector.getAdUseCase()
 
     fun setAdId(adUuid: String) {
@@ -28,6 +29,9 @@ class AdViewModel : RzBaseViewModel<State.AdState, String>() {
             }
             is Action.SelectAttribute -> {
                 selectAttribute(action.mainAttributePosition, action.subAttributePosition)
+            }
+            is Action.SelectDate -> {
+                selectDate(action.position)
             }
             else -> {
             }
@@ -48,18 +52,29 @@ class AdViewModel : RzBaseViewModel<State.AdState, String>() {
             val result = getAdUseCase.getAd(adUuid!!)
             when (result) {
                 is DataResource.Success -> {
-                    result.data.mainAttributes.onEach { main ->
-                        main.attributes[main.selectedAttribute].isChecked = true
-                    }
+                    val attributes = result.data.mainAttributes
+                        .filter { it.name != "date" }
+                        .onEach { main ->
+                            main.attributes[main.selectedAttribute].isChecked = true
+                        }
+                    val dates = result.data.mainAttributes
+                        .firstOrNull { it.name == "date" }?.attributes ?: emptyList()
+                    dates.firstOrNull()?.isChecked = true
+
                     val totalPrice = result.data.discountPrice + result.data.mainAttributes.map {
                         it.attributes.firstOrNull()?.price ?: 0
                     }.sum()
+
                     sendStateOnMain {
                         State.AdState(
                             dataVisibility = View.VISIBLE,
                             updateAttribute = true,
                             ad = result.data,
-                            totalPrice = totalPrice
+                            totalPrice = totalPrice,
+                            attributesVisibility = if (attributes.isEmpty()) View.GONE else View.VISIBLE,
+                            attributes = attributes,
+                            datesVisibility = if (dates.isEmpty()) View.GONE else View.VISIBLE,
+                            dates = dates
                         )
                     }
                 }
@@ -77,22 +92,42 @@ class AdViewModel : RzBaseViewModel<State.AdState, String>() {
         return launch(dispatcherProvider.computation) {
             state.value?.let { oldState ->
                 oldState.ad?.let { ad ->
-                    val mainAttribute = ad.mainAttributes[mainAttributePosition]
+                    val mainAttribute = oldState.attributes[mainAttributePosition]
                     val oldSubPosition = mainAttribute.selectedAttribute
                     mainAttribute.attributes[oldSubPosition].isChecked = false
                     mainAttribute.attributes[newSubPosition].isChecked = true
                     mainAttribute.selectedAttribute = newSubPosition
 
-                    val totalPrice = ad.discountPrice + ad.mainAttributes.map { main ->
+                    val totalPrice = ad.discountPrice + oldState.attributes.map { main ->
                         main.attributes[main.selectedAttribute].price
                     }.sum()
+
                     sendStateOnMain {
-                        State.AdState(
-                            dataVisibility = View.VISIBLE,
-                            ad = ad,
-                            totalPrice = totalPrice
-                        )
+                        oldState.copy(totalPrice = totalPrice)
                     }
+                }
+            }
+        }
+    }
+
+    private fun selectDate(position: Int) {
+        updateDateJob?.cancel()
+        updateDateJob = launchSelectDate(position)
+    }
+
+    private fun launchSelectDate(position: Int): Job {
+        return launch(dispatcherProvider.computation) {
+            state.value?.let { oldState ->
+                val dates = oldState.dates.mapIndexed { index, subAttribute ->
+                    when (index) {
+                        oldState.selectedDatePosition -> subAttribute.copy(isChecked = false)
+                        position -> subAttribute.copy(isChecked = true)
+                        else -> subAttribute.copy()
+                    }
+                }
+
+                sendStateOnMain {
+                    oldState.copy(dates = dates, selectedDatePosition = position)
                 }
             }
         }
@@ -100,9 +135,18 @@ class AdViewModel : RzBaseViewModel<State.AdState, String>() {
 
     fun getSelectedAttributes(): List<Attribute.MainAttribute> {
         val attributes = ArrayList<Attribute.MainAttribute>()
-        state.value?.ad?.mainAttributes?.forEach { main ->
+        state.value?.attributes?.forEach { main ->
             val mainCopy = main.copy(attributes = main.attributes.filter { sub -> sub.isChecked })
             attributes.add(mainCopy)
+        }
+        val date = state.value?.dates?.filter { sub -> sub.isChecked }
+        date?.let {
+            attributes.add(
+                Attribute.MainAttribute(
+                    date[0].mainAttributeName,
+                    date
+                )
+            )
         }
         return attributes
     }

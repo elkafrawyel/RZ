@@ -88,6 +88,7 @@
     <string name="label_review_number">(%1$s)</string>
     <string name="label_product_currency">%1$s ريال سعودي</string>
     <string name="label_attributes">السمات</string>
+    <string name="label_dates">الايام المتاحة</string>
     <string name="label_chip_text">%1$s | %2$s</string>
     <string name="label_empty_address">حقل العنوان فارغ</string>
     <string name="label_empty_description">حقل الوصف فارغ</string>

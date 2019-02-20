@@ -68,10 +68,14 @@ sealed class State {
         val emptyVisibility: Int = View.GONE,
         val noConnectionVisibility: Int = View.GONE,
         val dataVisibility: Int = View.GONE,
+        val datesVisibility: Int = View.GONE,
+        val attributesVisibility: Int = View.GONE,
         val updateAttribute: Boolean = false,
         val ad: Ad? = null,
         val totalPrice: Int = 0,
-        val attributes: List<Attribute.MainAttribute> = emptyList()
+        val selectedDatePosition: Int = 0,
+        val attributes: List<Attribute.MainAttribute> = emptyList(),
+        val dates: List<Attribute.SubAttribute> = emptyList()
     ) : State()
 
     data class MyAdsState(
@@ -174,6 +178,7 @@ sealed class Action {
     object UpgradeRequest : Action()
     data class DeleteAd(val position: Int) : Action()
     data class SelectAttribute(val mainAttributePosition: Int, val subAttributePosition: Int) : Action()
+    data class SelectDate(val position: Int) : Action()
     data class PaymentTabSelected(val payment: Payment) : Action()
     object AcceptOrder : Action()
     data class RefuseOrder(val note: String) : Action()

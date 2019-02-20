@@ -9,19 +9,18 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.snackbar.Snackbar
 import store.rz.app.R
-import store.rz.app.domain.Action
-import store.rz.app.domain.Owner
-import store.rz.app.domain.State
 import store.rz.app.ui.MainViewModel
 import store.rz.app.ui.RzBaseFragment
 import store.rz.app.ui.home.ImageSliderAdapter
 import kotlinx.android.synthetic.main.ad_fragment.*
+import store.rz.app.domain.*
 import java.util.*
 import kotlin.concurrent.timerTask
 
@@ -32,6 +31,8 @@ class AdFragment :
     private val mainViewModel by lazy { ViewModelProviders.of(requireActivity()).get(MainViewModel::class.java) }
     private val imageSliderAdapter = ImageSliderAdapter()
     private val adapter = AdapterAttributes(this)
+    private val onDateSelected = { position: Int -> sendAction(Action.SelectDate(position)) }
+    private val datesAdapter = DatesAdapter(onDateSelected)
     private var timer: Timer? = null
 
     override fun onCreateView(
@@ -72,8 +73,15 @@ class AdFragment :
             RecyclerView.VERTICAL,
             false
         )
-
         attributesRv.adapter = adapter
+
+        datesRv.layoutManager = GridLayoutManager(
+            context,
+            3,
+            RecyclerView.VERTICAL,
+            false
+        )
+        datesRv.adapter = datesAdapter
     }
 
     private fun openReviews() {
@@ -119,30 +127,28 @@ class AdFragment :
         noConnectionCl.visibility = state.noConnectionVisibility
         errorCl.visibility = state.errorVisibility
         dataNsv.visibility = state.dataVisibility
-        updateAd(state)
+        val price = state.totalPrice
+        priceTv.text = getString(R.string.label_product_currency, price.toString())
+        attributesCl.visibility = state.attributesVisibility
+        adapter.replaceData(state.attributes)
+        datesCl.visibility = state.datesVisibility
+        datesAdapter.submitList(state.dates)
+        updateAd(state.ad)
     }
 
-    private fun updateAd(state: State.AdState) {
-        state.ad?.let { ad ->
+    private fun updateAd(ad: Ad?) {
+        ad?.let {
             toolbar_ProductNameTv.text = ad.title
             productNameTv.text = ad.title
             reviewsMbtn.text = getString(R.string.label_show_reviews, ad.reviewsNo.toString())
             reviewsMbtn.paintFlags = Paint.UNDERLINE_TEXT_FLAG
             addedDateTv.text = ad.date
             productDescriptionTv.text = ad.description
-            val price = state.totalPrice
-            priceTv.text = getString(R.string.label_product_currency, price.toString())
             val discountPrice = getString(R.string.label_product_currency, ad.price.toString())
             discountPriceTv.text = discountPrice
             ratingBar.rating = ad.rate.toFloat()
             addSliderImages(ad.images.map { it.url })
             addOwnerInfo(ad.owner)
-            if (ad.mainAttributes.isNotEmpty()) {
-                attributesCl.visibility = View.VISIBLE
-                adapter.replaceData(ad.mainAttributes)
-            } else {
-                attributesCl.visibility = View.GONE
-            }
         }
     }
 

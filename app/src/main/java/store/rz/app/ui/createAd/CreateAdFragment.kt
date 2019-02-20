@@ -274,10 +274,6 @@ class CreateAdFragment :
 
     }
 
-//    private fun showMessage(message: String) {
-//        Snackbar.make(rootViewCl, message, Snackbar.LENGTH_LONG).show()
-//    }
-
     @AfterPermissionGranted(RC_PERMISSION_STORAGE)
     fun createAd() {
         val perms = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -330,48 +326,4 @@ class CreateAdFragment :
             Toast.makeText(activity, getString(R.string.error_images_count), Toast.LENGTH_SHORT).show()
         }
     }
-
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if (resultCode == RESULT_OK) {
-//            when (requestCode) {
-//                RC_IMAGES -> {
-//                    val result = data?.clipData
-//                    val uri = data?.data
-//                    if (result != null) {
-//                        if (viewModel.addSelectedImages(result)) {
-//                            imageAdapter.notifyItemRangeInserted(
-//                                viewModel.getSelectedImagesSize() - 1,
-//                                data.clipData!!.itemCount
-//                            )
-//                            if (viewModel.getSelectedImagesSize() > 9) {
-//                                addImageMbtn.isEnabled = false
-//                            }
-//                        } else {
-//                            Toast.makeText(activity, getString(R.string.error_images_count), Toast.LENGTH_SHORT).show()
-//                        }
-//                    } else if (uri != null) {
-//                        Timber.i(uri.toString())
-//                        Timber.i(uri.path)
-//                        if (viewModel.addSelectedImage(uri)) {
-//                            imageAdapter.notifyItemInserted(viewModel.getSelectedImagesSize() - 1)
-//                            if (viewModel.getSelectedImagesSize() > 9) {
-//                                addImageMbtn.isEnabled = false
-//                            }
-//                        } else {
-//                            Toast.makeText(activity, getString(R.string.error_images_count), Toast.LENGTH_SHORT)
-//                                .show()
-//                        }
-//                    } else {
-//                        Toast.makeText(activity, getString(R.string.error_general), Toast.LENGTH_SHORT).show()
-//                    }
-//                }
-//            }
-//        }
-//    }
-//
-//    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
-//    }
 }
