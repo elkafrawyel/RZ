@@ -141,12 +141,14 @@ class AdViewModel : RzBaseViewModel<State.AdState, String>() {
         }
         val date = state.value?.dates?.filter { sub -> sub.isChecked }
         date?.let {
-            attributes.add(
-                Attribute.MainAttribute(
-                    date[0].mainAttributeName,
-                    date
+            if (date.isNotEmpty()) {
+                attributes.add(
+                    Attribute.MainAttribute(
+                        date[0].mainAttributeName,
+                        date
+                    )
                 )
-            )
+            }
         }
         return attributes
     }

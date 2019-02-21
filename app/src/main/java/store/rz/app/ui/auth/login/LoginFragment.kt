@@ -15,6 +15,8 @@ import store.rz.app.domain.LoggedInUser
 import store.rz.app.domain.observeEvent
 import kotlinx.android.synthetic.main.login_fragment.*
 import android.webkit.WebView
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import store.rz.app.utils.Constants
 
@@ -113,7 +115,21 @@ class LoginFragment : Fragment() {
             .setView(webView)
             .setPositiveButton(store.rz.app.R.string.label_accept) { _, _ ->
                 viewModel.acceptTerms()
+                showHowToUse()
             }
+            .show()
+    }
+
+    private fun showHowToUse() {
+
+        loadingFl.visibility = View.GONE
+        val webView = WebView(requireContext())
+        webView.loadUrl(Constants.CONTRACT_URL)
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("كيفية الاستخدام")
+            .setView(webView)
+            .setPositiveButton(R.string.label_skip, null)
             .show()
     }
 

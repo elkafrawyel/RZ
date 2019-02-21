@@ -9,7 +9,7 @@ import com.google.android.material.chip.ChipGroup
 import store.rz.app.R
 import store.rz.app.domain.Attribute
 
-class AdapterAttributes(private val callBack: AttributesListener)
+class AttributesAdapter(private val callBack: AttributesListener)
     : BaseQuickAdapter<Attribute.MainAttribute, BaseViewHolder>
     (R.layout.attribute_item_view, ArrayList<Attribute.MainAttribute>()) {
 

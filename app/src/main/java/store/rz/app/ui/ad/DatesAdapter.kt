@@ -65,9 +65,9 @@ class DatesVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
             day.setTextColor(ContextCompat.getColor(day.context, R.color.colorWhite))
         } else {
             itemView.background = ContextCompat.getDrawable(itemView.context, R.drawable.date_attribute_unselected_bg)
-            dayMonth.setTextColor(ContextCompat.getColor(dayMonth.context, R.color.colorPrimary))
+            day.setTextColor(ContextCompat.getColor(day.context, R.color.colorPrimary))
+            dayMonth.setTextColor(ContextCompat.getColor(dayMonth.context, R.color.colorBlack))
             year.setTextColor(ContextCompat.getColor(year.context, R.color.colorBlack70))
-            day.setTextColor(ContextCompat.getColor(day.context, R.color.colorBlack70))
         }
 
         itemView.setOnClickListener {

@@ -9,9 +9,6 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.snackbar.Snackbar
@@ -26,11 +23,11 @@ import kotlin.concurrent.timerTask
 
 class AdFragment :
     RzBaseFragment<State.AdState, String, AdViewModel>(AdViewModel::class.java),
-    AdapterAttributes.AttributesListener {
+    AttributesAdapter.AttributesListener {
 
     private val mainViewModel by lazy { ViewModelProviders.of(requireActivity()).get(MainViewModel::class.java) }
     private val imageSliderAdapter = ImageSliderAdapter()
-    private val adapter = AdapterAttributes(this)
+    private val adapter = AttributesAdapter(this)
     private val onDateSelected = { position: Int -> sendAction(Action.SelectDate(position)) }
     private val datesAdapter = DatesAdapter(onDateSelected)
     private var timer: Timer? = null
@@ -53,34 +50,16 @@ class AdFragment :
         }
 
         productVp.adapter = imageSliderAdapter
-
         pageIndicator.setViewPager(productVp)
 
         backImgv.setOnClickListener { findNavController().navigateUp() }
-
         shareImgv.setOnClickListener { shareProduct() }
-
         createOrderMbtn.setOnClickListener { createOrder() }
-
         noConnectionCl.setOnClickListener { sendAction(Action.Refresh) }
-
         errorCl.setOnClickListener { sendAction(Action.Refresh) }
-
         reviewsMbtn.setOnClickListener { openReviews() }
 
-        attributesRv.layoutManager = LinearLayoutManager(
-            context,
-            RecyclerView.VERTICAL,
-            false
-        )
         attributesRv.adapter = adapter
-
-        datesRv.layoutManager = GridLayoutManager(
-            context,
-            3,
-            RecyclerView.VERTICAL,
-            false
-        )
         datesRv.adapter = datesAdapter
     }
 
@@ -141,7 +120,6 @@ class AdFragment :
             toolbar_ProductNameTv.text = ad.title
             productNameTv.text = ad.title
             reviewsMbtn.text = getString(R.string.label_show_reviews, ad.reviewsNo.toString())
-            reviewsMbtn.paintFlags = Paint.UNDERLINE_TEXT_FLAG
             addedDateTv.text = ad.date
             productDescriptionTv.text = ad.description
             val discountPrice = getString(R.string.label_product_currency, ad.price.toString())

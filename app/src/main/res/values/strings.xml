@@ -198,5 +198,6 @@
     <string name="orders_received_channel_desc">The received orders for your ads</string>
     <string name="take_a_picture">التقط صورة</string>
     <string name="open_gallery">اختر صورة</string>
+    <string name="label_skip">تخطي</string>
 
 </resources>
