@@ -161,9 +161,11 @@ class EditAdFragment :
     }
 
     fun showError(message: String) {
+
     }
 
     fun showNoInternetConnection() {
+
     }
 
     private fun loadAd(ad: Ad) {

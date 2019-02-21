@@ -62,17 +62,18 @@ class EditAdViewModel :
             withContext(dispatcherProvider.main) { showDataLoading() }
             if (adUuid != null) {
                 val adResult = getAdUseCase.getAd(adUuid!!)
-                val attributesResult = getAttributesUseCase.get("3f6a93ed-781b-459f-923e-9af386119690")
-                if (adResult is DataResource.Success && attributesResult is DataResource.Success) {
-                    images.addAll(adResult.data.images)
+                if (adResult is DataResource.Success) {
+                    val attributesResult = getAttributesUseCase.get(adResult.data.subCategoryUuid)
+                    if (attributesResult is DataResource.Success) {
+                        images.addAll(adResult.data.images)
 
-                    val resultMap = mutableMapOf<String, ArrayList<Attribute.SubAttribute>>()
-                    var dateIndex = -1
-                    attributesResult.data.forEach { main ->
-                        resultMap[main.name] = ArrayList(main.attributes)
-                    }
-                    adResult.data.mainAttributes.forEach { main ->
-                        if (main.name == "date") dateIndex = adResult.data.mainAttributes.indexOf(main)
+                        val resultMap = mutableMapOf<String, ArrayList<Attribute.SubAttribute>>()
+                        var dateIndex = -1
+                        attributesResult.data.forEach { main ->
+                            resultMap[main.name] = ArrayList(main.attributes)
+                        }
+                        adResult.data.mainAttributes.forEach { main ->
+                            if (main.name == "date") dateIndex = adResult.data.mainAttributes.indexOf(main)
                             val allSubAttributes = resultMap[main.name]
                             main.attributes.forEach { sub ->
                                 for (i in 0 until (allSubAttributes?.size ?: 0)) {
@@ -82,45 +83,47 @@ class EditAdViewModel :
                                     }
                                 }
                             }
-                    }
+                        }
 
-                    for ((key, value) in resultMap) {
-                        attributes.add(
-                            AttributeSection(
-                                true,
-                                key
-                            )
-                        )
-                        value.forEach { sub ->
+                        for ((key, value) in resultMap) {
                             attributes.add(
                                 AttributeSection(
-                                    sub
+                                    true,
+                                    key
                                 )
                             )
+                            value.forEach { sub ->
+                                attributes.add(
+                                    AttributeSection(
+                                        sub
+                                    )
+                                )
+                            }
                         }
-                    }
 
-                    if (dateIndex != -1) {
-                        attributes.add(
-                            AttributeSection(
-                                true,
-                                "date"
-                            )
-                        )
-                        adResult.data.mainAttributes[dateIndex].attributes.forEach { sub ->
+                        if (dateIndex != -1) {
                             attributes.add(
                                 AttributeSection(
-                                    sub.copy(isChecked = true)
+                                    true,
+                                    "date"
                                 )
                             )
+                            adResult.data.mainAttributes[dateIndex].attributes.forEach { sub ->
+                                attributes.add(
+                                    AttributeSection(
+                                        sub.copy(isChecked = true)
+                                    )
+                                )
+                            }
                         }
-                    }
 
-                    currentAd = adResult.data
-                    withContext(dispatcherProvider.main) { showSuccess(adResult.data) }
-                } else {
-                    withContext(dispatcherProvider.main) { showDataError() }
+                        currentAd = adResult.data
+                        withContext(dispatcherProvider.main) { showSuccess(adResult.data) }
+                    } else {
+                        withContext(dispatcherProvider.main) { showDataError() }
+                    }
                 }
+
             } else {
                 withContext(dispatcherProvider.main) { showDataError() }
             }

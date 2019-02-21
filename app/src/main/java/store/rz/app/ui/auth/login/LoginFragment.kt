@@ -124,7 +124,7 @@ class LoginFragment : Fragment() {
 
         loadingFl.visibility = View.GONE
         val webView = WebView(requireContext())
-        webView.loadUrl(Constants.CONTRACT_URL)
+        webView.loadUrl(Constants.HOW_TO_USE_URL)
 
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("كيفية الاستخدام")
