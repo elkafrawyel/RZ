@@ -31,6 +31,8 @@ data class AdResponse(
     val category: String?,
     @field:Json(name = "sub_category_uuid")
     val subCategoryUuid: String?,
+    @field:Json(name = "videoUrl")
+    val videoUrl: String?,
     @field:Json(name = "sub_category")
     val subCategory: String?,
     @field:Json(name = "characteristics")
@@ -121,7 +123,7 @@ fun AdResponse.toAd(): Ad? {
             subCategoryUuid,
             subCategory,
             title,
-            "http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_640x360.m4v"
+            videoUrl?: ""
         )
     }
 
