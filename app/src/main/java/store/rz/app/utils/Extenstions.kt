@@ -14,11 +14,13 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import store.rz.app.RzApplication
 import io.objectbox.BoxStore
-import store.rz.app.R
 import java.util.*
+
+
 
 const val RC_CAPTURE_IMAGE = 1000
 const val RC_IMAGES = 1001
+const val RC_VIDEO = 1002
 
 fun RzApplication.getBoxStore(): BoxStore {
     return this.boxStore
@@ -73,6 +75,14 @@ fun Fragment.openGallery(allowMultiple: Boolean) {
     intent.type = "image/*"
 //    startActivityForResult(Intent.createChooser(intent, "اختر صورة"), RC_IMAGES)
     startActivityForResult(intent, RC_IMAGES)
+}
+
+fun Fragment.openGalleryVideo() {
+    val intent = Intent()
+    intent.type = "video/*"
+    intent.action = Intent.ACTION_GET_CONTENT
+    startActivityForResult(intent, RC_VIDEO)
+
 }
 
 fun Fragment.openCamera(): Uri? {

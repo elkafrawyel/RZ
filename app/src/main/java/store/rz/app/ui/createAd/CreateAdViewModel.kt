@@ -16,7 +16,7 @@ import kotlinx.coroutines.withContext
 
 class CreateAdViewModel : RzBaseViewModel<State.CreateAdState, String>() {
 
-//    private var dataJob: Job? = null
+    //    private var dataJob: Job? = null
     private var getSavedCategoriesJob: Job? = null
     private var getSavedSubCategoriesJob: Job? = null
     private var getAttributesJob: Job? = null
@@ -41,6 +41,7 @@ class CreateAdViewModel : RzBaseViewModel<State.CreateAdState, String>() {
         get() = _attributesUiState
 
     private val selectedImagesList = ArrayList<Uri>(10)
+    private var selectedVideo: Uri? = null
     val attributes = ArrayList<AttributeSection>()
     val dates = ArrayList<String>()
 
@@ -241,6 +242,17 @@ class CreateAdViewModel : RzBaseViewModel<State.CreateAdState, String>() {
         }
 
         return false
+    }
+
+    fun addSelectedVideo(uri: Uri) {
+        selectedVideo = uri
+    }
+
+    fun getSelectedVideo(): Uri? {
+        if (selectedVideo == null)
+            return null
+        else
+            return selectedVideo!!
     }
 
     fun addSelectedImages(clipData: ClipData): Boolean {

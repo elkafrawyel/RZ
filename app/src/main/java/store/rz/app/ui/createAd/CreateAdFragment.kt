@@ -30,8 +30,20 @@ class CreateAdFragment :
     AttributesAdapter.AttributesCallback,
     DatePickerDialog.OnDateSetListener {
 
-    private val categoriesAdapter: ArrayAdapter<Category> by lazy { ArrayAdapter(requireContext(), R.layout.spinner_item_view, viewModel.categories) }
-    private val subCategoriesAdapter: ArrayAdapter<SubCategory> by lazy { ArrayAdapter(requireContext(), R.layout.spinner_item_view, viewModel.subCategories) }
+    private val categoriesAdapter: ArrayAdapter<Category> by lazy {
+        ArrayAdapter(
+            requireContext(),
+            R.layout.spinner_item_view,
+            viewModel.categories
+        )
+    }
+    private val subCategoriesAdapter: ArrayAdapter<SubCategory> by lazy {
+        ArrayAdapter(
+            requireContext(),
+            R.layout.spinner_item_view,
+            viewModel.subCategories
+        )
+    }
     private val imageAdapter by lazy { AdImagesAdapter(viewModel.getSelectedImagesList()) }
     private val attributesAdapter by lazy { AttributesAdapter(viewModel.attributes, this) }
     private val dateAdapter by lazy { DateAdapter(viewModel.dates) }
@@ -40,7 +52,8 @@ class CreateAdFragment :
     lateinit var selectedSubCategory: SubCategory
     private val myCalendar = Calendar.getInstance()
     private val datePicker by lazy {
-        DatePickerDialog(requireContext(),
+        DatePickerDialog(
+            requireContext(),
             this,
             myCalendar.get(Calendar.YEAR),
             myCalendar.get(Calendar.MONTH),
@@ -64,6 +77,8 @@ class CreateAdFragment :
         }
 
         addImageMbtn.setOnClickListener { openImagesBottomSheet() }
+
+        addVideoMbtn.setOnClickListener { openVideoGallery() }
 
         saveMbtn.setOnClickListener {
             if (validateViews()) {
@@ -103,7 +118,7 @@ class CreateAdFragment :
             }
 
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
-                if(selectedCategory != null) {
+                if (selectedCategory != null) {
                     viewModel.subCategories.clear()
                     subCategoriesAdapter.notifyDataSetChanged()
                 }
@@ -269,6 +284,11 @@ class CreateAdFragment :
                 showMessage(getString(R.string.error_select_image))
                 return false
             }
+            viewModel.getSelectedVideo() == null -> {
+                showMessage(getString(R.string.error_select_video))
+
+                return false
+            }
             else -> return true
         }
 
@@ -288,7 +308,8 @@ class CreateAdFragment :
                 quantity = quantityEt.text.toString(),
                 subCategoryUuid = selectedSubCategory.uuid,
                 attributes = viewModel.getSelectedAttributes(),
-                images = viewModel.getSelectedImagesStringList()
+                images = viewModel.getSelectedImagesStringList(),
+                video = viewModel.getSelectedVideo().toString()
             )
 
             requireActivity().onBackPressed()
@@ -325,5 +346,10 @@ class CreateAdFragment :
         } else {
             Toast.makeText(activity, getString(R.string.error_images_count), Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun onVideoSelected(videoUri: Uri) {
+        super.onVideoSelected(videoUri)
+        viewModel.addSelectedVideo(videoUri)
     }
 }

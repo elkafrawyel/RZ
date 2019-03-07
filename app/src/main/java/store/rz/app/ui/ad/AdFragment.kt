@@ -31,6 +31,7 @@ class AdFragment :
     private val onDateSelected = { position: Int -> sendAction(Action.SelectDate(position)) }
     private val datesAdapter = DatesAdapter(onDateSelected)
     private var timer: Timer? = null
+    private var videoUrl: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,9 +59,17 @@ class AdFragment :
         noConnectionCl.setOnClickListener { sendAction(Action.Refresh) }
         errorCl.setOnClickListener { sendAction(Action.Refresh) }
         reviewsMbtn.setOnClickListener { openReviews() }
+        playVideoMbtn.setOnClickListener { playAdVideo() }
 
         attributesRv.adapter = adapter
         datesRv.adapter = datesAdapter
+    }
+
+    private fun playAdVideo() {
+        if (videoUrl != null) {
+            val action = AdFragmentDirections.actionAdFragmentToAdVideoFragment(videoUrl!!)
+            findNavController().navigate(action)
+        }
     }
 
     private fun openReviews() {
@@ -127,6 +136,7 @@ class AdFragment :
             ratingBar.rating = ad.rate.toFloat()
             addSliderImages(ad.images.map { it.url })
             addOwnerInfo(ad.owner)
+            videoUrl = ad.videoUrl
         }
     }
 

@@ -73,7 +73,8 @@ data class Ad(
     val categoryName: String,
     val subCategoryUuid: String,
     val subCategoryName: String,
-    val title: String
+    val title: String,
+    val videoUrl: String
 )
 
 sealed class Image {
@@ -119,7 +120,8 @@ fun AdResponse.toAd(): Ad? {
             category,
             subCategoryUuid,
             subCategory,
-            title
+            title,
+            "http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_640x360.m4v"
         )
     }
 

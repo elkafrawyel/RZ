@@ -57,10 +57,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?attr/textAppearanceCaption"
-            app:layout_constraintBottom_toBottomOf="@id/orderImgv"
+            app:layout_constraintBottom_toTopOf="@id/orderOwnerNameTv"
             app:layout_constraintStart_toStartOf="@id/orderTitleTv"
             app:layout_constraintTop_toBottomOf="@id/orderPriceTv"
             tools:text="Pending" />
+
+        <TextView
+            android:id="@+id/orderOwnerNameTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:textAppearance="?attr/textAppearanceSubtitle1"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/orderTitleTv"
+            app:layout_constraintTop_toBottomOf="@id/orderStatusTv"
+            tools:text="Mahmoud Asharf" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/moreMbtn"

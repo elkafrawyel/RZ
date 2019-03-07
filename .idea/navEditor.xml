@@ -31,6 +31,11 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_adFragment_to_adVideoFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_adFragment_to_authGraph">
                               <value>
                                 <LayoutPositions />
@@ -52,6 +57,18 @@
                               </value>
                             </entry>
                           </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="adVideoFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="1362" />
+                            <option name="y" value="2936" />
+                          </Point>
                         </option>
                       </LayoutPositions>
                     </value>

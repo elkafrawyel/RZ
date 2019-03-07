@@ -199,5 +199,10 @@
     <string name="take_a_picture">التقط صورة</string>
     <string name="open_gallery">اختر صورة</string>
     <string name="label_skip">تخطي</string>
+    <string name="label_play_video">مشاهدة الفيديو</string>
+    <string name="label_replay_ad_video">اعادة تشغيل</string>
+    <string name="label_back_ad_video">رجوع</string>
+    <string name="error_select_video">يجب اختيار فيديو</string>
+    <string name="label_Ok">حسنا</string>
 
 </resources>

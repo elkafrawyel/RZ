@@ -43,6 +43,8 @@ const val AD_SUB_UUID = "subUuid"
 const val AD_ATTRIBUTES = "attributes"
 const val AD_IMAGES = "images"
 const val AD_DELETED_IMAGES = "deletedIages"
+const val AD_VIDEO = "video"
+
 var CREATE_NOTIFICATION_ID = 1000
 var MODIFY_NOTIFICATION_ID = 2000
 
@@ -85,6 +87,7 @@ class CreateAdJobService : JobIntentService() {
         val subCategoryUuid = intent.getStringExtra(AD_SUB_UUID)
         val attributes = intent.getParcelableArrayListExtra<Attribute.MainAttribute>(AD_ATTRIBUTES)
         val images = intent.getStringArrayListExtra(AD_IMAGES)
+        val videoUri = intent.getStringExtra(AD_VIDEO)
 
         CREATE_NOTIFICATION_ID += 1
         val mBuilder = NotificationCompat.Builder(this, Constants.NOTIFICATION_CREATE_AD_CHANNEL)
@@ -100,10 +103,13 @@ class CreateAdJobService : JobIntentService() {
 
             if (images != null) {
                 runBlocking(Injector.getCoroutinesDispatcherProvider().main) {
-                    Toast.makeText(this@CreateAdJobService, getString(R.string.status_create_ad), Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@CreateAdJobService, getString(R.string.status_create_ad), Toast.LENGTH_LONG)
+                        .show()
                 }
                 notify(CREATE_NOTIFICATION_ID, mBuilder.build())
                 val resizedImages = resizeImages(images)
+
+                val videoFile = File(videoUri)
 
                 launchCreateAd(
                     title,
@@ -114,6 +120,7 @@ class CreateAdJobService : JobIntentService() {
                     subCategoryUuid,
                     attributes,
                     resizedImages,
+                    videoFile,
                     CREATE_NOTIFICATION_ID,
                     this,
                     mBuilder
@@ -131,6 +138,7 @@ class CreateAdJobService : JobIntentService() {
         subCategoryUuid: String,
         attributes: List<Attribute.MainAttribute>,
         resizedImages: ArrayList<File>,
+        video: File,
         notificationId: Int,
         notificationManagerCompat: NotificationManagerCompat,
         mBuilder: NotificationCompat.Builder
@@ -152,6 +160,9 @@ class CreateAdJobService : JobIntentService() {
                         uploadImage(result.data.adsUuid!!, image)
                         deleteResizedImage(image)
                     }
+
+                    uploadImage(result.data.adsUuid!!, video)
+
                     val bundle = Bundle()
 
                     bundle.putString("adUuid", result.data.adsUuid)
@@ -170,7 +181,11 @@ class CreateAdJobService : JobIntentService() {
                         .setAutoCancel(true)
 
                     withContext(Injector.getCoroutinesDispatcherProvider().main) {
-                        Toast.makeText(this@CreateAdJobService, getString(R.string.success_create_ad), Toast.LENGTH_LONG)
+                        Toast.makeText(
+                            this@CreateAdJobService,
+                            getString(R.string.success_create_ad),
+                            Toast.LENGTH_LONG
+                        )
                             .show()
                     }
                 }
@@ -181,7 +196,8 @@ class CreateAdJobService : JobIntentService() {
                         .setAutoCancel(true)
 
                     withContext(Injector.getCoroutinesDispatcherProvider().main) {
-                        Toast.makeText(this@CreateAdJobService, getString(R.string.error_create_ad), Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@CreateAdJobService, getString(R.string.error_create_ad), Toast.LENGTH_LONG)
+                            .show()
                     }
                 }
             }
@@ -218,7 +234,8 @@ class CreateAdJobService : JobIntentService() {
 
             if (images != null) {
                 runBlocking(Injector.getCoroutinesDispatcherProvider().main) {
-                    Toast.makeText(this@CreateAdJobService, getString(R.string.status_edit_ad), Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@CreateAdJobService, getString(R.string.status_edit_ad), Toast.LENGTH_LONG)
+                        .show()
                 }
                 notify(MODIFY_NOTIFICATION_ID, mBuilder.build())
                 val resizedImages = resizeImages(images)
@@ -309,7 +326,8 @@ class CreateAdJobService : JobIntentService() {
                         .setAutoCancel(true)
 
                     withContext(Injector.getCoroutinesDispatcherProvider().main) {
-                        Toast.makeText(this@CreateAdJobService, getString(R.string.error_edit_ad), Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@CreateAdJobService, getString(R.string.error_edit_ad), Toast.LENGTH_LONG)
+                            .show()
                     }
                 }
             }
@@ -387,7 +405,8 @@ class CreateAdJobService : JobIntentService() {
             attributes: ArrayList<Attribute.MainAttribute>,
             images: ArrayList<String>,
             deletedImages: ArrayList<String> = ArrayList(),
-            mode: Mode = Mode.CREATE
+            mode: Mode = Mode.CREATE,
+            video: String = ""
         ) {
             val intent = Intent(context, CreateAdJobService::class.java)
             intent.putExtra(MODE, mode.ordinal)
@@ -401,6 +420,7 @@ class CreateAdJobService : JobIntentService() {
             intent.putParcelableArrayListExtra(AD_ATTRIBUTES, attributes)
             intent.putStringArrayListExtra(AD_IMAGES, images)
             intent.putStringArrayListExtra(AD_DELETED_IMAGES, deletedImages)
+            intent.putExtra(AD_VIDEO, video)
             enqueueWork(context, CreateAdJobService::class.java, CREATE_AD_JOB_ID, intent)
         }
     }

@@ -39,10 +39,24 @@
                 android:textSize="18sp"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/addDateMbtn"
+                app:layout_constraintEnd_toStartOf="@id/addVideoMbtn"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toEndOf="@id/backBtn"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/addVideoMbtn"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:minWidth="0dp"
+                android:padding="8dp"
+                app:icon="@drawable/ic_add_video"
+                app:iconPadding="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/addDateMbtn"
+                app:layout_constraintTop_toTopOf="parent" />
+
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/addDateMbtn"

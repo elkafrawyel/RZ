@@ -18,10 +18,14 @@ class OrdersAdapter :
                 .into(it)
         }
 
-        helper.setText(R.id.orderTitleTv, item.miniAd.title)
+        helper
+            .setText(R.id.orderTitleTv, item.miniAd.title)
             .setText(R.id.orderPriceTv, item.miniAd.discountPrice.toString())
             .setText(R.id.orderStatusTv, item.status)
+            .setText(R.id.orderOwnerNameTv,item.contact.name)
             .addOnClickListener(R.id.moreMbtn)
+            .addOnClickListener(R.id.orderOwnerNameTv)
+
     }
 
 }

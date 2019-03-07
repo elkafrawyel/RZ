@@ -19,8 +19,8 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         flavorDimensions "versionCode"
-        versionCode 6
-        versionName "0.1.5"
+        versionCode 7
+        versionName "0.1.6"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         signingConfigs {
@@ -69,13 +69,10 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "androidx.core:core-ktx:$kotlinKtxVersion"
-//    implementation "androidx.appcompat:appcompat:$appCompatVersion"
     implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
-//    implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
-    // kapt is used instead of annotationProcessor in kotlin
     kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
 
     implementation "android.arch.navigation:navigation-fragment-ktx:$nav_version"

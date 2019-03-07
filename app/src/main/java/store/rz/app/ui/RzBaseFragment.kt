@@ -23,6 +23,7 @@ import store.rz.app.utils.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 
+
 const val RC_PERMISSION_STORAGE_CAMERA = 100
 const val RC_PERMISSION_STORAGE = 101
 
@@ -65,6 +66,13 @@ abstract class RzBaseFragment<T : State, M, VM : RzBaseViewModel<T, M>>(modelCla
         bottomSheet.show()
     }
 
+    fun openVideoGallery() {
+        val intent = Intent()
+        intent.type = "video/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(intent, RC_VIDEO)
+    }
+
     @AfterPermissionGranted(RC_PERMISSION_STORAGE_CAMERA)
     private fun cameraStoragePermission() {
         val perms = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -87,6 +95,10 @@ abstract class RzBaseFragment<T : State, M, VM : RzBaseViewModel<T, M>>(modelCla
 
     }
 
+    open fun onVideoSelected(videoUri: Uri) {
+
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
@@ -104,6 +116,11 @@ abstract class RzBaseFragment<T : State, M, VM : RzBaseViewModel<T, M>>(modelCla
                         uri != null -> onImageSelected(uri)
                         else -> Toast.makeText(activity, getString(R.string.error_general), Toast.LENGTH_SHORT).show()
                     }
+                }
+
+                RC_VIDEO -> {
+                    val uri = data?.data
+                    onVideoSelected(uri!!)
                 }
             }
         }

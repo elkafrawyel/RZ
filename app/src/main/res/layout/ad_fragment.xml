@@ -199,6 +199,19 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/priceTv" />
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/playVideoMbtn"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:text="@string/label_play_video"
+                    android:textAllCaps="false"
+                    app:icon="@drawable/ic_play_ad_video"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/createOrderMbtn"
+                    app:layout_constraintTop_toBottomOf="@id/priceTv" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout

@@ -152,6 +152,18 @@
         <action
             android:id="@+id/action_adFragment_to_authGraph"
             app:destination="@id/authGraph" />
+        <action
+            android:id="@+id/action_adFragment_to_adVideoFragment"
+            app:destination="@id/adVideoFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/adVideoFragment"
+        android:name="store.rz.app.ui.ad_video.AdVideoFragment"
+        android:label="AdVideoFragment">
+        <argument
+            android:name="videoUrl"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/privacyFragment"
@@ -344,4 +356,5 @@
                 app:argType="string" />
         </fragment>
     </navigation>
+
 </navigation>

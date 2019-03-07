@@ -136,7 +136,9 @@ class EditAdFragment :
                 viewModel.getSelectedAttributes(),
                 viewModel.getNewImages(),
                 viewModel.getDeletedImages(),
-                Mode.UPDATE)
+                Mode.UPDATE,
+                ""
+            )
 
             findNavController().navigateUp()
         } else {
