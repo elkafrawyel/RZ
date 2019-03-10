@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import store.rz.app.R
@@ -26,9 +27,19 @@ class PrivacyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //secure the screen prevent Screen Shots
+        requireActivity().window.setFlags(
+            WindowManager.LayoutParams.FLAG_SECURE,
+            WindowManager.LayoutParams.FLAG_SECURE);
+
         backImgv.setOnClickListener { findNavController().navigateUp() }
 
         privacyWv.loadUrl(privacyUrl)
+
+        privacyWv.setOnLongClickListener(View.OnLongClickListener {
+            // For final release of your app, comment the toast notification
+            true
+        })
 
         privacyWv.webViewClient = object : WebViewClient() {
 

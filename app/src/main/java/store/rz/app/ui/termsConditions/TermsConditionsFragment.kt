@@ -17,6 +17,4 @@ class TermsConditionsFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.terms_conditions_fragment, container, false)
     }
-
-
 }
