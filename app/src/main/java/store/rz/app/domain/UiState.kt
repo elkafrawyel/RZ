@@ -72,6 +72,7 @@ sealed class State {
         val attributesVisibility: Int = View.GONE,
         val updateAttribute: Boolean = false,
         val ad: Ad? = null,
+        val totalPriceDiscount: Int = 0,
         val totalPrice: Int = 0,
         val selectedDatePosition: Int = 0,
         val attributes: List<Attribute.MainAttribute> = emptyList(),

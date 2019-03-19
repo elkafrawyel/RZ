@@ -249,10 +249,10 @@ class CreateAdViewModel : RzBaseViewModel<State.CreateAdState, String>() {
     }
 
     fun getSelectedVideo(): Uri? {
-        if (selectedVideo == null)
-            return null
+        return if (selectedVideo == null)
+            null
         else
-            return selectedVideo!!
+            selectedVideo!!
     }
 
     fun addSelectedImages(clipData: ClipData): Boolean {

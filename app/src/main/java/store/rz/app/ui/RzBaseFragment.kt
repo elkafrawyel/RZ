@@ -66,12 +66,12 @@ abstract class RzBaseFragment<T : State, M, VM : RzBaseViewModel<T, M>>(modelCla
         bottomSheet.show()
     }
 
-    fun openVideoGallery() {
-        val intent = Intent()
-        intent.type = "video/*"
-        intent.action = Intent.ACTION_GET_CONTENT
-        startActivityForResult(intent, RC_VIDEO)
-    }
+//    fun openVideoGallery() {
+//        val intent = Intent()
+//        intent.type = "video/*"
+//        intent.action = Intent.ACTION_GET_CONTENT
+//        startActivityForResult(intent, RC_VIDEO)
+//    }
 
     @AfterPermissionGranted(RC_PERMISSION_STORAGE_CAMERA)
     private fun cameraStoragePermission() {

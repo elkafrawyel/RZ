@@ -23,6 +23,7 @@ import store.rz.app.ui.RzBaseFragment
 import kotlinx.android.synthetic.main.create_ad_fragment.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
+import store.rz.app.utils.openGalleryVideo
 import java.util.*
 
 class CreateAdFragment :
@@ -78,7 +79,7 @@ class CreateAdFragment :
 
         addImageMbtn.setOnClickListener { openImagesBottomSheet() }
 
-        addVideoMbtn.setOnClickListener { openVideoGallery() }
+        addVideoMbtn.setOnClickListener { openGalleryVideo() }
 
         saveMbtn.setOnClickListener {
             if (validateViews()) {

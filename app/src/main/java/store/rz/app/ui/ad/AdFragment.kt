@@ -117,6 +117,8 @@ class AdFragment :
         dataNsv.visibility = state.dataVisibility
         val price = state.totalPrice
         priceTv.text = getString(R.string.label_product_currency, price.toString())
+        val discountPrice = state.totalPriceDiscount
+        discountPriceTv.text = getString(R.string.label_product_currency, discountPrice.toString())
         attributesCl.visibility = state.attributesVisibility
         adapter.replaceData(state.attributes)
         datesCl.visibility = state.datesVisibility
@@ -131,12 +133,11 @@ class AdFragment :
             reviewsMbtn.text = getString(R.string.label_show_reviews, ad.reviewsNo.toString())
             addedDateTv.text = ad.date
             productDescriptionTv.text = ad.description
-            val discountPrice = getString(R.string.label_product_currency, ad.price.toString())
-            discountPriceTv.text = discountPrice
             ratingBar.rating = ad.rate.toFloat()
             addSliderImages(ad.images.map { it.url })
             addOwnerInfo(ad.owner)
             videoUrl = ad.videoUrl
+            playVideoMbtn.isEnabled = !(videoUrl ==null || videoUrl =="")
         }
     }
 

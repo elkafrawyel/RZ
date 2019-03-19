@@ -61,7 +61,11 @@ class AdViewModel : RzBaseViewModel<State.AdState, String>() {
                         .firstOrNull { it.name == "date" }?.attributes ?: emptyList()
                     dates.firstOrNull()?.isChecked = true
 
-                    val totalPrice = result.data.discountPrice + result.data.mainAttributes.map {
+                    val totalPriceDiscount = result.data.discountPrice + result.data.mainAttributes.map {
+                        it.attributes.firstOrNull()?.price ?: 0
+                    }.sum()
+
+                    val totalPrice = result.data.price + result.data.mainAttributes.map {
                         it.attributes.firstOrNull()?.price ?: 0
                     }.sum()
 
@@ -70,6 +74,7 @@ class AdViewModel : RzBaseViewModel<State.AdState, String>() {
                             dataVisibility = View.VISIBLE,
                             updateAttribute = true,
                             ad = result.data,
+                            totalPriceDiscount = totalPriceDiscount,
                             totalPrice = totalPrice,
                             attributesVisibility = if (attributes.isEmpty()) View.GONE else View.VISIBLE,
                             attributes = attributes,
@@ -98,12 +103,16 @@ class AdViewModel : RzBaseViewModel<State.AdState, String>() {
                     mainAttribute.attributes[newSubPosition].isChecked = true
                     mainAttribute.selectedAttribute = newSubPosition
 
-                    val totalPrice = ad.discountPrice + oldState.attributes.map { main ->
+                    val totalPriceDiscount = ad.discountPrice + oldState.attributes.map { main ->
+                        main.attributes[main.selectedAttribute].price
+                    }.sum()
+
+                    val totalPrice = ad.price + oldState.attributes.map { main ->
                         main.attributes[main.selectedAttribute].price
                     }.sum()
 
                     sendStateOnMain {
-                        oldState.copy(totalPrice = totalPrice)
+                        oldState.copy(totalPrice = totalPrice, totalPriceDiscount = totalPriceDiscount)
                     }
                 }
             }
