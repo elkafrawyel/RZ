@@ -87,7 +87,7 @@ class CreateAdJobService : JobIntentService() {
         val subCategoryUuid = intent.getStringExtra(AD_SUB_UUID)
         val attributes = intent.getParcelableArrayListExtra<Attribute.MainAttribute>(AD_ATTRIBUTES)
         val images = intent.getStringArrayListExtra(AD_IMAGES)
-        val videoUri = intent.getStringExtra(AD_VIDEO)
+        val videoPath = intent.getStringExtra(AD_VIDEO)
 
         CREATE_NOTIFICATION_ID += 1
         val mBuilder = NotificationCompat.Builder(this, Constants.NOTIFICATION_CREATE_AD_CHANNEL)
@@ -109,7 +109,7 @@ class CreateAdJobService : JobIntentService() {
                 notify(CREATE_NOTIFICATION_ID, mBuilder.build())
                 val resizedImages = resizeImages(images)
 
-                val videoFile = File(videoUri)
+                val videoFile = File(videoPath)
 
                 launchCreateAd(
                     title,

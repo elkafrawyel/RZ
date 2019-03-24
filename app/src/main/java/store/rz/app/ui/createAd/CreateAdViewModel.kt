@@ -41,7 +41,7 @@ class CreateAdViewModel : RzBaseViewModel<State.CreateAdState, String>() {
         get() = _attributesUiState
 
     private val selectedImagesList = ArrayList<Uri>(10)
-    private var selectedVideo: Uri? = null
+    private var selectedVideo: String? = null
     val attributes = ArrayList<AttributeSection>()
     val dates = ArrayList<String>()
 
@@ -244,11 +244,11 @@ class CreateAdViewModel : RzBaseViewModel<State.CreateAdState, String>() {
         return false
     }
 
-    fun addSelectedVideo(uri: Uri) {
-        selectedVideo = uri
+    fun addSelectedVideo(videoPath: String) {
+        selectedVideo = videoPath
     }
 
-    fun getSelectedVideo(): Uri? {
+    fun getSelectedVideo(): String? {
         return if (selectedVideo == null)
             null
         else

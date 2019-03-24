@@ -23,6 +23,7 @@ import store.rz.app.ui.RzBaseFragment
 import kotlinx.android.synthetic.main.create_ad_fragment.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
+import store.rz.app.ui.RC_PERMISSION_STORAGE_VIDEO
 import store.rz.app.utils.openGalleryVideo
 import java.util.*
 
@@ -79,7 +80,7 @@ class CreateAdFragment :
 
         addImageMbtn.setOnClickListener { openImagesBottomSheet() }
 
-        addVideoMbtn.setOnClickListener { openGalleryVideo() }
+        addVideoMbtn.setOnClickListener { checkStoragePermissionForVideo() }
 
         saveMbtn.setOnClickListener {
             if (validateViews()) {
@@ -160,6 +161,20 @@ class CreateAdFragment :
             }
 
             viewModel.datesVisibility = datesRv.visibility
+        }
+    }
+
+    @AfterPermissionGranted(RC_PERMISSION_STORAGE_VIDEO)
+    private fun checkStoragePermissionForVideo() {
+        val perms = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (EasyPermissions.hasPermissions(requireActivity(), *perms)) {
+            openGalleryVideo()
+        } else {
+//             Do not have permissions, request them now
+            EasyPermissions.requestPermissions(
+                this, "Requesting permission",
+                RC_PERMISSION_STORAGE_VIDEO, *perms
+            )
         }
     }
 
@@ -285,11 +300,6 @@ class CreateAdFragment :
                 showMessage(getString(R.string.error_select_image))
                 return false
             }
-            viewModel.getSelectedVideo() == null -> {
-                showMessage(getString(R.string.error_select_video))
-
-                return false
-            }
             else -> return true
         }
 
@@ -299,6 +309,11 @@ class CreateAdFragment :
     fun createAd() {
         val perms = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         if (EasyPermissions.hasPermissions(requireActivity(), *perms)) {
+
+            var video = ""
+            if (viewModel.getSelectedVideo() != null)
+                video = viewModel.getSelectedVideo()!!
+
 //             Already have permission, do the thing
             CreateAdJobService.enqueueWork(
                 requireActivity(),
@@ -310,7 +325,7 @@ class CreateAdFragment :
                 subCategoryUuid = selectedSubCategory.uuid,
                 attributes = viewModel.getSelectedAttributes(),
                 images = viewModel.getSelectedImagesStringList(),
-                video = viewModel.getSelectedVideo().toString()
+                video = video
             )
 
             requireActivity().onBackPressed()
@@ -349,8 +364,8 @@ class CreateAdFragment :
         }
     }
 
-    override fun onVideoSelected(videoUri: Uri) {
-        super.onVideoSelected(videoUri)
-        viewModel.addSelectedVideo(videoUri)
+    override fun onVideoSelected(videoPath: String) {
+        super.onVideoSelected(videoPath)
+        viewModel.addSelectedVideo(videoPath)
     }
 }
