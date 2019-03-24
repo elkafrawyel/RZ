@@ -36,13 +36,13 @@ task clean(type: Delete) {
 }
 
 ext {
-    kotlinKtxVersion = '1.1.0-alpha04'
+    kotlinKtxVersion = '1.1.0-alpha05'
     appCompatVersion = '1.1.0-alpha02'
-    recyclerViewVersion = '1.1.0-alpha02'
+    recyclerViewVersion = '1.1.0-alpha03'
     constraintLayoutVersion = '2.0.0-alpha3'
-    lifecycle_version = '2.1.0-alpha02'
-    nav_version = '1.0.0-beta02'
-    material_version = '1.1.0-alpha03'
+    lifecycle_version = '2.1.0-alpha03'
+    nav_version = '1.0.0'
+    material_version = '1.1.0-alpha04'
     base_rv_version = '2.9.46'
     glide_version = '4.8.0'
     spectrum_version = '1.0.0'
@@ -50,7 +50,7 @@ ext {
     retrofit_coroutines_version = '0.9.2'
     page_indicator_version = '1.0.2'
     coroutines_version = '1.1.1'
-    blankj_version = '1.22.10'
+    blankj_version = '1.23.5'
     okhttp_version = '3.13.1'
     timber_version = '4.7.1'
     easypermissions_version = '3.0.0'
