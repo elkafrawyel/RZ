@@ -38,6 +38,7 @@ class MyOrdersFragment :
 
         backBtn.setOnClickListener { findNavController().navigateUp() }
         myOrdersSwipe.setOnRefreshListener(this)
+
         ordersTl.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }

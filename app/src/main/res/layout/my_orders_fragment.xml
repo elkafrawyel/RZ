@@ -1,265 +1,266 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.myOrders.MyOrdersFragment">
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent"
+                                                   tools:context=".ui.myOrders.MyOrdersFragment">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolBar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        app:contentInsetStart="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+            android:id="@+id/toolBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            app:contentInsetStart="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/backBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:src="@drawable/ic_arrow_back"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                    android:id="@+id/backBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:src="@drawable/ic_arrow_back"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
 
             <TextView
-                android:id="@+id/myOrdersTitleTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:lines="1"
-                android:text="@string/label_my_orders_title"
-                android:textColor="@color/colorOnPrimary"
-                android:textSize="18sp"
-                app:layout_constrainedWidth="true"
-                app:layout_constraintBottom_toBottomOf="@id/backBtn"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toEndOf="@id/backBtn"
-                app:layout_constraintTop_toTopOf="@id/backBtn" />
+                    android:id="@+id/myOrdersTitleTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:text="@string/label_my_orders_title"
+                    android:textColor="@color/colorOnPrimary"
+                    android:textSize="18sp"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintBottom_toBottomOf="@id/backBtn"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toEndOf="@id/backBtn"
+                    app:layout_constraintTop_toTopOf="@id/backBtn"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.appcompat.widget.Toolbar>
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/ordersTl"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolBar">
-
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/cashTi"
+            android:id="@+id/ordersTl"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/label_cash" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolBar">
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/paypalTi"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/label_paypal" />
+                android:id="@+id/cashTi"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/label_cash"/>
+
+        <!--<com.google.android.material.tabs.TabItem-->
+                <!--android:id="@+id/paypalTi"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/label_paypal"/>-->
 
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/dataCl"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ordersTl">
-
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/myOrdersSwipe"
+            android:id="@+id/dataCl"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/ordersTl">
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/myOrdersSwipe"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/myOrdersRv"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:reverseLayout="false"
-                tools:listitem="@layout/order_item_view" />
+                    android:id="@+id/myOrdersRv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:reverseLayout="false"
+                    tools:listitem="@layout/order_item_view"/>
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/payNowMbtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/label_pay_now"
-            app:iconPadding="12dp"
-            android:layout_margin="16dp"
-            android:visibility="gone"
-            android:textSize="16sp"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp"
-            app:icon="@drawable/ic_credit_card_white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:cornerRadius="16dp" />
+                android:id="@+id/payNowMbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_pay_now"
+                app:iconPadding="12dp"
+                android:layout_margin="16dp"
+                android:visibility="gone"
+                android:textSize="16sp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                app:icon="@drawable/ic_credit_card_white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:cornerRadius="16dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/loadinLav"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolBar"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/loading" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/errorCl"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ordersTl">
-
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/errorLav"
+            android:id="@+id/loadinLav"
             android:layout_width="100dp"
             android:layout_height="100dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.4"
+            app:layout_constraintTop_toBottomOf="@id/toolBar"
             app:lottie_autoPlay="true"
-            app:lottie_rawRes="@raw/error_cross"
-            app:lottie_speed="0.7" />
-
-        <TextView
-            android:id="@+id/errorViewTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="@string/error_general"
-            android:textAppearance="?attr/textAppearanceHeadline6"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/errorLav" />
-
-        <TextView
-            android:id="@+id/errorTryAgainTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/label_try_again"
-            android:textAppearance="?attr/textAppearanceBody2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/errorViewTv" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/loading"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/emptyViewCl"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ordersTl">
-
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/emptyLav"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:scaleType="centerCrop"
+            android:id="@+id/errorCl"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.4"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"
-            app:lottie_rawRes="@raw/empty_list" />
+            app:layout_constraintTop_toBottomOf="@id/ordersTl">
+
+        <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/errorLav"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.4"
+                app:lottie_autoPlay="true"
+                app:lottie_rawRes="@raw/error_cross"
+                app:lottie_speed="0.7"/>
 
         <TextView
-            android:id="@+id/emptyViewTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="@string/success_empty_view"
-            android:textAppearance="?attr/textAppearanceHeadline6"
+                android:id="@+id/errorViewTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="@string/error_general"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/errorLav"/>
+
+        <TextView
+                android:id="@+id/errorTryAgainTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_try_again"
+                android:textAppearance="?attr/textAppearanceBody2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/errorViewTv"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/emptyViewCl"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/emptyLav" />
+            app:layout_constraintTop_toBottomOf="@id/ordersTl">
+
+        <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/emptyLav"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.4"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/empty_list"/>
+
+        <TextView
+                android:id="@+id/emptyViewTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="@string/success_empty_view"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/emptyLav"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/noConnectionCl"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ordersTl">
-
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/noConnectionLav"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:id="@+id/noConnectionCl"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.4"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"
-            app:lottie_rawRes="@raw/no_connection"
-            app:lottie_speed="1.7" />
+            app:layout_constraintTop_toBottomOf="@id/ordersTl">
+
+        <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/noConnectionLav"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.4"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/no_connection"
+                app:lottie_speed="1.7"/>
 
         <TextView
-            android:id="@+id/noConnectionTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="@string/label_no_internet_connection"
-            android:textAppearance="?attr/textAppearanceHeadline6"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/noConnectionLav" />
+                android:id="@+id/noConnectionTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="@string/label_no_internet_connection"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/noConnectionLav"/>
 
         <TextView
-            android:id="@+id/noConnectionTryAgainTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="@string/label_try_again"
-            android:textAppearance="?attr/textAppearanceBody2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/noConnectionTv" />
+                android:id="@+id/noConnectionTryAgainTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="@string/label_try_again"
+                android:textAppearance="?attr/textAppearanceBody2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/noConnectionTv"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
