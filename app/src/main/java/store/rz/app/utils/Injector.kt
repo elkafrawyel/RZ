@@ -128,6 +128,7 @@ object Injector {
     fun saveFirebaseTokenUseCase() = SaveFirebaseTokenUseCase(getSettingsRepo())
     fun setAcceptedContractUseCase() = SetAcceptedContractUseCase(getSettingsRepo())
     fun isAcceptedContractUseCase() = IsAcceptedContractUseCase(getSettingsRepo())
+    fun getAcceptTermsUseCase() = AcceptTermsUseCase(getLoggedInRepo(), getAuthApiService())
 
     // LoggedIn repo
     private fun getLoggedInRemoteSource() = LoggedInUserRemoteSource(getApiService(), getAuthApiService())

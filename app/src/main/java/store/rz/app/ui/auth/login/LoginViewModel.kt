@@ -15,11 +15,13 @@ class LoginViewModel : RzBaseViewModel<State.Login, String>() {
 
     private var loginJob: Job? = null
     private var setAcceptedJob: Job? = null
+    private var acceptedJob: Job? = null
 
     private val loginUserUseCase = Injector.getLoginUseCase()
     private val isAcceptedUseCase = Injector.isAcceptedContractUseCase()
     private val setAcceptedContractUseCase = Injector.setAcceptedContractUseCase()
     private val sendFirebaseTokenUseCase = Injector.sendFirebaseTokeUseCase()
+    private val getAcceptTermsUseCase = Injector.getAcceptTermsUseCase()
 
     private val _uiState = MutableLiveData<Event<LoginUiState>>()
     val uiState: LiveData<Event<LoginUiState>>
@@ -41,11 +43,12 @@ class LoginViewModel : RzBaseViewModel<State.Login, String>() {
         return launch(dispatcherProvider.io) {
             withContext(dispatcherProvider.main) { showLoading() }
             val result = loginUserUseCase.login(phone, password)
-            when(result) {
+            when (result) {
                 is DataResource.Success -> {
                     val isAccepted = isAcceptedUseCase.get()
                     if (isAccepted) {
                         sendFirebaseTokenUseCase.send()
+                        getAcceptTermsUseCase.acceptTerms().await()
                     }
                     withContext(dispatcherProvider.main) { showSuccess(result.data, isAccepted) }
                 }
@@ -60,9 +63,9 @@ class LoginViewModel : RzBaseViewModel<State.Login, String>() {
 
     private fun showSuccess(loggedInUser: LoggedInUser, isAccepted: Boolean) {
         loggedInUser.statusId?.let {
-            when(it) {
+            when (it) {
                 Constants.Status.ACTIVE.value -> {
-                    when(loggedInUser.roleId) {
+                    when (loggedInUser.roleId) {
                         Constants.Role.SELLER.value -> {
                             if (isAccepted) {
                                 _uiState.value = Event(LoginUiState.Success)
@@ -70,7 +73,9 @@ class LoginViewModel : RzBaseViewModel<State.Login, String>() {
                                 _uiState.value = Event(LoginUiState.AcceptSellerContract(loggedInUser))
                             }
                         }
-                        else -> { _uiState.value = Event(LoginUiState.Success) }
+                        else -> {
+                            _uiState.value = Event(LoginUiState.Success)
+                        }
                     }
                 }
                 Constants.Status.INACTIVE.value -> _uiState.value = Event(LoginUiState.Inactive(loggedInUser))
@@ -81,7 +86,8 @@ class LoginViewModel : RzBaseViewModel<State.Login, String>() {
 
     private fun showError(message: String?) {
         if (message != null) _uiState.value = Event(LoginUiState.Error(message))
-        else _uiState.value = Event(LoginUiState.Error(Injector.getApplicationContext().getString(R.string.error_general)))
+        else _uiState.value =
+            Event(LoginUiState.Error(Injector.getApplicationContext().getString(R.string.error_general)))
     }
 
     fun acceptTerms() {
@@ -97,6 +103,20 @@ class LoginViewModel : RzBaseViewModel<State.Login, String>() {
             setAcceptedContractUseCase.save(true)
         }
     }
+
+//    fun acceptTermsRemote() {
+//        if (acceptedJob?.isActive == true) {
+//            return
+//        }
+//
+//        acceptedJob = launchAcceptTerms()
+//    }
+//
+//    private fun launchAcceptTerms(): Job {
+//        return launch {
+//            getAcceptTermsUseCase.acceptTerms().await()
+//        }
+//    }
 
     sealed class LoginUiState {
         object Loading : LoginUiState()

@@ -17,7 +17,9 @@ data class LoggedInUser(
     @field:Json(name = "status") val status: String?,
     @field:Json(name = "status_id") val statusId: Int?,
     @field:Json(name = "token") val token: String?,
-    @field:Json(name = "uuid") val uuid: String?
+    @field:Json(name = "uuid") val uuid: String?,
+    @field:Json(name = "acceptTerms") val acceptTerms:Boolean?
+
 )
 
 data class LogInUserRequest(
@@ -37,7 +39,7 @@ data class VerifyUserRequest(
 )
 
 data class ForgetPassword(
-    @field:Json(name = "email") val email: String
+    @field:Json(name = "mobile") val email: String
 )
 
 data class UpgradeUserRequest(

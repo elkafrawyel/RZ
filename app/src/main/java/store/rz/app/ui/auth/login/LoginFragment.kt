@@ -35,7 +35,8 @@ class LoginFragment : Fragment() {
         //secure the screen prevent Screen Shots
         requireActivity().window.setFlags(
             WindowManager.LayoutParams.FLAG_SECURE,
-            WindowManager.LayoutParams.FLAG_SECURE)
+            WindowManager.LayoutParams.FLAG_SECURE
+        )
 
 
         viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
@@ -109,22 +110,25 @@ class LoginFragment : Fragment() {
     }
 
     private fun showAcceptContract(loggedInUser: LoggedInUser) {
-
         loadingFl.visibility = View.GONE
-        val webView = WebView(requireContext())
-        webView.loadUrl(Constants.CONTRACT_URL)
-        webView.setOnLongClickListener(View.OnLongClickListener {
-            // For final release of your app, comment the toast notification
-            true
-        })
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle("شروط القبول")
-            .setView(webView)
-            .setPositiveButton(store.rz.app.R.string.label_accept) { _, _ ->
-                viewModel.acceptTerms()
-                showHowToUse()
-            }
-            .show()
+
+        if (loggedInUser.acceptTerms!!) {
+            viewModel.acceptTerms()
+        } else {
+            val webView = WebView(requireContext())
+            webView.loadUrl(Constants.CONTRACT_URL)
+            webView.setOnLongClickListener(View.OnLongClickListener {
+                // For final release of your app, comment the toast notification
+                true
+            })
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("شروط القبول")
+                .setView(webView)
+                .setPositiveButton(store.rz.app.R.string.label_accept) { _, _ ->
+                    viewModel.acceptTerms()
+                    showHowToUse()
+                }.show()
+        }
     }
 
     private fun showHowToUse() {
