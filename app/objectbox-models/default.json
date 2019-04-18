@@ -1,0 +1,153 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:8055344894926916195",
+      "lastPropertyId": "4:6288638797172711765",
+      "name": "Category",
+      "properties": [
+        {
+          "id": "1:5251947440873775396",
+          "name": "id"
+        },
+        {
+          "id": "2:4394734960725003183",
+          "indexId": "1:3587510473219481240",
+          "name": "uuid"
+        },
+        {
+          "id": "3:1513295330114585712",
+          "name": "title"
+        },
+        {
+          "id": "4:6288638797172711765",
+          "name": "image"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:4065524077939507817",
+      "lastPropertyId": "12:3170702817399835875",
+      "name": "LoggedInUser",
+      "properties": [
+        {
+          "id": "1:3100261432306862895",
+          "name": "id"
+        },
+        {
+          "id": "2:1839993155392750286",
+          "name": "avatar"
+        },
+        {
+          "id": "3:1334883618604723248",
+          "name": "email"
+        },
+        {
+          "id": "4:4854810086784661152",
+          "name": "fullName"
+        },
+        {
+          "id": "5:1232099826147163204",
+          "name": "mobile"
+        },
+        {
+          "id": "6:1952440399679027517",
+          "name": "role"
+        },
+        {
+          "id": "7:2076542934059290633",
+          "name": "roleId"
+        },
+        {
+          "id": "8:4591065674593422940",
+          "name": "status"
+        },
+        {
+          "id": "9:2774436849827054450",
+          "name": "statusId"
+        },
+        {
+          "id": "10:2953270299996012542",
+          "name": "token"
+        },
+        {
+          "id": "11:103033180086607433",
+          "name": "uuid"
+        },
+        {
+          "id": "12:3170702817399835875",
+          "name": "acceptTerms"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "3:3933875271744409970",
+      "lastPropertyId": "4:7995724092346023279",
+      "name": "Settings",
+      "properties": [
+        {
+          "id": "1:6175542535352381591",
+          "name": "id"
+        },
+        {
+          "id": "2:2855428245377282471",
+          "name": "language"
+        },
+        {
+          "id": "3:2022149927828337742",
+          "name": "firebaseToken"
+        },
+        {
+          "id": "4:7995724092346023279",
+          "name": "isAcceptedContract"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "4:130890244937914280",
+      "lastPropertyId": "5:1727383728730896710",
+      "name": "SubCategory",
+      "properties": [
+        {
+          "id": "1:2594529099264932785",
+          "name": "id"
+        },
+        {
+          "id": "2:1914859590453484765",
+          "indexId": "2:9176734953621521394",
+          "name": "categoryUuid"
+        },
+        {
+          "id": "3:1858758274263302766",
+          "indexId": "3:4051198738181190915",
+          "name": "uuid"
+        },
+        {
+          "id": "4:5327132785246217049",
+          "name": "title"
+        },
+        {
+          "id": "5:1727383728730896710",
+          "name": "image"
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "4:130890244937914280",
+  "lastIndexId": "3:4051198738181190915",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 4,
+  "modelVersionParserMinimum": 4,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}
