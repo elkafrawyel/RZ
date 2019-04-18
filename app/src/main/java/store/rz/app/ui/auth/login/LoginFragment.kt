@@ -62,7 +62,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun onLoginClicked() {
-        val phone = userNameEt.text.toString()
+        val phone = "966${userNameEt.text.toString()}"
         val password = passwordEt.text.toString()
         viewModel.login(phone, password)
     }

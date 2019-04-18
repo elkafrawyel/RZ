@@ -205,5 +205,6 @@
     <string name="error_select_video">يجب اختيار فيديو</string>
     <string name="label_Ok">حسنا</string>
     <string name="error_pick_video">خطأ في اختيار الفيديو</string>
+    <string name="code_label">0966</string>
 
 </resources>
