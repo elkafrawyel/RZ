@@ -19,8 +19,8 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         flavorDimensions "versionCode"
-        versionCode 15
-        versionName "0.2.5"
+        versionCode 17
+        versionName "0.2.7"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         signingConfigs {
@@ -62,6 +62,10 @@ android {
 //    }
     androidExtensions {
         experimental = true
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
     }
 }
 

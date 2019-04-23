@@ -41,7 +41,7 @@ class RegisterFragment : Fragment() {
 
     private fun onRegisterClicked() {
         val fullName = userNameEt.text.toString()
-        val phone = phoneNumberEt.text.toString()
+        val phone = "966${phoneNumberEt.text.toString()}"
         val email = emailEt.text.toString()
         val password = passwordEt.text.toString()
         val passwordConfirmation = confirmPasswordEt.text.toString()
