@@ -105,7 +105,7 @@ dependencies {
 
     debugImplementation "io.objectbox:objectbox-android-objectbrowser:$objectboxVersion"
     releaseImplementation "io.objectbox:objectbox-android:$objectboxVersion"
-    clientImplementation "io.objectbox:objectbox-android:$objectboxVersion"
+        clientImplementation "io.objectbox:objectbox-android:$objectboxVersion"
     implementation "io.objectbox:objectbox-kotlin:$objectboxVersion"
 
     implementation "com.blankj:utilcode:$blankj_version"
