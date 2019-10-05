@@ -130,6 +130,7 @@ class AdFragment :
         ad?.let {
             toolbar_ProductNameTv.text = ad.title
             productNameTv.text = ad.title
+            productCityTv.text = ad.cityName
             reviewsMbtn.text = getString(R.string.label_show_reviews, ad.reviewsNo.toString())
             addedDateTv.text = ad.date
             productDescriptionTv.text = ad.description

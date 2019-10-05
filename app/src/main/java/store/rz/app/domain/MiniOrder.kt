@@ -7,7 +7,8 @@ data class CreateOrderRequest(
     @field:Json(name = "contacts") val contact: OrderContact,
     @field:Json(name = "characteristics") val attributes: List<Attribute.MainAttribute>,
     @field:Json(name = "total_char") val attributesPrice: Int,
-    @field:Json(name = "payment") val payment: String
+    @field:Json(name = "payment") val payment: String,
+    @field:Json(name = "coupon") val coupon: String
 )
 
 data class OrderContactResponse(
@@ -24,7 +25,8 @@ data class MiniOrderResponse(
     @field:Json(name = "status") val status: String?,
     @field:Json(name = "endpoint_status") val statusEn: String?,
     @field:Json(name = "payment") val paymentString: String?,
-    @field:Json(name = "ad") val miniAd: MiniAdResponse?
+    @field:Json(name = "ad") val miniAd: MiniAdResponse?,
+    @field:Json(name = "orderproductdate") val date: String?
 )
 
 data class MiniOrder(
@@ -33,7 +35,8 @@ data class MiniOrder(
     val status: String,
     val statusEn: String,
     val payment: Payment,
-    val miniAd: MiniAdResponse
+    val miniAd: MiniAdResponse,
+    val date: String
 )
 
 data class OrderContact(
@@ -53,7 +56,7 @@ fun MiniOrderResponse.toMiniOrder(): MiniOrder? {
     val orderContact = contact?.toOrderContact()
     val payment = paymentString?.toPayment()
 
-        if (uuid != null
+    if (uuid != null
         && orderContact != null
         && status != null
         && statusEn != null
@@ -66,7 +69,8 @@ fun MiniOrderResponse.toMiniOrder(): MiniOrder? {
             status,
             statusEn,
             payment,
-            miniAd
+            miniAd,
+            date ?: ""
         )
     }
 
@@ -93,7 +97,7 @@ fun OrderContactResponse.toOrderContact(): OrderContact? {
 }
 
 fun String.toPayment(): Payment? {
-    return when(this) {
+    return when (this) {
         "cash" -> Payment.CASH
         "paypal" -> Payment.PAYPAL
         else -> null

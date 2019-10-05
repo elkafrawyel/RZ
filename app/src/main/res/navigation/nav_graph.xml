@@ -268,8 +268,8 @@
             android:id="@+id/action_homeFragment_to_termsConditionsFragment"
             app:destination="@id/termsConditionsFragment" />
         <action
-            android:id="@+id/action_homeFragment_to_ordersReceivedFragment"
-            app:destination="@id/ordersReceivedFragment" />
+                android:id="@+id/action_homeFragment_to_ordersReceivedFragment"
+                app:destination="@+id/ordersReceivedFragment"/>
     </fragment>
     <fragment
         android:id="@+id/termsConditionsFragment"

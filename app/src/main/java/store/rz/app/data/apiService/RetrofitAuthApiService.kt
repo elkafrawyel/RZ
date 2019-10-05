@@ -14,8 +14,7 @@ interface RetrofitAuthApiService {
 
     @PUT("auth/activeUser")
     fun verifyPhone(
-        @Header("Authorization") token: String,
-        @Body request: VerifyUserRequest
+        @Header("Authorization") token: String
     ): Deferred<ApiResponse<Boolean>>
 
     @PUT("auth/upgradeRole")

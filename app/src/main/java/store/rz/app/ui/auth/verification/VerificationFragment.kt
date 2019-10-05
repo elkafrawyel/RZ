@@ -3,7 +3,9 @@ package store.rz.app.ui.auth.verification
 
 import android.os.Bundle
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -12,10 +14,18 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.blankj.utilcode.util.KeyboardUtils
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.FirebaseException
+import com.google.firebase.FirebaseTooManyRequestsException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.PhoneAuthCredential
+import com.google.firebase.auth.PhoneAuthProvider
 import store.rz.app.R
 import store.rz.app.domain.observeEvent
 import kotlinx.android.synthetic.main.verfication_fragment.*
+import java.util.concurrent.TimeUnit
 
 class VerificationFragment : Fragment() {
 
@@ -26,158 +36,52 @@ class VerificationFragment : Fragment() {
         return inflater.inflate(R.layout.verfication_fragment, container, false)
     }
 
+    private lateinit var mAuth: FirebaseAuth
     var phoneNumber: String = ""
     var password: String = ""
-
+    var token: String? = null
+    var codeSendFromFirebase = "123456"
+    private lateinit var viewModel: VerificationViewModel
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (arguments != null) {
-            val viewModel = ViewModelProviders.of(this).get(VerificationViewModel::class.java)
+            viewModel = ViewModelProviders.of(this).get(VerificationViewModel::class.java)
             viewModel.uiState.observeEvent(this) { onUiStateChanged(it) }
-            val token = VerificationFragmentArgs.fromBundle(arguments!!).token
+            token = VerificationFragmentArgs.fromBundle(arguments!!).token
             phoneNumber = VerificationFragmentArgs.fromBundle(arguments!!).phoneNumber
             password = VerificationFragmentArgs.fromBundle(arguments!!).password
+            mAuth = FirebaseAuth.getInstance()
+
             verificationInfoTv.text = getString(R.string.label_phone_verification_info, phoneNumber)
             verifyMbtn.setOnClickListener {
-                if (codeOneEt.text.isBlank()
-                    || codeTwoEt.text.isBlank()
-                    || codeThreeEt.text.isBlank()
-                    || codeFourEt.text.isBlank()
-                    || codeFiveEt.text.isBlank()
-                ) {
-                    Toast.makeText(requireContext(), getString(R.string.label_phone_verification_info, phoneNumber), Toast.LENGTH_SHORT).show()
-                } else {
-                    val code = codeOneEt.text.toString() +
-                            codeTwoEt.text.toString() +
-                            codeThreeEt.text.toString() +
-                            codeFourEt.text.toString() +
-                            codeFiveEt.text.toString()
+                var b = true
 
-                    viewModel.verify(token, code)
+                if (TextUtils.isEmpty(verifyMobileEt.text)) {
+                    b = false
+                    verifyMobileEt.error = resources.getString(R.string.enter_code)
+                } else if (verifyMobileEt.text.toString().length < 6) {
+                    b = false
+                    verifyMobileEt.error = resources.getString(R.string.invalid_code)
+                }
+
+                if (b) {
+                    activeUser()
                 }
             }
+
+            sendVerificationCode("+$phoneNumber")
+//          sendVerificationCode("+201151564340")
+
+            KeyboardUtils.hideSoftInput(activity!!)
         }
+    }
 
-        codeTwoEt.setOnKeyListener { _, keyCode, event ->
-            if (event.action == KeyEvent.ACTION_DOWN
-                && keyCode == KeyEvent.KEYCODE_DEL
-                && codeTwoEt.text.toString() == ""
-            ) {
-                codeOneEt.requestFocus()
-                return@setOnKeyListener true
-            }
+    private fun activeUser() {
+        if (token != null)
+            viewModel.verify(token = token!!)
+        else
+            Toast.makeText(context, "لا يمكن تفعيل حسابك", Toast.LENGTH_LONG).show()
 
-            false
-        }
-        codeThreeEt.setOnKeyListener { _, keyCode, event ->
-            if (event.action == KeyEvent.ACTION_DOWN
-                && keyCode == KeyEvent.KEYCODE_DEL
-                && codeThreeEt.text.toString() == ""
-            ) {
-                codeTwoEt.requestFocus()
-                return@setOnKeyListener true
-            }
-
-            false
-        }
-        codeFourEt.setOnKeyListener { _, keyCode, event ->
-            if (event.action == KeyEvent.ACTION_DOWN
-                && keyCode == KeyEvent.KEYCODE_DEL
-                && codeFourEt.text.toString() == ""
-            ) {
-                codeThreeEt.requestFocus()
-                return@setOnKeyListener true
-            }
-
-            false
-        }
-        codeFiveEt.setOnKeyListener { _, keyCode, event ->
-            if (event.action == KeyEvent.ACTION_DOWN
-                && keyCode == KeyEvent.KEYCODE_DEL
-                && codeFiveEt.text.toString() == ""
-            ) {
-                codeFourEt.requestFocus()
-                return@setOnKeyListener true
-            }
-
-            false
-        }
-
-        codeOneEt.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (count > 0) {
-                    codeTwoEt.requestFocus()
-                }
-            }
-
-            override fun afterTextChanged(s: Editable) {
-
-            }
-        })
-
-        codeTwoEt.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (count > 0) {
-                    codeThreeEt.requestFocus()
-                }
-            }
-
-            override fun afterTextChanged(s: Editable) {}
-        })
-
-
-        codeThreeEt.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (count > 0) {
-                    codeFourEt.requestFocus()
-                }
-            }
-
-            override fun afterTextChanged(s: Editable) {
-
-            }
-        })
-
-        codeFourEt.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (count > 0) {
-                    codeFiveEt.requestFocus()
-                }
-            }
-
-            override fun afterTextChanged(s: Editable) {
-
-            }
-        })
-
-        codeFiveEt.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (count > 0) {
-                }
-            }
-
-            override fun afterTextChanged(s: Editable) {
-
-            }
-        })
     }
 
     private fun onUiStateChanged(state: VerificationViewModel.VerifyUiState) {
@@ -194,10 +98,11 @@ class VerificationFragment : Fragment() {
 
     private fun showStateSuccess() {
         showMessage("success")
-        val action = VerificationFragmentDirections.actionVerificationFragmentToLoginFragment(
-            phoneNumber,
-            password
-        )
+        val action =
+            VerificationFragmentDirections.actionVerificationFragmentToLoginFragment(
+                phoneNumber,
+                password
+            )
         findNavController().navigate(action)
     }
 
@@ -212,4 +117,50 @@ class VerificationFragment : Fragment() {
         textView.textAlignment = View.TEXT_ALIGNMENT_CENTER
         snack_bar.show()
     }
+
+    val callbacks =
+        object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+
+            override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+                //     user action.
+                val code = credential.smsCode
+                if (code != null) {
+                    verifyMobileEt.setText(code)
+                    activeUser()
+                } else {
+                    Toast.makeText(context, "حدث خطأ ما", Toast.LENGTH_LONG).show()
+                }
+            }
+
+            override fun onVerificationFailed(e: FirebaseException) {
+                Toast.makeText(context, "Failed", Toast.LENGTH_LONG).show()
+                if (e is FirebaseAuthInvalidCredentialsException) {
+                    Toast.makeText(context, "ادخل رقم الهاتف بشكل صحيح", Toast.LENGTH_LONG).show()
+                } else if (e is FirebaseTooManyRequestsException) {
+                    Toast.makeText(context, "حدث خطأ ما", Toast.LENGTH_LONG).show()
+                }
+            }
+
+            override fun onCodeSent(
+                verificationId: String,
+                token: PhoneAuthProvider.ForceResendingToken
+            ) {
+                codeSendFromFirebase = verificationId
+                Toast.makeText(context, "تم ارسال الرمز الي هاتفك", Toast.LENGTH_LONG).show()
+            }
+        }
+
+    private fun sendVerificationCode(phoneNumber: String) {
+        activity?.let {
+            PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                phoneNumber, // Phone number to verify
+                60, // Timeout duration
+                TimeUnit.SECONDS, // Unit of timeout
+                it, // Activity (for callback binding)
+                callbacks
+            )
+        } // OnVerificationStateChangedCallbacks
+        // OnVerificationStateChangedCallbacks
+    }
+
 }

@@ -22,6 +22,7 @@ class OrdersReceivedAdapter :
             .setText(R.id.orderPriceTv, item.miniAd.price.toString())
             .setText(R.id.orderStatusTv, item.status)
             .setText(R.id.orderOwnerNameTv,item.contact.name)
+            .setText(R.id.orderDateTv,item.date)
             .addOnClickListener(R.id.moreMbtn)
             .addOnClickListener(R.id.orderOwnerNameTv)
     }

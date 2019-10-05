@@ -50,8 +50,10 @@ class CreateOrderViewModel : RzBaseViewModel<State.CreateOrderState, String>() {
     private fun launchGetData() = launch(dispatcherProvider.io) {
         withContext(dispatcherProvider.main) { _dataState.value = DataState.Loading }
         val dataResult = getCitiesUseCase.getCities()
-        when(dataResult) {
-            is DataResource.Success -> withContext(dispatcherProvider.main) { _dataState.value = DataState.Success(dataResult.data) }
+        when (dataResult) {
+            is DataResource.Success -> withContext(dispatcherProvider.main) {
+                _dataState.value = DataState.Success(dataResult.data)
+            }
             is DataResource.Error -> withContext(dispatcherProvider.main) { _dataState.value = DataState.Error }
         }
     }
@@ -64,7 +66,8 @@ class CreateOrderViewModel : RzBaseViewModel<State.CreateOrderState, String>() {
         mobile: String,
         notes: String,
         attributes: List<Attribute.MainAttribute>,
-        payment: Payment
+        payment: Payment,
+        cobone: String
     ) {
         if (NetworkUtils.isConnected()) {
             if (createOrderJob?.isActive == true) {
@@ -79,7 +82,8 @@ class CreateOrderViewModel : RzBaseViewModel<State.CreateOrderState, String>() {
                 mobile,
                 notes,
                 attributes,
-                payment
+                payment,
+                cobone
             )
         } else {
             showNoInternetConnection()
@@ -94,7 +98,8 @@ class CreateOrderViewModel : RzBaseViewModel<State.CreateOrderState, String>() {
         mobile: String,
         notes: String,
         attributes: List<Attribute.MainAttribute>,
-        payment: Payment
+        payment: Payment,
+        cobone: String
     ): Job {
         return launch(dispatcherProvider.io) {
             withContext(dispatcherProvider.main) { showDataLoading() }
@@ -112,7 +117,8 @@ class CreateOrderViewModel : RzBaseViewModel<State.CreateOrderState, String>() {
                 notes,
                 attributes,
                 attributesPrice,
-                payment
+                payment,
+                cobone
             )
             withContext(dispatcherProvider.main) {
                 when (result) {

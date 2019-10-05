@@ -1,94 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/orderCv"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="8dp"
-    android:layout_marginEnd="8dp"
-    android:layout_marginBottom="8dp">
+                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                   xmlns:tools="http://schemas.android.com/tools"
+                                   android:id="@+id/orderCv"
+                                   android:layout_width="match_parent"
+                                   android:layout_height="wrap_content"
+                                   android:layout_marginStart="8dp"
+                                   android:layout_marginEnd="8dp"
+                                   android:layout_marginBottom="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/orderImgv"
-            android:layout_width="160dp"
-            android:layout_height="0dp"
-            android:scaleType="centerCrop"
-            android:transitionName="productImage"
-            app:layout_constraintDimensionRatio="16:9"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/test_image" />
+                android:id="@+id/orderImgv"
+                android:layout_width="160dp"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                android:transitionName="productImage"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/orderDateTv"
+                tools:src="@drawable/test_image"/>
 
         <TextView
-            android:id="@+id/orderTitleTv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
-            android:ellipsize="end"
-            android:lines="1"
-            android:textAppearance="?attr/textAppearanceHeadline6"
-            app:layout_constraintBottom_toTopOf="@id/orderPriceTv"
-            app:layout_constraintEnd_toStartOf="@id/moreMbtn"
-            app:layout_constraintStart_toEndOf="@id/orderImgv"
-            app:layout_constraintTop_toTopOf="@id/orderImgv"
-            app:layout_constraintVertical_bias="0"
-            app:layout_constraintVertical_chainStyle="packed"
-            tools:text="Ad Name sdfsd fsdf dsfsdfsdf" />
+                android:id="@+id/orderTitleTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:ellipsize="end"
+                android:lines="1"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                app:layout_constraintBottom_toTopOf="@id/orderPriceTv"
+                app:layout_constraintEnd_toStartOf="@id/moreMbtn"
+                app:layout_constraintStart_toEndOf="@id/orderImgv"
+                app:layout_constraintTop_toTopOf="@id/orderImgv"
+                app:layout_constraintVertical_bias="0"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="Ad Name sdfsd fsdf dsfsdfsdf"/>
 
         <TextView
-            android:id="@+id/orderPriceTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:textAppearance="?attr/textAppearanceBody2"
-            app:layout_constraintBottom_toBottomOf="@id/orderStatusTv"
-            app:layout_constraintStart_toStartOf="@id/orderTitleTv"
-            app:layout_constraintTop_toBottomOf="@id/orderTitleTv"
-            tools:text="200 R.S" />
+                android:id="@+id/orderPriceTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textAppearance="?attr/textAppearanceBody2"
+                app:layout_constraintBottom_toBottomOf="@id/orderStatusTv"
+                app:layout_constraintStart_toStartOf="@id/orderTitleTv"
+                app:layout_constraintTop_toBottomOf="@id/orderTitleTv"
+                tools:text="200 R.S"/>
 
         <TextView
-            android:id="@+id/orderStatusTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?attr/textAppearanceCaption"
-            app:layout_constraintBottom_toTopOf="@id/orderOwnerNameTv"
-            app:layout_constraintStart_toStartOf="@id/orderTitleTv"
-            app:layout_constraintTop_toBottomOf="@id/orderPriceTv"
-            tools:text="Pending" />
+                android:id="@+id/orderStatusTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceCaption"
+                app:layout_constraintBottom_toTopOf="@id/orderOwnerNameTv"
+                app:layout_constraintStart_toStartOf="@id/orderTitleTv"
+                app:layout_constraintTop_toBottomOf="@id/orderPriceTv"
+                tools:text="Pending"/>
 
         <TextView
-            android:id="@+id/orderOwnerNameTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:textAppearance="?attr/textAppearanceSubtitle1"
-            android:textColor="@color/colorPrimary"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@id/orderTitleTv"
-            app:layout_constraintTop_toBottomOf="@id/orderStatusTv"
-            tools:text="Mahmoud Asharf" />
+                android:id="@+id/orderOwnerNameTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:textAppearance="?attr/textAppearanceSubtitle1"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@id/orderTitleTv"
+                app:layout_constraintTop_toBottomOf="@id/orderStatusTv"
+                tools:text="Mahmoud Asharf"/>
+
+        <TextView
+                android:id="@+id/orderDateTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:padding="@dimen/dp_4"
+                android:gravity="start"
+                android:textAppearance="?attr/textAppearanceCaption"
+                android:textColor="@color/colorWhite"
+                android:background="@drawable/date_bg"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@id/orderTitleTv"
+                app:layout_constraintTop_toBottomOf="@id/orderOwnerNameTv"
+                tools:text="10/10/2012"/>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/moreMbtn"
-            style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:minWidth="0dp"
-            android:paddingStart="14dp"
-            android:paddingEnd="14dp"
-            app:icon="@drawable/ic_arrow_right_black"
-            app:iconPadding="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+                android:id="@+id/moreMbtn"
+                style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:minWidth="0dp"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                app:icon="@drawable/ic_arrow_right_black"
+                app:iconPadding="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -84,15 +84,15 @@ class LoggedInUserRemoteSource(
 
     }
 
-    override suspend fun verifyPhone(token: String, request: VerifyUserRequest): DataResource<Boolean> {
+    override suspend fun verifyPhone(token: String): DataResource<Boolean> {
         return safeApiCall(
-            call = { verifyPhoneCall(token, request) },
+            call = { verifyPhoneCall(token) },
             errorMessage = Injector.getApplicationContext().getString(R.string.error_call_verifyPhone_api)
         )
     }
 
-    private suspend fun verifyPhoneCall(token: String, request: VerifyUserRequest) : DataResource<Boolean> {
-        val response = authApiService.verifyPhone(token, request).await()
+    private suspend fun verifyPhoneCall(token: String) : DataResource<Boolean> {
+        val response = authApiService.verifyPhone(token).await()
         if (response.success != null && response.success) {
             return DataResource.Success(response.success)
         }

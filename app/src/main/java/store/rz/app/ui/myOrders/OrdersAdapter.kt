@@ -23,8 +23,13 @@ class OrdersAdapter :
             .setText(R.id.orderPriceTv, item.miniAd.discountPrice.toString())
             .setText(R.id.orderStatusTv, item.status)
             .setText(R.id.orderOwnerNameTv,item.contact.name)
+            .setText(R.id.orderDateTv,item.date)
             .addOnClickListener(R.id.moreMbtn)
             .addOnClickListener(R.id.orderOwnerNameTv)
+
+        if (item.date == ""){
+            helper.setVisible(R.id.orderDateTv,false)
+        }
 
     }
 

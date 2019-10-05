@@ -9,11 +9,9 @@ class VerifyPhoneUseCase(
     private val loggedInUserRepo: ILoggedInUserRepo
 ) {
 
-    suspend fun verify(token: String, code: String): DataResource<Boolean> {
+    suspend fun verify(token: String): DataResource<Boolean> {
         return loggedInUserRepo.verifyPhone(
-            "${Constants.AUTHORIZATION_START} $token",
-            VerifyUserRequest(code.toInt())
-        )
+            "${Constants.AUTHORIZATION_START} $token")
     }
 
 }

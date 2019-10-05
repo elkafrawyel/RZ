@@ -27,18 +27,18 @@ class VerificationViewModel : RzBaseViewModel<State.Verification, String>() {
 
     }
 
-    fun verify(token: String, code: String) {
+    fun verify(token: String) {
         if (verifyPhoneJob?.isActive == true) {
             return
         }
 
-        verifyPhoneJob = launchVerification(token, code)
+        verifyPhoneJob = launchVerification(token)
     }
 
-    private fun launchVerification(token: String, code: String): Job {
+    private fun launchVerification(token: String): Job {
         return launch(dispatcherProvider.computation) {
             withContext(dispatcherProvider.main) { showLoading() }
-            val result = verifyPhoneUseCase.verify(token, code)
+            val result = verifyPhoneUseCase.verify(token)
             withContext(dispatcherProvider.main) {
                 when(result) {
                     is DataResource.Success -> showSuccess(result.data)

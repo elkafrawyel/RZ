@@ -95,7 +95,8 @@ class LoginFragment : Fragment() {
     private fun showStateInactive(loggedInUser: LoggedInUser) {
         loadingFl.visibility = View.GONE
         if (loggedInUser.mobile != null && loggedInUser.token != null) {
-            val action = LoginFragmentDirections.actionLoginFragmentToVerificationFragment(
+            val action
+                    = LoginFragmentDirections.actionLoginFragmentToVerificationFragment(
                 loggedInUser.mobile,
                 loggedInUser.token,
                 passwordEt.text.toString()

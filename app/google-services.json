@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1039522796615-2kauuo6aceeb60fko80q3mnt0jp9ketq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "store.rz.app",
+            "certificate_hash": "355a372772116dc96f565bccd10df7ad5ce53539"
+          }
+        },
+        {
           "client_id": "1039522796615-mp14prkeup3g66korhtiilmbs9qquoh9.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -25,15 +33,20 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1039522796615-mp14prkeup3g66korhtiilmbs9qquoh9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1039522796615-efoqh7tnos8b5817630h24oh89clpi5p.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.rz.rzapp"
+              }
+            }
+          ]
         }
       }
     }

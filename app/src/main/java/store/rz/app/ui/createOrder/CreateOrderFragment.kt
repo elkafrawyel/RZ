@@ -15,6 +15,7 @@ import store.rz.app.domain.City
 import store.rz.app.domain.Payment
 import store.rz.app.ui.MainViewModel
 import kotlinx.android.synthetic.main.create_order_fragment.*
+import store.rz.app.utils.PreferencesHelper
 import java.util.*
 
 class CreateOrderFragment : Fragment() {
@@ -44,6 +45,8 @@ class CreateOrderFragment : Fragment() {
 
         arguments?.let {
             adUuid = CreateOrderFragmentArgs.fromBundle(it).adUuid
+            if (PreferencesHelper(context!!).cobone != null)
+                coubonEt.setText(PreferencesHelper(context!!).cobone)
         }
 
         if (adUuid == null) findNavController().navigateUp()
@@ -109,6 +112,9 @@ class CreateOrderFragment : Fragment() {
     private fun createOrder() {
         if (validateViews()) {
             if (adUuid != null) {
+
+                PreferencesHelper(context!!).cobone = coubonEt.text.toString()
+
                 viewModel.createOrder(
                     adUuid!!,
                     nameEt.text.toString(),
@@ -117,7 +123,8 @@ class CreateOrderFragment : Fragment() {
                     phoneEt.text.toString(),
                     noteEt.text.toString(),
                     mainViewModel.orderSelectedAttributes,
-                    paymentAdapter.getItem(paymentSpinner.selectedItemPosition)!!
+                    paymentAdapter.getItem(paymentSpinner.selectedItemPosition)!!,
+                    coubonEt.text.toString()
                 )
             }
         }

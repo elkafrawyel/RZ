@@ -19,7 +19,8 @@ class CreateOrderUseCase(
         notes: String,
         attributes: List<Attribute.MainAttribute>,
         attributesPrice: Int,
-        payment: Payment
+        payment: Payment,
+        cobone: String
     ): DataResource<Boolean> {
         return ordersRepo.createOrder(
             "${Constants.AUTHORIZATION_START} ${loggedInUserRepo.getLoggedInUser().token}",
@@ -34,7 +35,8 @@ class CreateOrderUseCase(
                 ),
                 attributes,
                 attributesPrice,
-                payment.value
+                payment.value,
+                cobone
             )
         )
     }

@@ -35,6 +35,8 @@ data class AdResponse(
     val videoUrl: String?,
     @field:Json(name = "sub_category")
     val subCategory: String?,
+    @field:Json(name = "productcity")
+    val cityName: String?,
     @field:Json(name = "characteristics")
     val mainAttributes: List<MainAttributeResponse?>?
 )
@@ -76,6 +78,7 @@ data class Ad(
     val subCategoryUuid: String,
     val subCategoryName: String,
     val title: String,
+    val cityName: String,
     val videoUrl: String
 )
 
@@ -123,6 +126,7 @@ fun AdResponse.toAd(): Ad? {
             subCategoryUuid,
             subCategory,
             title,
+            cityName ?: "جازان",
             videoUrl?: ""
         )
     }

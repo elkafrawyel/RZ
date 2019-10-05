@@ -153,6 +153,18 @@
                     app:layout_constraintTop_toTopOf="@id/ratingBar" />
 
                 <TextView
+                        android:id="@+id/productCityTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text=""
+                        android:textAppearance="?attr/textAppearanceBody1"
+                        app:layout_constrainedWidth="true"
+                        app:layout_constraintStart_toEndOf="@id/reviewsMbtn"
+                        app:layout_constraintBottom_toBottomOf="@id/ratingBar"
+                        app:layout_constraintTop_toTopOf="@id/ratingBar"/>
+
+                <TextView
                     android:id="@+id/discountPriceTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
